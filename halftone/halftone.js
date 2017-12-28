@@ -15,8 +15,8 @@ function setup() {
 	myCanvas.parent('canvasContainer');
 	frameRate(60);
 	
-	C_HEIGTH = windowHeight/SIDE;
-	C_WIDTH = windowWidth/SIDE;
+	C_HEIGTH = Math.ceil(windowHeight/SIDE);
+	C_WIDTH  = Math.ceil(windowWidth/SIDE);;
 	
 	MIN_COLOR = color(random(0, 100), random(0, 100), random(0, 100));
 	MAX_COLOR = color(random(100, 255), random(100, 255), random(100, 255));
