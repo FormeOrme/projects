@@ -1,0 +1,21 @@
+<head>
+	<link rel="stylesheet" type="text/css" href="main.css"/>
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js" crossorigin="anonymous"></script>
+</head>
+<body>
+	<div class="frame"><iframe src="..\cells\t1.html"></iframe></div>
+	<div class="frame"><iframe src="..\clock\t1.html"></iframe></div>
+	<div class="frame"><iframe src="..\fdas\vor.html"></iframe></div>
+	<div class="frame"><iframe src="..\fdasdas\vor.html"></iframe></div>
+	<div class="frame"><iframe src="..\glow\index.html"></iframe></div>
+	<div class="frame"><iframe src="..\ReactionDiffusion\vor.html"></iframe></div>
+	<div class="frame"><iframe src="..\T1\t1.html"></iframe></div>
+	<div class="frame"><iframe src="..\vor\vor.html"></iframe></div>
+	<div class="frame"><iframe src="..\VORMAP\vor.html"></iframe></div>
+	<div class="frame"><iframe src="..\web\t1.html"></iframe></div>
+	<script>
+		$(document).on('click', '.frame', function(){
+			window.location = $(this).find('iframe').attr('src');
+		})
+	</script>
+</body>
