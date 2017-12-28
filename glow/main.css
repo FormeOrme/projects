@@ -1,0 +1,9 @@
+body{
+	background: #000011;
+	/*background: linear-gradient( #000011, #6ECDE4, white);*/
+	margin: 0;
+}
+
+canvas#defaultCanvas0 {
+    filter: drop-shadow( 0 0 5px #6ECDE4) blur(1px);
+}
