@@ -10,6 +10,11 @@
 			var x = [];
 			var ls;
 			var number;
+
+            function milliseconds(){
+                return new Date().getMilliseconds();
+            }
+            
 			function setup() {
 			 var myCanvas = createCanvas(250, 350);
 				myCanvas.parent('canvasContainer');
@@ -39,7 +44,7 @@
 					number.goToNumber(digit%10);
 					digit++;
 				}
-				number.update(millis()%1000);
+				number.update(milliseconds()%1000);
 				number.display();
 				ls = secs;
 			}
