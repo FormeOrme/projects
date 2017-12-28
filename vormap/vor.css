@@ -1,0 +1,14 @@
+body{
+	margin:0px;
+	background: #0f1317;
+}
+#canvasContainer{
+	width: 100%;
+	position: fixed;
+	height: 100%;
+	overflow: hidden;
+    z-index: -1;
+}
+#mainContainer{
+	color: #0f1317;
+}
