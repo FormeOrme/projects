@@ -1,0 +1,50 @@
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="t1.css">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.4/p5.js"></script>
+		<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30=" crossorigin="anonymous"></script>
+		<script src="code.js"></script>
+		<script>
+			var x = [];
+			var ls;
+			var number;
+			function setup() {
+			 var myCanvas = createCanvas(250, 350);
+				myCanvas.parent('canvasContainer');
+				noStroke();
+				ellipseMode(RADIUS);
+				//for(var i = 0; i < 4; i++){
+				//	x[i] = new Cell(50 + i*50, 50,25 , floor(random(13)));
+				//}
+				number = new Number(0, 50, 50);
+				ls = second();
+				frameRate(60);
+			}
+			var secs;
+			var digit = 0;
+			function draw() {
+				background("#0f1317");
+				//ellipse(cx, cy, 30, 30);
+				secs = second();
+				//x.forEach(function(c){
+				//	if(ls != secs){
+				//		c.goToStage( floor(random(13)) );
+				//	}
+				//	c.update(millis()%1000);
+				//	c.display();
+				//});
+				if(ls != secs){
+					number.goToNumber(digit%10);
+					digit++;
+				}
+				number.update(millis()%1000);
+				number.display();
+				ls = secs;
+			}
+		</script>
+	</head>
+	<body>
+		<div id='canvasContainer'></div>
+	</body>
+</html>
