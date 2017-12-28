@@ -8,7 +8,6 @@
 		<script src="code.js"></script>
 		<script>
 			var x = [];
-			var ls;
 			var number;
 
             function milliseconds(){
@@ -24,15 +23,12 @@
 				//	x[i] = new Cell(50 + i*50, 50,25 , floor(random(13)));
 				//}
 				number = new Number(0, 50, 50);
-				ls = second();
 				frameRate(60);
 			}
-			var secs;
 			var digit = 0;
 			function draw() {
 				background("#0f1317");
 				//ellipse(cx, cy, 30, 30);
-				secs = second();
 				//x.forEach(function(c){
 				//	if(ls != secs){
 				//		c.goToStage( floor(random(13)) );
@@ -40,13 +36,9 @@
 				//	c.update(millis()%1000);
 				//	c.display();
 				//});
-				if(ls != secs){
-					number.goToNumber(digit%10);
-					digit++;
-				}
+                number.goToNumber(second()%10);                
 				number.update(milliseconds()%1000);
 				number.display();
-				ls = secs;
 			}
 		</script>
 	</head>
