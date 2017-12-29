@@ -1,5 +1,5 @@
 var cells = new Array();
-var SIDE = 30;
+var SIDE = 10;
 var MIN_COLOR;
 var MAX_COLOR;
 var COLORS = new Array();
@@ -27,7 +27,7 @@ function setup() {
 	}
 
 	cells.filter(function (f) {
-		return f.x >= 10 && f.x <= 14 && f.y >= 2 && f.y <= 5;
+		return f.x >= 10 && f.x <= 11 && f.y >= 2 && f.y <= 3;
 	}).map(function (f) {
 		f.b = 1;
 	});
@@ -48,7 +48,6 @@ function getColor(a, b) {
 
 var tempCell;
 function draw() {
-    noLoop();
 	tempCell = JSON.parse(JSON.stringify(cells));
 
 	cells.map(function (c) {
@@ -70,10 +69,8 @@ function Cell(x, y, a, b) {
 
 	this.draw = function () {
 		fill(getColor(this.a, this.b));
-		rect(this.x * SIDE, this.y * SIDE, SIDE - 1, SIDE - 1);
+		rect(this.x * SIDE, this.y * SIDE, SIDE, SIDE);
 	}
-
-	this.nbrs = getNbrs(x, y);
 
 	this.update = function (cells) {
 		this.a = constrain(a + (dA * laplace(cells, x, y, 'a')) - (a * b * b) + (feed * (1 - a)), 0, 1);
@@ -99,33 +96,6 @@ function getCell(cells, x, y) {
 	return cells.filter(function (f) {
 		return f.x == x && f.y == y
 	})[0];
-}
-
-function getNbrs(x, y) {
-	nbrs = new Array();
-	if (x != 0) {
-		nbrs.push(x - 1 + (y - 1) * C_WIDTH);
-		nbrs.push(x - 1 + y * C_WIDTH);
-		nbrs.push(x - 1 + (y + 1) * C_WIDTH);
-	} else {
-		nbrs.push(C_WIDTH - 1 + (y - 1) * C_WIDTH);
-		nbrs.push(C_WIDTH - 1 + y * C_WIDTH);
-		nbrs.push(C_WIDTH - 1 + (y + 1) * C_WIDTH);
-	}
-	nbrs.push(x + (y - 1) * C_WIDTH);
-	nbrs.push(x + (y + 1) * C_WIDTH);
-	if (x != C_WIDTH - 1) {
-		nbrs.push(x + 1 + (y - 1) * C_WIDTH);
-		nbrs.push(x + 1 + y * C_WIDTH);
-		nbrs.push(x + 1 + (y + 1) * C_WIDTH);
-	} else {
-		nbrs.push(0 + (y - 1) * C_WIDTH);
-		nbrs.push(0 + y * C_WIDTH);
-		nbrs.push(0 + (y + 1) * C_WIDTH);
-	}
-	return nbrs.filter(function (n) {
-		return n >= 0 && n < C_HEIGTH * C_WIDTH
-	});
 }
 
 function windowResized() {
