@@ -1,5 +1,5 @@
 var cells = new Array();
-var SIDE = 15;
+var SIDE = 10;
 var MIN_COLOR;
 var MAX_COLOR;
 var COLORS = new Array();
@@ -9,8 +9,8 @@ var C_WIDTH;
 
 var dA = 1;
 var dB = 0.5;
-var f = 0.055;
-var k = 0.062;
+var f = 0.04;
+var k = 0.06;
 
 var SIZE = 500;
 
@@ -33,7 +33,7 @@ function setup() {
     }).filter(function (f) {
         return f.y >= 10 && f.y < 30;
     }).map(function (f) {
-        f.b = 1;
+        f.b = 1
     });
 
     noStroke();
@@ -52,14 +52,20 @@ function getColor(a, b) {
 
 var oldCells;
 function draw() {
+    
     oldCells = JSON.parse(JSON.stringify(cells));
 
+    noStroke();
     cells.map(function (c) {
         c.draw();
     });
     cells.map(function (c) {
         c.update(oldCells);
     });
+    
+    noFill();
+    stroke(0);
+    text(f, 0,0);
 }
 
 function Cell(x, y, a, b) {
