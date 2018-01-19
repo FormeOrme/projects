@@ -15,45 +15,68 @@ body{
 }
 
 .computer:after {
-    content: '\01F352';
-    font-size: 15px;
+    content: '\01F345';
+    font-size: 13px;
 }
 
 .board{
+    position: relative;
     display: inline-block;
-    box-shadow: 0 0 2px 2px black;
-    max-width: calc(16 * 40px);
+    box-shadow: 0 0 1px 1px black;
+    width: calc(16 * 40px);
     zoom: 2;
 }
 
-.cell {
-    background: #18201d;
+.cell{
     width: 40px;
     height: 40px;
     display: inline-block;
     position: relative;
+}
+
+.background .cell {
+    background: #18201d;
     box-shadow: 0 0 20px 2px #00000050 inset;
+}
+
+
+@keyframes roll {
+    from {
+        -webkit-mask-position: 0px;
+    }
+    to {
+        -webkit-mask-position: 24px;
+    }
+}
+.background .roller {
+    -webkit-mask-image: url(src/line.svg);
+    -webkit-mask-position: 0px;
+    -webkit-mask-size: 120%;
+    animation-name: roll;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    width: 36px;
+    height: 36px;
+    border: 2px solid transparent;
 }
 
 .rotate90{
     transform:rotate(90deg);
-    
+}
+.rotate180{
+    transform:rotate(180deg);
+}
+.rotate270{
+    transform:rotate(270deg);
 }
 .rotate90 .rotWrapper{
     display: inline-block;
     transform:rotate(-90deg);
 }
-.rotate180{
-    transform:rotate(180deg);
-    
-}
 .rotate180 .rotWrapper{
     display: inline-block;
     transform:rotate(-180deg);
-}
-.rotate270{
-    transform:rotate(270deg);
-    
 }
 .rotate270 .rotWrapper{
     display: inline-block;
@@ -63,7 +86,7 @@ body{
 .animWrapper{
     display: inline-block;
     animation-name: move;
-    animation-duration: 5s;
+    animation-duration: 2s;
     animation-iteration-count: infinite;
     animation-timing-function: linear;
 }
@@ -77,10 +100,20 @@ body{
     left: 50%;
     transform: translate(-50%, -50% );
     z-index: 200;
+    user-select: none;
 }
 .obj{
     width: 20px;
     height: 20px;
     display: inline-block;
     overflow: hidden;
+}
+
+.layer{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+.layer.background{
+    position: relative;
 }
