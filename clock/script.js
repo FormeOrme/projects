@@ -65,6 +65,8 @@ function draw() {
     fill('#474D4F');
 	noStroke();
     
+    ellipse(cx, cy, 3, 3);
+    
     for (var t = 0; t < 12; t++) {
         var radius = 1;
         if( t%3==0){
@@ -90,6 +92,9 @@ function draw() {
         fill(v.color);
         noStroke();
         ellipse(px, py, v.crad*2, v.crad*2);
+
+		var px = v.cx - v.radius * cos(map(v.val, 0, v.max, -HALF_PI, TWO_PI-HALF_PI));
+		var py = v.cy - v.radius * sin(map(v.val, 0, v.max, -HALF_PI, TWO_PI-HALF_PI));
         
 		for (var t = 0; t < v.cloves; t++) {
             var radius = v.crad;
