@@ -1,0 +1,129 @@
+<head>
+<script
+  src="http://code.jquery.com/jquery-3.3.1.js"
+  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+  crossorigin="anonymous"></script>
+</head>
+<body>
+    <style>
+        body{
+            font-family: monospace;
+            font-size: 0px;
+        }
+        span {
+            display: inline-block;
+            font-size: 30px;
+            width: 40px;
+            height: 40px;
+            text-align: center;
+            overflow: hidden;
+            border: 1px solid #f3f3f3;
+            position: relative;
+        }
+        .block{
+            display: inline-block;
+            border: 1px solid #f3f3f3;
+            margin: 5px;
+        }
+        span[data-val]:hover:before {
+            content: attr(data-val);
+            text-transform: uppercase;
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            font-size: 20px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #FFF;
+            border: 1px solid #000;
+            border-radius: 3px;
+        }
+        
+        #container{
+            width: 600px;
+        }
+        
+        #in,
+        #out{
+            display: block;
+            width: 100%;
+            font-size: 20px;
+            border: 2px solid #f3f3f3;
+            border-radius: 3px;
+            padding: 0px;
+            margin: 5px;
+        }
+
+    </style>
+    <script>
+        var alphabeth = {
+        	"a": "\u14A7",
+        	"b": "\u0BAA",
+        	"c": "\u0B9F",
+        	"d": "\u2290",
+        	"e": "\u2610",
+        	"f": "\u2D4E",
+        	"g": "ᒣ",
+        	"h": "⊓",
+        	"i": "ᒥ",
+        	"j": "⟓",
+        	"k": "ᕫ",
+        	"l": "ᒷ",
+        	"m": "ᑔ",
+        	"n": "⊡",
+        	"o": "⪽",
+        	"p": "ᒬ",
+        	"q": "⩀",
+        	"r": "⟔",
+        	"t": "⋁",
+        	"s": "ᐳ",
+        	"v": "ᐸ",
+        	"u": "⋀",
+        	"x": "୰",
+        	"w": "⋗",
+        	"z": "⋖",
+        	"y": "⟑",
+        }
+        
+        $(document).ready(function(){
+            $('span[data-val]').map(function(){
+               $(this).html(alphabeth[$(this).data('val')]); 
+            });
+        })
+        $(document).on('input', '#in', function(){
+            var text = $(this).val();
+            text = text.toLowerCase();
+            Object.keys(alphabeth).map(function(k){
+                var xp = new RegExp(k, 'g');
+               text = text.replace(xp, alphabeth[k]);
+            });
+            
+            $('#out').html(text);
+        });
+    </script>
+    <div id="container">
+    <div class="block">
+        <div><span data-val="a"></span><span data-val="b"></span><span data-val="c"></span></div>
+        <div><span data-val="d"></span><span data-val="e"></span><span data-val="f"></span></div>
+        <div><span data-val="g"></span><span data-val="h"></span><span data-val="i"></span></div>
+    </div>
+    <div class="block">
+        <div><span data-val="j"></span><span data-val="k"></span><span data-val="l"></span></div>
+        <div><span data-val="m"></span><span data-val="n"></span><span data-val="o"></span></div>
+        <div><span data-val="p"></span><span data-val="q"></span><span data-val="r"></span></div>
+    </div>
+    <div class="block">
+        <div><span></span><span data-val="t"></span><span></span></div>
+        <div><span data-val="s"></span><span></span><span data-val="v"></span></div>
+        <div><span></span><span data-val="u"></span><span></span></div>
+    </div>
+    <div class="block">
+        <div><span></span><span data-val="x"></span><span></span></div>
+        <div><span data-val="w"></span><span></span><span data-val="z"></span></div>
+        <div><span></span><span data-val="y"></span><span></span></div>
+    </div>
+    <textarea id="in"></textarea>
+    <div id="out"></div>
+    </div>
+</body>
