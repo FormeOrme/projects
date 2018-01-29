@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto+Mono');
+
 body{
     margin: 0px;
     font-size: 0px;
@@ -15,8 +17,15 @@ body{
 }
 
 .computer:after {
-    content: '\01F345';
+    /*content: '\01F345';*/
+    content: url(src/123223.svg);
     font-size: 13px;
+    width: 17px;
+    display: inline-block;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .board{
@@ -45,7 +54,7 @@ body{
         -webkit-mask-position: 0px;
     }
     to {
-        -webkit-mask-position: 24px;
+        -webkit-mask-position: 40px;
     }
 }
 .background .roller {
@@ -107,6 +116,7 @@ body{
     height: 20px;
     display: inline-block;
     overflow: hidden;
+    text-align: center;
 }
 
 .layer{
@@ -116,4 +126,8 @@ body{
 }
 .layer.background{
     position: relative;
+}
+.minimal{
+    font-size: 30px;
+    font-family: 'Roboto Mono', monospace;
 }
