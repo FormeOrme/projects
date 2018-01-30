@@ -6,6 +6,7 @@
         body{
             font-family: monospace;
             font-size: 0px;
+            color: #f3f3f3;
         }
         span {
             display: inline-block;
@@ -26,15 +27,15 @@
             content: attr(data-val);
             text-transform: uppercase;
             position: absolute;
-            width: 25px;
-            height: 25px;
+            width: 24px;
+            height: 24px;
             font-size: 20px;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             background: #FFF;
-            border: 1px solid #000;
-            border-radius: 3px;
+            border: 2px solid #f3f3f3;
+            border-radius: 2px;
         }
         
         #container{
@@ -44,12 +45,15 @@
         #in,
         #out{
             display: block;
+            resize: vertical;
             width: 100%;
             font-size: 20px;
             border: 2px solid #f3f3f3;
             border-radius: 3px;
             padding: 0px;
             margin: 5px;
+            color: #f3f3f3;
+            height: 200px;
         }
 
     </style>
@@ -61,27 +65,32 @@
         	"d": "\u2290",
         	"e": "\u2610",
         	"f": "\u2D4E",
-        	"g": "ᒣ",
-        	"h": "⊓",
-        	"i": "ᒥ",
-        	"j": "⟓",
-        	"k": "ᕫ",
-        	"l": "ᒷ",
-        	"m": "ᑔ",
-        	"n": "⊡",
-        	"o": "⪽",
-        	"p": "ᒬ",
-        	"q": "⩀",
-        	"r": "⟔",
-        	"t": "⋁",
-        	"s": "ᐳ",
-        	"v": "ᐸ",
-        	"u": "⋀",
-        	"x": "୰",
-        	"w": "⋗",
-        	"z": "⋖",
-        	"y": "⟑",
-        }
+        	"g": "\u14A3",
+        	"h": "\u2293",
+        	"i": "\u14A5",
+        	"j": "\u27D3",
+        	"k": "\u156B",
+        	"l": "\u14B7",
+        	"m": "\u1454",
+        	"n": "\u22A1",
+        	"o": "\u2ABD",
+        	"p": "\u14AC",
+        	"q": "\u2A40",
+        	"r": "\u27D4",
+        	"t": "\u22C1",
+        	"s": "\u1433",
+        	"v": "\u1438",
+        	"u": "\u22C0",
+        	"x": "\u0B70",
+        	"w": "\u22D7",
+        	"z": "\u22D6",
+        	"y": "\u27D1",
+        }              
+                       
+        var lookup = {};
+        Object.keys(alphabeth).map(function(i){
+            lookup[alphabeth[i]] = i;
+        });
         
         $(document).ready(function(){
             $('span[data-val]').map(function(){
@@ -96,7 +105,18 @@
                text = text.replace(xp, alphabeth[k]);
             });
             
-            $('#out').html(text);
+            $('#out').val(text);
+        });
+               
+        $(document).on('input', '#out', function(){
+            var text = $(this).val();
+            text = text.toLowerCase();
+            Object.keys(lookup).map(function(k){
+                var xp = new RegExp(k, 'g');
+               text = text.replace(xp, lookup[k]);
+            });
+            
+            $('#in').val(text);
         });
     </script>
     <div id="container">
@@ -121,6 +141,6 @@
         <div><span></span><span data-val="y"></span><span></span></div>
     </div>
     <textarea id="in"></textarea>
-    <div id="out"></div>
+    <textarea id="out"></textarea>
     </div>
 </body>
