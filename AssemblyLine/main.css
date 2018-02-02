@@ -43,7 +43,7 @@ body{
     position: relative;
 }
 
-.background .cell {
+.cell .background {
     background: #18201d;
     box-shadow: 0 0 20px 2px #00000050 inset;
 }
@@ -57,7 +57,7 @@ body{
         -webkit-mask-position: 40px;
     }
 }
-.background .roller {
+.roller .background {
     -webkit-mask-image: url(src/line.svg);
     -webkit-mask-position: 0px;
     -webkit-mask-size: 120%;
@@ -68,6 +68,7 @@ body{
     width: 36px;
     height: 36px;
     border: 2px solid transparent;
+    display: inline-block;
 }
 
 .rotate90{
@@ -119,14 +120,6 @@ body{
     text-align: center;
 }
 
-.layer{
-    position: absolute;
-    top: 0px;
-    left: 0px;
-}
-.layer.background{
-    position: relative;
-}
 .minimal{
     font-size: 30px;
     font-family: 'Roboto Mono', monospace;
