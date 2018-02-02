@@ -17,7 +17,6 @@ body{
 }
 
 .computer:after {
-    /*content: '\01F345';*/
     content: url(src/123223.svg);
     font-size: 13px;
     width: 17px;
@@ -34,6 +33,7 @@ body{
     box-shadow: 0 0 1px 1px black;
     width: calc(16 * 40px);
     zoom: 2;
+    overflow: hidden;
 }
 
 .cell{
@@ -71,13 +71,23 @@ body{
     display: inline-block;
 }
 
-.rotate90{
+.prodWrapper{
+    position: absolute;
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    top: 0px;
+    left: 0px;
+    z-index: 200;
+}
+
+.rotate90 .background,  .rotate90 .prodWrapper{
     transform:rotate(90deg);
 }
-.rotate180{
+.rotate180 .background, .rotate180 .prodWrapper{
     transform:rotate(180deg);
 }
-.rotate270{
+.rotate270 .background, .rotate270 .prodWrapper{
     transform:rotate(270deg);
 }
 .rotate90 .rotWrapper{
