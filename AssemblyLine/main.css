@@ -16,8 +16,23 @@ body{
     }
 }
 
-.computer:after {
-    content: url(src/123223.svg);
+.tomato:after {
+    content: url(src/135702.svg);
+}
+.orange:after {
+    content: url(src/135620.svg);
+}
+.cherry:after {
+    content: url(src/135695.svg);
+}
+.strawb:after {
+    content: url(src/135717.svg);
+}
+.apple:after {
+    content: url(src/135728.svg);
+}
+
+.obj:after {
     font-size: 13px;
     width: 17px;
     display: inline-block;
@@ -109,6 +124,9 @@ body{
     animation-duration: 2s;
     animation-iteration-count: infinite;
     animation-timing-function: linear;
+}
+.aleWrapper{
+    display: inline-block;
 }
 
 .product {
