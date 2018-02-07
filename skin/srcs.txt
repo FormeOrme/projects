@@ -1,0 +1,10 @@
+https://sessionserver.mojang.com/session/minecraft/profile/0a17983efc784d6a9db4d5ba295b4c78
+
+{"id":"0a17983efc784d6a9db4d5ba295b4c78","name":"Forme","properties":[{"name":"textures","value":"eyJ0aW1lc3RhbXAiOjE1MTc5OTQwNDQ4MzYsInByb2ZpbGVJZCI6IjBhMTc5ODNlZmM3ODRkNmE5ZGI0ZDViYTI5NWI0Yzc4IiwicHJvZmlsZU5hbWUiOiJGb3JtZSIsInRleHR1cmVzIjp7IlNLSU4iOnsidXJsIjoiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS9iMTMyNTJlOTliNzNmMTMxOTI5OTlkNDEzY2ViNTBkZDFmZDNiMWM4MjEyMTQwMWFiN2YxM2M0OGQ5NjM0In19fQ=="}]}
+
+{"timestamp":1517994044836,"profileId":"0a17983efc784d6a9db4d5ba295b4c78","profileName":"Forme","textures":{"SKIN":{"url":"http://textures.minecraft.net/texture/b13252e99b73f13192999d413ceb50dd1fd3b1c82121401ab7f13c48d9634"}}}
+
+
+
+
+https://stackoverflow.com/questions/4459379/preview-an-image-before-it-is-uploaded

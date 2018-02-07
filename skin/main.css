@@ -1,0 +1,126 @@
+body{
+    background: #423458;
+    font-size: 0px;
+    
+    --unit: calc(100% / 64 * 4);
+}
+
+#wrapper{
+    filter: drop-shadow(0 0 1px #0008);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%)  scale(12);
+}
+
+.face{
+    -ms-interpolation-mode: nearest-neighbor; 
+    image-rendering: -webkit-optimize-contrast; 
+    image-rendering: -webkit-crisp-edges; 
+    image-rendering: -moz-crisp-edges; 
+    image-rendering: -o-crisp-edges; 
+    image-rendering: pixelated; 
+}
+
+.main, .cover{
+    display: block;
+}
+
+.main.face, .cover.face{
+    background-repeat: no-repeat;
+}
+
+.arm, .leg, .body, #skin{
+    display: none;
+}
+
+/* HEAD */
+.head.main.face, .head.cover.face{
+    width: 8px;
+    height: 8px;
+}
+
+/* HEAD.main*/
+.head.main.front{
+    background-position-x: -8px;
+    background-position-y: -8px;
+}
+.head.main.left{
+    background-position-x: -16px;
+    background-position-y: -8px;
+}
+.head.main.back{
+    background-position-x: -24px;
+    background-position-y: -8px;
+}
+.head.main.right{
+    background-position-x: 0px;
+    background-position-y: -8px;
+}
+.head.main.bottom{
+    background-position-x: -16px;
+    background-position-y: 0px;
+}
+.head.main.top{
+    background-position-x: -8px;
+    background-position-y: 0px;
+}
+
+/* HEAD.cover*/
+.head.cover.front{
+    background-position-x: -40px;
+    background-position-y: -8px;
+}
+.head.cover.left{
+    background-position-x: -48px;
+    background-position-y: -8px;
+}
+.head.cover.back{
+    background-position-x: -56px;
+    background-position-y: -8px;
+}
+.head.cover.right{
+    background-position-x: -32px;
+    background-position-y: -8px;
+}
+.head.cover.bottom{
+    background-position-x: -48px;
+    background-position-y: 0px;
+}
+.head.cover.top{
+    background-position-x: -40px;
+    background-position-y: 0px;
+}
+
+/* 3D */
+#wrapper{
+    perspective: 2000px;
+}
+
+#full{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    transform-style: preserve-3d;
+    transform: rotateX(-15deg) rotateY(30deg);
+}
+
+.face{  
+    margin: 0;
+    display: block;
+    position: absolute;
+}
+
+.head.main.face.front   {   transform: translate3d( -4px, -4px,  4px); }
+.head.main.face.back    {   transform: translate3d( -4px, -4px, -4px); }
+.head.main.face.left    {   transform: translate3d( -8px, -4px,  0px) rotateY(90deg) ; }
+.head.main.face.right   {   transform: translate3d(  0px, -4px,  0px) rotateY(-90deg); }
+.head.main.face.top     {   transform: translate3d( -4px, -8px,  0px) rotateX(90deg) ; }
+.head.main.face.bottom  {   transform: translate3d( -4px,  0px,  0px) rotateX(90deg) ; }
+
+.head.cover.face.front   {  transform: translate3d( -4px, -4px,  4px); }
+.head.cover.face.back    {  transform: translate3d( -4px, -4px, -4px); }
+.head.cover.face.left    {  transform: translate3d( -8px, -4px,  0px) rotateY(90deg) ; }
+.head.cover.face.right   {  transform: translate3d(  0px, -4px,  0px) rotateY(-90deg); }
+.head.cover.face.top     {  transform: translate3d( -4px, -8px,  0px) rotateX(90deg) ; }
+.head.cover.face.bottom  {  transform: translate3d( -4px,  0px,  0px) rotateX(90deg) ; }
