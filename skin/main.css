@@ -1,15 +1,14 @@
 body{
     background: #423458;
     font-size: 0px;
-    
-    --unit1: 10px;
+    --unit1: 25px;
     --unit4: calc(var(--unit1) * 4); 
     --unit6: calc(var(--unit1) * 6); 
     --unit8: calc(var(--unit1) * 8);
 }
 
 #wrapper{
-    filter: drop-shadow(0 0 2px #0006);
+    filter: drop-shadow(0 0 5px #000E);
     position: absolute;
     top: 50%;
     left: 50%;
@@ -87,7 +86,16 @@ body{
     height: 100%;
     position: absolute;
     transform-style: preserve-3d;
-    transform: rotateX(-15deg) rotateY(30deg);
+    animation-name: rotate;
+    animation-duration: 10s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+
+@keyframes rotate {
+      0% { transform: rotateX(30deg)    rotateY( 0deg)    ; }
+     50% { transform: rotateX(-30deg)   rotateY( 180deg)  ; }
+    100% { transform: rotateX(30deg)    rotateY( 360deg) ; }
 }
 
 .face{  
@@ -96,12 +104,12 @@ body{
     position: absolute;
 }
 
-.head.main.face.front   {   transform: translate3d( -4px, -4px,  4px); }
-.head.main.face.back    {   transform: translate3d( -4px, -4px, -4px); }
-.head.main.face.left    {   transform: translate3d( -8px, -4px,  0px) rotateY(90deg) ; }
-.head.main.face.right   {   transform: translate3d(  0px, -4px,  0px) rotateY(-90deg); }
-.head.main.face.top     {   transform: translate3d( -4px, -8px,  0px) rotateX(90deg) ; }
-.head.main.face.bottom  {   transform: translate3d( -4px,  0px,  0px) rotateX(90deg) ; }
+.head.main.face.front   {   transform: translate3d( calc(var(--unit4)*-1), calc(var(--unit4)*-1),  calc(var(--unit4)* 1)); }
+.head.main.face.back    {   transform: translate3d( calc(var(--unit4)*-1), calc(var(--unit4)*-1),  calc(var(--unit4)*-1)); }
+.head.main.face.left    {   transform: translate3d( calc(var(--unit8)*-1), calc(var(--unit4)*-1),  calc(var(--unit1)* 0)) rotateY( 90deg) ; }
+.head.main.face.right   {   transform: translate3d( calc(var(--unit1)* 0), calc(var(--unit4)*-1),  calc(var(--unit1)* 0)) rotateY(-90deg); }
+.head.main.face.top     {   transform: translate3d( calc(var(--unit4)*-1), calc(var(--unit8)*-1),  calc(var(--unit1)* 0)) rotateX( 90deg) ; }
+.head.main.face.bottom  {   transform: translate3d( calc(var(--unit4)*-1), calc(var(--unit1)* 0),  calc(var(--unit1)* 0)) rotateX( 90deg) ; }
 
 .head.cover.face.front   {  transform: translate3d( -4px, -4px,  4px); }
 .head.cover.face.back    {  transform: translate3d( -4px, -4px, -4px); }
