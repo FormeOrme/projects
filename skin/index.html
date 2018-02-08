@@ -1,15 +1,13 @@
 <html>
     <head>
+        <meta charset="utf-8"/>
         <link rel="stylesheet" href="main.css">
-        <script
-      src="http://code.jquery.com/jquery-3.3.1.js"
-      integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
-      crossorigin="anonymous"></script>
-        <script src="script.js" ></script>
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+		<script src="script.js" ></script>
     </head>
     <body>
         <div id="wrapper">
-            <div id="full">
+            <div id="full" class="rotate">
                 <span class="head main face front"></span>
                 <span class="head main face left"></span>
                 <span class="head main face back"></span>
@@ -24,8 +22,11 @@
                 <span class="head cover face top"></span>
             </div>
         </div>
-    
         <!--img id="skin" src="http://textures.minecraft.net/texture/b13252e99b73f13192999d413ceb50dd1fd3b1c82121401ab7f13c48d9634" /-->
         <img id="skin" src="download.png" />
+        <div class="controls">
+            <span class="btn toggle" data-class="main">Toggle Main</span>
+            <span class="btn toggle" data-class="cover">Toggle Cover</span>
+        </div>
     </body>
 </html>

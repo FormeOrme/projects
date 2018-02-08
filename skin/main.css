@@ -1,16 +1,40 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto');
 body{
-    background: #423458;
+    font-family: 'Roboto', sans-serif;
+    background: #281f34;
     font-size: 0px;
     --unit1: 25px;
+    --unit2: calc(var(--unit1) * 2); 
     --unit4: calc(var(--unit1) * 4); 
-    --unit6: calc(var(--unit1) * 6); 
     --unit8: calc(var(--unit1) * 8);
-    --scale: 1.1;
-    --tran: 10px;
+    --scale: 1.05;
+    
+    /* scaledUnits */
+    --delt1: red;
+    --delt2: calc((var(--unit8) * var(--scale) - var(--unit8))/2);
+    --delt3: red;
+
+}
+
+.controls{
+    font-size: 15px;
+    width: 120px;
+}
+.controls .btn{
+    display: block;
+    background: #0004;
+    color: #fff4;
+    text-align: center;
+    margin: 3px;
+    padding: 4px;
+    cursor: pointer;
+}
+.controls .btn:hover{
+    background: #0008;
 }
 
 #wrapper{
-    filter: drop-shadow(0 0 5px #000E);
+    filter: drop-shadow( 0 0 2px #0008) ;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -34,7 +58,7 @@ body{
     background-repeat: no-repeat;
 }
 
-.arm, .leg, .body, #skin{
+.arm, .leg, .body{
     display: none;
 }
 /* HEAD.main*/
@@ -49,29 +73,32 @@ body{
 .head.cover.front    { background-position: calc(var(--unit8)*-5) calc(var(--unit8)*-1); }
 .head.cover.left     { background-position: calc(var(--unit8)*-6) calc(var(--unit8)*-1); }
 .head.cover.back     { background-position: calc(var(--unit8)*-7) calc(var(--unit8)*-1); }
-.head.cover.right    { background-position: calc(var(--unit8)* 4) calc(var(--unit8)*-1); }
+.head.cover.right    { background-position: calc(var(--unit8)*-4) calc(var(--unit8)*-1); }
 .head.cover.bottom   { background-position: calc(var(--unit8)*-6) calc(var(--unit8)* 0); }
 .head.cover.top      { background-position: calc(var(--unit8)*-5) calc(var(--unit8)* 0); }
 
 /* HEAD */
 .head.main.face, .head.cover.face{
-    width: var(--unit8);
+    width:  var(--unit8);
     height: var(--unit8);
     background-size: 800%;
 }
 
 /* 3D */
 #wrapper{
-    perspective: 2000px;
+    perspective: 1000px;
 }
 
 #full{
-    width: 100%;
+    width:  100%;
     height: 100%;
     position: absolute;
     transform-style: preserve-3d;
+}
+
+.rotate{
     animation-name: rotate;
-    animation-duration: 10s;
+    animation-duration: 20s;
     animation-iteration-count: infinite;
     animation-timing-function: linear;
 }
@@ -88,16 +115,19 @@ body{
     position: absolute;
 }
 
+.face:hover{
+}
+
 .head.main.face.front   { transform: translate3d( calc(var(--unit4)*-1), calc(var(--unit4)*-1),  calc(var(--unit4)* 1)); }
 .head.main.face.back    { transform: translate3d( calc(var(--unit4)*-1), calc(var(--unit4)*-1),  calc(var(--unit4)*-1)); }
 .head.main.face.left    { transform: translate3d( calc(var(--unit8)*-1), calc(var(--unit4)*-1),  calc(var(--unit1)* 0)) rotateY( 90.1deg) ; }
-.head.main.face.right   { transform: translate3d( calc(var(--unit1)* 0), calc(var(--unit4)*-1),  calc(var(--unit1)* 0)) rotateY(-90.1deg); }
+.head.main.face.right   { transform: translate3d( calc(var(--unit1)* 0), calc(var(--unit4)*-1),  calc(var(--unit1)* 0)) rotateY(-90.1deg) ; }
 .head.main.face.top     { transform: translate3d( calc(var(--unit4)*-1), calc(var(--unit8)*-1),  calc(var(--unit1)* 0)) rotateX( 90.1deg) ; }
 .head.main.face.bottom  { transform: translate3d( calc(var(--unit4)*-1), calc(var(--unit1)* 0),  calc(var(--unit1)* 0)) rotateX( 90.1deg) ; }
 
-.head.cover.face.front  { transform: scale(var(--scale)) translate(var(--tran), var(--tran)) translate3d( calc(var(--unit4)*-1), calc(var(--unit4)*-1),  calc(var(--unit4)* 1)); }
-.head.cover.face.back   { transform: scale(var(--scale)) translate(var(--tran), var(--tran)) translate3d( calc(var(--unit4)*-1), calc(var(--unit4)*-1),  calc(var(--unit4)*-1)); }
-.head.cover.face.left   { transform: scale(var(--scale)) translate(var(--tran), var(--tran)) translate3d( calc(var(--unit8)*-1), calc(var(--unit4)*-1),  calc(var(--unit1)* 0)) rotateY( 90.1deg) ; }
-.head.cover.face.right  { transform: scale(var(--scale)) translate(var(--tran), var(--tran)) translate3d( calc(var(--unit1)* 0), calc(var(--unit4)*-1),  calc(var(--unit1)* 0)) rotateY(-90.1deg); }
-.head.cover.face.top    { transform: scale(var(--scale)) translate(var(--tran), var(--tran)) translate3d( calc(var(--unit4)*-1), calc(var(--unit8)*-1),  calc(var(--unit1)* 0)) rotateX( 90.1deg) ; }
-.head.cover.face.bottom { transform: scale(var(--scale)) translate(var(--tran), var(--tran)) translate3d( calc(var(--unit4)*-1), calc(var(--unit1)* 0),  calc(var(--unit1)* 0)) rotateX( 90.1deg) ; }
+.head.cover.face.front  { transform: translate3d( calc(var(--unit4)*-1), calc(var(--unit4)*-1),  calc(var(--unit4)* 1))                   scale(var(--scale)) translateZ(var(--delt2)); }
+.head.cover.face.back   { transform: translate3d( calc(var(--unit4)*-1), calc(var(--unit4)*-1),  calc(var(--unit4)*-1))                   scale(var(--scale)) translateZ(calc(var(--delt2)*-1)); }
+.head.cover.face.left   { transform: translate3d( calc(var(--unit8)*-1), calc(var(--unit4)*-1),  calc(var(--unit1)* 0)) rotateY( 90.1deg) scale(var(--scale)) translateZ(calc(var(--delt2)*-1)); }
+.head.cover.face.right  { transform: translate3d( calc(var(--unit1)* 0), calc(var(--unit4)*-1),  calc(var(--unit1)* 0)) rotateY(-90.1deg) scale(var(--scale)) translateZ(calc(var(--delt2)*-1)); }
+.head.cover.face.top    { transform: translate3d( calc(var(--unit4)*-1), calc(var(--unit8)*-1),  calc(var(--unit1)* 0)) rotateX( 90.1deg) scale(var(--scale)) translateZ(var(--delt2)); }
+.head.cover.face.bottom { transform: translate3d( calc(var(--unit4)*-1), calc(var(--unit1)* 0),  calc(var(--unit1)* 0)) rotateX( 90.1deg) scale(var(--scale)) translateZ(calc(var(--delt2)*-1)); }
