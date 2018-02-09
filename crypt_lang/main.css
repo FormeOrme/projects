@@ -1,0 +1,13 @@
+#input{
+    min-width: 100%;
+    max-width: 100%;
+    min-height: 150px;
+}
+
+#output, #input{
+    font-size: 13px;
+    white-space: pre-wrap;
+    font-family: monospace;
+    border: 1px solid #0005;
+    margin-top: 10px;
+}
