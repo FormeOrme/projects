@@ -62,26 +62,33 @@ body{
     display: none;
 }
 /* HEAD.main*/
-.head.main.front    { background-position: calc(var(--unit8)*-1) calc(var(--unit8)*-1); }
-.head.main.left     { background-position: calc(var(--unit8)*-2) calc(var(--unit8)*-1); }
-.head.main.back     { background-position: calc(var(--unit8)*-3) calc(var(--unit8)*-1); }
-.head.main.right    { background-position: calc(var(--unit8)* 0) calc(var(--unit8)*-1); }
-.head.main.bottom   { background-position: calc(var(--unit8)*-2) calc(var(--unit8)* 0); }
-.head.main.top      { background-position: calc(var(--unit8)*-1) calc(var(--unit8)* 0); }
-
+.head.main.front     .bg{ background-position: calc(var(--unit8)*-1) calc(var(--unit8)*-1); }
+.head.main.left      .bg{ background-position: calc(var(--unit8)*-2) calc(var(--unit8)*-1); }
+.head.main.back      .bg{ background-position: calc(var(--unit8)*-3) calc(var(--unit8)*-1); }
+.head.main.right     .bg{ background-position: calc(var(--unit8)* 0) calc(var(--unit8)*-1); }
+.head.main.bottom    .bg{ background-position: calc(var(--unit8)*-2) calc(var(--unit8)* 0); }
+.head.main.top       .bg{ background-position: calc(var(--unit8)*-1) calc(var(--unit8)* 0); }
 /* HEAD.cover*/
-.head.cover.front    { background-position: calc(var(--unit8)*-5) calc(var(--unit8)*-1); }
-.head.cover.left     { background-position: calc(var(--unit8)*-6) calc(var(--unit8)*-1); }
-.head.cover.back     { background-position: calc(var(--unit8)*-7) calc(var(--unit8)*-1); }
-.head.cover.right    { background-position: calc(var(--unit8)*-4) calc(var(--unit8)*-1); }
-.head.cover.bottom   { background-position: calc(var(--unit8)*-6) calc(var(--unit8)* 0); }
-.head.cover.top      { background-position: calc(var(--unit8)*-5) calc(var(--unit8)* 0); }
+.head.cover.front    .bg{ background-position: calc(var(--unit8)*-5) calc(var(--unit8)*-1); }
+.head.cover.left     .bg{ background-position: calc(var(--unit8)*-6) calc(var(--unit8)*-1); }
+.head.cover.back     .bg{ background-position: calc(var(--unit8)*-7) calc(var(--unit8)*-1); }
+.head.cover.right    .bg{ background-position: calc(var(--unit8)*-4) calc(var(--unit8)*-1); }
+.head.cover.bottom   .bg{ background-position: calc(var(--unit8)*-6) calc(var(--unit8)* 0); }
+.head.cover.top      .bg{ background-position: calc(var(--unit8)*-5) calc(var(--unit8)* 0); }
 
 /* HEAD */
+.bg {
+    background-size: 800%;
+    height: 100%;
+    width: 100%;
+    display: block;
+    filter: drop-shadow(0 0 2px #0005);
+}
+
 .head.main.face, .head.cover.face{
     width:  var(--unit8);
     height: var(--unit8);
-    background-size: 800%;
+    overflow: hidden;
 }
 
 /* 3D */
@@ -115,19 +122,16 @@ body{
     position: absolute;
 }
 
-.face:hover{
-}
+.head.main.front   { transform: translate3d( calc(var(--unit4)*-1), calc(var(--unit4)*-1),  calc(var(--unit4)* 1)); }
+.head.main.back    { transform: translate3d( calc(var(--unit4)*-1), calc(var(--unit4)*-1),  calc(var(--unit4)*-1)); }
+.head.main.left    { transform: translate3d( calc(var(--unit8)*-1), calc(var(--unit4)*-1),  calc(var(--unit1)* 0)) rotateY( 90deg) ; }
+.head.main.right   { transform: translate3d( calc(var(--unit1)* 0), calc(var(--unit4)*-1),  calc(var(--unit1)* 0)) rotateY(-90deg) ; }
+.head.main.top     { transform: translate3d( calc(var(--unit4)*-1), calc(var(--unit8)*-1),  calc(var(--unit1)* 0)) rotateX( 90deg) ; }
+.head.main.bottom  { transform: translate3d( calc(var(--unit4)*-1), calc(var(--unit1)* 0),  calc(var(--unit1)* 0)) rotateX( 90deg) ; }
 
-.head.main.face.front   { transform: translate3d( calc(var(--unit4)*-1), calc(var(--unit4)*-1),  calc(var(--unit4)* 1)); }
-.head.main.face.back    { transform: translate3d( calc(var(--unit4)*-1), calc(var(--unit4)*-1),  calc(var(--unit4)*-1)); }
-.head.main.face.left    { transform: translate3d( calc(var(--unit8)*-1), calc(var(--unit4)*-1),  calc(var(--unit1)* 0)) rotateY( 90.1deg) ; }
-.head.main.face.right   { transform: translate3d( calc(var(--unit1)* 0), calc(var(--unit4)*-1),  calc(var(--unit1)* 0)) rotateY(-90.1deg) ; }
-.head.main.face.top     { transform: translate3d( calc(var(--unit4)*-1), calc(var(--unit8)*-1),  calc(var(--unit1)* 0)) rotateX( 90.1deg) ; }
-.head.main.face.bottom  { transform: translate3d( calc(var(--unit4)*-1), calc(var(--unit1)* 0),  calc(var(--unit1)* 0)) rotateX( 90.1deg) ; }
-
-.head.cover.face.front  { transform: translate3d( calc(var(--unit4)*-1), calc(var(--unit4)*-1),  calc(var(--unit4)* 1))                   scale(var(--scale)) translateZ(var(--delt2)); }
-.head.cover.face.back   { transform: translate3d( calc(var(--unit4)*-1), calc(var(--unit4)*-1),  calc(var(--unit4)*-1))                   scale(var(--scale)) translateZ(calc(var(--delt2)*-1)); }
-.head.cover.face.left   { transform: translate3d( calc(var(--unit8)*-1), calc(var(--unit4)*-1),  calc(var(--unit1)* 0)) rotateY( 90.1deg) scale(var(--scale)) translateZ(calc(var(--delt2)*-1)); }
-.head.cover.face.right  { transform: translate3d( calc(var(--unit1)* 0), calc(var(--unit4)*-1),  calc(var(--unit1)* 0)) rotateY(-90.1deg) scale(var(--scale)) translateZ(calc(var(--delt2)*-1)); }
-.head.cover.face.top    { transform: translate3d( calc(var(--unit4)*-1), calc(var(--unit8)*-1),  calc(var(--unit1)* 0)) rotateX( 90.1deg) scale(var(--scale)) translateZ(var(--delt2)); }
-.head.cover.face.bottom { transform: translate3d( calc(var(--unit4)*-1), calc(var(--unit1)* 0),  calc(var(--unit1)* 0)) rotateX( 90.1deg) scale(var(--scale)) translateZ(calc(var(--delt2)*-1)); }
+.head.cover.front  { transform: translate3d( calc(var(--unit4)*-1), calc(var(--unit4)*-1),  calc(var(--unit4)* 1))                 scale(var(--scale)) translateZ(var(--delt2)); }
+.head.cover.back   { transform: translate3d( calc(var(--unit4)*-1), calc(var(--unit4)*-1),  calc(var(--unit4)*-1))                 scale(var(--scale)) translateZ(calc(var(--delt2)*-1)); }
+.head.cover.left   { transform: translate3d( calc(var(--unit8)*-1), calc(var(--unit4)*-1),  calc(var(--unit1)* 0)) rotateY( 90deg) scale(var(--scale)) translateZ(calc(var(--delt2)*-1)); }
+.head.cover.right  { transform: translate3d( calc(var(--unit1)* 0), calc(var(--unit4)*-1),  calc(var(--unit1)* 0)) rotateY(-90deg) scale(var(--scale)) translateZ(calc(var(--delt2)*-1)); }
+.head.cover.top    { transform: translate3d( calc(var(--unit4)*-1), calc(var(--unit8)*-1),  calc(var(--unit1)* 0)) rotateX( 90deg) scale(var(--scale)) translateZ(var(--delt2)); }
+.head.cover.bottom { transform: translate3d( calc(var(--unit4)*-1), calc(var(--unit1)* 0),  calc(var(--unit1)* 0)) rotateX( 90deg) scale(var(--scale)) translateZ(calc(var(--delt2)*-1)); }
