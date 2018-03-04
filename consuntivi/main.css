@@ -1,0 +1,213 @@
+body{
+    font-size: 0px;
+    font-family: monospace;
+    margin: 0px;
+    background: #0001;
+    color: #0009;
+}
+body *{
+    transition: all 0.2s;
+}
+
+
+#container{
+    display: block;
+    width: 80%;
+    margin: 0 auto;
+    margin-top: 50px;
+}
+
+table{
+    width: 100%;
+    border-spacing: unset;
+}
+
+thead{
+    background: #0005;
+    user-select: none;
+}
+
+td, th{
+    font-size: 16px;
+    padding: 0px;
+    
+}
+
+tr:nth-child(2n){
+    background: #0001;
+}
+
+th{
+    height: 50px;
+}
+
+td[data-day]{
+    height: 120px;
+    position: relative;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+td input[type="checkbox"]{
+    position: absolute;
+    top:  5px;
+    left: 5px;
+}
+
+td[data-day]:after{
+    content: attr(data-day);
+    position: absolute;
+    bottom:2px;
+    right: 2px;
+    color: #0005;
+    width: 20px;
+    text-align: center;
+}
+
+td[data-day]:hover:after{
+    color: #0009;
+    font-weight: 600;
+    background: inherit;
+}
+
+td[data-day]:hover{
+    background: #0002;
+}
+
+td[data-day] .wrapper{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    overflow-y: auto;
+}
+.activity{
+    display: block;
+    margin: 2px;
+    background: #0002;
+    user-select: none;
+}
+.activity .desc{
+    padding: 0 5px;
+}
+
+.activity .hours{
+    min-width: 20px;
+    display: inline-block;
+    text-align: center;
+    background: #0002;
+}
+
+td[data-day]:nth-child(6) .wrapper,
+td[data-day]:nth-child(7) .wrapper{
+    background: #0001;
+}
+
+/* COMMANDS */
+#commands{
+    position: fixed;
+    font-size: 16px;
+    font-weight: 600;
+    width: 200px;
+    left: 0px;
+    top: 0px;
+    user-select: none;
+    z-index: 1;
+}
+
+#commands.closed{
+    left: -200px;
+}
+
+.command {
+    cursor: pointer;
+    display: block;
+    text-align: center;
+    margin: 2px;
+    background: #0001;
+}
+.command:hover{
+    background: #0002;
+}
+
+.close{
+    position: absolute;
+    right: -15px;
+    top: 0;
+    cursor: pointer;
+}
+.close:after{
+    content:"\00d7"; 
+}
+.closed .close:after{
+    content:"\00bb"; 
+}
+
+.activity.selected{
+    background: #0Af3;
+}
+
+td[data-day].selected{
+    background: #0Af3;
+}
+
+td[data-day].selected:hover{
+    background: #0Af6;
+}
+
+/* COLUMN VIEW */
+table.column tr:nth-child(2n){
+    background: #0000;
+}
+table.column th{
+    display: none;
+}
+
+table.column td{
+    display: block;
+}
+
+table.column td:last-child {
+    border-bottom: 1px solid #0005;
+}
+
+table.column td[data-day]{
+    height: auto;
+    min-height: 23px;
+}
+table.column td[data-day] .wrapper{
+    position: relative;
+    overflow: initial;
+}
+
+table.column td:not(:nth-child(1)), 
+table.column th:not(:nth-child(1)){
+    border-left: 0px;
+}
+
+table.column td[data-day]:after{
+    left: 2px;
+    top: 2px;
+}
+
+table.column .activity {
+    margin-left: 30px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
