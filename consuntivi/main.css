@@ -67,7 +67,7 @@ td[data-day]:after{
 td[data-day]:hover:after{
     color: #0009;
     font-weight: 600;
-    background: inherit;
+    background: #0002;
 }
 
 td[data-day]:hover{
@@ -87,7 +87,9 @@ td[data-day] .wrapper{
     display: block;
     margin: 2px;
     background: #0002;
-    user-select: none;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 .activity .desc{
     padding: 0 5px;
@@ -158,6 +160,11 @@ td[data-day].selected:hover{
 }
 
 /* COLUMN VIEW */
+
+table.column.hide-empty td[data-day] {
+    min-height: 0px;
+}
+
 table.column tr:nth-child(2n){
     background: #0000;
 }
@@ -171,6 +178,10 @@ table.column td{
 
 table.column td:last-child {
     border-bottom: 1px solid #0005;
+}
+
+table.column.hide-empty td:last-child {
+    border-bottom: 0px;
 }
 
 table.column td[data-day]{
