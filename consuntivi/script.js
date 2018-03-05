@@ -19,7 +19,7 @@ $(document).on('click', '#commands .close', function(){
     $('#commands').toggleClass('closed');
 });
 
-$(document).on('click', 'td[data-day]', function(){
+$(document).on('click', '.day', function(){
     $(this).toggleClass('selected');
 });
 
