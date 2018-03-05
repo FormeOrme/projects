@@ -19,11 +19,7 @@ $(document).on('click', '#commands .close', function(){
     $('#commands').toggleClass('closed');
 });
 
-$(document).on('click', '.day', function(){
-    $(this).toggleClass('selected');
-});
-
-$(document).on('click', '.activity', function(e){
+$(document).on('click', '.day, .activity', function(e){
     e.stopPropagation();
     $(this).toggleClass('selected');
 });

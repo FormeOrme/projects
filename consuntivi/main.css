@@ -51,8 +51,8 @@ th{
 .day:after{
     content: attr(data-day);
     position: absolute;
-    bottom:2px;
-    right: 2px;
+    bottom:0px;
+    right: 0px;
     color: #0005;
     width: 20px;
     text-align: center;
@@ -79,7 +79,6 @@ th{
 }
 .activity{
     display: block;
-    margin: 2px;
     background: #0002;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -134,7 +133,6 @@ th{
     cursor: pointer;
     display: block;
     text-align: center;
-    margin: 2px;
     background: #0001;
 }
 .command:hover{
@@ -181,7 +179,7 @@ table.column.hide-empty td:last-child {
 
 table.column .day{
     height: auto;
-    min-height: 23px;
+    min-height: 19px;
 }
 table.column .day .wrapper{
     position: relative;
@@ -195,7 +193,7 @@ table.column th:not(:nth-child(1)){
 
 table.column .day:after{
     left: 35px;
-    top: 2px;
+    top: 0px;
 }
 
 table.column .day:hover:before{
@@ -204,21 +202,21 @@ table.column .day:hover:before{
 table.column .day:before{
     content: attr(data-wd);
     position: absolute;
-    top: 2px;
-    left: 2px;
+    top:  0px;
+    left: 0px;
     color: #0005;
-    width: 20px;
     text-align: center;
 }
 
 table.column .activity {
     margin-left: 60px;
 }
-
-
-
-
-
+/* COLUMN VIEW - HIDE EMPTY*/
+.column.hide-empty .activity{
+    margin-top: 0px;
+    margin-bottom: 0px;
+    margin-right: 0px;
+}
 
 
 
