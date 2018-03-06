@@ -4,6 +4,10 @@ body{
     margin: 0px;
     background: #0001;
     color: #0009;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
 }
 body *{
     transition: all 0.2s;
@@ -111,6 +115,19 @@ th{
 }
 .selected:hover{
     background: #0Af6;
+}
+.selecting{
+    background: #0FA3;
+}
+.selecting:hover{
+    background: #0FA6;
+}
+
+.unselecting{
+    background: #F003;
+}
+.unselecting:hover{
+    background: #F006;
 }
 
 /* COMMANDS */
