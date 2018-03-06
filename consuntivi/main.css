@@ -28,7 +28,6 @@ table{
 
 thead{
     background: #0005;
-    user-select: none;
 }
 
 td, th{
@@ -138,7 +137,6 @@ th{
     width: 200px;
     left: 0px;
     top: 0px;
-    user-select: none;
     z-index: 1;
 }
 
