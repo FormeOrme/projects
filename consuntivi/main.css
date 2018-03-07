@@ -4,13 +4,15 @@ body{
     margin: 0px;
     background: #0001;
     color: #0009;
+}
+body *{
+    transition: all 0.2s;
+}
+.unselectable{
     user-select: none;
     -moz-user-select: none;
     -webkit-user-select: none;
     -ms-user-select: none;
-}
-body *{
-    transition: all 0.2s;
 }
 
 
@@ -27,7 +29,7 @@ table{
 }
 
 thead{
-    background: #0005;
+    background: #0002;
 }
 
 td, th{
@@ -38,10 +40,6 @@ td, th{
 
 tr:nth-child(2n){
     background: #0001;
-}
-
-th{
-    height: 50px;
 }
 
 .day{
@@ -108,6 +106,19 @@ th{
     background: #0001;
 }
 
+tbody{
+    height: 0px;
+}
+
+/* HEADER MANAGEMENT */
+.month{
+    cursor: pointer;
+}
+.month:hover{
+    background: #0003;
+}
+
+/* SELECTION */
 .selected{
     font-style: italic;
     background: #0Af3;
@@ -121,7 +132,6 @@ th{
 .selecting:hover{
     background: #0FA6;
 }
-
 .unselecting{
     background: #F003;
 }
@@ -168,15 +178,14 @@ th{
 }
 
 /* COLUMN VIEW */
-
-table.column.hide-empty .day {
+table.column.hide-empty .day .wrapper{
     min-height: 0px;
 }
 
 table.column tr:nth-child(2n){
     background: #0000;
 }
-table.column th{
+table.column .header{
     display: none;
 }
 
@@ -184,21 +193,13 @@ table.column td{
     display: block;
 }
 
-table.column td:last-child {
-    border-bottom: 1px solid #0005;
-}
-
-table.column.hide-empty td:last-child {
-    border-bottom: 0px;
-}
-
 table.column .day{
     height: auto;
-    min-height: 19px;
 }
 table.column .day .wrapper{
     position: relative;
     overflow: initial;
+    min-height: 19px;
 }
 
 table.column td:not(:nth-child(1)), 
@@ -232,7 +233,6 @@ table.column .activity {
     margin-bottom: 0px;
     margin-right: 0px;
 }
-
 
 
 

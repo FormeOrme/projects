@@ -4,7 +4,7 @@
 		<script src="jquery-3.1.1.min.js"></script>
 		<script src="script.js"></script>
     </head>
-    <body>
+    <body class="unselectable">
         <div id="commands" class="closed">
             <span class="command toggle">Toggle Column View</span>
             <span class="command clean">Unselect Selected</span>
@@ -13,7 +13,7 @@
         </div>
         <div id="container">
             <table class="hide-empty">
-                <thead>
+                <thead class="header">
                     <tr>
                         <th>LUN</th>
                         <th>MAR</th>
@@ -86,10 +86,10 @@
                         <td data-wd="LUN" data-day="29" class="day"><div class="wrapper"></div></td>
                         <td data-wd="MAR" data-day="30" class="day"><div class="wrapper"></div></td>
                         <td data-wd="MER" data-day="31" class="day"><div class="wrapper"></div></td>
-                        <td data-wd="GIO" ></td>
-                        <td data-wd="VEN" ></td>
-                        <td data-wd="SAB" ></td>
-                        <td data-wd="DOM" ></td>
+                        <td data-wd="GIO" data-day=""><div class="wrapper"></div></td>
+                        <td data-wd="VEN" data-day=""><div class="wrapper"></div></td>
+                        <td data-wd="SAB" data-day=""><div class="wrapper"></div></td>
+                        <td data-wd="DOM" data-day=""><div class="wrapper"></div></td>
                     </tr>
                 </tbody>
             </table>
