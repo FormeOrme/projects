@@ -9,12 +9,12 @@ $(document).on('click', '.clean', function(){
 });
 
 $(document).on('click', '.toggle', function(){
-    $('table').toggleClass('column');
+    $('#table').toggleClass('column');
     $('.command.empty').toggle();
 });
 
 $(document).on('click', '.empty', function(){
-    $('table').toggleClass('hide-empty');
+    $('#table').toggleClass('hide-empty');
 });
 
 $(document).on('click', '#commands .close', function(){

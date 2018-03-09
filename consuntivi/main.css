@@ -8,6 +8,10 @@ body{
 body *{
     transition: all 0.2s;
 }
+body .cell{
+    transition: all 0.2s, width 0s;
+}
+
 .unselectable{
     user-select: none;
     -moz-user-select: none;
@@ -15,6 +19,9 @@ body *{
     -ms-user-select: none;
 }
 
+#templates{
+    display: none;
+}
 
 #container{
     display: block;
@@ -23,27 +30,30 @@ body *{
     margin-top: 50px;
 }
 
-table{
-    width: 100%;
-    border-spacing: unset;
-}
-
-thead{
+.headers{
     background: #0002;
 }
 
-td, th{
-    font-size: 16px;
-    padding: 0px;
-    
+.cells:not(.open){
+    display: none;
 }
 
-tr:nth-child(2n){
+.cell{
+    height: 120px;
+}
+
+.cell, .header{
+    font-size: 16px;
+    padding: 0px;
+    display: inline-block;
+    width: calc(100%/7);
+}
+
+.row:nth-child(2n){
     background: #0001;
 }
 
 .day{
-    height: 120px;
     position: relative;
     cursor: pointer;
     overflow: hidden;
@@ -106,8 +116,19 @@ tr:nth-child(2n){
     background: #0001;
 }
 
-tbody{
-    height: 0px;
+.cell:not(.day){
+    background: repeating-linear-gradient(
+      45deg,
+      #0000,
+      #0000 5px,
+      #0001 5px,
+      #0001 10px
+    );
+}
+
+.header{
+    font-weight: 600;
+    text-align: center;
 }
 
 /* HEADER MANAGEMENT */
@@ -178,44 +199,42 @@ tbody{
 }
 
 /* COLUMN VIEW */
-table.column.hide-empty .day .wrapper{
+#table.column.hide-empty .day .wrapper{
     min-height: 0px;
 }
 
-table.column tr:nth-child(2n){
+#table.column tr:nth-child(2n){
     background: #0000;
 }
-table.column .header{
+#table.column .headers{
     display: none;
 }
 
-table.column td{
+#table.column .cell{
     display: block;
-}
-
-table.column .day{
     height: auto;
 }
-table.column .day .wrapper{
+
+#table.column .day{
+    width: 100%;
+}
+
+#table.column .day .wrapper{
     position: relative;
     overflow: initial;
     min-height: 19px;
+    height: auto;
 }
 
-table.column td:not(:nth-child(1)), 
-table.column th:not(:nth-child(1)){
-    border-left: 0px;
-}
-
-table.column .day:after{
+#table.column .day:after{
     left: 35px;
     top: 0px;
 }
 
-table.column .day:hover:before{
+#table.column .day:hover:before{
     font-weight: 600;
 }
-table.column .day:before{
+#table.column .day:before{
     content: attr(data-wd);
     position: absolute;
     top:  0px;
@@ -224,7 +243,7 @@ table.column .day:before{
     text-align: center;
 }
 
-table.column .activity {
+#table.column .activity {
     margin-left: 60px;
 }
 /* COLUMN VIEW - HIDE EMPTY*/
