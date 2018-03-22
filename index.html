@@ -1,0 +1,24 @@
+<head>
+	<link rel="stylesheet" type="text/css" href="gallery/main.css"/>
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js" crossorigin="anonymous"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+</head>
+<body>
+	<div class="frame"><iframe src="bubble_p5\t1.html"></iframe></div>
+	<div class="frame"><iframe src="clock\t1.html"></iframe></div>
+	<div class="frame"><iframe src="digit\t1.html"></iframe></div>
+	<div class="frame"><iframe src="glow\index.html"></iframe></div>
+	<div class="frame"><iframe src="halftone\halftone.html"></iframe></div>
+	<div class="frame"><iframe src="scribble\vor.html"></iframe></div>
+	<div class="frame"><iframe src="shape\vor.html"></iframe></div>
+	<div class="frame"><iframe src="triangle\vor.html"></iframe></div>
+	<div class="frame"><iframe src="vormap\vor.html"></iframe></div>
+	<div class="frame"><iframe src="web\t1.html"></iframe></div>
+	<div class="frame"><iframe src="bubble_sketch\t1.html"></iframe></div>
+	<div class="frame"><iframe src="reaction_diffusion\r_d.html"></iframe></div>
+	<script>
+		$(document).on('click', '.frame', function(){
+			window.location = $(this).find('iframe').attr('src');
+		})
+	</script>
+</body>
