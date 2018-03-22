@@ -34,8 +34,13 @@ body .cell{
     background: #0002;
 }
 
-.cells:not(.open){
-    display: none;
+.row{
+    overflow: hidden;
+    max-height: calc(19px*7);
+}
+
+.cells:not(.open) .row{
+    max-height: 0px;
 }
 
 .cell{
@@ -199,7 +204,7 @@ body .cell{
 }
 
 /* COLUMN VIEW */
-#table.column.hide-empty .day .wrapper{
+#table.column.hide-empty .day:not(.selected) .wrapper{
     min-height: 0px;
 }
 
