@@ -139,17 +139,21 @@ body{
     font-size: 16px;
 }
 
+.prev,
+.next {
+    cursor: pointer;
+    width: 20px;
+    display: inline-block;
+    text-align: center;
+    background: #0001;
+    margin: 0px 10px;
+}
+
 .cells{
     position:relative;
 }
-.cells.open:before{
-    color: #000A;
-}
-.cells.open:after{
-    color: #0005;
-}
-.cells:before,
-.cells:after{
+.cells .label:before,
+.cells .label:after{
     color: #0000;
     font-size: 20px;
     position: absolute;
@@ -157,13 +161,19 @@ body{
     width: 50px;
     text-align: right;
 }
-.cells:before{
+.cells .label:before{
     content: attr(data-month-name);
     font-weight: 600;
 }
-.cells:after{
+.cells .label:after{
     content: attr(data-year);
     top: 20px;
+}
+.cells.open .label:before{
+    color: #000A;
+}
+.cells.open .label:after{
+    color: #0005;
 }
 
 /* HEADER MANAGEMENT */

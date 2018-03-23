@@ -43,6 +43,10 @@ function openMonth(month = (new Date()).getMonth(), year = (new Date()).getFullY
             .attr('data-month-name', months[month])
             .attr('data-year', year);
             
+        $cells.find('.label')
+            .attr('data-month-name', months[month])
+            .attr('data-year', year);
+            
         var idBefore = getIdBefore(month, year);
         var idAfter = getIdAfter(month, year);
         
@@ -87,7 +91,7 @@ function openMonth(month = (new Date()).getMonth(), year = (new Date()).getFullY
 
 
 function getId(month, year){
-    return '[data-month="' + month + '"][data-year="' + year + '"]';
+    return '.cells[data-month="' + month + '"][data-year="' + year + '"]';
 }
 function getIdAfter(month, year){
     month++;
