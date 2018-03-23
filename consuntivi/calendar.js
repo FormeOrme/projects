@@ -1,5 +1,32 @@
+var months = ['GEN','FEB','MAR','APR','MAG','GIU','LUG','AGO','SET','OTT','NOV','DIC'];
+
 $(document).ready(function () {
 	openMonth();
+});
+
+$(document).on('click', '.prev', function(){
+    $cm = $('.cells.open');
+    $year = $cm.attr('data-year');
+    $month= $cm.attr('data-month');
+    if($month == 0){
+        $year--;
+        $month = 11;
+    } else {
+        $month--;
+    }
+    openMonth($month, $year);
+});
+$(document).on('click', '.next', function(){
+    $cm = $('.cells.open');
+    $year = $cm.attr('data-year');
+    $month= $cm.attr('data-month');
+    if($month == 11){
+        $year++;
+        $month = 0;
+    } else {
+        $month++;
+    }
+    openMonth($month, $year);
 });
 
 function openMonth(month = (new Date()).getMonth(), year = (new Date()).getFullYear()) {
@@ -13,6 +40,7 @@ function openMonth(month = (new Date()).getMonth(), year = (new Date()).getFullY
         
         $cells
             .attr('data-month', month)
+            .attr('data-month-name', months[month])
             .attr('data-year', year);
             
         var idBefore = getIdBefore(month, year);

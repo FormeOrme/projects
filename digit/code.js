@@ -83,6 +83,7 @@ function Cell(posx, posy, rad, stage = 0, type = PIE){
 		this.nxtSrt = getAngSrt(stage);
 		this.nxtEnd = getAngEnd(stage);
 	}
+    
 	this.update = function(m){
 		this.mill = m;
 		this.angSrt = map(m, 0, 1000, this.srtSrt, this.nxtSrt);
