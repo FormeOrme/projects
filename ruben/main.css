@@ -20,6 +20,8 @@ body{
     transform: translate(-50%, -50%);
     width: 500px;
     height: 500px;
+    
+    filter:  drop-shadow(0 3px #FFF) drop-shadow(0 -3px #FFF) drop-shadow( 3px 0 #FFF) drop-shadow(-3px 0 #FFF);
 }
 
 .img img {
@@ -61,15 +63,16 @@ body{
     animation-name: rotate;
     animation-duration: 2s;
     display: inline-block;
+    position: relative;
 }
 
 @keyframes rotate {
     0% {
         transform: rotate(10deg) ;
-        position: left: 0px;
+        left: -100px;
     }
     100% {
         transform: rotate(-10deg) ;
-        position: left: 100px;
+        left: 100px;
     }
 }
