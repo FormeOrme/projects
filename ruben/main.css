@@ -1,0 +1,75 @@
+body{
+    margin: 0px;
+    font-size: 0px;
+    overflow: hidden;
+    background: #555;
+    -webkit-user-select: none; /* Safari 3.1+ */
+    -moz-user-select: none; /* Firefox 2+ */
+    -ms-user-select: none; /* IE 10+ */
+    user-select: none; /* Standard syntax */
+}
+
+#templates{
+    display: none;
+}
+
+#container {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    height: 500px;
+}
+
+.img img {
+    max-width: 100%;
+}
+
+.img.left{
+    transform: scaleX(-1);
+}
+.left,
+.right{
+    position: absolute;
+}
+
+.sheet {
+    position: absolute;
+    width: 100%;
+    bottom: 0px;
+    transform: scale(0);
+    animation-name: pullup;
+    animation-duration: 2s;
+}
+
+@keyframes pullup {
+    0% {
+        bottom: 110px;
+        transform: scale(0) ;
+    }
+    80% {
+        bottom: 500px;
+        transform: scale(1);
+    }
+    100% {
+        bottom: 110px;
+        transform: scale(0);
+    }
+}
+.rotWrap{
+    animation-name: rotate;
+    animation-duration: 2s;
+    display: inline-block;
+}
+
+@keyframes rotate {
+    0% {
+        transform: rotate(10deg) ;
+        position: left: 0px;
+    }
+    100% {
+        transform: rotate(-10deg) ;
+        position: left: 100px;
+    }
+}
