@@ -16,6 +16,7 @@ $(document).on('click', '.prev', function(){
     }
     openMonth($month, $year);
 });
+
 $(document).on('click', '.next', function(){
     $cm = $('.cells.open');
     $year = $cm.attr('data-year');
@@ -37,7 +38,6 @@ function openMonth(month = (new Date()).getMonth(), year = (new Date()).getFullY
         $(id).addClass('open');
     } else {
         var $cells = $('#templates .cells').clone();
-        
         $cells
             .attr('data-month', month)
             .attr('data-month-name', months[month])
@@ -64,9 +64,9 @@ function openMonth(month = (new Date()).getMonth(), year = (new Date()).getFullY
             var $header = $('.header[data-wdn="' + date.getDay() + '"]');
 
             $(id + ' .cell[data-wdn="' + date.getDay() + '"][data-wd=""]').first()
-            .attr('data-wd', $header.html())
-            .attr('data-day', date.getDate())
-            .addClass('day');
+                .attr('data-wd', $header.html())
+                .attr('data-day', date.getDate())
+                .addClass('day');
 
             if (day == 1) {
                 var del = true;

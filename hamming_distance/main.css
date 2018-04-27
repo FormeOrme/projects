@@ -1,0 +1,19 @@
+body{
+    font-size: 0px;
+    font-family: monospace;
+}
+
+div{
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    display: block;
+    height: 20px;
+}
+span{
+    display: inline-block;
+    font-size: 16px;
+    text-align: right;
+    position: absolute;
+    right: 0px;
+}

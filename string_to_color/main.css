@@ -1,0 +1,21 @@
+body{
+    font-size: 0px;
+    font-family: monospace;
+    margin: 0px;
+}
+
+#container{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#color,
+#string{
+    border: none;
+    font-family: monospace;
+    font-size: 16px;
+    background: #FFF;
+    padding: 5px;
+}
