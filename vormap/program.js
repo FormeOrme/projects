@@ -5,8 +5,8 @@ var vcolors;
 var cells = new Array();
 
 function setup() {
-	var width = windowWidth;
-	var height = windowHeight;
+	var width = 1200;
+	var height = 1200;
 	// randomly generate vertices
 		
 	var CELL_NUMBER = width*height / 9000;

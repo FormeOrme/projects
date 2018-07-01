@@ -1,0 +1,41 @@
+@import url('https://fonts.googleapis.com/css?family=Quicksand');
+body{
+    margin: 0px;
+    font-family: 'Quicksand';
+    color: #595959;
+}
+
+.animate{
+    transition: all 2s;
+    opacity: 0;
+}
+
+.animate.visible{
+    opacity: 1;
+}
+
+.container{
+    width: 70%;
+    margin: 0 auto;
+}
+
+.dish{
+    position: relative;
+}
+
+.price {
+    right: 0px;
+    position: absolute;
+}
+
+.price:after{
+    content: "€";
+}
+
+.vegan:before {
+    content: url(src/leaf.svg);
+    position: absolute;
+    width: 30px;
+    left: -35px;
+    top: -5px;
+}
