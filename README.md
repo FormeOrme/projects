@@ -1,8 +1,8 @@
 # projects
-[gallery rawgit demo](https://rawgit.com/FormeOrme/projects/master/gallery/index.html)
+[gallery](https://formeorme.github.io/projects/)
 # Assembly Line
-[Assembly Line](https://rawgit.com/FormeOrme/projects/master/AssemblyLine/index.html)
+[Assembly Line](https://formeorme.github.io/projects/AssemblyLine/)
 # Skin
-[Skin](https://rawgit.com/FormeOrme/projects/master/skin/index.html)
+[Skin](https://formeorme.github.io/projects/skin/)
 # Consuntivo
-[Consuntivo](https://rawgit.com/FormeOrme/projects/master/consuntivi/index.html)
+[Consuntivo](https://formeorme.github.io/projects/consuntivi/)
