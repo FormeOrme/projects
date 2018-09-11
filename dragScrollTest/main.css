@@ -10,7 +10,7 @@ body{
 }
 .slider{
   font-size: 0px;
-  overflow-x: hidden;
+  overflow-x: auto;
   
   white-space: nowrap;
 }
