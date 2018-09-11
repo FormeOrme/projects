@@ -69,10 +69,10 @@ body{
 @keyframes rotate {
     0% {
         transform: rotate(10deg) ;
-        left: -100px;
+        left: -200px;
     }
     100% {
         transform: rotate(-10deg) ;
-        left: 100px;
+        left: 200px;
     }
 }

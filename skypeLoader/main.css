@@ -1,0 +1,30 @@
+body{
+    font-size: 0px;
+    font-family: monospace;
+    background: #0055FF11;
+}
+
+
+/* The animation code */
+@keyframes animation {
+    0%   {
+        width: 15px;
+    }
+    50%   {
+        width: 10px;
+    }
+    100% {
+        width: 15px;
+    }
+}
+
+.whiteBall{
+    animation-name: animation;
+    animation-duration: 4s;
+    animation-iteration-count: infinite;
+    
+    background: #FFF;
+    border-radius: 100%;
+    display: inline-block;
+    position: absolute;
+}
