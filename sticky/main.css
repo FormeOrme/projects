@@ -5,11 +5,18 @@ body{
 }
 
 body{
-    background: #000055;
+    --bg: #005;
+    --bg-tr: #005A;
+}
+
+body{
+    background: var(--bg);
     color: #fff6;
     overflow-x: hidden;
+    position: absolute;
+    width: 100%;
 }
-body, body *{
+body *{
     transition: all 2s;
     box-sizing: border-box;
 }
@@ -20,26 +27,32 @@ h1 {
 
 #toggle3D{
     position:fixed;
-    top:  10px;
-    left: 10px;
+    top: 0px;
+    left: 0px;
+    padding: 10px;
     font-size: 20px;
     cursor: pointer;
+    z-index: 100;
 }
 
 #container{
     transform-style: preserve-3d;
     width: 80vw;
-    margin: 0 auto;
+    margin: 50px auto 150px;
     border: 1px solid #fff0;
-    transform: rotate3d(-1, -1, 1, 0deg) translate3d(0px, 0px, 0px);
+    position: relative;
+    transform: rotate3d(0, 0, 0, 0deg) translate3d(0px, 0px, 0px);
+}
+
+.align-right{
+    float: right;
 }
 
 .section{
     font-size: 0px;
     position: relative;
     display: inline-block;
-    margin: 10px;
-    min-height: 150px;
+    margin: 10px 10px 50px;
 }
 
 .title,
@@ -50,34 +63,44 @@ h1 {
 }
 
 .title{
-    width: calc(10% - 4px);
+    width: calc(15% - 4px);
+    position: -webkit-sticky;
     position: sticky;
     top: 10px;
     padding: 3px;
     margin: 2px;
 }
-.content{width: calc(90% - 4px);padding: 3px;margin: 2px;}
+.content{width: calc(85% - 4px);padding: 3px;margin: 2px;}
 
 #container .block {
     transform-style: preserve-3d;
     background: #0050;
-    color: #fff8;
-    border: 1px solid #fff0;
+    color: #fff6;
+    border: 1px solid #ffffff00;
     transform: translateZ(0px);
-}
-
-.active3d #container{
-    border: 1px solid;
-    transform: rotate3d(-1, -1, 1, -45deg)         translate3d(150px, -50px, -70px);
 }
 
 span.block{
     display: inline-block;
+    margin-bottom: 2px;
 }
 
+#container:before{
+    content: "HTML";
+    font-size: 12px;
+    position: absolute;
+    left: -110px;
+}
+
+.active3d #container{
+    border: 1px solid;
+    transform: scale(1.2) rotate3d(-1, -1, 1, -60deg);
+}
 .active3d #container .block{
-    background: #0058;
+    background: var(--bg-tr);
+    /* background: #ffffff00; */
+    /* background-image: repeating-linear-gradient(       45deg,       #005,       #005 5px,       transparent 5px,       transparent 10px     ); */
     color: transparent;
     border: 1px solid #fff6;
-    transform: translateZ(50px);
+    transform: translateZ(45px);
 }
