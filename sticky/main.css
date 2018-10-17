@@ -1,0 +1,83 @@
+body{
+    margin: 0px;
+    font-family: 'Roboto mono', monospace;
+    font-size: 0px;
+}
+
+body{
+    background: #000055;
+    color: #fff6;
+    overflow-x: hidden;
+}
+body, body *{
+    transition: all 2s;
+    box-sizing: border-box;
+}
+
+h1 {
+    font-size: 30px;
+}
+
+#toggle3D{
+    position:fixed;
+    top:  10px;
+    left: 10px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+#container{
+    transform-style: preserve-3d;
+    width: 80vw;
+    margin: 0 auto;
+    border: 1px solid #fff0;
+    transform: rotate3d(-1, -1, 1, 0deg) translate3d(0px, 0px, 0px);
+}
+
+.section{
+    font-size: 0px;
+    position: relative;
+    display: inline-block;
+    margin: 10px;
+    min-height: 150px;
+}
+
+.title,
+.content{
+    font-size: 12px;
+    display: inline-block;
+    vertical-align: text-top;
+}
+
+.title{
+    width: calc(10% - 4px);
+    position: sticky;
+    top: 10px;
+    padding: 3px;
+    margin: 2px;
+}
+.content{width: calc(90% - 4px);padding: 3px;margin: 2px;}
+
+#container .block {
+    transform-style: preserve-3d;
+    background: #0050;
+    color: #fff8;
+    border: 1px solid #fff0;
+    transform: translateZ(0px);
+}
+
+.active3d #container{
+    border: 1px solid;
+    transform: rotate3d(-1, -1, 1, -45deg)         translate3d(150px, -50px, -70px);
+}
+
+span.block{
+    display: inline-block;
+}
+
+.active3d #container .block{
+    background: #0058;
+    color: transparent;
+    border: 1px solid #fff6;
+    transform: translateZ(50px);
+}
