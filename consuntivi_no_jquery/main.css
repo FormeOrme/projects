@@ -1,0 +1,331 @@
+body{
+    font-size: 0px;
+    font-family: "Roboto Mono", monospace;
+    margin: 0px;
+    background: #0001;
+    color: #0009;
+}
+*, *:before, *:after{
+    transition: all 0.2s;
+}
+.hidden{
+    display: none!important;
+}
+
+.cell{
+    transition: all 0.2s, width 0s;
+}
+
+.unselectable{
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
+#templates{
+    display: none;
+}
+
+#container{
+    display: block;
+    width: 80%;
+    margin: 0 auto;
+    margin-top: 20px;
+}
+
+#headers{
+    background: #0002;
+}
+
+.header{
+    font-weight: 600;
+    height: 21px;
+    position: relative;
+    overflow: hidden;
+}
+.header .dayname{
+    position: absolute;
+    width: 100%;
+    text-align: center;
+}
+
+.cells .row{
+    overflow: hidden;
+    max-height: 0px;
+}
+.cells.open .row{
+    max-height: calc(19px*7);
+}
+
+.cell{
+    height: 120px;
+}
+
+.cell, .header{
+    font-size: 16px;
+    padding: 0px;
+    display: inline-block;
+    flex-grow: 1;
+}
+.cell.w1{flex-grow:1}
+.cell.w2{flex-grow:2}
+.cell.w3{flex-grow:3}
+.cell.w4{flex-grow:4}
+.cell.w5{flex-grow:5}
+.cell.w6{flex-grow:6}
+
+.row{
+    display: flex;
+    flex-direction: row;
+}
+.row:nth-child(2n){
+    background: #0001;
+}
+
+.day{
+    position: relative;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.day:after{
+    content: attr(data-day);
+    position: absolute;
+    bottom:0px;
+    right: 0px;
+    color: #0005;
+    width: 20px;
+    text-align: center;
+}
+
+.day:hover:after{
+    color: #0009;
+    font-weight: 600;
+    background: #0002;
+}
+
+.day:hover{
+    background: #0002;
+}
+
+.day .wrapper{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    overflow-y: auto;
+}
+.activity{
+    display: block;
+    background: #0002;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.activity:hover{
+    background: #0003;
+}
+
+.activity .desc{
+    padding: 0 5px;
+}
+
+.activity .hours{
+    min-width: 20px;
+    display: inline-block;
+    text-align: center;
+    background: #0002;
+}
+
+.day.weekend .wrapper{
+    background: #0001;
+}
+
+.cell:not(.day){
+    background: repeating-linear-gradient(
+      45deg,
+      #0000,
+      #0000 11px,
+      #0001 11px,
+      #0001 22px
+    );
+}
+
+#nav span{
+    font-size: 16px;
+}
+
+#nav .btn{
+    cursor: pointer;
+    width: 20px;
+    display: inline-block;
+    text-align: center;
+    background: #0001;
+    margin: 0px 10px;
+}
+
+.cells{
+    position:relative;
+}
+.cells .label:before,
+.cells .label:after{
+    color: #0000;
+    font-size: 20px;
+    position: absolute;
+    left: -55px;
+    width: 50px;
+    text-align: right;
+}
+.cells .label:before{
+    content: attr(data-month-name);
+    font-weight: 600;
+}
+.cells .label:after{
+    content: attr(data-year);
+    top: 20px;
+}
+.cells.open .label:before{
+    color: #000A;
+}
+.cells.open .label:after{
+    color: #0005;
+}
+
+/* HEADER MANAGEMENT */
+.month{
+    cursor: pointer;
+}
+.month:hover{
+    background: #0003;
+}
+
+/* SELECTION */
+.selected{
+    font-style: italic;
+    background: #0Af3;
+}
+.selected:hover{
+    background: #0Af6;
+}
+.selecting{
+    background: #0FA3;
+}
+.selecting:hover{
+    background: #0FA6;
+}
+.unselecting{
+    background: #F003;
+}
+.unselecting:hover{
+    background: #F006;
+}
+
+/* COMMANDS */
+#commands{
+    position: fixed;
+    font-size: 16px;
+    font-weight: 600;
+    width: 200px;
+    left: 0px;
+    top: 0px;
+    z-index: 1;
+}
+
+#commands.closed{
+    left: -200px;
+}
+
+.command {
+    cursor: pointer;
+    display: block;
+    text-align: center;
+    background: #0001;
+}
+.command:hover{
+    background: #0002;
+}
+
+.close{
+    position: absolute;
+    right: -15px;
+    top: 0;
+    cursor: pointer;
+}
+.close:after{
+    content:"\00d7"; 
+}
+.closed .close:after{
+    content:"\00bb"; 
+}
+
+/* COLUMN VIEW */
+#table.column.hide-empty .day:not(.selected) .wrapper{
+    min-height: 0px;
+}
+#table.column .row{
+    flex-direction: column;
+}
+
+#table.column .row:nth-child(2n){
+    background: #0000;
+}
+
+#table.column #headers{
+    display: none;
+}
+
+#table.column .cell{
+    display: block;
+    height: auto;
+}
+
+#table.column .day .wrapper{
+    position: relative;
+    overflow: initial;
+    min-height: 19px;
+    height: auto;
+}
+
+#table.column .day:after{
+    left: 35px;
+    top: 0px;
+}
+
+#table.column .day:hover:before{
+    font-weight: 600;
+}
+#table.column .day:before{
+    content: attr(data-wd);
+    position: absolute;
+    top:  0px;
+    left: 0px;
+    color: #0005;
+    text-align: center;
+}
+
+#table.column .activity {
+    margin-left: 60px;
+}
+
+/* COLUMN VIEW - HIDE EMPTY*/
+#table.column.hide-empty .activity{
+    margin-top: 0px;
+    margin-bottom: 0px;
+    margin-right: 0px;
+}
+
+/* HIDE WEEKEND */
+#table.hide-weekend .header.weekend,
+#table.hide-weekend .day.weekend{
+    flex-grow: 0;
+}
+
+#table.hide-weekend .cell.w2.weekend{flex-grow:0}
+#table.hide-weekend .cell.w3.weekend{flex-grow:1}
+#table.hide-weekend .cell.w4.weekend{flex-grow:2}
+#table.hide-weekend .cell.w5.weekend{flex-grow:3}
+#table.hide-weekend .cell.w6.weekend{flex-grow:4}

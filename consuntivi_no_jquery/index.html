@@ -1,0 +1,26 @@
+<html>
+    <head>
+        <link rel='shortcut icon'  href='favicon.ico' />
+        <link rel="stylesheet" type="text/css" href="main.css">
+		<script src="script.js"></script>
+        <script src="calendar.js"></script>
+        <title>Consuntivi</title>
+    </head>
+    <body class="unselectable">
+        <div id="commands" class="closed">
+            <span class="command toggle_view">Toggle Column View</span>
+            <span class="command clean">Unselect Selected</span>
+            <span class="command toggle_empty hidden">Toggle Empty</span>
+            <span class="command toggle_weekend">Toggle weekend</span>
+            <span class="close"></span>
+        </div>
+        <div id="container">
+            <div id="nav">
+                <span class="prev btn" id="prev">&laquo;</span>
+                <span>Month</span>
+                <span class="next btn" id="next">&raquo;</span>
+            </div>
+            <div id="table"></div>
+        </div>
+    </body>
+</html>
