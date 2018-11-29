@@ -50,15 +50,11 @@ body{
     text-align: center;
 }
 
-.cells .row{
-    overflow: hidden;
-    max-height: 0px;
-}
-.cells.open .row{
-    max-height: calc(19px*7);
+.cells .cell{
+    height: 0px;
 }
 
-.cell{
+.cells.open .cell{
     height: 120px;
 }
 
@@ -145,7 +141,7 @@ body{
     background: #0001;
 }
 
-.cell:not(.day){
+.cell.offset{
     background: repeating-linear-gradient(
       45deg,
       #0000,

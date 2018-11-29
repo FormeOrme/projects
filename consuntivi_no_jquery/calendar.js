@@ -1,7 +1,7 @@
 const C_MONTHS = ['GEN', 'FEB', 'MAR', 'APR', 'MAG', 'GIU', 'LUG', 'AGO', 'SET', 'OTT', 'NOV', 'DIC'];
 const C_DOW = ['DOM', 'LUN', 'MAR', 'MER', 'GIO', 'VEN', 'SAB'];
 
-const CURRENT = { view: undefined };
+const CURRENT = {};
 const MONTH_VIEWS = {};
 
 function initCalendar() {
@@ -9,16 +9,18 @@ function initCalendar() {
         if (e.target.matches('#prev')) {
             let tempView = CURRENT.view.getPrevious();
             CURRENT.view.cells.before(tempView.cells);
+            void CURRENT.view.cells.offsetWidth;
             CURRENT.view.cells.classList.remove('open');
+            tempView.cells.classList.add('open');
             CURRENT.view = tempView;
-            CURRENT.view.cells.classList.add('open');
         }
         if (e.target.matches('#next')) {
             let tempView = CURRENT.view.getNext();
             CURRENT.view.cells.after(tempView.cells);
+            void CURRENT.view.cells.offsetWidth;
             CURRENT.view.cells.classList.remove('open');
             CURRENT.view = tempView;
-            CURRENT.view.cells.classList.add('open');
+            tempView.cells.classList.add('open');
         }
     });
 
@@ -48,10 +50,11 @@ function templateMonth(month, year) {
     let day = 1;
     let date = new Date(year, month, day, 0, 0, 0, 0);
     let row = templateRow();
-    let tempDay = templateDay();
+    let offset = templateDay();
     if(date.getDay()!=1){
-        tempDay.classList.add("w" + (date.getDay()+6)%7 );
-        row.append(tempDay);
+        offset.classList.add("w" + (date.getDay()+6)%7 );
+        offset.classList.add("offset");
+        row.append(offset);
     }
     while (date.getMonth() == month) {
         row.append(templateDay(date));
@@ -63,13 +66,14 @@ function templateMonth(month, year) {
         date = new Date(year, month, day, 0, 0, 0, 0);
     }
     if(date.getDay()!=1){
-        tempDay = templateDay();
+        offset = templateDay();
         let w = (6-(date.getDay()+5)%7);
-        tempDay.classList.add("w" + w);
+        offset.classList.add("w" + w);
+        offset.classList.add("offset");
         if(w>=2){
-            tempDay.classList.add("weekend");
+            offset.classList.add("weekend");
         }
-        row.append(tempDay);
+        row.append(offset);
     }
 
     cells.append(row);
