@@ -7,20 +7,10 @@ const MONTH_VIEWS = {};
 function initCalendar() {
     document.addEventListener('click', function (e) {
         if (e.target.matches('#prev')) {
-            let tempView = CURRENT.view.getPrevious();
-            CURRENT.view.cells.before(tempView.cells);
-            void CURRENT.view.cells.offsetWidth;
-            CURRENT.view.cells.classList.remove('open');
-            tempView.cells.classList.add('open');
-            CURRENT.view = tempView;
+            openPrevious();
         }
         if (e.target.matches('#next')) {
-            let tempView = CURRENT.view.getNext();
-            CURRENT.view.cells.after(tempView.cells);
-            void CURRENT.view.cells.offsetWidth;
-            CURRENT.view.cells.classList.remove('open');
-            CURRENT.view = tempView;
-            tempView.cells.classList.add('open');
+            openNext();
         }
     });
 
@@ -30,6 +20,24 @@ function initCalendar() {
     CURRENT.view = new MonthView();
     CURRENT.view.cells.classList.add('open');
     headers.after(CURRENT.view.cells);
+}
+
+function openPrevious(){
+    let tempView = CURRENT.view.getPrevious();
+    CURRENT.view.cells.before(tempView.cells);
+    void CURRENT.view.cells.offsetWidth;
+    CURRENT.view.cells.classList.remove('open');
+    tempView.cells.classList.add('open');
+    CURRENT.view = tempView;
+}
+
+function openNext(){
+    let tempView = CURRENT.view.getNext();
+    CURRENT.view.cells.after(tempView.cells);
+    void CURRENT.view.cells.offsetWidth;
+    CURRENT.view.cells.classList.remove('open');
+    CURRENT.view = tempView;
+    tempView.cells.classList.add('open');
 }
 
 function templateMonth(month, year) {
@@ -88,6 +96,7 @@ function templateDay(date) {
     let day = document.createElement('div');
     day.classList.add('cell');
     if (!!date) {
+        day.id = getDateId(date);
         day.classList.add('day');
         if(date.getDay() == 0 || date.getDay() == 6){
             day.classList.add('weekend');
@@ -137,6 +146,10 @@ function templateActivity(hours_, desc_){
     activity.append(hours);
     activity.append(desc);
     return activity;
+}
+
+function getDateId(date) {
+    return `cell_${date.getFullYear()}_${date.getMonth()}_${date.getDate()}`;
 }
 
 function getId(year, month) {

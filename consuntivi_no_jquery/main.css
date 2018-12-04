@@ -36,6 +36,8 @@ body{
 
 #headers{
     background: #0002;
+    position: sticky;
+    top: 0;
 }
 
 .header{

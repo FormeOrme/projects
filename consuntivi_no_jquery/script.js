@@ -49,24 +49,24 @@ function initSelection() {
     var selecting;
     var unselecting;
     document.addEventListener('mousedown', function (e) {
+        if(e.which != 1){return;}
+        
         let target;
-        /* SELECTING */
-        if (!!(target = e.target.closest('.day:not(.selected)'))) {
-            selecting = 'day';
-            target.classList.add('selecting');
-        }
-        if (e.target.matches('.activity:not(.selected)')) {
-            selecting = 'activity';
-            e.target.classList.add('selecting');
-        }
         /* UNSELECTING */
         if (!!(target = e.target.closest('.selected'))) {
-            if (target.classList.contains('day')) {
-                unselecting = 'day';
-            } else if (target.classList.contains('activity')) {
+            if (target.classList.contains('activity')) {
                 unselecting = 'activity';
+            } else if (target.classList.contains('day')) {
+                unselecting = 'day';
             }
             target.classList.add('unselecting');
+        /* SELECTING */
+        } else if (!!(target = e.target.closest('.activity:not(.selected)'))) {
+            selecting = 'activity';
+            target.classList.add('selecting');
+        } else if (!!(target = e.target.closest('.day:not(.selected)'))) {
+            selecting = 'day';
+            target.classList.add('selecting');
         }
     });
     document.addEventListener('mouseover', function (e) {
@@ -76,13 +76,13 @@ function initSelection() {
                 target.classList.add('selecting');
             }
         }
-        if (e.target.matches('.activity:not(.selected)')) {
+        if (!!(target = e.target.closest('.activity:not(.selected)'))) {
             if (selecting == 'activity') {
-                e.target.classList.add('selecting');
+                target.classList.add('selecting');
             }
         }
         /* UNSELECTING */
-        if (!!(target = e.target.closest('.selected'))) {
+        if (!!(target = e.target.closest('.'+unselecting+'.selected'))) {
             if (target.classList.contains(unselecting)) {
                 target.classList.add('unselecting');
             }

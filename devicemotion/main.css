@@ -1,0 +1,45 @@
+body{
+    margin: 0px;
+    font-size: 0px;
+    font-family: "Roboto Mono", monospace;
+    color: #FFF;
+}
+
+#console{
+    font-size: 30px;
+}
+
+body{
+    background: #001;
+}
+
+#container{
+    width: 200px;
+    height: 200px;
+}
+
+#cube {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    top: 50%;
+    left: 50%;
+    transform: translateZ(-100px);
+  }
+
+#cube .face{
+    border: 1px solid #FFF;
+    background: #001;
+    font-size: 100px;
+    position: absolute;
+    width: 200px;
+    height: 200px;
+}
+
+#cube .face.front  { transform: rotateY(  0deg) translateZ(100px); }
+#cube .face.right  { transform: rotateY( 90deg) translateZ(100px); }
+#cube .face.back   { transform: rotateY(180deg) translateZ(100px); }
+#cube .face.left   { transform: rotateY(-90deg) translateZ(100px); }
+#cube .face.top    { transform: rotateX( 90deg) translateZ(100px); }
+#cube .face.bottom { transform: rotateX(-90deg) translateZ(100px); }
