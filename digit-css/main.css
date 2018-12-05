@@ -1,0 +1,74 @@
+body{
+    background: #001;
+    font-size: 0px;
+    margin: 0px;
+}
+
+.digit{
+    margin: 20px;
+    display: inline-block;
+}
+
+.row{
+    display: block;
+}
+
+.cell,
+.cell:before,
+.cell:after{
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    transition: transform 0.2s;
+}
+
+.cell{
+    position: relative;
+    background-image: linear-gradient(#FFF, #FFF 50%, #001 50%);
+    border: 2px solid #001;
+    overflow: hidden;
+    border-radius: 50%;
+}
+.cell:before,
+.cell:after{
+    position: absolute;
+    content: "";
+}
+.cell:before{
+    background-image: linear-gradient(#FFF, #FFF 50%, transparent 50%);
+    transform: rotate( 0deg );
+}
+.cell:after{
+    background-image: linear-gradient(#001, #001 50%, transparent 50%);
+    z-index: -1;
+    transform: rotate( 180deg );
+}
+
+.n0 .r1 .c1:before{ transform: rotate( -90deg); }
+.n0 .r1 .c4       { transform: rotate(  90deg); }
+.n0 .r1 .c4:before{ transform: rotate( -90deg); }
+.n0 .r2 .c1       { transform: rotate( -90deg); }
+.n0 .r2 .c2       { transform: rotate( 180deg); }
+.n0 .r2 .c2:after { transform: rotate(  90deg); z-index: 10; }
+.n0 .r2 .c3       { transform: rotate( -90deg); }
+.n0 .r2 .c3:after { transform: rotate(  90deg); z-index: 10; }
+.n0 .r2 .c4       { transform: rotate(  90deg); }
+.n0 .r3 .c1       { transform: rotate( -90deg); }
+.n0 .r3 .c2       { transform: rotate(  90deg); }
+.n0 .r3 .c3       { transform: rotate( -90deg); }
+.n0 .r3 .c4       { transform: rotate(  90deg); }
+.n0 .r4 .c1       { transform: rotate( -90deg); }
+.n0 .r4 .c2       { transform: rotate(  90deg); }
+.n0 .r4 .c3       { transform: rotate( -90deg); }
+.n0 .r4 .c4       { transform: rotate(  90deg); }
+.n0 .r5 .c1       { transform: rotate( -90deg); }
+.n0 .r5 .c2       { transform: rotate(  90deg); }
+.n0 .r5 .c2:after { transform: rotate(  90deg); z-index: 10; }
+.n0 .r5 .c3:after { transform: rotate(  90deg); z-index: 10; }
+.n0 .r5 .c4       { transform: rotate(  90deg); }
+.n0 .r6 .c1       { transform: rotate( -90deg); }
+.n0 .r6 .c1:before{ transform: rotate( -90deg); }
+.n0 .r6 .c2       { transform: rotate( -180deg); }
+.n0 .r6 .c3       { transform: rotate(  180deg); }
+.n0 .r6 .c4       { transform: rotate( 180deg); }
+.n0 .r6 .c4:before{ transform: rotate( -90deg); }
