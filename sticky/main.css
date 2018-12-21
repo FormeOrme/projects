@@ -18,7 +18,7 @@ body{
     width: 100%;
 }
 body *{
-    transition: all 2s;
+    transition: all 1s;
     box-sizing: border-box;
 }
 
@@ -36,18 +36,16 @@ h1 {
     z-index: 100;
 }
 
-#container_CSS,
-#container_JS,
 #container{
     transform-style: preserve-3d;
     width: 60vw;
     margin: 50px auto 50vh;
     position: relative;
-    transform: rotate3d(0, 0, 0, 0deg) translate3d(0px, 0px, 0px);
+    transform: scale(1);
 }
 
 .align-right{
-    float: right;
+    /* float: right; */
 }
 
 .section{
@@ -87,23 +85,6 @@ h1 {
 span.block{
     display: inline-block;
     margin-bottom: 3px;
-}
-
-.active3d #container_JS:before{
-    content: "JS";
-}
-.active3d #container_CSS:before{
-    content: "CSS";
-}
-.active3d #container:before{
-    content: "HTML";
-}
-.active3d #container_CSS:before,
-.active3d #container_JS:before,
-.active3d #container:before{
-    font-size: 12px;
-    position: absolute;
-    left: -110px;
 }
 
 .active3d #container{

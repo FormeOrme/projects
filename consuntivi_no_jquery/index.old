@@ -1,0 +1,90 @@
+<html>
+    <head>
+        <link rel='shortcut icon'  href='favicon.ico' />
+        <link rel="stylesheet" type="text/css" href="main.css">
+        
+		<script src="jquery-3.1.1.min.js"></script>
+
+		<script src="script.js"></script>
+		<script src="calendar.js"></script>
+    </head>
+    <body class="unselectable">
+        <div id="commands" class="closed">
+            <span class="command toggle_view">Toggle Column View</span>
+            <span class="command clean">Unselect Selected</span>
+            <span class="command toggle_empty hidden">Toggle Empty</span>
+            <span class="close"></span>
+        </div>
+        <div id="templates">
+            <span class="activity"><span class="hours"></span><span class="desc"></span></span>
+            <div class="cells" data-month="" data-year="">
+                <span class="label"></span>
+                <div class="row">
+                    <div data-wdn="1" data-wd="" data-day="" class="cell"><div class="wrapper"></div></div>
+                    <div data-wdn="2" data-wd="" data-day="" class="cell"><div class="wrapper"></div></div>
+                    <div data-wdn="3" data-wd="" data-day="" class="cell"><div class="wrapper"></div></div>
+                    <div data-wdn="4" data-wd="" data-day="" class="cell"><div class="wrapper"></div></div>
+                    <div data-wdn="5" data-wd="" data-day="" class="cell"><div class="wrapper"></div></div>
+                    <div data-wdn="6" data-wd="" data-day="" class="cell"><div class="wrapper"></div></div>
+                    <div data-wdn="0" data-wd="" data-day="" class="cell"><div class="wrapper"></div></div>
+                </div>
+                <div class="row">
+                    <div data-wdn="1" data-wd="" data-day="" class="cell"><div class="wrapper"></div></div>
+                    <div data-wdn="2" data-wd="" data-day="" class="cell"><div class="wrapper"></div></div>
+                    <div data-wdn="3" data-wd="" data-day="" class="cell"><div class="wrapper"></div></div>
+                    <div data-wdn="4" data-wd="" data-day="" class="cell"><div class="wrapper"></div></div>
+                    <div data-wdn="5" data-wd="" data-day="" class="cell"><div class="wrapper"></div></div>
+                    <div data-wdn="6" data-wd="" data-day="" class="cell"><div class="wrapper"></div></div>
+                    <div data-wdn="0" data-wd="" data-day="" class="cell"><div class="wrapper"></div></div>
+                </div>
+                <div class="row">
+                    <div data-wdn="1" data-wd="" data-day="" class="cell"><div class="wrapper"></div></div>
+                    <div data-wdn="2" data-wd="" data-day="" class="cell"><div class="wrapper"></div></div>
+                    <div data-wdn="3" data-wd="" data-day="" class="cell"><div class="wrapper"></div></div>
+                    <div data-wdn="4" data-wd="" data-day="" class="cell"><div class="wrapper"></div></div>
+                    <div data-wdn="5" data-wd="" data-day="" class="cell"><div class="wrapper"></div></div>
+                    <div data-wdn="6" data-wd="" data-day="" class="cell"><div class="wrapper"></div></div>
+                    <div data-wdn="0" data-wd="" data-day="" class="cell"><div class="wrapper"></div></div>
+                </div>
+                <div class="row">
+                    <div data-wdn="1" data-wd="" data-day="" class="cell"><div class="wrapper"></div></div>
+                    <div data-wdn="2" data-wd="" data-day="" class="cell"><div class="wrapper"></div></div>
+                    <div data-wdn="3" data-wd="" data-day="" class="cell"><div class="wrapper"></div></div>
+                    <div data-wdn="4" data-wd="" data-day="" class="cell"><div class="wrapper"></div></div>
+                    <div data-wdn="5" data-wd="" data-day="" class="cell"><div class="wrapper"></div></div>
+                    <div data-wdn="6" data-wd="" data-day="" class="cell"><div class="wrapper"></div></div>
+                    <div data-wdn="0" data-wd="" data-day="" class="cell"><div class="wrapper"></div></div>
+                </div>
+                <div class="row">
+                    <div data-wdn="1" data-wd="" data-day="" class="cell"><div class="wrapper"></div></div>
+                    <div data-wdn="2" data-wd="" data-day="" class="cell"><div class="wrapper"></div></div>
+                    <div data-wdn="3" data-wd="" data-day="" class="cell"><div class="wrapper"></div></div>
+                    <div data-wdn="4" data-wd="" data-day="" class="cell"><div class="wrapper"></div></div>
+                    <div data-wdn="5" data-wd="" data-day="" class="cell"><div class="wrapper"></div></div>
+                    <div data-wdn="6" data-wd="" data-day="" class="cell"><div class="wrapper"></div></div>
+                    <div data-wdn="0" data-wd="" data-day="" class="cell"><div class="wrapper"></div></div>
+                </div>
+            </div>
+        </div>
+        <div id="container">
+            <div class="nav">
+                <span class="prev">&laquo;</span>
+                <span>Month</span>
+                <span class="next">&raquo;</span>
+            </div>
+            <div class="hide-empty" id="table">
+                <div class="headers">
+                    <div class="row">
+                        <div data-wdn="1" class="header">LUN</div>
+                        <div data-wdn="2" class="header">MAR</div>
+                        <div data-wdn="3" class="header">MER</div>
+                        <div data-wdn="4" class="header">GIO</div>
+                        <div data-wdn="5" class="header">VEN</div>
+                        <div data-wdn="6" class="header">SAB</div>
+                        <div data-wdn="0" class="header">DOM</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

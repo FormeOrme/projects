@@ -1,0 +1,13 @@
+body{
+    margin: 0px;
+    font-size: 0px;
+}
+
+@keyframes animation{
+    0%{
+        stroke-dashoffset: 0
+    }
+    100%{
+        stroke-dashoffset: 10
+    }
+}

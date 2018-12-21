@@ -1,6 +1,6 @@
 body{
     font-size: 0px;
-    font-family: monospace;
+    font-family: "Roboto Mono", monospace;
     margin: 0px;
     background: #0001;
     color: #0009;
@@ -8,6 +8,10 @@ body{
 *, *:before, *:after{
     transition: all 0.2s;
 }
+.hidden{
+    display: none!important;
+}
+
 .cell{
     transition: all 0.2s, width 0s;
 }
@@ -30,19 +34,29 @@ body{
     margin-top: 20px;
 }
 
-.headers{
+#headers{
     background: #0002;
+    position: sticky;
+    top: 0;
 }
 
-.cells .row{
+.header{
+    font-weight: 600;
+    height: 21px;
+    position: relative;
     overflow: hidden;
-    max-height: 0px;
 }
-.cells.open .row{
-    max-height: calc(19px*7);
+.header .dayname{
+    position: absolute;
+    width: 100%;
+    text-align: center;
 }
 
-.cell{
+.cells .cell{
+    height: 0px;
+}
+
+.cells.open .cell{
     height: 120px;
 }
 
@@ -50,9 +64,19 @@ body{
     font-size: 16px;
     padding: 0px;
     display: inline-block;
-    width: calc(100%/7);
+    flex-grow: 1;
 }
+.cell.w1{flex-grow:1}
+.cell.w2{flex-grow:2}
+.cell.w3{flex-grow:3}
+.cell.w4{flex-grow:4}
+.cell.w5{flex-grow:5}
+.cell.w6{flex-grow:6}
 
+.row{
+    display: flex;
+    flex-direction: row;
+}
 .row:nth-child(2n){
     background: #0001;
 }
@@ -115,32 +139,25 @@ body{
     background: #0002;
 }
 
-.day:nth-child(6) .wrapper,
-.day:nth-child(7) .wrapper{
+.day.weekend .wrapper{
     background: #0001;
 }
 
-.cell:not(.day){
+.cell.offset{
     background: repeating-linear-gradient(
       45deg,
       #0000,
-      #0000 5px,
-      #0001 5px,
-      #0001 10px
+      #0000 11px,
+      #0001 11px,
+      #0001 22px
     );
 }
 
-.header{
-    font-weight: 600;
-    text-align: center;
-}
-
-.nav span{
+#nav span{
     font-size: 16px;
 }
 
-.prev,
-.next {
+#nav .btn{
     cursor: pointer;
     width: 20px;
     display: inline-block;
@@ -247,21 +264,21 @@ body{
 #table.column.hide-empty .day:not(.selected) .wrapper{
     min-height: 0px;
 }
+#table.column .row{
+    flex-direction: column;
+}
 
-#table.column tr:nth-child(2n){
+#table.column .row:nth-child(2n){
     background: #0000;
 }
-#table.column .headers{
+
+#table.column #headers{
     display: none;
 }
 
 #table.column .cell{
     display: block;
     height: auto;
-}
-
-#table.column .day{
-    width: 100%;
 }
 
 #table.column .day .wrapper{
@@ -291,9 +308,22 @@ body{
 #table.column .activity {
     margin-left: 60px;
 }
+
 /* COLUMN VIEW - HIDE EMPTY*/
-.column.hide-empty .activity{
+#table.column.hide-empty .activity{
     margin-top: 0px;
     margin-bottom: 0px;
     margin-right: 0px;
 }
+
+/* HIDE WEEKEND */
+#table.hide-weekend .header.weekend,
+#table.hide-weekend .day.weekend{
+    flex-grow: 0;
+}
+
+#table.hide-weekend .cell.w2.weekend{flex-grow:0}
+#table.hide-weekend .cell.w3.weekend{flex-grow:1}
+#table.hide-weekend .cell.w4.weekend{flex-grow:2}
+#table.hide-weekend .cell.w5.weekend{flex-grow:3}
+#table.hide-weekend .cell.w6.weekend{flex-grow:4}
