@@ -44,20 +44,22 @@ function init() {
             let splitter = createElement(TEMPLATE.splitter);
             spacer.append(splitter);
 
-            let gdr = gradient([
-                { c:selected[0].backgroundc, q:1},
-                { c:selected[1].backgroundc, q:1}
-            ]);
+            let arrGrd = new Array();
+            arrGrd.push(...selected[0].backgroundc);
+            arrGrd.push(...selected[1].backgroundc);
+
+            let gdr = gradient(arrGrd);
 
             let newRow = createElement(TEMPLATE.block_row);
             
             let blockSx = createElement(TEMPLATE.belt);
             blockSx.row = newRow;
             blockSx.style.backgroundImage = gdr;
-            
+            blockSx.backgroundc = arrGrd;
             let blockDx = createElement(TEMPLATE.belt);
             blockDx.style.backgroundImage = gdr;
             blockDx.row = newRow;
+            blockDx.backgroundc = arrGrd;
 
             newRow.append(blockSx);
             newRow.append(blockDx);
@@ -75,7 +77,9 @@ function init() {
 
 function addMainBlock() {
     let cs = createElement(TEMPLATE.belt);
-    cs.style.background = cs.backgroundc = colorHSL();
+    let col = colorHSL();
+    cs.backgroundc = [{ c:col, q:1}];
+    cs.style.background = col;
     CURRENT.rows[0].append(cs);
     cs.row = CURRENT.rows[0];
     cs.column = CURRENT.rows[0].blocks.length;

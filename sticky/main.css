@@ -39,8 +39,7 @@ h1 {
 #container{
     transform-style: preserve-3d;
     width: 60vw;
-    margin: 100px auto 50vh;
-    border: 1px solid #fff0;
+    margin: 50px auto 50vh;
     position: relative;
     transform: scale(1);
 }
@@ -85,12 +84,11 @@ h1 {
 
 span.block{
     display: inline-block;
-    margin-bottom: 2px;
+    margin-bottom: 3px;
 }
 
 .active3d #container{
-    border: 1px solid;
-    transform: scale(1.1) rotateZ(-45deg) rotate3d(-1, -1, 0, -45deg) translateZ(100px);
+    transform: scale(1.2) rotate3d(-1, -1, 1, -45deg) translate3d(200px, 100px, 0);
 }
 .active3d #container .block{
     background: var(--bg-tr);
@@ -99,5 +97,5 @@ span.block{
     color: transparent;
     /* border: 1px solid #fff6; */
     outline-color: #fff6;
-    transform: translateZ(25px);
+    transform: translateZ(50px);
 }
