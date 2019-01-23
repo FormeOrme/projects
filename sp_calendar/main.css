@@ -1,0 +1,57 @@
+:root{
+    --margin: 2px;
+    --padding: 9px;
+}
+
+body{
+    font-family: "Roboto Mono";
+    margin: 0px;
+}
+
+.row{
+    display: flex;
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: auto;
+}
+
+.col{
+    display: flex;
+    flex-direction: column;
+    /* background: #0002; */
+    border: 1px solid #0002;
+    padding: 3px;
+    margin: 3px;
+    text-align: center;
+}
+
+.colLeft{
+    flex: 2;
+}
+.colRight{
+    flex: 7;   
+}
+
+.number{
+    flex: 1; 
+}
+
+.weekDay,
+.month{
+    flex: 1;   
+}
+
+/* DAY STYLE */
+.sunday{
+    font-weight: 800;
+}
+
+#dateInput{
+    flex: 1;
+    background: transparent;
+    border: none;
+    text-align: center;
+    font-size: 16px;
+    font-family: "Roboto mono";
+    outline: none;
+}
