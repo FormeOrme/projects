@@ -46,7 +46,11 @@ body{
     font-weight: 800;
 }
 
-#dateInput{
+.printLabel:after{
+    content: attr(data-label);
+}
+
+.command{
     flex: 1;
     background: transparent;
     border: none;
