@@ -14,11 +14,11 @@ body{
 }
 body, input, textarea{
     font-family: var(--fontFamily);
-    color: var(--fgc);;
+    color: var(--fgc);
 }
 section{
     max-width: 800px;
-    margin: 0 auto;
+    margin: 10px auto 0;
 }
 textarea{
     width: 100%;
@@ -58,6 +58,29 @@ label, input, textarea{
 
 span{
     font-size: 15px;
+}
+
+a{
+    background: var(--bgcd);
+    display: block;
+    border-radius: 2px;
+    text-decoration: none;
+    color: var(--fgc);
+}
+
+h1 a {
+    font-size: 20px;
+    padding: 10px;
+}
+
+ul li a{
+    font-size: 15px;
+    padding: 10px;
+    margin: 10px 0;
+}
+
+ul{
+    padding: 0px;
 }
 
 .row{
