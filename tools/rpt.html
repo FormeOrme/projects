@@ -1,0 +1,51 @@
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="main.css">
+</head>
+
+<body>
+    <section class="row">
+        <input id="a" type="number" step="any"/>
+        <span>:</span>
+        <input id="b" type="number" step="any"/>
+        <span>=</span>
+        <input id="c" type="number" step="any"/>
+        <span>:</span>
+        <input id="d" type="number" step="any"/>
+    </section>
+    <script>
+        const MAP = {
+            a:["b", "c", "d"],
+            b:["a", "d", "c"],
+            c:["d", "a", "b"],
+            d:["c", "b", "a"],
+        }
+        const CUR = { i: {}, act: [] };
+        document.querySelectorAll(".row input").forEach(i => {
+            CUR.i[i.id] = i;
+        });
+        Object.values(CUR.i).forEach(i => {
+            i.addEventListener("input", e => {
+                Object.values(CUR.i).forEach(i => i.classList.remove("active"));
+                if (!CUR.act.includes(e.target.id)) {
+                    if (CUR.act.length == 3) {
+                        CUR.act.shift();
+                    }
+                    CUR.act.push(e.target.id);
+                }
+
+                let o = Object.keys(CUR.i).filter(k => !CUR.act.includes(k));
+                if (o.length == 1) {
+                    o = CUR.i[o[0]];
+                    o.classList.add("active");
+                    o.value = (CUR.i[MAP[o.id][0]].value*CUR.i[MAP[o.id][1]].value)/CUR.i[MAP[o.id][2]].value; 
+                }
+            });
+        });
+
+    </script>
+</body>
+
+</html>

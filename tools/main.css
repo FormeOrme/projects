@@ -1,0 +1,78 @@
+:root{
+    --fontFamily: "Roboto Mono", monospace;
+    --bgc: #ECEFF1;
+    --bgcd: #CFD8DC;
+    --fgc: #263238;
+    --hlt: #FFC107;
+}
+
+body{
+    margin: 0px;
+    background: var(--bgc);
+    font-size: 0px;
+    padding: 0 10px;
+}
+body, input, textarea{
+    font-family: var(--fontFamily);
+    color: var(--fgc);;
+}
+section{
+    max-width: 800px;
+    margin: 0 auto;
+}
+textarea{
+    width: 100%;
+    resize: none;
+    min-height: 30px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    bottom: 0px;
+}
+input, textarea{
+    background: var(--bgcd);
+    outline: none;
+    border-radius: 2px;
+}
+label{
+    display: block;
+}
+label, input, textarea{
+    border:none;
+    padding: 10px;
+    font-size: 15px;
+}
+.hwrapper{
+    display: block;
+    position: relative;
+    word-break: break-all;
+}
+.hmanager:after {
+    content: "_";
+}
+.hmanager{
+    font-size: 15px;
+    padding: 10px;
+    display: block; 
+}
+
+span{
+    font-size: 15px;
+}
+
+.row{
+    display: flex;
+    padding: 10px 0;
+}
+.row span{
+    flex: 1;
+    padding: 10px;
+    text-align: center;
+}
+.row input{
+    flex: 5;
+    width: 0px;
+}
+.row input.active{
+    background: var(--hlt);
+}
