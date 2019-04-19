@@ -4,6 +4,7 @@
     --bgcd: #CFD8DC;
     --fgc: #263238;
     --hlt: #FFC107;
+    --nbsp: '\0000A0';
 }
 
 body{
@@ -31,7 +32,7 @@ textarea{
 }
 input, textarea{
     background: var(--bgcd);
-    outline: none;
+    outline-color: var(--fgc);
     border-radius: 2px;
 }
 label{
@@ -66,6 +67,12 @@ a{
     border-radius: 2px;
     text-decoration: none;
     color: var(--fgc);
+}
+a:before {
+    content: var(--nbsp);
+}
+a:hover:before {
+    content: ":";
 }
 
 h1 a {
