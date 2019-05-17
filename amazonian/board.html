@@ -1,0 +1,118 @@
+<!--
+. . . W . . W . . . 
+. . . . . . . . . . 
+. . . . . . . . . . 
+W . . . . . . . . W 
+. . . . . . . . . . 
+. . . . . . . . . . 
+B . . . . . . . . B 
+. . . . . . . . . . 
+. . . . . . . . . . 
+. . . B . . B . . . 
+
+"...W..W.......................W........W....................B........B.......................B..B..."
+.split(/((.)(?:\2)*)/g)
+.filter((o, i)=>(i+2)%3==0)
+.map(v=>v.match(/W|B|A/)?v:v.length)
+.join("")
+
+3W2W23W8W20B8B23B2B3
+
+"3W2W23W8W20B8B23B2B3"
+.split(/(\d+|\w)/g)
+.filter((o, i)=>(i+1)%2==0)
+.map(v=>isNaN(v)?v: Array(v*1).fill(".").join(""))
+.join("")
+
+-->
+<html>
+
+<head>    
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+    #board{
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    height: 100%;
+    }
+    .cell{
+        flex: 0 0 10%; /* explanation below */
+        display: inline-block;
+        background-image: linear-gradient(-30deg, #CFD8DC, #ECEFF1);
+        position: relative;
+    }
+
+    .cell.B,
+    .cell.W{
+        cursor: pointer;
+    }
+    
+    .cell.active,
+    .cell.B:hover,
+    .cell.W:hover{
+        background-image: linear-gradient(-30deg, #ECEFF1, #CFD8DC);
+    }
+
+
+    .cell.A:after,
+    .cell.B:after,
+    .cell.W:after{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-shadow: 0 2px 2px #00000050;
+    }
+    .cell.W:after{
+        content: "⚪";
+    }
+    .cell.B:after{
+        content: "⚫";
+    }
+    .cell.A:after{
+        content: "🔺";
+    }
+
+</style>
+</head>
+
+<body>
+    <div id="container"></div>
+    <script>
+const container = document.getElementById("container");
+
+function drawBoard(s){
+    var board = document.createElement("div");
+    board.id = "board";
+    s.split(/(\d+|\w)/g)
+        .filter((o, i)=>(i+1)%2==0)
+        .map(v=>isNaN(v)?v: Array(v*1).fill(".").join(""))
+        .join("").split("")
+        .map((c, i)=>{
+            var cell = document.createElement("span");
+            cell.dataset["row"]= Math.floor(i/10);
+            cell.dataset["col"]= i%10;
+            cell.dataset["type"]= c;
+            cell.classList.add("cell");
+            if(c!="."){
+                cell.classList.add(c);
+            }
+            if(c.match(/W|B/)){
+                cell.addEventListener("click", pawnClick);
+            }
+            board.append(cell);
+        });
+    container.append(board);
+}
+function pawnClick(e){
+    var cell = e.target;
+    cell.classList.add("active");
+    console.log(cell.dataset.row);
+}
+
+drawBoard("3W2W23W8W20B8B23B2B3");
+    </script>
+</body>
+
+</html>
