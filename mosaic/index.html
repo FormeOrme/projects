@@ -20,6 +20,7 @@
     </div>
     <canvas id="out"></canvas>
     <script>
+    /* floor : ~~ */
     const checkImage = path =>
         new Promise(resolve => {
             const img = new Image();
@@ -30,15 +31,18 @@
     const loadImg = (...paths) => Promise.all(paths.map(checkImage));
     
     /* CUSTOM */
-    const data = (/*image.canvas*/ i, /*index*/ j) => 
+    const data = (/*image.canvas*/ i, /*index*/ j) =>
         i.c.ctx.d(...[
-            /*sx*/ i.s.w * (j % ~~(i.c.w/i.s.w) ),
-            /*sy*/ i.s.h * ~~( j / ~~(i.c.w/i.s.w) ) ,
-            /*sw*/ i.s.w,
-            /*sh*/ i.s.h
+        /*sx*/
+        /*sy*/ ...xy(j, i.c.w, i.s.w, i.s.h),
+        /*sw*/ i.s.w,
+        /*sh*/ i.s.h
         ]).data;
-    
-    
+
+    const xy = (i, bw, w, h) => [
+    /*x*/ w * (i % ~~(bw / w)),
+    /*y*/ h * ~~(i / ~~(bw / w))
+    ];
 
     loadImg("src.jpg", "org.jpg").then(() => {
 
