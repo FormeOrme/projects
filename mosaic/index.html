@@ -28,15 +28,24 @@
             img.src = path;
         });
     const loadImg = (...paths) => Promise.all(paths.map(checkImage));
+    
+    /* CUSTOM */
+    const data = (/*image.canvas*/ i, /*index*/ j) => 
+        i.c.ctx.d(...[
+            /*sx*/ i.s.w * (j % ~~(i.c.w/i.s.w) ),
+            /*sy*/ i.s.h * ~~( j / ~~(i.c.w/i.s.w) ) ,
+            /*sw*/ i.s.w,
+            /*sh*/ i.s.h
+        ]).data;
+    
+    
 
     loadImg("src.jpg", "org.jpg").then(() => {
 
         [org, src].map(img => {
-            img.w = img.width;
-            img.h = img.height;
             const c = document.createElement("canvas");
-            c.width = img.w;
-            c.height = img.h;
+            c.w = c.width =  img.width;
+            c.h = c.height = img.height;
             var ctx = c.getContext("2d");
             c.ctx = ctx;
             ctx.d = ctx.getImageData;
@@ -46,21 +55,23 @@
 
         /* ORIGINAL TILE SIZE */
         const e = { w: 30, h: 50 };
-        const s = src;
-        const o = org;
+        const s = src.c;
+        const o = org.c;
 
         /* SOURCE TILE SIZE */
         const r = {}
         r.h = Math.sqrt((e.h * e.h * s.w * s.h) / (o.w * o.h));
         r.w = (e.w * r.h) / e.h;
 
+        src.s = e;
+        org.s = r;
+
         const p = {
-            o: org,
-            s: src,
-            e: e,
-            r: r,
+            o: src,
+            s: org,
             ctx: out.getContext("2d")
         };
+        
         window.p = p;
     });
 
