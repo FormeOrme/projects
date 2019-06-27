@@ -18,6 +18,9 @@
         <img id="org" src="org.jpg" />
         <img id="src" src="src.jpg" />
     </div>
+
+    <div id="wrapper"></div>
+
     <canvas id="out"></canvas>
     <script>
     /* floor : ~~ */
@@ -30,13 +33,16 @@
         });
     const loadImg = (...paths) => Promise.all(paths.map(checkImage));
     
+
+    const e = { w: 30, h: 50 };
+
     /* CUSTOM */
     const data = (/*image.canvas*/ i, /*index*/ j) =>
         i.c.ctx.d(...[
         /*sx*/
-        /*sy*/ ...xy(j, i.c.w, i.s.w, i.s.h),
-        /*sw*/ i.s.w,
-        /*sh*/ i.s.h
+        /*sy*/ ...xy(j, i.c.w, e.w, e.h),
+        /*sw*/ e.w,
+        /*sh*/ e.h
         ]).data;
 
     const xy = (i, bw, w, h) => [
@@ -45,34 +51,46 @@
     ];
 
     loadImg("src.jpg", "org.jpg").then(() => {
+        const o = org;
+        o.w = o.width;
+        o.h = o.height;
+        const s = src;
+        s.w = s.width;
+        s.h = s.height;
+        
+        const co = document.createElement("canvas");
+        co.w = co.width  = e.w*~~(o.w/e.w);
+        co.h = co.height = e.h*~~(o.h/e.h);
+        var ctx = co.getContext("2d");
+        co.ctx = ctx;
+        ctx.d = ctx.getImageData;
+        ctx.drawImage(o, ~~(o.w/e.w), ~~(o.h/e.h), co.w, co.h, 0, 0, co.w, co.h);
+        org.canvas = org.c = co;
+        wrapper.append(co);
+        
+        //ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
 
-        [org, src].map(img => {
-            const c = document.createElement("canvas");
-            c.w = c.width =  img.width;
-            c.h = c.height = img.height;
-            var ctx = c.getContext("2d");
-            c.ctx = ctx;
-            ctx.d = ctx.getImageData;
-            ctx.drawImage(img, 0, 0);
-            img.canvas = img.c = c;
-        });
+        var nh = ~~Math.sqrt(  ( s.h*o.w*o.h )/s.w );
+        var nw = ~~((s.w*nh)/s.h);
 
-        /* ORIGINAL TILE SIZE */
-        const e = { w: 30, h: 50 };
-        const s = src.c;
-        const o = org.c;
+        const cs = document.createElement("canvas");
+        cs.w = cs.width  = e.w*~~(nw/e.w);
+        cs.h = cs.height = e.h*~~(nh/e.h);
+        var ctx = cs.getContext("2d");
+        cs.ctx = ctx;
+        ctx.d = ctx.getImageData;
+        ctx.drawImage(src, 0, 0);
+        src.canvas = src.c = cs;
+        wrapper.append(cs);
 
         /* SOURCE TILE SIZE */
-        const r = {}
-        r.h = Math.sqrt((e.h * e.h * s.w * s.h) / (o.w * o.h));
-        r.w = (e.w * r.h) / e.h;
-
-        src.s = e;
-        org.s = r;
+        // const r = {}
+        // r.h = Math.sqrt((e.h * e.h * s.w * s.h) / (o.w * o.h));
+        // r.w = (e.w * r.h) / e.h;
 
         const p = {
-            o: src,
-            s: org,
+            o: o,
+            s: s,
             ctx: out.getContext("2d")
         };
         
