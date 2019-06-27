@@ -91,7 +91,7 @@ span.block{
     transform: scale(1.2) rotate3d(-1, -1, 1, -45deg) translate3d(200px, 100px, 0);
 }
 .active3d #container .block{
-    background: var(--bg-tr);
+    background: var(--bg);
     /* background: #ffffff00; */
     /* background-image: repeating-linear-gradient(       45deg,       #005,       #005 5px,       transparent 5px,       transparent 10px     ); */
     color: transparent;

@@ -1,13 +1,70 @@
 <html>
-    <head>
-        <link rel="stylesheet" type="text/css" href="main.css">
-		<script src="jquery-3.1.1.min.js"></script>
-		<script src="script.js"></script>
-        <title>Mosaic</title>
-    </head>
-    <body>
-        <img src="src.png" id="src"/>
-        <div id="board">
-        </div>
-    </body>
+
+<head>
+    <style>
+        body {
+            font-size: 0;
+            margin: 0;
+        }
+
+        .hide {
+            display: none !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="hide">
+        <img id="org" src="org.jpg" />
+        <img id="src" src="src.jpg" />
+    </div>
+    <canvas id="out"></canvas>
+    <script>
+    const checkImage = path =>
+        new Promise(resolve => {
+            const img = new Image();
+            img.onload = () => resolve({ path, status: 'ok' });
+            img.onerror = () => resolve({ path, status: 'error' });
+            img.src = path;
+        });
+    const loadImg = (...paths) => Promise.all(paths.map(checkImage));
+
+    loadImg("src.jpg", "org.jpg").then(() => {
+
+        [org, src].map(img => {
+            img.w = img.width;
+            img.h = img.height;
+            const c = document.createElement("canvas");
+            c.width = img.w;
+            c.height = img.h;
+            var ctx = c.getContext("2d");
+            c.ctx = ctx;
+            ctx.d = ctx.getImageData;
+            ctx.drawImage(img, 0, 0);
+            img.canvas = img.c = c;
+        });
+
+        /* ORIGINAL TILE SIZE */
+        const e = { w: 30, h: 50 };
+        const s = src;
+        const o = org;
+
+        /* SOURCE TILE SIZE */
+        const r = {}
+        r.h = Math.sqrt((e.h * e.h * s.w * s.h) / (o.w * o.h));
+        r.w = (e.w * r.h) / e.h;
+
+        const p = {
+            o: org,
+            s: src,
+            e: e,
+            r: r,
+            ctx: out.getContext("2d")
+        };
+        window.p = p;
+    });
+
+    </script>
+</body>
+
 </html>
