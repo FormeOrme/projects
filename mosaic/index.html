@@ -23,6 +23,9 @@
 
     <canvas id="out"></canvas>
     <script>
+        const e = { w: 66, h: 33};
+        const MAX_EDGE = ME = 500;
+
         /* floor : ~~ */
 
         //ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
@@ -43,6 +46,17 @@
             }, 0);
 
         /* CUSTOM */
+        const S = 2;
+
+
+        const shard = (/*canvas*/ c, /*index*/ i, p) =>[
+            c,
+            ...xy(i, c.w, e.w, e.h),
+            e.w,e.h,
+            ...xy(p, c.w, e.w, e.h),
+            e.w,e.h
+        ];
+
         const data = (/*image*/ i, /*index*/ j) =>
             i.c.ctx.d(...[
         /*sx*/
@@ -51,14 +65,16 @@
         /*sh*/ e.h
             ]).data;
 
+
         const xy = (/*index*/i, bw, w, h) => [
     /*x*/ w * (i % ~~(bw / w)),
     /*y*/ h * ~~(i / ~~(bw / w))
         ];
 
-        const e = { w: 9, h: 12 };
-
-        const MAX_EDGE = ME = 600;
+        const _xy = (/*index*/p, bw, w, h) => [
+        /*x*/ w * (p % ~~(bw / w))   /*+ S*  (p % ~~(bw / w))*/  ,
+        /*y*/ h * ~~(p / ~~(bw / w)) /*+ S*~~(p / ~~(bw / w))*/
+        ];
 
         const fillCanvas = (/*image*/ i, /*resizedata*/ r) => {
             const c = document.createElement("canvas");
@@ -98,9 +114,34 @@
             wrapper.append(org.c);
 
             const n = (org.c.w * org.c.h) / (e.w * e.h);
+            console.log(n);
 
             /* 4) Resize source so that it contains N pieces too */
 
+
+            out.width = 700;
+            out.height = 700;
+
+            /*            
+            const arr = [];
+            for(var i = 0; i < n; i++){
+                arr.push({
+                    data : data(org, i),
+                    i:i
+                });
+            }
+            */
+            const random= ()=>{
+                var pos = Array.apply(null, {length: n}).map(Number.call, Number);
+                otx = out.getContext("2d");
+
+                for(var i = 0; i < n; i++){
+                    otx.drawImage( ...shard(org.c, i, pos.splice(~~(Math.random()*pos.length), 1)) );
+                }
+            }
+            random();
+            out.addEventListener("mousemove", random);
+            
             /*
             
             const co = document.createElement("canvas");
