@@ -35,9 +35,15 @@
                 img.src = path;
             });
         const loadImg = (...paths) => Promise.all(paths.map(checkImage));
+        
+        const dist = (d, b) =>
+            d.reduce((a, c, i) => {
+                a += (c - b[i]) * (c - b[i]);
+                return a;
+            }, 0);
 
         /* CUSTOM */
-        const data = (/*image.canvas*/ i, /*index*/ j) =>
+        const data = (/*image*/ i, /*index*/ j) =>
             i.c.ctx.d(...[
         /*sx*/
         /*sy*/ ...xy(j, i.c.w, e.w, e.h),
@@ -45,14 +51,14 @@
         /*sh*/ e.h
             ]).data;
 
-        const xy = (i, bw, w, h) => [
+        const xy = (/*index*/i, bw, w, h) => [
     /*x*/ w * (i % ~~(bw / w)),
     /*y*/ h * ~~(i / ~~(bw / w))
         ];
 
-        const e = { w: 32, h: 64 };
+        const e = { w: 9, h: 12 };
 
-        const MAX_EDGE = ME = 460;
+        const MAX_EDGE = ME = 600;
 
         const fillCanvas = (/*image*/ i, /*resizedata*/ r) => {
             const c = document.createElement("canvas");
@@ -82,7 +88,7 @@
             s.h = s.height;
 
             const no = {
-                _w: o.w > o.h ? ME : (o.h / o.w) * ME,
+                _w: o.w > o.h ? ME : (o.w / o.h) * ME,
                 _h: o.w > o.h ? (o.h / o.w) * ME : ME
             };
             no.w = e.w * ~~(no._w / e.w);
@@ -106,8 +112,7 @@
             ctx.drawImage(o, ~~(o.w/e.w), ~~(o.h/e.h), co.w, co.h, 0, 0, co.w, co.h);
             org.canvas = org.c = co;
             wrapper.append(co);
-            
-    
+                
             var nh = ~~Math.sqrt(  ( s.h*o.w*o.h )/s.w );
             var nw = ~~((s.w*nh)/s.h);
     
