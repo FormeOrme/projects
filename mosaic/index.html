@@ -23,79 +23,118 @@
 
     <canvas id="out"></canvas>
     <script>
-    /* floor : ~~ */
-    const checkImage = path =>
-        new Promise(resolve => {
-            const img = new Image();
-            img.onload = () => resolve({ path, status: 'ok' });
-            img.onerror = () => resolve({ path, status: 'error' });
-            img.src = path;
-        });
-    const loadImg = (...paths) => Promise.all(paths.map(checkImage));
-    
+        /* floor : ~~ */
 
-    const e = { w: 30, h: 50 };
+        //ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
 
-    /* CUSTOM */
-    const data = (/*image.canvas*/ i, /*index*/ j) =>
-        i.c.ctx.d(...[
+        const checkImage = path =>
+            new Promise(resolve => {
+                const img = new Image();
+                img.onload = () => resolve({ path, status: 'ok' });
+                img.onerror = () => resolve({ path, status: 'error' });
+                img.src = path;
+            });
+        const loadImg = (...paths) => Promise.all(paths.map(checkImage));
+
+        /* CUSTOM */
+        const data = (/*image.canvas*/ i, /*index*/ j) =>
+            i.c.ctx.d(...[
         /*sx*/
         /*sy*/ ...xy(j, i.c.w, e.w, e.h),
         /*sw*/ e.w,
         /*sh*/ e.h
-        ]).data;
+            ]).data;
 
-    const xy = (i, bw, w, h) => [
+        const xy = (i, bw, w, h) => [
     /*x*/ w * (i % ~~(bw / w)),
     /*y*/ h * ~~(i / ~~(bw / w))
-    ];
+        ];
 
-    loadImg("src.jpg", "org.jpg").then(() => {
-        const o = org;
-        o.w = o.width;
-        o.h = o.height;
-        const s = src;
-        s.w = s.width;
-        s.h = s.height;
-        
-        const co = document.createElement("canvas");
-        co.w = co.width  = e.w*~~(o.w/e.w);
-        co.h = co.height = e.h*~~(o.h/e.h);
-        var ctx = co.getContext("2d");
-        co.ctx = ctx;
-        ctx.d = ctx.getImageData;
-        ctx.drawImage(o, ~~(o.w/e.w), ~~(o.h/e.h), co.w, co.h, 0, 0, co.w, co.h);
-        org.canvas = org.c = co;
-        wrapper.append(co);
-        
-        //ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
+        const e = { w: 32, h: 64 };
 
-        var nh = ~~Math.sqrt(  ( s.h*o.w*o.h )/s.w );
-        var nw = ~~((s.w*nh)/s.h);
+        const MAX_EDGE = ME = 460;
 
-        const cs = document.createElement("canvas");
-        cs.w = cs.width  = e.w*~~(nw/e.w);
-        cs.h = cs.height = e.h*~~(nh/e.h);
-        var ctx = cs.getContext("2d");
-        cs.ctx = ctx;
-        ctx.d = ctx.getImageData;
-        ctx.drawImage(src, 0, 0);
-        src.canvas = src.c = cs;
-        wrapper.append(cs);
+        const fillCanvas = (/*image*/ i, /*resizedata*/ r) => {
+            const c = document.createElement("canvas");
+            c.w = c.width = r.w;
+            c.h = c.height = r.h;
+            var ctx = c.getContext("2d");
+            c.ctx = ctx;
 
-        /* SOURCE TILE SIZE */
-        // const r = {}
-        // r.h = Math.sqrt((e.h * e.h * s.w * s.h) / (o.w * o.h));
-        // r.w = (e.w * r.h) / e.h;
+            var sw = i.w * r.w / r._w;
+            var sh = i.h * r.h / r._h;
+            var sx = (i.w - sw) / 2;
+            var sy = (i.h - sh) / 2;
 
-        const p = {
-            o: o,
-            s: s,
-            ctx: out.getContext("2d")
-        };
-        
-        window.p = p;
-    });
+            ctx.drawImage(i, sx, sy, sw, sh, 0, 0, c.w, c.h);
+            // ctx.drawImage(o, ~~(o.w/e.w), ~~(o.h/e.h), co.w, co.h, 0, 0, co.w, co.h);
+            ctx.d = ctx.getImageData;
+
+            return c;
+        }
+
+        loadImg("src.jpg", "org.jpg").then(() => {
+            const o = org;
+            o.w = o.width;
+            o.h = o.height;
+            const s = src;
+            s.w = s.width;
+            s.h = s.height;
+
+            const no = {
+                _w: o.w > o.h ? ME : (o.h / o.w) * ME,
+                _h: o.w > o.h ? (o.h / o.w) * ME : ME
+            };
+            no.w = e.w * ~~(no._w / e.w);
+            no.h = e.h * ~~(no._h / e.h);
+
+            org.canvas = org.c = fillCanvas(org, no);
+            wrapper.append(org.c);
+
+            const n = (org.c.w * org.c.h) / (e.w * e.h);
+
+            /* 4) Resize source so that it contains N pieces too */
+
+            /*
+            
+            const co = document.createElement("canvas");
+            co.w = co.width  = e.w*~~(o.w/e.w);
+            co.h = co.height = e.h*~~(o.h/e.h);
+            var ctx = co.getContext("2d");
+            co.ctx = ctx;
+            ctx.d = ctx.getImageData;
+            ctx.drawImage(o, ~~(o.w/e.w), ~~(o.h/e.h), co.w, co.h, 0, 0, co.w, co.h);
+            org.canvas = org.c = co;
+            wrapper.append(co);
+            
+    
+            var nh = ~~Math.sqrt(  ( s.h*o.w*o.h )/s.w );
+            var nw = ~~((s.w*nh)/s.h);
+    
+            const cs = document.createElement("canvas");
+            cs.w = cs.width  = e.w*~~(nw/e.w);
+            cs.h = cs.height = e.h*~~(nh/e.h);
+            var ctx = cs.getContext("2d");
+            cs.ctx = ctx;
+            ctx.d = ctx.getImageData;
+            ctx.drawImage(src, 0, 0);
+            src.canvas = src.c = cs;
+            wrapper.append(cs);
+            */
+
+            /* SOURCE TILE SIZE */
+            // const r = {}
+            // r.h = Math.sqrt((e.h * e.h * s.w * s.h) / (o.w * o.h));
+            // r.w = (e.w * r.h) / e.h;
+
+            const p = {
+                o: o,
+                s: s,
+                ctx: out.getContext("2d")
+            };
+
+            window.p = p;
+        });
 
     </script>
 </body>
