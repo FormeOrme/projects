@@ -6,6 +6,13 @@
             font-size: 0;
             margin: 0;
         }
+        pre#logger {
+            font-size: 15px;
+        }
+        img {
+            max-width: 200px;
+            max-height: 200px;
+        }
 
         .hide {
             display: none !important;
@@ -18,13 +25,30 @@
         <img id="org" src="org.jpg" />
         <img id="src" src="src.jpg" />
     </div>
+    <div>
+        <input type="file" id="org_i"/>
+        <input type="file" id="src_i"/>
+    </div>
 
     <div id="wrapper"></div>
 
+    <pre id="logger"></pre>
     <canvas id="out"></canvas>
+
     <script>
-        const e = { w: 66, h: 33};
+        const e = { w: 20, h: 20};
         const MAX_EDGE = ME = 500;
+
+        const toCsv = (m)=>{
+            var s = ""
+            m.forEach(x=>{
+                x.forEach(y=>{
+                    s+=y+","
+                })
+                s+="\n"
+            })
+            console.log(s)
+        }
 
         /* floor : ~~ */
 
@@ -37,6 +61,7 @@
                 img.onerror = () => resolve({ path, status: 'error' });
                 img.src = path;
             });
+
         const loadImg = (...paths) => Promise.all(paths.map(checkImage));
         
         const dist = (d, b) =>
@@ -45,17 +70,15 @@
                 return a;
             }, 0);
 
-        /* CUSTOM */
-        const S = 2;
-
-
-        const shard = (/*canvas*/ c, /*index*/ i, p) =>[
+        const shard = (/*canvas*/ c, w, /*index*/ i, p) =>[
             c,
             ...xy(i, c.w, e.w, e.h),
-            e.w,e.h,
-            ...xy(p, c.w, e.w, e.h),
-            e.w,e.h
+            e.w, e.h,
+            ...xy(p, w, e.w, e.h),
+            e.w, e.h
         ];
+
+        const cache = [];
 
         const data = (/*image*/ i, /*index*/ j) =>
             i.c.ctx.d(...[
@@ -71,10 +94,25 @@
     /*y*/ h * ~~(i / ~~(bw / w))
         ];
 
+
+        /* CUSTOM */
+        const S = 2;
         const _xy = (/*index*/p, bw, w, h) => [
-        /*x*/ w * (p % ~~(bw / w))   /*+ S*  (p % ~~(bw / w))*/  ,
-        /*y*/ h * ~~(p / ~~(bw / w)) /*+ S*~~(p / ~~(bw / w))*/
+        /*x*/ w * (p % ~~(bw / w))   + S*  (p % ~~(bw / w))  ,
+        /*y*/ h * ~~(p / ~~(bw / w)) + S*~~(p / ~~(bw / w))
         ];
+
+        const minIndex = (a)=> {
+            var index = 0;
+            var min = Number.MAX_SAFE_INTEGER;
+            a.forEach((o, i)=>{
+                if(o < min){
+                    min = o;
+                    index = i;
+                }
+            })
+            return index;
+        }
 
         const fillCanvas = (/*image*/ i, /*resizedata*/ r) => {
             const c = document.createElement("canvas");
@@ -95,7 +133,8 @@
             return c;
         }
 
-        loadImg("src.jpg", "org.jpg").then(() => {
+        const draw = () => {
+
             const o = org;
             o.w = o.width;
             o.h = o.height;
@@ -110,17 +149,51 @@
             no.w = e.w * ~~(no._w / e.w);
             no.h = e.h * ~~(no._h / e.h);
 
-            org.canvas = org.c = fillCanvas(org, no);
+            console.log(no); 
+            o.canvas = o.c = fillCanvas(org, no);
             wrapper.append(org.c);
 
-            const n = (org.c.w * org.c.h) / (e.w * e.h);
-            console.log(n);
 
-            /* 4) Resize source so that it contains N pieces too */
+            const _no = (o.c.w * o.c.h) / (e.w * e.h);
+            console.log(_no);
+            
+            var _h = Math.sqrt( ( no.w*no.h*s.h)/s.w )
+            var _w = (no.w*no.h)/_h
+            const ns = {
+                _h :_h,
+                _w :_w,
+                w: e.w * ~~(_w / e.w),
+                h: e.h * ~~(_h / e.h),
+            };
+            console.log(ns); 
+            s.canvas = s.c = fillCanvas(s, ns);
+            wrapper.append(s.c); 
 
+            const _ns = (s.c.w * s.c.h) / (e.w * e.h);
+            console.log(_ns);         
+            
+            out.width =  ns.w;
+            out.height = ns.h;
 
-            out.width = 700;
-            out.height = 700;
+            /* CALC MATRIX */
+            
+            var sw = new StopWatch();
+            const m = [];
+
+            for(var is = _ns-1; is >= 0; is--){
+                m[is] = [];
+                for(var io = _no-1; io >= 0; io--){
+                    m[is][io] = dist(data(o, io), data(s, is));
+                }
+            }
+
+            logger.innerText = `[${_ns}]x[${_no}] - [${e.w}]x[${e.h}] - [${sw.diff()}]ms`;
+
+            const otx = out.getContext("2d");
+            m.forEach((a, i)=>{
+                var mi =  minIndex(a);
+                otx.drawImage( ...shard(o.c, s.c.w, mi, i));
+            });
 
             /*            
             const arr = [];
@@ -131,6 +204,8 @@
                 });
             }
             */
+
+            /*
             const random= ()=>{
                 var pos = Array.apply(null, {length: n}).map(Number.call, Number);
                 otx = out.getContext("2d");
@@ -141,7 +216,8 @@
             }
             random();
             out.addEventListener("mousemove", random);
-            
+            */
+
             /*
             
             const co = document.createElement("canvas");
@@ -172,15 +248,15 @@
             // const r = {}
             // r.h = Math.sqrt((e.h * e.h * s.w * s.h) / (o.w * o.h));
             // r.w = (e.w * r.h) / e.h;
+        }
 
-            const p = {
-                o: o,
-                s: s,
-                ctx: out.getContext("2d")
-            };
+        loadImg("src.jpg", "org.jpg").then(draw);
 
-            window.p = p;
-        });
+        function StopWatch(/*start*/s = Date.now()) {
+            this.s = s;
+            this.diff = () => Date.now()-this.s;
+            this.reset = ()=>this.s = Date.now();
+        }
 
     </script>
 </body>
