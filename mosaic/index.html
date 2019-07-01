@@ -36,9 +36,9 @@
     <canvas id="out"></canvas>
 
     <script>
-        const e = { w: 20, h: 20};
+        const e = { w: 10, h: 10};
 
-        const MAX_EDGE = ME = 400;
+        const MAX_EDGE = ME = 350;
 
         const toCsv = (m)=>{
             var s = ""
@@ -78,6 +78,21 @@
             ...xy(p, w, e.w, e.h),
             e.w, e.h
         ];
+
+        const _data = (/*array*/img, /*index*/i) => {
+            var bw = img.c.w;
+            /* r,g,b,a x n */
+            var _ = xy(i, bw, e.w, e.h);
+
+            return img.c.data.filter((o, i) => {
+                for (var j = _[1]; j < (_[1] + e.h); j++) {
+                    if (i > (_[0] * 4) + (j * bw) && i < ((_[0] + e.w) * 4) + (j * bw)) {
+                        return true;
+                    }
+                }
+                return false;
+            });
+        }
 
         const data = (/*image*/ i, /*index*/ j) => i.c.ctx.d(...[
             /*sx*/
@@ -136,6 +151,8 @@
             ctx.drawImage(i, sx, sy, sw, sh, 0, 0, c.w, c.h);
             // ctx.drawImage(o, ~~(o.w/e.w), ~~(o.h/e.h), co.w, co.h, 0, 0, co.w, co.h);
             ctx.d = ctx.getImageData;
+            
+            c.data = ctx.d(0, 0, c.w, c.h).data;
 
             return c;
         }
@@ -158,7 +175,6 @@
 
             console.log(no); 
             o.canvas = o.c = fillCanvas(org, no);
-            wrapper.append(org.c);
 
 
             const _no = (o.c.w * o.c.h) / (e.w * e.h);
@@ -174,7 +190,10 @@
             };
             console.log(ns); 
             s.canvas = s.c = fillCanvas(s, ns);
+
+            /* DRAW CANVAS */
             wrapper.append(s.c); 
+            wrapper.append(o.c);
 
             const _ns = (s.c.w * s.c.h) / (e.w * e.h);
             console.log(_ns);         
@@ -192,10 +211,11 @@
                 m[is] = [];
                 for(var io = _no-1; io >= 0; io--){
                     m[is][io] = dist(dataCache(o, io), dataCache(s, is));
+                    //m[is][io] = dist(_data(o, io), _data(s, is));
                 }
             }
 
-            /* READ ALL DATA FIRST, THEN SPLIT */
+            /* >> READ ALL DATA FIRST, THEN SPLIT */
 
             logger.innerText = `[${_ns}]x[${_no}] - [${e.w}]x[${e.h}] - [${sw.diff()}]ms`;
 
