@@ -37,7 +37,8 @@
 
     <script>
         const e = { w: 20, h: 20};
-        const MAX_EDGE = ME = 500;
+
+        const MAX_EDGE = ME = 400;
 
         const toCsv = (m)=>{
             var s = ""
@@ -78,16 +79,22 @@
             e.w, e.h
         ];
 
-        const cache = [];
+        const data = (/*image*/ i, /*index*/ j) => i.c.ctx.d(...[
+            /*sx*/
+            /*sy*/ ...xy(j, i.c.w, e.w, e.h),
+            /*sw*/ e.w,
+            /*sh*/ e.h
+                ]).data;
 
-        const data = (/*image*/ i, /*index*/ j) =>
-            i.c.ctx.d(...[
-        /*sx*/
-        /*sy*/ ...xy(j, i.c.w, e.w, e.h),
-        /*sw*/ e.w,
-        /*sh*/ e.h
-            ]).data;
-
+        const dataCache = (/*image*/ i, /*index*/ j) => {
+            if(!i.cache){
+                i.cache = [];
+            }
+            if(!i.cache[j]){
+                i.cache[j] = data(i, j);
+            }
+            return i.cache[j];
+        }
 
         const xy = (/*index*/i, bw, w, h) => [
     /*x*/ w * (i % ~~(bw / w)),
@@ -178,14 +185,17 @@
             /* CALC MATRIX */
             
             var sw = new StopWatch();
+            
+            /* READ PART OF DATA */
             const m = [];
-
             for(var is = _ns-1; is >= 0; is--){
                 m[is] = [];
                 for(var io = _no-1; io >= 0; io--){
-                    m[is][io] = dist(data(o, io), data(s, is));
+                    m[is][io] = dist(dataCache(o, io), dataCache(s, is));
                 }
             }
+
+            /* READ ALL DATA FIRST, THEN SPLIT */
 
             logger.innerText = `[${_ns}]x[${_no}] - [${e.w}]x[${e.h}] - [${sw.diff()}]ms`;
 
