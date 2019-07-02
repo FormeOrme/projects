@@ -7,7 +7,7 @@
             margin: 0;
         }
         pre#logger {
-            font-size: 15px;
+            font-size: 12px;
         }
         img {
             max-width: 200px;
@@ -33,9 +33,23 @@
     <div id="wrapper"></div>
 
     <pre id="logger"></pre>
+
     <canvas id="out"></canvas>
 
     <script>
+        function Logger(id){
+            this.logger = document.getElementById(id);
+            this.info = (s)=> {
+                console.log(s);
+                var span = document.createElement("div");
+                span.innerText = s;
+                this.logger.append(span);
+            }
+        }
+
+        const _log = new Logger("logger");
+
+
         const e = { w: 10, h: 10};
 
         const MAX_EDGE = ME = 350;
@@ -82,11 +96,11 @@
         const _data = (/*array*/img, /*index*/i) => {
             var bw = img.c.w;
             /* r,g,b,a x n */
-            var _ = xy(i, bw, e.w, e.h);
+            var _xy = xy(i, bw, e.w, e.h);
 
             return img.c.data.filter((o, i) => {
-                for (var j = _[1]; j < (_[1] + e.h); j++) {
-                    if (i > (_[0] * 4) + (j * bw) && i < ((_[0] + e.w) * 4) + (j * bw)) {
+                for (var j = _xy[1]; j < (_xy[1] + e.h); j++) {
+                    if (i > (_xy[0] * 4) + (j * bw) && i < ((_xy[0] + e.w) * 4) + (j * bw)) {
                         return true;
                     }
                 }
@@ -137,7 +151,11 @@
         }
 
         const fillCanvas = (/*image*/ i, /*resizedata*/ r) => {
-            const c = document.createElement("canvas");
+            var id = i.id+"_canvas";
+
+            const c = document.getElementById(id) || document.createElement("canvas");
+            c.id = id;
+
             c.w = c.width = r.w;
             c.h = c.height = r.h;
             var ctx = c.getContext("2d");
@@ -158,7 +176,6 @@
         }
 
         const draw = () => {
-
             const o = org;
             o.w = o.width;
             o.h = o.height;
@@ -172,13 +189,10 @@
             };
             no.w = e.w * ~~(no._w / e.w);
             no.h = e.h * ~~(no._h / e.h);
-
-            console.log(no); 
+            
             o.canvas = o.c = fillCanvas(org, no);
 
-
             const _no = (o.c.w * o.c.h) / (e.w * e.h);
-            console.log(_no);
             
             var _h = Math.sqrt( ( no.w*no.h*s.h)/s.w )
             var _w = (no.w*no.h)/_h
@@ -188,7 +202,6 @@
                 w: e.w * ~~(_w / e.w),
                 h: e.h * ~~(_h / e.h),
             };
-            console.log(ns); 
             s.canvas = s.c = fillCanvas(s, ns);
 
             /* DRAW CANVAS */
@@ -196,7 +209,6 @@
             wrapper.append(o.c);
 
             const _ns = (s.c.w * s.c.h) / (e.w * e.h);
-            console.log(_ns);         
             
             out.width =  ns.w;
             out.height = ns.h;
@@ -214,10 +226,7 @@
                     //m[is][io] = dist(_data(o, io), _data(s, is));
                 }
             }
-
-            /* >> READ ALL DATA FIRST, THEN SPLIT */
-
-            logger.innerText = `[${_ns}]x[${_no}] - [${e.w}]x[${e.h}] - [${sw.diff()}]ms`;
+            _log.info(`[${_ns}]x[${_no}] - [${e.w}]x[${e.h}] - [${sw.diff()}]ms`);
 
             const otx = out.getContext("2d");
             m.forEach((a, i)=>{
@@ -280,14 +289,13 @@
             // r.w = (e.w * r.h) / e.h;
         }
 
-        loadImg("src.jpg", "org.jpg").then(draw);
-
         function StopWatch(/*start*/s = Date.now()) {
             this.s = s;
             this.diff = () => Date.now()-this.s;
             this.reset = ()=>this.s = Date.now();
         }
 
+        loadImg("src.jpg", "org.jpg").then(draw);
     </script>
 </body>
 
