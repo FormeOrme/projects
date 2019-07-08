@@ -29,7 +29,7 @@ body{
 
 #container{
     display: block;
-    width: 80%;
+    width: 1000px;
     margin: 0 auto;
     margin-top: 20px;
 }
@@ -276,7 +276,7 @@ body{
     display: none;
 }
 
-#table.column .cell{
+#table.column .cells.open .cell{
     display: block;
     height: auto;
 }
@@ -318,7 +318,7 @@ body{
 
 /* HIDE WEEKEND */
 #table.hide-weekend .header.weekend,
-#table.hide-weekend .day.weekend{
+#table.hide-weekend .cell.weekend{
     flex-grow: 0;
 }
 

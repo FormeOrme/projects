@@ -78,7 +78,7 @@ function templateMonth(month, year) {
         let w = (6-(date.getDay()+5)%7);
         offset.classList.add("w" + w);
         offset.classList.add("offset");
-        if(w>=2){
+        if(w>=1){
             offset.classList.add("weekend");
         }
         row.append(offset);
