@@ -50,20 +50,10 @@
         const _log = new Logger("logger");
 
 
-        const e = { w: 10, h: 10};
+        const e = { w: 5, h: 5 };
+        e.a = e.w*e.h;
 
-        const MAX_EDGE = ME = 350;
-
-        const toCsv = (m)=>{
-            var s = ""
-            m.forEach(x=>{
-                x.forEach(y=>{
-                    s+=y+","
-                })
-                s+="\n"
-            })
-            console.log(s)
-        }
+        const MAX_EDGE = ME = 300;
 
         /* floor : ~~ */
 
@@ -85,6 +75,42 @@
                 return a;
             }, 0);
 
+
+        const index = (i, x, y, bw) => 
+            bw * (y + ~~(i/(e.w))) + x + i%(e.w);        
+        // return sx + (i % (e.w * 4)) + (bw * 4) * (~~(i / (e.w * 4)) * sy);
+
+        const dist2 = (/* image */ c1, /* index */ i1, /* image */ c2, /* index */ i2) => {
+            const bw1 = c1.c.w;
+            const xy1 = xy(i1, bw1, e.w, e.h);
+            const x1 = xy1[0];
+            const y1 = xy1[1];
+            const d1 = c1.c.data;
+
+            const bw2 = c2.c.w;
+            const xy2 = xy(i2, bw2, e.w, e.h);
+            const x2 = xy2[0];
+            const y2 = xy2[1];
+            const d2 = c2.c.data;
+
+            var sum = 0;
+
+            /* per n = e.w*e.h */
+
+
+            for (var j = 0; j < e.a; j++) {
+                for(var c = 0; c < 4; c++){
+
+                    var v1 = d1[index(j, x1, y1, bw1)*4 + c];
+                    var v2 = d2[index(j, x2, y2, bw2)*4 + c];
+                    sum += (v1 - v2) * (v1 - v2);
+                
+                }
+            }
+
+            return sum;
+        }        
+
         const shard = (/*canvas*/ c, w, /*index*/ i, p) =>[
             c,
             ...xy(i, c.w, e.w, e.h),
@@ -93,11 +119,11 @@
             e.w, e.h
         ];
 
+        /* DA RIFARE SENZA FILTER */
         const _data = (/*array*/img, /*index*/i) => {
             var bw = img.c.w;
             /* r,g,b,a x n */
             var _xy = xy(i, bw, e.w, e.h);
-
             return img.c.data.filter((o, i) => {
                 for (var j = _xy[1]; j < (_xy[1] + e.h); j++) {
                     if (i > (_xy[0] * 4) + (j * bw) && i < ((_xy[0] + e.w) * 4) + (j * bw)) {
@@ -124,10 +150,10 @@
             }
             return i.cache[j];
         }
-
+        
         const xy = (/*index*/i, bw, w, h) => [
-    /*x*/ w * (i % ~~(bw / w)),
-    /*y*/ h * ~~(i / ~~(bw / w))
+            /*x*/ w * (i % ~~(bw / w)),
+            /*y*/ h * ~~(i / ~~(bw / w))
         ];
 
 
@@ -175,6 +201,19 @@
             return c;
         }
 
+        const buildMatrix = (s, _ns, o, _no, f)=>{
+            var sw = new StopWatch();
+            const m = [];
+            for(var is = 0; is < _ns; is++){
+                m[is] = [];
+                for(var io = 0; io < _no; io++){
+                    m[is][io] = f(s, is, o, io);
+                }
+            }
+            _log.info(`built matrix in [${sw.diffR()}]ms`);
+            return m;
+        }
+
         const draw = () => {
             const o = org;
             o.w = o.width;
@@ -215,24 +254,22 @@
 
             /* CALC MATRIX */
             
-            var sw = new StopWatch();
             
+            _log.info(`[${_ns}]x[${_no}] - [${e.w}]x[${e.h}]`);
             /* READ PART OF DATA */
-            const m = [];
-            for(var is = _ns-1; is >= 0; is--){
-                m[is] = [];
-                for(var io = _no-1; io >= 0; io--){
-                    m[is][io] = dist(dataCache(o, io), dataCache(s, is));
-                    //m[is][io] = dist(_data(o, io), _data(s, is));
-                }
-            }
-            _log.info(`[${_ns}]x[${_no}] - [${e.w}]x[${e.h}] - [${sw.diff()}]ms`);
+            const m = buildMatrix(s, _ns, o, _no, dist2);
+            
+                    // m[is][io] = dist(dataCache(o, io), dataCache(s, is));
+                    // m[is][io] = dist(_data(o, io), _data(s, is));
+                    // m[is][io] = dist2(s, is, o, io);
 
+            var sw = new StopWatch();
             const otx = out.getContext("2d");
             m.forEach((a, i)=>{
                 var mi =  minIndex(a);
                 otx.drawImage( ...shard(o.c, s.c.w, mi, i));
             });
+            _log.info(`render in [${sw.diffR()}]ms`);
 
             /*            
             const arr = [];
@@ -293,6 +330,7 @@
             this.s = s;
             this.diff = () => Date.now()-this.s;
             this.reset = ()=>this.s = Date.now();
+            this.diffR = ()=>{var d = this.diff(); this.reset(); return d;}
         }
 
         loadImg("src.jpg", "org.jpg").then(draw);
