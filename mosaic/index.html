@@ -22,12 +22,12 @@
 
 <body>
     <div class="hide">
-        <img id="org" src="org.jpg" />
         <img id="src" src="src.jpg" />
+        <img id="org" src="org.jpg" />
     </div>
     <div>
-        <input type="file" id="org_i"/>
         <input type="file" id="src_i"/>
+        <input type="file" id="org_i"/>
     </div>
 
     <div id="wrapper"></div>
@@ -49,8 +49,7 @@
 
         const _log = new Logger("logger");
 
-
-        const e = { w: 5, h: 5 };
+        const e = { w: 11, h: 11 };
         e.a = e.w*e.h;
 
         const MAX_EDGE = ME = 300;
@@ -96,15 +95,11 @@
             var sum = 0;
 
             /* per n = e.w*e.h */
-
-
             for (var j = 0; j < e.a; j++) {
                 for(var c = 0; c < 4; c++){
-
                     var v1 = d1[index(j, x1, y1, bw1)*4 + c];
                     var v2 = d2[index(j, x2, y2, bw2)*4 + c];
                     sum += (v1 - v2) * (v1 - v2);
-                
                 }
             }
 
@@ -258,17 +253,23 @@
             _log.info(`[${_ns}]x[${_no}] - [${e.w}]x[${e.h}]`);
             /* READ PART OF DATA */
             const m = buildMatrix(s, _ns, o, _no, dist2);
+
+            // const m = buildMatrix(s, _ns, o, _no, (s, is, o, io)=>{
+            //     return dist(dataCache(o, io), dataCache(s, is));
+            // });
             
-                    // m[is][io] = dist(dataCache(o, io), dataCache(s, is));
-                    // m[is][io] = dist(_data(o, io), _data(s, is));
-                    // m[is][io] = dist2(s, is, o, io);
+            // m[is][io] = ;
+            // m[is][io] = dist(_data(o, io), _data(s, is));
+            // m[is][io] = dist2(s, is, o, io);
 
             var sw = new StopWatch();
             const otx = out.getContext("2d");
-            m.forEach((a, i)=>{
+            
+            m.forEach((/* array */ a, /* index */ i)=>{
                 var mi =  minIndex(a);
                 otx.drawImage( ...shard(o.c, s.c.w, mi, i));
             });
+
             _log.info(`render in [${sw.diffR()}]ms`);
 
             /*            
@@ -334,6 +335,28 @@
         }
 
         loadImg("src.jpg", "org.jpg").then(draw);
+
+        const onChangeInput = (/* FILE ID */fileId, /* IMAGE ID */imageId)=>{
+                document.getElementById(fileId).onchange = function (evt) {
+                var tgt = evt.target || window.event.srcElement,
+                    files = tgt.files;
+
+                // FileReader support
+                if (FileReader && files && files.length) {
+                    var fr = new FileReader();
+                    fr.onload = function () {
+                        document.getElementById(imageId).src = fr.result;
+                    }
+                    fr.readAsDataURL(files[0]);
+                }
+                
+                document.getElementById(imageId).onload = draw();
+            }
+        }
+
+        onChangeInput("org_i", "org");
+        onChangeInput("src_i", "src");
+
     </script>
 </body>
 
