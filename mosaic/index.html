@@ -5,6 +5,7 @@
         body {
             font-size: 0;
             margin: 0;
+            font-family: monospace;
         }
         pre#logger {
             font-size: 12px;
@@ -13,9 +14,16 @@
             max-width: 200px;
             max-height: 200px;
         }
-
         .hide {
             display: none !important;
+        }
+        div#reload {
+            padding: 5px 10px;
+            display: inline-block;
+            font-size: 15px;
+            border: 1px solid #000;
+            border-radius: 3px;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -28,6 +36,7 @@
     <div>
         <input type="file" id="src_i"/>
         <input type="file" id="org_i"/>
+        <div id="reload">RELOAD</div>
     </div>
 
     <div id="wrapper"></div>
@@ -45,11 +54,14 @@
                 span.innerText = s;
                 this.logger.append(span);
             }
+            this.empty = ()=>{
+                this.logger.innerText = "";
+            }
         }
 
         const _log = new Logger("logger");
 
-        const e = { w: 11, h: 11 };
+        const e = { w: 10, h: 10 };
         e.a = e.w*e.h;
 
         const MAX_EDGE = ME = 300;
@@ -173,7 +185,11 @@
 
         const fillCanvas = (/*image*/ i, /*resizedata*/ r) => {
             var id = i.id+"_canvas";
-
+            var d = document.getElementById(id);
+            if(!!d){
+                d.remove();
+            }
+            
             const c = document.getElementById(id) || document.createElement("canvas");
             c.id = id;
 
@@ -210,12 +226,15 @@
         }
 
         const draw = () => {
-            const o = org;
-            o.w = o.width;
-            o.h = o.height;
+            _log.empty();
+
             const s = src;
-            s.w = s.width;
-            s.h = s.height;
+            s.w = s.naturalWidth;
+            s.h = s.naturalHeight;
+
+            const o = org;
+            o.w = o.naturalWidth;
+            o.h = o.naturalHeight;
 
             const no = {
                 _w: o.w > o.h ? ME : (o.w / o.h) * ME,
@@ -224,7 +243,7 @@
             no.w = e.w * ~~(no._w / e.w);
             no.h = e.h * ~~(no._h / e.h);
             
-            o.canvas = o.c = fillCanvas(org, no);
+            o.canvas = o.c = fillCanvas(o, no);
 
             const _no = (o.c.w * o.c.h) / (e.w * e.h);
             
@@ -336,6 +355,8 @@
 
         loadImg("src.jpg", "org.jpg").then(draw);
 
+        document.getElementById("reload").addEventListener("click", draw);
+
         const onChangeInput = (/* FILE ID */fileId, /* IMAGE ID */imageId)=>{
                 document.getElementById(fileId).onchange = function (evt) {
                 var tgt = evt.target || window.event.srcElement,
@@ -345,12 +366,12 @@
                 if (FileReader && files && files.length) {
                     var fr = new FileReader();
                     fr.onload = function () {
-                        document.getElementById(imageId).src = fr.result;
+                        var image = document.getElementById(imageId);
+                        image.src = fr.result;
+                        //image.onload = draw();
                     }
                     fr.readAsDataURL(files[0]);
                 }
-                
-                document.getElementById(imageId).onload = draw();
             }
         }
 
