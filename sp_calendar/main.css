@@ -8,6 +8,11 @@ body{
     margin: 0px;
 }
 
+div#calendarTable {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
 .row{
     display: flex;
     flex-grow: 1;
@@ -19,7 +24,7 @@ body{
     display: flex;
     flex-direction: column;
     /* background: #0002; */
-    border: 1px solid #0002;
+    /* border: 1px solid #0002; */
     padding: 3px;
     margin: 3px;
     text-align: center;
@@ -27,18 +32,22 @@ body{
 
 .colLeft{
     flex: 2;
+    min-width: 200px;
 }
 .colRight{
     flex: 7;   
 }
 
+.month,
 .number{
-    flex: 1; 
+    cursor: pointer;
 }
 
+.number,
 .weekDay,
 .month{
-    flex: 1;   
+    flex: 1;
+    position: relative;
 }
 
 /* DAY STYLE */
@@ -50,6 +59,10 @@ body{
     content: attr(data-label);
 }
 
+.content{
+    overflow: hidden;
+}
+
 .command{
     flex: 1;
     background: transparent;
@@ -58,4 +71,32 @@ body{
     font-size: 16px;
     font-family: "Roboto mono";
     outline: none;
+}
+
+/* HIGHLIGHT */
+
+.active{
+    outline: 3px solid #2196f355;
+}
+
+.month.active::before { 
+  content: '';  
+  background-color: #2196f355;
+  position: absolute;  
+  left: 0;
+  height: 10000px;
+  top: -5000px;
+  width: 100%;
+  z-index: -1;
+}
+
+.number.active::before {
+  background-color: #2196f355;
+  content: '';  
+  height: 100%;
+  top: 0;
+  left: -5000px;
+  position: absolute;  
+  width: 10000px;
+  z-index: -1;
 }

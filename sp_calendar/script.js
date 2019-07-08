@@ -2,8 +2,8 @@ document.addEventListener('DOMContentLoaded', init, false);
 
 const LANGS = ["en-en", "it-it"];
 
-function months() {
-    return Array.from(Array(12).keys()).map(n => (new Date(CURRENT.year, n, 1)));
+function months(year) {
+    return Array.from(Array(12).keys()).map(n => (new Date(year, n, 1)));
     /* .toLocaleString(CURRENT.locale, { month: 'short' }) */
 };
 function weekdays() {
@@ -11,10 +11,11 @@ function weekdays() {
 };
 
 const CURRENT = {
+    now : new Date(),
     locale: LANGS[0],
-    months: months,
     weekdays: weekdays,
     year: (new Date()).getFullYear(),
+    months: ()=>months(CURRENT.year),
     template: {
         row: { nodeName: "div", classList: ["row"] },
         col: { nodeName: "div", classList: ["col"] }
@@ -64,6 +65,8 @@ function fillWeekDays(weekDays){
 }
 
 function buildContent() {
+    console.log(CURRENT);
+
     let content = createElement(CURRENT.template.col);
     content.classList.add("content");
 
@@ -91,20 +94,33 @@ function buildContent() {
         langSelect.append(option);
     });
     langSelect.value = CURRENT.locale;
+    langSelect.addEventListener("change", (e)=>{
+        CURRENT.locale = e.target.value;
+        init();
+    })
 
     CURRENT.commands.langSelect = langSelect;
     append(commands, langSelect, "langSelect");
-
 
     let months = createElement(CURRENT.template.col, ["months", "colRight"]);
     Array.from(Array(3).keys()).map((y) => {
         let row = createElement(CURRENT.template.row);
         Array.from(Array(7).keys()).map((x) => {
             let month = createElement(CURRENT.template.col, ["month", "printLabel"]);
+            month.addEventListener("click", (e)=>{
+                document.querySelectorAll(".month.active").forEach(m=>m.classList.remove("active"));
+                e.target.classList.add("active");
+            });
+
             append(row, month, "month");
         });
         append(months, row, "row");
     });
+
+    dateInput.addEventListener("change", (e)=>{
+        CURRENT.year = e.target.value*1;
+        fillMonths(months);
+    })
 
     fillMonths(months);
 
@@ -116,12 +132,18 @@ function buildContent() {
 
     Array.from(Array(7).keys()).map((y) => {
         let row = createElement(CURRENT.template.row);
+        row.dataset.row = y;
         Array.from(Array(5).keys()).map((x) => {
             let number = createElement(CURRENT.template.col, ["number", "printLabel"]);
             number.dataset.label = 1 + y + 7 * x;
+            number.dataset.row = y;
             if (number.dataset.label > 31) {
                 number.dataset.label = "";
             }
+            number.addEventListener("click", (e)=>{
+                document.querySelectorAll(".number.active").forEach(m=>m.classList.remove("active"));
+                e.target.classList.add("active");
+            });
             append(row, number, "number");
         });
         append(numbers, row, "row");
@@ -131,8 +153,10 @@ function buildContent() {
 
     Array.from(Array(7).keys()).map((y) => {
         let row = createElement(CURRENT.template.row);
+        row.dataset.row = y;
         Array.from(Array(7).keys()).map((x) => {
             let weekDay = createElement(CURRENT.template.col, ["weekDay", "printLabel"]);
+            weekDay.dataset.row = y;
             append(row, weekDay, "weekDay");
         });
         append(weekDays, row, "row");
@@ -151,5 +175,6 @@ function buildContent() {
 
 function init() {
     CURRENT.table = document.getElementById('calendarTable');
+    CURRENT.table.innerHTML = '';
     append(CURRENT.table, buildContent(), "content");
 }
