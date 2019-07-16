@@ -127,7 +127,7 @@ const drag = simulation => {
 }
 
 const buildGraphView = (tables) => {
-    const width = 400;
+    const width =  400;
     const height = 400;
     const radius = 3;
 

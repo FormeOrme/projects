@@ -72,6 +72,9 @@ ul ul {
     margin: 0 auto;
     user-select: none;
 }
+#graph_wrapper{
+    overflow: hidden;
+}
 #table_wrapper{
     display: flex;
     flex-wrap: wrap;
