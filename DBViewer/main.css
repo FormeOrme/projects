@@ -1,0 +1,97 @@
+/* SVG */
+svg {
+    height: 100vh;
+    transform: translate(-50%, 0);
+    left: 50%;
+    position: relative;
+}
+
+text,
+circle{
+    cursor: pointer;
+}
+text{
+    display: none;
+    f: 1px solid white;
+}
+text.highlight{
+    display: block;
+}
+
+line{
+    stroke-width: 0.5px;
+    stroke: black;
+}
+
+circle{
+    r:2;
+    transition: 0.2s r , 0.2s fill;
+}
+circle.highlight{
+    r:3;
+}
+circle.highlight.target{
+    fill: #4caf50;
+}
+circle.highlight.source{
+    fill: #3f51b5;
+}
+circle.highlight.fk{
+    fill: #F44336;
+}
+
+/* PAGE */
+body{
+    font-family: "Roboto Mono", monospace;
+    margin: 0;
+    font-size: 12px;
+    user-select: none;
+}
+
+.hide{
+    display: none!important;
+}
+
+h3{
+    margin: 0px;
+}
+
+ul {
+    list-style-type: none;
+    padding-inline-start: 0px;
+}
+ul ul {
+    padding-inline-start: 20px;
+}
+
+.pk{
+    background: #F002;
+}
+#container{
+    max-width: 1200px;
+    margin: 0 auto;
+    user-select: none;
+}
+#table_wrapper{
+    display: flex;
+    flex-wrap: wrap;
+}
+.table{
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: 21%;
+    padding: 10px;
+    border: 2px solid;
+    margin: 10px;
+}
+.table:target {
+    background: #FF02;
+}
+
+a[href],
+a[href]:visited{
+    color: #000;
+}
+a[href]:hover{
+    background: #0FF2;
+}

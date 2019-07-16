@@ -1,0 +1,38 @@
+<html>
+
+<head>
+    <link rel="stylesheet" type="text/css" href="main.css">
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="script.js"></script>
+</head>
+<!-- GRAPH : https://observablehq.com/@d3/force-directed-graph -->
+<!-- EVENTS : http://bl.ocks.org/WilliamQLiu/76ae20060e19bf42d774 -->
+<body>
+    <div id="container">
+        <div id="graph_wrapper"></div>
+        <div id="table_wrapper"></div>
+    </div>
+    <script>
+        const processedDDL = fetch("ddl.sql")
+            .then(readText)
+            .then(processDDL)
+
+        processedDDL
+            .then(buildTableView)
+        
+        const graph_wrapper = document.getElementById("graph_wrapper");
+
+        processedDDL
+            .then(mapToNodeLinks)
+            .then(t=>{
+                t.nodes = t.nodes.filter(n=>n.name!="SCELTA")
+                return t
+            })
+            .then(buildGraphView)
+            .then(svg=>{
+                graph_wrapper.append(svg);
+            })
+    </script>
+</body>
+
+</html>
