@@ -5,15 +5,29 @@ var imgs = [
     "r4.png", 
     "r5.png"];
 
-function getImage(){
-    return imgs[Math.floor(Math.random()*imgs.length)];
+const clone = (selector)=>document.querySelector(selector).cloneNode("true")
+
+const container = document.getElementById("container")
+
+const src = () => imgs[Math.floor(Math.random()*imgs.length)]
+
+const findImage = node => {
+    if(node.nodeName == "IMG"){
+        return [node];
+    } else {        
+        return Array.from(node.children).reduce((a, c)=>{
+            a.push(...findImage(c))
+            return a;
+        }, []);
+    }
 }
 
-function addSheet(){
-    var $sheet = $('#templates .sheet').clone();
+const addSheet = ()=>{
+    const sheet = clone(".sheet");
+    const s = src()
+    findImage(sheet).forEach(i=>i.src = `src\\${s}`);
     
-    $sheet.find('img').attr("src","src/" + getImage());
-    
-    $('#container').append($sheet);
+    container.append(sheet);
 }
-$(document).on('click', 'body', addSheet);
+
+window.addEventListener("click", addSheet, false)
