@@ -26,8 +26,9 @@ const addSheet = ()=>{
     const sheet = clone(".sheet");
     const s = src()
     findImage(sheet).forEach(i=>i.src = `src\\${s}`);
-    
     container.append(sheet);
 }
 
 window.addEventListener("click", addSheet, false)
+
+setInterval(addSheet, 300);
