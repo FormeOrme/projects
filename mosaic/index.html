@@ -7,16 +7,25 @@
             margin: 0;
             font-family: monospace;
         }
+
         pre#logger {
             font-size: 12px;
         }
+
         img {
             max-width: 200px;
             max-height: 200px;
         }
+
         .hide {
             display: none !important;
         }
+
+        #container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
         div#reload {
             padding: 5px 10px;
             display: inline-block;
@@ -25,44 +34,61 @@
             border-radius: 3px;
             cursor: pointer;
         }
+
+        #preview img {
+            width: 300px;
+            height: 300px;
+            object-fit: contain;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+
+        section {
+            margin: 10px;
+        }
     </style>
 </head>
 
 <body>
-    <div class="hide">
-        <img id="src" src="src.jpg" />
-        <img id="org" src="org.jpg" />
+    <div id="container">
+        <section id="preview">
+            <label for="src_i"><img id="src" title="src" src="src.jpg" /></label>
+            <label for="org_i"><img id="org" title="org" src="org.jpg" /></label>
+        </section>
+        <section>
+            <div class="hide">
+                <input type="file" id="src_i" />
+                <input type="file" id="org_i" />
+            </div>
+            <div id="reload">RELOAD</div>
+        </section>
+
+        <div id="wrapper" class="hide"></div>
+
+        <pre id="logger"></pre>
+
+        <section>
+            <canvas id="out"></canvas>
+        </section>
     </div>
-    <div>
-        <input type="file" id="src_i"/>
-        <input type="file" id="org_i"/>
-        <div id="reload">RELOAD</div>
-    </div>
-
-    <div id="wrapper"></div>
-
-    <pre id="logger"></pre>
-
-    <canvas id="out"></canvas>
-
     <script>
-        function Logger(id){
+        function Logger(id) {
             this.logger = document.getElementById(id);
-            this.info = (s)=> {
+            this.info = (s) => {
                 console.log(s);
                 var span = document.createElement("div");
                 span.innerText = s;
                 this.logger.append(span);
             }
-            this.empty = ()=>{
+            this.empty = () => {
                 this.logger.innerText = "";
             }
         }
 
         const _log = new Logger("logger");
 
-        const e = { w: 10, h: 10 };
-        e.a = e.w*e.h;
+        const e = { w: 7, h: 7 };
+        e.a = e.w * e.h;
 
         const MAX_EDGE = ME = 300;
 
@@ -79,7 +105,7 @@
             });
 
         const loadImg = (...paths) => Promise.all(paths.map(checkImage));
-        
+
         const dist = (d, b) =>
             d.reduce((a, c, i) => {
                 a += (c - b[i]) * (c - b[i]);
@@ -87,8 +113,8 @@
             }, 0);
 
 
-        const index = (i, x, y, bw) => 
-            bw * (y + ~~(i/(e.w))) + x + i%(e.w);        
+        const index = (i, x, y, bw) =>
+            bw * (y + ~~(i / (e.w))) + x + i % (e.w);
         // return sx + (i % (e.w * 4)) + (bw * 4) * (~~(i / (e.w * 4)) * sy);
 
         const dist2 = (/* image */ c1, /* index */ i1, /* image */ c2, /* index */ i2) => {
@@ -108,17 +134,17 @@
 
             /* per n = e.w*e.h */
             for (var j = 0; j < e.a; j++) {
-                for(var c = 0; c < 4; c++){
-                    var v1 = d1[index(j, x1, y1, bw1)*4 + c];
-                    var v2 = d2[index(j, x2, y2, bw2)*4 + c];
+                for (var c = 0; c < 4; c++) {
+                    var v1 = d1[index(j, x1, y1, bw1) * 4 + c];
+                    var v2 = d2[index(j, x2, y2, bw2) * 4 + c];
                     sum += (v1 - v2) * (v1 - v2);
                 }
             }
 
             return sum;
-        }        
+        }
 
-        const shard = (/*canvas*/ c, w, /*index*/ i, p) =>[
+        const shard = (/*canvas*/ c, w, /*index*/ i, p) => [
             c,
             ...xy(i, c.w, e.w, e.h),
             e.w, e.h,
@@ -146,18 +172,18 @@
             /*sy*/ ...xy(j, i.c.w, e.w, e.h),
             /*sw*/ e.w,
             /*sh*/ e.h
-                ]).data;
+        ]).data;
 
         const dataCache = (/*image*/ i, /*index*/ j) => {
-            if(!i.cache){
+            if (!i.cache) {
                 i.cache = [];
             }
-            if(!i.cache[j]){
+            if (!i.cache[j]) {
                 i.cache[j] = data(i, j);
             }
             return i.cache[j];
         }
-        
+
         const xy = (/*index*/i, bw, w, h) => [
             /*x*/ w * (i % ~~(bw / w)),
             /*y*/ h * ~~(i / ~~(bw / w))
@@ -167,15 +193,15 @@
         /* CUSTOM */
         const S = 2;
         const _xy = (/*index*/p, bw, w, h) => [
-        /*x*/ w * (p % ~~(bw / w))   + S*  (p % ~~(bw / w))  ,
-        /*y*/ h * ~~(p / ~~(bw / w)) + S*~~(p / ~~(bw / w))
+        /*x*/ w * (p % ~~(bw / w)) + S * (p % ~~(bw / w)),
+        /*y*/ h * ~~(p / ~~(bw / w)) + S * ~~(p / ~~(bw / w))
         ];
 
-        const minIndex = (a)=> {
+        const minIndex = (a) => {
             var index = 0;
             var min = Number.MAX_SAFE_INTEGER;
-            a.forEach((o, i)=>{
-                if(o < min){
+            a.forEach((o, i) => {
+                if (o < min) {
                     min = o;
                     index = i;
                 }
@@ -184,12 +210,12 @@
         }
 
         const fillCanvas = (/*image*/ i, /*resizedata*/ r) => {
-            var id = i.id+"_canvas";
+            var id = i.id + "_canvas";
             var d = document.getElementById(id);
-            if(!!d){
+            if (!!d) {
                 d.remove();
             }
-            
+
             const c = document.getElementById(id) || document.createElement("canvas");
             c.id = id;
 
@@ -206,18 +232,18 @@
             ctx.drawImage(i, sx, sy, sw, sh, 0, 0, c.w, c.h);
             // ctx.drawImage(o, ~~(o.w/e.w), ~~(o.h/e.h), co.w, co.h, 0, 0, co.w, co.h);
             ctx.d = ctx.getImageData;
-            
+
             c.data = ctx.d(0, 0, c.w, c.h).data;
 
             return c;
         }
 
-        const buildMatrix = (s, _ns, o, _no, f)=>{
+        const buildMatrix = (s, _ns, o, _no, f) => {
             var sw = new StopWatch();
             const m = [];
-            for(var is = 0; is < _ns; is++){
+            for (var is = 0; is < _ns; is++) {
                 m[is] = [];
-                for(var io = 0; io < _no; io++){
+                for (var io = 0; io < _no; io++) {
                     m[is][io] = f(s, is, o, io);
                 }
             }
@@ -242,33 +268,33 @@
             };
             no.w = e.w * ~~(no._w / e.w);
             no.h = e.h * ~~(no._h / e.h);
-            
+
             o.canvas = o.c = fillCanvas(o, no);
 
             const _no = (o.c.w * o.c.h) / (e.w * e.h);
-            
-            var _h = Math.sqrt( ( no.w*no.h*s.h)/s.w )
-            var _w = (no.w*no.h)/_h
+
+            var _h = Math.sqrt((no.w * no.h * s.h) / s.w)
+            var _w = (no.w * no.h) / _h
             const ns = {
-                _h :_h,
-                _w :_w,
+                _h: _h,
+                _w: _w,
                 w: e.w * ~~(_w / e.w),
                 h: e.h * ~~(_h / e.h),
             };
             s.canvas = s.c = fillCanvas(s, ns);
 
             /* DRAW CANVAS */
-            wrapper.append(s.c); 
+            wrapper.append(s.c);
             wrapper.append(o.c);
 
             const _ns = (s.c.w * s.c.h) / (e.w * e.h);
-            
-            out.width =  ns.w;
+
+            out.width = ns.w;
             out.height = ns.h;
 
             /* CALC MATRIX */
-            
-            
+
+
             _log.info(`[${_ns}]x[${_no}] - [${e.w}]x[${e.h}]`);
             /* READ PART OF DATA */
             const m = buildMatrix(s, _ns, o, _no, dist2);
@@ -276,17 +302,17 @@
             // const m = buildMatrix(s, _ns, o, _no, (s, is, o, io)=>{
             //     return dist(dataCache(o, io), dataCache(s, is));
             // });
-            
+
             // m[is][io] = ;
             // m[is][io] = dist(_data(o, io), _data(s, is));
             // m[is][io] = dist2(s, is, o, io);
 
             var sw = new StopWatch();
             const otx = out.getContext("2d");
-            
-            m.forEach((/* array */ a, /* index */ i)=>{
-                var mi =  minIndex(a);
-                otx.drawImage( ...shard(o.c, s.c.w, mi, i));
+
+            m.forEach((/* array */ a, /* index */ i) => {
+                var mi = minIndex(a);
+                otx.drawImage(...shard(o.c, s.c.w, mi, i));
             });
 
             _log.info(`render in [${sw.diffR()}]ms`);
@@ -305,7 +331,7 @@
             const random= ()=>{
                 var pos = Array.apply(null, {length: n}).map(Number.call, Number);
                 otx = out.getContext("2d");
-
+ 
                 for(var i = 0; i < n; i++){
                     otx.drawImage( ...shard(org.c, i, pos.splice(~~(Math.random()*pos.length), 1)) );
                 }
@@ -348,17 +374,17 @@
 
         function StopWatch(/*start*/s = Date.now()) {
             this.s = s;
-            this.diff = () => Date.now()-this.s;
-            this.reset = ()=>this.s = Date.now();
-            this.diffR = ()=>{var d = this.diff(); this.reset(); return d;}
+            this.diff = () => Date.now() - this.s;
+            this.reset = () => this.s = Date.now();
+            this.diffR = () => { var d = this.diff(); this.reset(); return d; }
         }
 
         loadImg("src.jpg", "org.jpg").then(draw);
 
         document.getElementById("reload").addEventListener("click", draw);
 
-        const onChangeInput = (/* FILE ID */fileId, /* IMAGE ID */imageId)=>{
-                document.getElementById(fileId).onchange = function (evt) {
+        const onChangeInput = (/* FILE ID */fileId, /* IMAGE ID */imageId) => {
+            document.getElementById(fileId).onchange = function (evt) {
                 var tgt = evt.target || window.event.srcElement,
                     files = tgt.files;
 
@@ -368,7 +394,6 @@
                     fr.onload = function () {
                         var image = document.getElementById(imageId);
                         image.src = fr.result;
-                        //image.onload = draw();
                     }
                     fr.readAsDataURL(files[0]);
                 }
