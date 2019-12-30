@@ -1,0 +1,23 @@
+body{
+    background: #000;
+    margin: 0;
+}
+
+span#container{
+    display: inline-block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 5px solid #fff;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+canvas{
+     display: block;
+     background: #0001;
+     image-rendering: pixelated;
+     /* filter: blur(2px) contrast(50); */
+     cursor: none;
+}

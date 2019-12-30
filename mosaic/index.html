@@ -10,7 +10,9 @@
 
         pre#logger {
             font-size: 12px;
+            margin: 10px;
         }
+
 
         img {
             max-width: 200px;
@@ -26,12 +28,19 @@
             margin: 0 auto;
         }
 
-        div#reload {
+        input {
+            width: 70px;
+            text-align: center;
+            margin-right: 10px;
+        }
+
+        div#reload,
+        input {
             padding: 5px 10px;
             display: inline-block;
-            font-size: 15px;
+            font-size: 13px;
+            font-family: monospace;
             border: 1px solid #000;
-            border-radius: 3px;
             cursor: pointer;
         }
 
@@ -52,14 +61,16 @@
 <body>
     <div id="container">
         <section id="preview">
-            <label for="src_i"><img id="src" title="src" src="src.jpg" /></label>
-            <label for="org_i"><img id="org" title="org" src="org.jpg" /></label>
+            <label for="src_i"><img id="src" src="src.jpg" title="subject" /></label>
+            <label for="org_i"><img id="org" src="org.jpg" title="texture" /></label>
         </section>
         <section>
             <div class="hide">
                 <input type="file" id="src_i" />
                 <input type="file" id="org_i" />
             </div>
+            <input id="w_i" title="w" type="number" value="7" />
+            <input id="h_i" title="h" type="number" value="7" />
             <div id="reload">RELOAD</div>
         </section>
 
@@ -88,7 +99,8 @@
         const _log = new Logger("logger");
 
         const e = { w: 7, h: 7 };
-        e.a = e.w * e.h;
+        document.getElementById("w_i").addEventListener("input", (ev) => e.w = +ev.target.value)
+        document.getElementById("h_i").addEventListener("input", (ev) => e.h = +ev.target.value)
 
         const MAX_EDGE = ME = 300;
 
@@ -253,6 +265,8 @@
 
         const draw = () => {
             _log.empty();
+
+            e.a = e.w * e.h;
 
             const s = src;
             s.w = s.naturalWidth;
