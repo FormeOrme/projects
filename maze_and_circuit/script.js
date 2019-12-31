@@ -1,7 +1,7 @@
 const SIZE = 300
 
 const WIDTH = 500
-const HEIGHT = 300
+const HEIGHT = 250
 
 
 var canvas, ctx;
@@ -24,6 +24,7 @@ const nbr = (x, y, r) => {
 }
 
 const nbr_m = (x, y, r) => ([
+    [x, y],
     [x + 1, y],
     [x - 1, y],
     [x, y + 1],
@@ -32,7 +33,6 @@ const nbr_m = (x, y, r) => ([
     [x - 1, y - 1],
     [x - 1, y + 1],
     [x + 1, y - 1],
-    [x, y]
 ]
     //.filter(() => Math.random() > 0.2)
     .filter(xy => xy[0] >= 0 && xy[0] < canvas.width)
@@ -71,7 +71,7 @@ function init() {
     id = ctx.getImageData(0, 0, canvas.width, canvas.height)
     pixels = id.data
 
-    update_nbr_map(nbr_m, 1)
+    update_nbr_map(nbr, 1)
 
     ctx.putImageData(id, 0, 0)
 }
@@ -100,7 +100,10 @@ function draw() {
             avg = avg / t;
             let cc = pixels[off]
 
-            if (flip ? avg < 255 / 2 : avg > 255 / 2) {
+            let _k = x > canvas.width/2
+
+            if ((flip ? _k : !_k) ? avg < 255 / 2 : avg > 255 / 2) {
+                //if (flip ? avg < 255 / 2 : avg > 255 / 2) {
                 //if (avg < 255 / 2) {
                 //if ( avg > 255 / 2) {
                 //if (avg < 125 + map(x, 0, canvas.width, 0, diag) - map(y, 0, canvas.height, 0, diag)) {

@@ -1,6 +1,7 @@
 body{
     background: #000;
     margin: 0;
+    cursor: crosshair;
 }
 
 span#container{
@@ -19,5 +20,4 @@ canvas{
      background: #0001;
      image-rendering: pixelated;
      /* filter: blur(2px) contrast(50); */
-     cursor: none;
 }
