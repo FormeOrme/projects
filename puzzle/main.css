@@ -1,0 +1,60 @@
+:root{
+    --cell-width: 50px;
+    --cell-margin: 0px;
+    --cell-padding: 0px;
+    --cell-border: 3px;
+    --cell-full-width: calc( var(--cell-width) + var(--cell-padding) * 2 + var(--cell-margin) * 2 + var(--cell-border) * 2 );
+    --color-board: #111222;
+    --color-over: #999AAA;
+    --color-nbr: #00ffbb;
+    --color-active: #FF0033;
+    --color-main0: #000111;
+    --color-main1: #222333;
+    --color-main2: #444555;
+}
+
+.hide{
+    display: none!important;
+}
+
+body{
+    background: var(--color-main1);
+    margin: 0;
+}
+
+#container{
+    margin: 100px auto 0;
+    border: var(--cell-border) solid var(--color-board);
+    width: calc( var(--cell-full-width) * 8);
+    border-radius: 10px;
+}
+
+#board{
+    background: var(--color-board);
+}
+
+.cell{
+    display: inline-block;
+    width: var(--cell-width);
+    height: var(--cell-width);
+    margin: var(--cell-margin);
+    padding: var(--cell-padding);
+    border: var(--cell-border) solid var(--color-board);
+    border-radius: 10px;
+}
+.cell.over{
+    border-color: var(--color-over);
+    cursor: pointer;
+}
+.cell.active{
+    border-color: var(--color-active);
+    cursor: pointer;
+}
+.cell.nbr{
+    border-color: var(--color-nbr);
+    cursor: pointer;
+}
+
+[data-status="0"] { background: var(--color-main0) }
+[data-status="1"] { background: var(--color-main1) }
+[data-status="2"] { background: var(--color-main2) }
