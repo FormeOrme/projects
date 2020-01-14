@@ -17,19 +17,19 @@ body{
 }
 
 .tomato:after {
-    content: url(src/135702.svg);
+    content: url(/src/135702.svg);
 }
 .orange:after {
-    content: url(src/135620.svg);
+    content: url(/src/135620.svg);
 }
 .cherry:after {
-    content: url(src/135695.svg);
+    content: url(/src/135695.svg);
 }
 .strawb:after {
-    content: url(src/135717.svg);
+    content: url(/src/135717.svg);
 }
 .apple:after {
-    content: url(src/135728.svg);
+    content: url(/src/135728.svg);
 }
 
 .obj:after {
@@ -73,7 +73,7 @@ body{
     }
 }
 .roller .background {
-    -webkit-mask-image: url(src/line.svg);
+    -webkit-mask-image: url(/src/line.svg);
     -webkit-mask-position: 0px;
     -webkit-mask-size: 120%;
     animation-name: roll;
