@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hamburger</title>
+    <style>
+        body {
+            margin: 0px;
+        }
+
+        #input {
+            width: 100%;
+            height: 100px;
+            text-align: center;
+            font-size: 50px;
+            border: 0;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        }
+
+        #output {
+            top: 200px;
+            position: relative;
+            min-width: 800px;
+            margin: 0 auto;
+        }
+
+        .piece {
+            display: block;
+            content: " ";
+            width: 100%;
+            height: 200px;
+            margin-top: -150px;
+            background-repeat: no-repeat;
+            background-position: center;
+            position: relative;
+        }
+
+        .type_H {
+            background-image: url("./ham.png");
+        }
+
+        .type_B {
+            background-image: url("./b.png");
+            top: 16px;
+        }
+
+        .type_U {
+            background-image: url("./u.png");
+            top: 5px;
+            height: 185px;
+        }
+
+        .type_R {
+            background-image: url("./r.png");
+        }
+
+        .type_G {
+            background-image: url("./ger.png");
+        }
+    </style>
+</head>
+
+<body>
+    <input id="input" spellcheck="false" value="Hamburger" />
+    <div id="output"></div>
+    <script>
+        const input = document.getElementById("input");
+        const output = document.getElementById("output");
+        let lastv = "";
+        const cook = e => {
+            lastv = input.value;
+
+            document.title = lastv.toUpperCase();
+
+            let short = lastv.replace(/ham/gi, "H").replace(/ger/gi, "G").toUpperCase();
+
+            output.innerHTML = short
+                .split("")
+                .map((e, i) => `<span class="piece type_${e}" style="z-index:${100 - i}"></span>`)
+                .join("");
+
+        }
+        input.addEventListener("input", cook)
+        cook();
+
+    </script>
+</body>
+
+</html>

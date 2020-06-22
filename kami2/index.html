@@ -1,0 +1,160 @@
+<html>
+
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/p5@0.10.2/lib/p5.js"></script>
+    <style>
+        body {
+            background: #000;
+            margin: 0;
+            font-size: 0;
+        }
+
+        canvas {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            image-rendering: pixelated;
+        }
+    </style>
+    <script>
+        let input;
+        let img;
+
+        let palette = [
+            ["rgb(201, 184, 164)", "rgb(84, 167, 173)", "rgb(52, 111, 119)", "rgb(162, 33, 63)", "rgb(200, 151, 30)"],
+            ["rgb(50, 52, 49)", "rgb(220, 194, 157)", "rgb(16, 145, 114)", "rgb(192, 45, 51)", "rgb(130, 127, 120)"],
+            ["rgb(182, 105, 51)", "rgb(200, 168, 7)", "rgb(123, 151, 40)", "rgb(47, 79, 32)", "rgb(145, 189, 190)"],
+            ["rgb(192, 190, 175)", "rgb(35, 63, 103)", "rgb(216, 166, 51)", "rgb(115, 18, 49)", "rgb(58, 122, 122)"],
+            ["rgb(73, 61, 47)", "rgb(178, 65, 35)", "rgb(119, 184, 178)", "rgb(196, 135, 52)", "rgb(202, 177, 155)"],
+            ["rgb(24, 48, 50)", "rgb(81, 122, 56)", "rgb(210, 180, 118)", "rgb(68, 140, 139)", "rgb(96, 62, 35)"],
+            ["rgb(49, 51, 46)", "rgb(202, 77, 119)", "rgb(63, 179, 194)", "rgb(218, 200, 76)", "rgb(223, 219, 210)"],
+            ["rgb(229, 190, 175)", "rgb(228, 149, 72)", "rgb(222, 82, 109)", "rgb(159, 38, 79)", "rgb(73, 32, 92)"],
+            ["rgb(186, 44, 70)", "rgb(208, 105, 36)", "rgb(219, 184, 38)", "rgb(161, 187, 64)", "rgb(23, 116, 134)"],
+        ]
+
+        let d
+        let r
+        let k
+        let p
+
+        function setup() {
+            let w = 390
+            let h = 625
+            createCanvas(w, h);
+            input = createFileInput(handleFile);
+            input.position(10, 10);
+            noStroke()
+            noSmooth()
+            //noFill()
+            let n = 10
+
+            r = (w + 2) / (3 / 2 * n)
+            d = r * 2
+            k = sqrt(r * r - r / 2 * r / 2)
+            time = 0;
+            p = 0
+
+            palette = palette.map(p => p.map(k => color(k)))
+        }
+
+        const drawEllipse = (x, y, d, i) => {
+            let r = (d * 1.05) / 2
+            let k = sqrt(r * r - r / 2 * r / 2)
+            let x1, y1, x2, y2, x3, y3
+            if (i % 2 == 0) {
+                x1 = x + r
+                y1 = y
+                x2 = x - r / 2
+                y2 = y + k
+                x3 = x - r / 2
+                y3 = y - k
+            } else {
+                x1 = x - r
+                y1 = y
+                x2 = x + r / 2
+                y2 = y + k
+                x3 = x + r / 2
+                y3 = y - k
+            }
+            triangle(x1, y1, x2, y2, x3, y3)
+
+            // ellipse(x, y, d)
+        }
+
+        const getColor = (x, y, time, p) => palette[p][Math.floor(noise(x, y, 50) * 6)]
+
+        const drawImage = (img) => {
+
+            if (img) {
+                let x, y, w, h;
+                if (img.width > img.height) {
+                    /* LANDSCAPE */
+                    y = 0
+                    h = height
+                    w = img.width / img.height * h
+                    x = width / 2 - w / 2
+                } else {
+                    /* PORTRAIT */
+                    x = 0
+                    w = width
+                    h = img.height / img.width * w
+                    y = height / 2 - h / 2
+                }
+                image(img, x, y, w, h)
+            }
+        }
+
+        const dist = (a, b) =>
+            (a[0] + b[0] * a[0] + b[0]) +
+            (a[1] + b[1] * a[1] + b[1]) +
+            (a[2] + b[2] * a[2] + b[2])
+
+
+        const getX = (x) => x < 0 ? 0 : (x > width ? width - 1 : x)
+        const getY = (y) => y < 0 ? 0 : (y > height ? height - 1 : y)
+
+        const closeColor = (c) => {
+            return palette[p].map(p => p.levels).sort((a, b) => dist(c, a) > dist(c, b) ? 1 : -1)[0]
+        }
+
+        function draw() {
+            time++
+            background(palette[p][0])
+            drawImage(img)
+            // filter(POSTERIZE, 5);
+
+            for (let y = 0, j = 0; y < height + r; y += k, j++) {
+                let k = j % 2 == 0 ? 0 : r * 3 / 2
+                for (let x = -r, i = 0; x < width; i++ , x += i % 2 == 0 ? r : r * 2) {
+                    let ax = x + k
+                    let c = get(getX(ax), getY(y))
+                    // c = closeColor(c)
+                    fill(c)
+                    drawEllipse(ax, y, d, i)
+                }
+            }
+        }
+
+        function handleFile(file) {
+            print(file)
+            if (file.type === 'image') {
+                img = createImg(file.data, '')
+                img.hide()
+            } else {
+                img = null;
+            }
+        }
+
+        function keyPressed() {
+            if (keyCode >= 49 && keyCode < 49 + palette.length) {
+                p = keyCode - 49
+            }
+        }
+    </script>
+</head>
+
+<body>
+</body>
+
+</html>

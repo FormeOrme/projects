@@ -1,47 +1,50 @@
 <html>
-    <head>
-        <link rel="stylesheet" type="text/css" href="main.css">
-        <script
-          src="https://code.jquery.com/jquery-3.3.1.min.js"
-          integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-          crossorigin="anonymous"></script>
-		<script src="script.js"></script>
-    </head>
-    <body>
-        <div id="templates" style="display: none;">
-            <!-- Cell -->
+
+<head>
+    <link rel="stylesheet" type="text/css" href="main.css">
+    <script src="script.js"></script>
+</head>
+
+<body>
+    <div id="templates" style="display: none;">
+        <!-- Cell -->
+        <template id="cell">
             <span class="cell">
                 <span class="background"></span>
                 <span class="prodWrapper"></span>
                 <span class="foreground"></span>
             </span>
-            
-            <!-- Product -->
+        </template>
+
+        <!-- Product -->
+        <template id="product">
             <span class="product">
                 <span class="animWrapper">
                     <span class="rotWrapper">
                         <span class="aleWrapper">
-                            <span class="obj"></span>      
+                            <span class="obj"></span>
                         </span>
                     </span>
                 </span>
             </span>
-        </div>
-        <div class="board" id="mainBoard">
-            
-        </div>
-        <div class="board" style="display: none;">
-            <span class="cell roller">
-                <span class="background"></span>
-                <span class="product">
-                    <span class="animWrapper">
-                        <span class="rotWrapper">
-                            <span class="obj computer"></span>      
-                        </span>
+        </template>
+    </div>
+    <div class="board" id="mainBoard">
+
+    </div>
+    <div class="board" style="display: none;">
+        <span class="cell roller">
+            <span class="background"></span>
+            <span class="product">
+                <span class="animWrapper">
+                    <span class="rotWrapper">
+                        <span class="obj computer"></span>
                     </span>
                 </span>
-                <span class="foreground"></span>
             </span>
-        </div>
-    </body>
+            <span class="foreground"></span>
+        </span>
+    </div>
+</body>
+
 </html>
