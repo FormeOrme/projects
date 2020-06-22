@@ -73,11 +73,11 @@
             lastv = input.value;
 
             document.title = lastv.toUpperCase();
-
             let short = lastv.replace(/ham/gi, "H").replace(/ger/gi, "G").toUpperCase();
 
             output.innerHTML = short
                 .split("")
+                .filter(e => "HBURG".split("").includes(e))
                 .map((e, i) => `<span class="piece type_${e}" style="z-index:${100 - i}"></span>`)
                 .join("");
 
