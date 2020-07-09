@@ -13,17 +13,25 @@
             function milliseconds(){
                 return new Date().getMilliseconds();
             }
+
+			const time = ()=>`${`${hour()}`.padStart(2,0)}:${`${minute()}`.padStart(2,0)}:${`${second()}`.padStart(2,0)}`.split("");
             
+			const RAD = 20;
+
 			function setup() {
-			 var myCanvas = createCanvas(250, 350);
+			 var myCanvas = createCanvas(RAD*2*4*8, RAD*2*6);
 				myCanvas.parent('canvasContainer');
 				noStroke();
+				textFont('Consolas');
 				ellipseMode(RADIUS);
 				//for(var i = 0; i < 4; i++){
 				//	x[i] = new Cell(50 + i*50, 50,25 , floor(random(13)));
 				//}
-				number = new Number(0, 50, 50);
-				frameRate(60);
+
+
+				number = time().map((c, i)=>new Grid(c, RAD + RAD*8*i, RAD, RAD)) ;
+
+				frameRate(120);
 			}
 			var digit = 0;
 			function draw() {
@@ -36,9 +44,13 @@
 				//	c.update(millis()%1000);
 				//	c.display();
 				//});
-                number.goToNumber(second()%10);                
-				number.update(milliseconds()%1000);
-				number.display();
+				let t = time()
+
+				number.map( (c, i)=>{
+                c.goToNumber( t[i] );                
+				c.update(milliseconds()%1000);
+				c.display();
+				} )
 			}
 		</script>
 	</head>
