@@ -1,0 +1,88 @@
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            margin: 0;
+            font-size: 0;
+            background: #b0bec5;
+            user-select: none;
+            color: #263238;
+        }
+
+        #board {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+        }
+
+        .row {
+            display: flex;
+            justify-content: space-evenly;
+        }
+
+        .cell {
+            font-size: 40pt;
+            font-family: "Consolas";
+            border: 3px solid;
+            border-radius: 10px;
+            min-width: 100px;
+            text-align: center;
+            cursor: pointer;
+            background: #cfd8dc;
+        }
+
+        .cell.active {
+            background-color: #f44336;
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        const createElement = (e) => {
+            const node = document.createElement(e.type);
+            !e.id || (node.id = e.id);
+            !e.children ||
+                e.children.forEach((c) => {
+                    node[c.class] = createElement(c);
+                    node.appendChild(node[c.class]);
+                });
+            !e.innerText || (node.innerText = e.innerText);
+            !e.class || node.classList.add(...e.class);
+            !e.attrs || e.attrs.forEach((a) => node.setAttribute(a[0], a[1]));
+            /* EVENTS */
+
+            !e.events || Object.entries(e.events).map(([k, v]) => node.addEventListener(k, (e) => v(e, node), false));
+
+            /* CUSTOM PROPERTIES - OBJECT */
+            node.custom = e.custom;
+            return node;
+        };
+        const BODY = document.querySelector("body")
+        const N = 10;
+        BODY.append(createElement({
+            type: "section",
+            id: "board",
+            children: Array.from({ length: N }, (y, yi) => ({
+                type: "div",
+                class: ["row"],
+                id: `row${yi}`,
+                children: Array.from({ length: N }, (x, xi) => ({
+                    tmp: n = 1 + xi + yi * N,
+                    type: "div",
+                    class: ["cell"],
+                    id: `cell${n}`,
+                    innerText: `${n}`,
+                    events: {
+                        "click": (e, n) => { n.classList.toggle("active") }
+                    }
+                }))
+            }))
+        }));
+    </script>
+</body>
+
+</html>
