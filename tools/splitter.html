@@ -18,7 +18,8 @@
         }
 
         #diff {
-            display: none;
+            --display: none;
+            width: 100%;
         }
 
         textarea {
@@ -69,6 +70,7 @@
         #images {
             zoom: 3;
             position: relative;
+            user-select: none;
         }
 
         #img_title {
@@ -89,6 +91,14 @@
             height: 70px;
             border-radius: 3px;
             padding: 2px;
+        }
+
+        #reroll {
+            font-size: 20px;
+        }
+
+        #inputs * {
+            vertical-align: middle;
         }
     </style>
     <script>
@@ -120,10 +130,18 @@
     </script>
     <script>
         const LIMIT = 2;
-        const splitWord = (w) => SW(w, true).filter((t = {}, a => !(t[a] = a in t))).sort().reverse();
-        const SW = (w, f) => {
+        const MAX_W = 5;
+        const splitWord = (w) => SW(w).filter((t = {}, a => !(t[a] = a in t))).sort().reverse();
+        const SW = (w) => {
             let list = []
             if (!!w) {
+                /*
+                if (w.length > MAX_W) {
+                    const s1 = SW(w.substring(0, MAX_W));
+                    const s2 = SW(w.substring(MAX_W, w.length));
+                    return list;
+                }
+                */
                 list.push([w]);
                 if (w.length > LIMIT) {
                     for (let i = 0; i < w.length - LIMIT; i++) {
@@ -153,14 +171,17 @@
             let out;
             let allFound;
             for (const ws of split) {
-                out = {};
+                out = [];
                 allFound = true;
                 for (const w of ws) {
                     let found = false;
                     /* FIRST MATCH CASE */
                     for (const v of list) {
                         if (v.name.includes(w)) {
-                            out[w] = v;
+                            out.push({
+                                src: w,
+                                obj: v
+                            });
                             found = true;
                             break;
                         }
@@ -169,7 +190,10 @@
                         /* THEN IGNORE CASE */
                         for (const v of list) {
                             if (v.name.toLowerCase().includes(w.toLowerCase())) {
-                                out[w] = v;
+                                out.push({
+                                    src: w,
+                                    obj: v
+                                });
                                 found = true;
                                 break;
                             }
@@ -195,7 +219,7 @@
         const UPP_LETTER_WIDTH = 6;
         const LOW_LETTER_WIDTH = 4;
         let DIFF =
-            { "UPP": { "A": 6.3, "B": 6.1, "C": 6, "D": 7, "E": 6, "F": 4, "G": 7, "H": 6, "I": 4, "J": 3, "K": 6, "L": 6, "M": 9, "N": 6, "O": 8, "P": 6, "Q": 6, "R": 6, "S": 6, "T": 6, "U": 6, "V": 6, "W": 9, "X": 6, "Y": 6, "Z": 6 }, "LOW": { "a": 5.5, "b": 6, "c": 5.2, "d": 6, "e": 5.6, "f": 5, "g": 5, "h": 6.5, "i": 3.4, "j": 3, "k": 6, "l": 3.2, "m": 9, "n": 6.3, "o": 6, "p": 6, "q": 5, "r": 4, "s": 5, "t": 4, "u": 6, "v": 5, "w": 7, "x": 5, "y": 5, "z": 5, " ": 2.6, "-": 5, ",": 2 } }
+            { "UPP": { "A": 6.3, "B": 6.1, "C": 6, "D": 7, "E": 6, "F": 4, "G": 7, "H": 7, "I": 4, "J": 3, "K": 6, "L": 6, "M": 9, "N": 6, "O": 8, "P": 6, "Q": 6, "R": 6, "S": 6, "T": 6, "U": 6, "V": 6, "W": 9, "X": 6, "Y": 6, "Z": 6 }, "LOW": { "a": 5.5, "b": 6, "c": 5.2, "d": 6, "e": 5.6, "f": 4, "g": 5, "h": 6.5, "i": 3.4, "j": 3, "k": 6, "l": 3.2, "m": 9, "n": 6.3, "o": 6, "p": 6, "q": 5, "r": 4, "s": 4, "t": 4, "u": 6, "v": 5, "w": 7, "x": 5, "y": 5, "z": 5, " ": 2.6, "-": 5, ",": 2, "'": 2 } }
         document.querySelector("body").append(createElement({
             type: "textarea",
             id: "diff",
@@ -241,11 +265,11 @@
                 children: [{
                     type: "textarea",
                     id: "background",
-                    attrs:[["placeholder", "background"]],
+                    attrs: [["placeholder", "background"]],
                     events: {
                         input: (e, _this) => {
                             document.getElementById("img_bg").innerHTML = "";
-                            const bg = WORD_LIST.find(e => e.name.includes(_this.value));
+                            const bg = WORD_LIST.find(e => e.name.toLowerCase().includes(_this.value.trim().toLowerCase()));
                             document.getElementById("img_bg").append(createElement({
                                 type: "img",
                                 class: ["background"],
@@ -256,18 +280,46 @@
                         }
                     }
                 }, {
+                    type: "button",
+                    id: "random-bg",
+                    innerText: "🔄",
+                    events: {
+                        click: (e, _this) => {
+                            document.getElementById("img_bg").innerHTML = "";
+                            shuffleArray(WORD_LIST)
+                            const bg = WORD_LIST[0];
+                            document.getElementById("img_bg").append(createElement({
+                                type: "img",
+                                class: ["background"],
+                                attrs: [
+                                    ["src", bg.img],
+                                ]
+                            }))                            
+                        }
+                    }
+                }, {
                     type: "textarea",
                     id: "title",
-                    attrs:[["placeholder", "title"]],
+                    attrs: [["placeholder", "title"]],
                     events: {
                         input: (e, _this) => fillSection(e, _this, "img_title")
                     }
                 }, {
                     type: "textarea",
                     id: "description",
-                    attrs:[["placeholder", "description"]],
+                    attrs: [["placeholder", "description"]],
                     events: {
                         input: (e, _this) => fillSection(e, _this, "img_desc")
+                    }
+                }, {
+                    type: "button",
+                    id: "reroll",
+                    innerText: "🔄",
+                    events: {
+                        click: (e, _this) => {
+                            document.getElementById("title").dispatchEvent(new Event('input', { 'bubbles': true }));
+                            document.getElementById("description").dispatchEvent(new Event('input', { 'bubbles': true }));
+                        }
                     }
                 }]
             }, {
@@ -287,10 +339,11 @@
                     id: "img_desc"
                 }]
             }]
-        }))
+        }));
+
         const fillSection = (e, input, section) => {
             let outs = [];
-            input.value.split(/[^\w]+/)
+            input.value.split(/\s+/)
                 .filter(w => !!w.trim())
                 .forEach(v => {
                     shuffleArray(WORD_LIST)
@@ -301,24 +354,33 @@
                 document.getElementById(section).append(createElement({
                     type: "section",
                     class: ["word"],
-                    children: Object.entries(o).map(([k, v]) => ({
-                        _tmp: pad = calc(v.name, k),
-                        type: "span",
-                        class: ["img-wrap"],
-                        attrs: [["style", `width:${pad.nlen}px`]],
-                        children: [{
-                            type: "img",
-                            class: ["card"],
-                            attrs: [
-                                ["src", v.img],
-                                ["title", JSON.stringify(pad)],
-                                ["style", `margin-left:-${FIXED_LEFT + pad.npad}px`]
-                            ]
-                        }]
-                    }))
+                    children: o.map(getWordElement)
                 }));
             })
         }
+
+        const getWordElement = (w) => ({
+            _tmp: pad = calc(w.obj.name, w.src),
+            type: "span",
+            class: ["img-wrap"],
+            attrs: [["style", `width:${pad.nlen}px`]],
+            events: {
+                click: (e, _this) => {
+                    shuffleArray(WORD_LIST)
+                    const tmp = getWords(w.src, WORD_LIST);
+                    _this.replaceWith(createElement(getWordElement(tmp[0])));
+                }
+            },
+            children: [{
+                type: "img",
+                class: ["card"],
+                attrs: [
+                    ["src", w.obj.img],
+                    ["title", JSON.stringify(pad)],
+                    ["style", `margin-left:-${FIXED_LEFT + pad.npad}px`]
+                ]
+            }]
+        })
     </script>
 </body>
 
