@@ -93,6 +93,16 @@
             padding: 2px;
         }
 
+        #img_desc {
+            background-position: -800px -8800px;
+            background-size: 9999px;
+        }
+
+        #img_title {
+            background-position: -670px -1200px;
+            background-size: 9999px;
+        }
+
         #reroll {
             font-size: 20px;
         }
@@ -277,6 +287,8 @@
                                     ["src", bg.img],
                                 ]
                             }))
+                            document.getElementById("img_desc").style["background-image"] = `url("${bg.img}")`;
+                            document.getElementById("img_title").style["background-image"] = `url("${bg.img}")`;
                         }
                     }
                 }, {
@@ -294,7 +306,9 @@
                                 attrs: [
                                     ["src", bg.img],
                                 ]
-                            }))                            
+                            }))
+                            document.getElementById("img_desc").style["background-image"] = `url("${bg.img}")`;
+                            document.getElementById("img_title").style["background-image"] = `url("${bg.img}")`;
                         }
                     }
                 }, {
