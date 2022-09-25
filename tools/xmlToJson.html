@@ -1,0 +1,61 @@
+<html>
+
+<head>
+    <style>
+        body {
+            font-size: 0;
+            margin: 0px;
+            background:#CCC;
+        }
+
+        section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 5px;
+        }
+
+        textarea {
+            width: calc(50% - 10px);
+            margin: 10px 5px;
+            height: calc(100% - 20px);
+            padding: 20px;
+            resize: none;
+            background:#BBB;
+            border:none;
+        }
+    </style>
+</head>
+
+<body>
+    <section spellcheck="false">
+        <textarea id="xml"></textarea>
+        <textarea readonly id="json"></textarea>
+    </section>
+    <script>
+        let parser = new DOMParser();
+
+        const nodeName = (s) => s.split(":").pop()
+
+        const toJS = (node) => {
+            let o = {}
+            if (node.childElementCount == 0) {
+                return node.innerHTML
+            } else {
+                Array.from(node.children).map(nc => {
+                    o[nodeName(nc.tagName)] = toJS(nc)
+                })
+            }
+            return o;
+        }
+
+        const fillJSON = () => {
+            let xmlDoc = parser.parseFromString(xml.value, "text/xml");
+            json.innerHTML = JSON.stringify(toJS(xmlDoc), null, 2)
+        }
+        fillJSON()
+        xml.addEventListener("input", fillJSON)
+
+    </script>
+</body>
+
+</html>

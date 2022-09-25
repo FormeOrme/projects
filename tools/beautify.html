@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="./util.js"></script>
+    <script src="https://cdn.rawgit.com/beautify-web/js-beautify/v1.13.6/js/lib/beautify.js"></script>
+    <script src="https://cdn.rawgit.com/beautify-web/js-beautify/v1.13.6/js/lib/beautify-html.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beautify</title>
+    <style>
+        body,
+        input,
+        pre{
+            margin: 0px;
+            background: #ddd;
+            font-family: "Consolas", monospace;
+            font-size: 13px;
+        }
+
+        input:focus {
+            background: #ccc;
+        }
+
+        #input {
+            border: 0px;
+            border-bottom: 1px solid;
+            width: 100%;
+            margin: 0px;
+            display: block;
+            resize: none;
+            padding:10px 0;
+            position:sticky;
+            top:0px;
+        }
+        #output{
+            padding: 10px 0;
+        }
+
+    </style>
+    <script>
+        const BEAUTIFY_OPTIONS = {
+            "indent_size": "4",
+            "indent_char": " ",
+            "max_preserve_newlines": "5",
+            "preserve_newlines": true,
+            "keep_array_indentation": false,
+            "break_chained_methods": false,
+            "indent_scripts": "normal",
+            "brace_style": "collapse",
+            "space_before_conditional": true,
+            "unescape_strings": false,
+            "jslint_happy": false,
+            "end_with_newline": false,
+            "wrap_line_length": "0",
+            "indent_inner_html": false,
+            "comma_first": false,
+            "e4x": false,
+            "indent_empty_lines": false
+        }
+        document.addEventListener("DOMContentLoaded", function (event) {
+            window.addEventListener("focus", () => { input.focus(); input.select(); })
+            input.addEventListener("input", (e) => {
+                const iValue = input.value.trim();
+                if (isHtml(iValue)) {
+                    output.innerText = html_beautify(iValue, BEAUTIFY_OPTIONS);
+                } else {
+                    output.innerText = js_beautify(iValue, BEAUTIFY_OPTIONS);
+                }
+            })
+            input.focus();
+        });
+
+    </script>
+</head>
+
+<body>
+<input id="input" spellcheck="false"/>
+<pre id="output"></pre>
+</body>
+
+</html>

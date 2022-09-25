@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="./util.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compare</title>
+<style>
+    body,
+    input,
+    pre {
+        margin: 0px;
+        background: #ddd;
+        font-family: "Consolas", monospace;
+        padding: 10px 0;
+    }
+
+    body {
+        font-size: 0;
+    }
+
+    .hide {
+        display: none;
+    }
+
+    input:focus {
+        background: #ccc;
+    }
+
+    input {
+        border: 0px;
+        border-bottom: 1px solid;
+        width: 100vw;
+        margin: 0px;
+        display: block;
+        resize: none;
+    }
+
+    .error {
+        color: #F00;
+    }
+
+    #flip:after {
+        content: "\0021BB";
+
+    }
+
+    #hlOnly:after {
+        content: "\01F441";
+    }
+
+    .btn-toggle::after {
+        font-size: 25px;
+        display: inline-block;
+        cursor: pointer;
+    }
+
+    .btn-toggle:hover::after {
+        color: #0008;
+    }
+
+    .container.flip {
+        flex-direction: row;
+    }
+
+    .container.flip .row {
+        flex-direction: column;
+    }
+
+    .container {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .container.hlOnly .row:not(.highlight) {
+        display: none;
+    }
+
+    .row {
+        display: flex;
+        flex-direction: row;
+        cursor: pointer;
+    }
+
+    .row:hover {
+        background-color: #0001;
+    }
+
+
+    .row.highlight .cell {
+        background-color: #FF05;
+    }
+
+    .cell {
+
+        border-bottom: 1px solid #0002;
+        border-right: 1px solid #0002;
+
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+        display: inline-block;
+        font-size: 13px;
+        padding: 10px;
+        width: 270px;
+        height: 1em;
+    }
+
+    .header {
+        font-weight: bold;
+    }
+</style>
+
+
+</head>
+<script>
+    const BEAUTIFY_OPTIONS = {
+        "indent_size": "0",
+        "indent_char": "",
+        "max_preserve_newlines": "5",
+        "preserve_newlines": false,
+        "keep_array_indentation": false,
+        "break_chained_methods": false,
+        "indent_scripts": "normal",
+        "brace_style": "collapse",
+        "space_before_conditional": true,
+        "unescape_strings": false,
+        "jslint_happy": false,
+        "end_with_newline": false,
+        "wrap_line_length": "0",
+        "indent_inner_html": false,
+        "comma_first": false,
+        "e4x": false,
+        "indent_empty_lines": false
+    }
+
+    const arrayRemove = (arr, key) => arr.splice(arr.indexOf(key), 1);
+
+    const buildMap = (json, root = '') => {
+        if (!json) return [];
+        const keys = [];
+        Object.entries(json).map(([k, v]) => {
+            if (v instanceof Object) {
+                buildMap(v, `${root}.${k}`).map(kk => keys.push(kk));
+            } else {
+                keys.push(`${root}.${k}`);
+            }
+        });
+        return keys.map(k => k.replace(/^\./, ""));
+    }
+
+    // indexOf - lastIndexOf;
+
+    const cleanupInputs = () => {
+        document.querySelectorAll("#inputs input").forEach(i => {
+            if (!getJson(i.value.trim())) {
+                i.remove();
+            }
+        })
+        const size = document.querySelectorAll("#inputs input").length;
+        if (size == 0) {
+            appendInput();
+        }
+    }
+
+    const getJson = (iValue) => {
+        if(!isHtml(iValue)){
+            const fcb = iValue.indexOf("{")/* first curly bracket */
+            const lcb = iValue.lastIndexOf("}")/* last curly bracket */
+            if (fcb < 0 || lcb < 0) return null;
+            return iValue.substr(fcb, 1 + lcb - fcb);
+        } else {
+            return JSON.stringify( cleanupXML( iValue ).split("\n").map(x=>htmlToJSON(x)));
+        }
+    }
+
+    const ID = () => "_" + Math.floor((Math.random() * Date.now())).toString("36");
+
+    const getInput = () => {
+        const input = document.createElement("input");
+        input.id = ID();
+        input.addEventListener("paste", (e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            let clipboardData = e.clipboardData || window.clipboardData;
+            let pastedData = clipboardData.getData('Text');
+            let split = pastedData.split("\n");
+            input.value = split[0];
+            input.dispatchEvent(new Event('input'));
+            split.forEach((t, i) => {
+                if (i != 0)
+                    appendInput(t)
+                        .dispatchEvent(new Event('input'));
+            });
+            input.dispatchEvent(new Event('change'));
+        })
+        input.addEventListener("input", (e) => {
+            input.classList.remove("error");
+            let iValue = getJson(input.value.trim());
+            let json;
+            try {
+                json = JSON.parse(iValue);
+                // input.value = iValue;
+            } catch (e) {
+                input.classList.add("error");
+            }
+            if (!!json) {
+                input.json = json;
+                input.keys = buildMap(json);
+            }
+        });
+        input.addEventListener("change", (e) => {
+            cleanupInputs();
+            const last = document.querySelector("#inputs input:last-child");
+            if (!!getJson(last.value.trim())) {
+                appendInput();
+            }
+            buildTable();
+        });
+        return input;
+    }
+
+    const jsonGet = (obj, key) => {
+        let v = obj[key[0]];
+        for (let i = 1; i < key.length; i++) {
+            if (!v) return;
+            if (v instanceof Object) {
+                v = v[key[i]];
+            }
+        }
+        return v;
+    }
+
+    const getClass = (k) => k.replaceAll(/\./gi, "_");
+
+    const HL = [];
+
+    const buildTable = () => {
+        // console.clear();
+        const keys = Array.from(document.querySelectorAll("#inputs input")).map(i => i.keys);
+        let keySet = new Set();
+        keys.forEach(kk => kk?.forEach(k => keySet.add(k)));
+        keySet = Array.from(keySet).sort().map(k => ({ value: k, split: k.split(".") }));
+        const jsons = Array.from(document.querySelectorAll("#inputs input")).map(i => i.json).filter(j => !!j);
+        console.log(keySet);
+        console.log(jsons);
+
+        const outputDiv = document.getElementById("outputDiv");
+        outputDiv.innerHTML = "";
+
+        keySet.forEach(k => {
+            const tr = document.createElement("div");
+            tr.classList.add("row");
+            const clz = getClass(k.value);
+            tr.title = clz;
+            tr.addEventListener("click", e => {
+                if(e.ctrlKey){
+                    let on = tr.classList.toggle("highlight");
+                    if (on) {
+                        HL.push(k.value);
+                    } else { arrayRemove(HL, k.value); }
+                }
+            })
+            if (HL.includes(k.value)) { tr.classList.add("highlight") }
+            const th = document.createElement("div");
+            th.classList.add("cell");
+            th.classList.add("header");
+            th.innerText = k.value;
+            tr.append(th);
+            jsons.forEach(j => {
+                const td = document.createElement("div");
+                td.classList.add("cell");
+                td.innerText = jsonGet(j, k.split) || "";
+                tr.append(td);
+            });
+            outputDiv.append(tr);
+        });
+    }
+
+    const appendInput = (text) => {
+        const input = getInput();
+        if (!!text) {
+            input.value = text;
+        }
+        document.getElementById("inputs").append(input);
+        return input;
+    }
+
+    document.addEventListener("DOMContentLoaded", function (event) {
+        appendInput();
+
+        const outputDiv = document.getElementById("outputDiv");
+        const flip = document.getElementById("flip");
+        flip.addEventListener("click", () => {
+            outputDiv.classList.toggle("flip");
+        });
+        const hlOnly = document.getElementById("hlOnly");
+        hlOnly.addEventListener("click", () => {
+            outputDiv.classList.toggle("hlOnly");
+        });
+    });
+
+
+</script>
+
+<body>
+    <section id="inputs"></section>
+    <section id="output_table">
+        <span id="flip" class="btn-toggle"></span>
+        <span id="hlOnly" class="btn-toggle"></span>
+        <div id="outputDiv" class="container"></div>
+    </section>
+</body>
+
+</html>

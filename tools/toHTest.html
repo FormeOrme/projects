@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>toH function tester</title>
+    <script src="common.js"></script>
+    <style>
+        body {
+            font-size: 0;
+        }
+
+        .pixel {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        document.querySelector("body").append(createElement({
+            id: "container",
+            type: "div",
+            children: [{
+                type: "section",
+                id: "input",
+                children: [
+                    { type: "input", id: "L", events: { input: () => { updateBG() } }, attrs: [["type", "range"], ["min", 0], ["max", 100], ["value", "50"]] },
+                    { type: "input", id: "S", events: { input: () => { updateBG() } }, attrs: [["type", "range"], ["min", 0], ["max", 100], ["value", "50"]] },
+                    { type: "input", id: "D", events: { input: () => { updateBG() } }, attrs: [["type", "range"], ["min", 0], ["max", 100], ["value", "0"]] },
+                    { type: "input", id: "K", events: { input: () => { updateBG() } }, attrs: [["type", "range"], ["min", 0], ["max", 100], ["value", "6"]] },
+                    { type: "input", id: "N", events: { input: () => { updateBG() } }, attrs: [["type", "range"], ["min", 0], ["max", 100], ["value", "13"]] },
+                ]
+            }, {
+                type: "section",
+                id: "board",
+                children: Array.from({ length: 9999 }, (o, i) => ({
+                    type: "span",
+                    id: (1 + i),
+                    class: ["pixel"],
+                    attrs: [["title", (1 + i)]]
+                }))
+            }]
+        }));
+        const updateBG = () => {
+            console.log(L.value, S.value, D.value, K.value, N.value);
+            Array.from(document.querySelectorAll("#board span")).forEach(e => {
+                e.style.background = toH(e.id, L.value, S.value, D.value, K.value, N.value);
+            })
+        }
+        updateBG();
+    </script>
+</body>
+
+</html>
