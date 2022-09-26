@@ -202,7 +202,9 @@
         const LOW_LETTER_WIDTH = 4;
         let DIFF =
             { "UPP": { "A": 6.3, "B": 6.1, "C": 6, "D": 7, "E": 6, "F": 4, "G": 7, "H": 7, "I": 4, "J": 3, "K": 6, "L": 6, "M": 9, "N": 6, "O": 8, "P": 6, "Q": 6, "R": 6, "S": 6, "T": 6, "U": 6, "V": 6, "W": 9, "X": 6, "Y": 6, "Z": 6 }, "LOW": { "a": 5.5, "b": 6, "c": 5.2, "d": 6, "e": 5.6, "f": 4, "g": 5, "h": 6.5, "i": 3.4, "j": 3, "k": 6, "l": 3.2, "m": 9, "n": 6.3, "o": 6, "p": 6, "q": 5, "r": 4, "s": 4, "t": 4, "u": 6, "v": 5, "w": 7, "x": 5, "y": 5, "z": 5, " ": 2.6, "-": 5, ",": 2, "'": 2 } }
-        document.querySelector("body").append(createElement({
+        
+        /*
+            document.querySelector("body").append(createElement({
             type: "textarea",
             id: "diff",
             innerText: JSON.stringify(DIFF),
@@ -213,6 +215,7 @@
                 }
             }
         }));
+        */
 
         const isLower = (l) => l === l.toLowerCase();
         const wLenght = (w) => {
@@ -269,8 +272,7 @@
                     events: {
                         click: (e, _this) => {
                             document.getElementById("img_bg").innerHTML = "";
-                            shuffleArray(WORD_LIST)
-                            const bg = WORD_LIST[0];
+                            const bg = getShuffledArr(WORD_LIST)[0];
                             document.getElementById("img_bg").append(createElement({
                                 type: "img",
                                 class: ["background"],
@@ -331,8 +333,7 @@
             input.value.split(/\s+/)
                 .filter(w => !!w.trim())
                 .forEach(v => {
-                    shuffleArray(WORD_LIST)
-                    outs.push(getWords(v, WORD_LIST));
+                    outs.push(getWords(v, getShuffledArr(WORD_LIST)));
                 })
             document.getElementById(section).innerHTML = "";
             outs.forEach(o => {
@@ -351,8 +352,7 @@
             attrs: [["style", `width:${pad.nlen}px`]],
             events: {
                 click: (e, _this) => {
-                    shuffleArray(WORD_LIST)
-                    const tmp = getWords(w.src, WORD_LIST);
+                    const tmp = getWords(w.src, getShuffledArr(WORD_LIST));
                     _this.replaceWith(createElement(getWordElement(tmp[0])));
                 }
             },
