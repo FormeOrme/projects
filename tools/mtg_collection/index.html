@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mtg Collection Helper</title>
+    <script src="../common.js"></script>
+    <style>
+        body {
+            overflow-y: scroll;
+        }
+
+        .row-cols-8>* {
+            flex: 0 0 auto;
+            width: 12.5%;
+        }
+
+        .card-img-overlay-bottom {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+
+        .cursor-pointer {
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body spellcheck="false" class="bg-light">
+    <script>
+        const BASE_IMG_URL = "https://cards.scryfall.io/normal/front/";
+
+        const getKeyName = n => n.toLowerCase().replaceAll(/\W/g, "");
+
+        const FILL_CARDS_DB = () => {
+            console.time("FILL_CARDS_DB");
+            fetch("shrunkData.json")
+                .then((t) => t.text())
+                .then(JSON.parse)
+                .then(cards => {
+                    const transaction = db.transaction("cards", "readwrite");
+                    const objectStore = transaction.objectStore("cards");
+                    cards.map(c => c.split(";"))
+                        /* "+2 Mace;e/8/e882c9f9-bf30-46b6-bedc-379d2c80e5cb.jpg?1627701221;O91504;C" */
+                        .map(c => ({
+                            key_name: getKeyName(c[0]),
+                            rarity: c[2],
+                            name: c[0],
+                            img: BASE_IMG_URL + c[1],
+                        }))
+                        .forEach(c => objectStore.put(c))
+                });
+            console.timeEnd("FILL_CARDS_DB");
+        };
+
+        let db;
+        const request = indexedDB.open("MCH_DB");
+        request.onsuccess = (event) => {
+            console.log("onsuccess")
+            db = event.target.result;
+            initPage();
+        };
+        request.onerror = (event) => {
+            console.log("onerror")
+            console.error(event);
+        };
+        request.onupgradeneeded = (event) => {
+            console.log("onupgradeneeded")
+            db = event.target.result;
+            const OS_cards = db.createObjectStore("cards", { keyPath: "key_name" });
+            const OS_collection = db.createObjectStore("collection", { keyPath: "type" });
+            const OS_decks = db.createObjectStore("decks", { keyPath: "id" });
+
+            OS_cards.transaction.oncomplete = FILL_CARDS_DB;
+        };
+
+        const initPage = () => {
+            document.querySelector("body").append(createElement({
+                id: "container",
+                class: ["container"],
+                children: [
+                    {
+                        id: "title",
+                        type: "h1",
+                        innerText: "MtG Collection Helper"
+                    }, {
+                        id: "nav-bar",
+                        type: "ul",
+                        class: "nav nav-tabs mb-2",
+                        _tmp: event = {
+                            click: (e, _this) => {
+                                Array.from(gqa("#nav-bar .nav-link")).forEach(l => l.classList.remove("active"));
+                                _this.classList.add("active");
+                                Array.from(gqa(".content-section")).forEach(l => l.hidden = true);
+                                gid(_this.dataset.idToggle).hidden = false;
+
+                            }
+                        },
+                        children: [
+                            { type: "li", class: "nav-item", children: [{ type: "span", events: { click: event.click }, attrs: { "data-id-toggle": "deck-wrapper" }, class: "cursor-pointer nav-link active", innerText: "Card List" }] },
+                            { type: "li", class: "nav-item", children: [{ type: "span", events: { click: event.click }, attrs: { "data-id-toggle": "manage-deck" }, class: "cursor-pointer nav-link", innerText: "Manage Decks" }] },
+                            { type: "li", class: "nav-item", children: [{ type: "span", events: { click: event.click }, attrs: { "data-id-toggle": "configuration" }, class: "cursor-pointer nav-link", innerText: "Configuration" }] },
+                        ]
+                    }, {
+                        id: "deck-wrapper",
+                        type: "section",
+                        class: "row content-section",
+                        children: [{
+                            id: "deck",
+                            class: ["container"],
+                        }]
+                    }, {
+                        id: "manage-deck",
+                        type: "section",
+                        class: "row content-section",
+                        attrs: { hidden: "" },
+                        children: [{
+                            class: "container",
+                            children: [{
+                                class: "row",
+                                children: [{
+                                    class: "col col-sm-6",
+                                    children: [{
+                                        id: "deck-name",
+                                        type: "input",
+                                        class: "form-control mb-2",
+                                        attrs: { placeholder: "Deck Name" }
+                                    }, {
+                                        id: "deck-content",
+                                        type: "textarea",
+                                        class: "form-control mb-2",
+                                        attrs: { placeholder: "Deck List" }
+                                    }, {
+                                        id: "add-deck",
+                                        type: "span",
+                                        class: "btn btn-outline-success",
+                                        innerText: "Add Deck",
+                                        events: {
+                                            click: (e, _this) => {
+                                                const id = UUID();
+                                                const name = gid("deck-name").value.trim();
+                                                const list = gid("deck-content").value.trim();
+                                                if (!!name && !!list) {
+                                                    const deck = { id: id, active: true, name: name, ts: Date.now() };
+                                                    let lastSection = "deck";
+                                                    list.toLowerCase().split(/\n/)
+                                                        .filter(s => !!s)
+                                                        .map(s => s.split("(")[0])
+                                                        .map(s => s.trim())
+                                                        .forEach(s => {
+                                                            if (!s.match(/\d/)) {
+                                                                lastSection = s;
+                                                            }
+                                                            if (!deck[lastSection]) {
+                                                                deck[lastSection] = [];
+                                                            }
+                                                            if (!!s.match(/\d/)) {
+                                                                const split = s.split(/(\d+) (.+)/)
+                                                                deck[lastSection].push({
+                                                                    q: +split[1],
+                                                                    n: getKeyName(split[2])
+                                                                });
+                                                            }
+                                                        });
+                                                    // console.log(deck)
+                                                    const objectStore = db.transaction("decks", "readwrite").objectStore("decks");
+                                                    objectStore.add(deck);
+                                                    updatePageData();
+                                                }
+                                            }
+                                        }
+                                    }]
+                                }, {
+                                    class: "col col-sm-6",
+                                    children: [{
+                                        id: "deck-list-edit-wrapper",
+                                        type: "div"
+                                    }]
+                                }]
+                            }]
+                        }]
+                    }, {
+                        type: "section",
+                        id: "configuration",
+                        class: "row content-section",
+                        attrs: { hidden: "" },
+                        children: [{
+                            class: "container",
+                            children: [{
+                                class: "row",
+                                children: [{
+                                    class: "col col-sm-6",
+                                    children: [{
+                                        type: "input",
+                                        class: "form-control mb-2",
+                                        id: "collection-input",
+                                        attrs: { type: "file" }
+                                    }, {
+                                        id: "update-collection",
+                                        type: "span",
+                                        class: "btn btn-outline-success",
+                                        innerText: "Update Collection",
+                                        events: {
+                                            click: (e, _this) => {
+                                                const input = gid("collection-input");
+                                                if (!!input.files) {
+                                                    var file = input.files[0];
+                                                    if (file) {
+                                                        var reader = new FileReader();
+                                                        reader.readAsText(file, "UTF-8");
+                                                        reader.onload = (evt) => {
+                                                            const collection = csvJSON(evt.target.result);
+                                                            const objectStore = db.transaction("collection", "readwrite").objectStore("collection");
+                                                            objectStore.put(({
+                                                                type: "arena",
+                                                                collection: collection
+                                                                    .filter(c => !!c['"Name"'])
+                                                                    .map(c => ({
+                                                                        n: getKeyName(c['"Name"']),
+                                                                        q: c['"Count"']
+                                                                    }))
+                                                            }))
+                                                        }
+                                                        reader.onerror = (evt) => { console.log("ERROR LOADING FILE") }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }, {
+                                        type: "span",
+                                        class: "btn btn-outline-success",
+                                        innerText: "Reload Cards",
+                                        events: {
+                                            click: FILL_CARDS_DB
+                                        }
+                                    }]
+                                }]
+                            }]
+                        }]
+                    }]
+            }));
+            updatePageData();
+        }
+
+        const updatePageData = () => {
+            const decksQuery = db.transaction("decks", 'readonly').objectStore("decks").getAll();
+            decksQuery.onsuccess = (e) => {
+                const deckList = decksQuery.result;
+
+                /* Update Deck Edit Page */
+                const deckListEdit = gid("deck-list-edit-wrapper");
+                deckListEdit.innerHTML = "";
+                deckListEdit.append(createElement({
+                    id: "deck-list-edit",
+                    class: "row",
+                    children: deckList.map(d => ({
+                        class: "input-group mb-2",
+                        children: [{
+                            type: "input",
+                            class: "form-control",
+                            attrs: { value: d.name, placeholder: "Deck Name" },
+                            events: {
+                                change: (e, _this) => {
+                                    const decksQuery = db.transaction("decks", "readwrite").objectStore("decks");
+                                    d.name = _this.value
+                                    decksQuery.put(d);
+                                    updatePageData();
+                                }
+                            }
+                        }, {
+                            class: "btn btn-outline-danger",
+                            children: [{
+                                type: "i",
+                                class: "bi bi-trash"
+                            }],
+                            events: {
+                                click: (e, _this) => {
+                                    const decksQuery = db.transaction("decks", "readwrite").objectStore("decks");
+                                    decksQuery.delete(d.id);
+                                    updatePageData();
+                                }
+                            }
+                        }]
+                    }))
+                }));
+
+                /* Update Card List Page */
+                const deckSection = gid("deck");
+                deckSection.innerHTML = "";
+                deckSection.append(createElement({
+                    id: "deck-name-list",
+                    class: "btn-toolbar",
+                    children: deckList.map(d => ({
+                        class: "btn-group me-2 mb-2",
+                        children: [{
+                            type: "span",
+                            class: ["btn", "btn-sm", d.active ? "btn-primary" : "btn-outline-primary"],
+                            innerText: d.name,
+                            events: {
+                                click: (e, _this) => {
+                                    const decksQuery = db.transaction("decks", "readwrite").objectStore("decks");
+                                    d.active = !d.active;
+                                    decksQuery.put(d);
+                                    updatePageData();
+                                }
+                            }
+                        }]
+                    }))
+                }));
+                const cardsQuery = db.transaction("cards", 'readonly').objectStore("cards").getAll();
+                cardsQuery.onsuccess = (e) => {
+                    const cards = cardsQuery.result;
+                    const collectionQuery = db.transaction("collection", 'readonly').objectStore("collection").get("arena");
+                    collectionQuery.onsuccess = (k) => {
+                        const collection = collectionQuery.result;
+                        getCardListSection(deckList.filter(d => d.active), cards, collection.collection);
+                    }
+                }
+            }
+        }
+
+        const addCard = (obj, c, sect, deck) => {
+            if (!obj[c.n]) {
+                obj[c.n] = {};
+            }
+            if (!obj[c.n][sect]) {
+                obj[c.n][sect] = [];
+            }
+            const found = obj[c.n][sect].find(d => d.d === deck);
+            if (!!found) {
+                found.q += c.q;
+            } else {
+                obj[c.n][sect].push({ d: deck, q: c.q });
+            }
+        }
+
+        const getCardListSection = (deckList, sfcards, collection) => {
+            console.log("deckList", deckList);
+            // console.log("sfcards", sfcards);
+            // console.log("collection", collection);
+            const usedCards = {};
+            deckList.forEach(dl => {
+                dl.deck?.forEach(c => addCard(usedCards, c, "deck", dl))
+                dl.deck?.forEach(c => addCard(usedCards, c, "full", dl))
+                dl.sideboard?.forEach(c => addCard(usedCards, c, "sideboard", dl))
+                dl.sideboard?.forEach(c => addCard(usedCards, c, "full", dl))
+            })
+            console.log("usedCards", usedCards);
+            Object.entries(usedCards).forEach(([k, v]) => {
+                v.card = sfcards.find(sfc => sfc.key_name.startsWith(k))
+                if (!v.card) {
+                    console.log("No card found for", k)
+                }
+                v.owned = collection.find(col => col.n.startsWith(k));
+                v.info = {
+                    used: v.full?.reduce((a, c) => Math.max(a, c.q), 0),
+                    owned: (v.owned?.q | 0),
+                };
+                v.info.missing = Math.max((v.info?.used | 0) - (v.info?.owned | 0), 0);
+            })
+            const deckSection = gid("deck");
+            deckSection.append(createElement({
+                id: "card-list",
+                class: "row row-cols-8 gx-2",
+                children: Object.entries(usedCards)
+                    .filter(([k, v]) => !!v.card)
+                    //.sort(([a, c], [b, d]) => (!!d.deck ? d.deck.length : 0) - (!!c.deck ? c.deck.length : 0))
+                    .sort(([a, c], [b, d]) => d.info.missing - c.info.missing)
+                    .map(([k, v]) => ({
+                        type: "span",
+                        class: "col mb-2",
+                        children: [{
+                            type: "span",
+                            class: "card p-1 shadow border-0 overflow-hidden",
+                            children: [{
+                                type: "img",
+                                class: ["card-img-top", "rounded", !v.info.missing ? "opacity-50" : "opacity-100"],
+                                attrs: {
+                                    src: v.card.img
+                                }
+                            }, {
+                                class: "card-body card-img-overlay-bottom bg-light p-0 pb-1 px-2",
+                                // attrs: { hidden: "false" },
+                                attrs: {
+                                    title: `${v.info.missing} Missing\n${v.info.owned} Owned\n${v.info.used} Used`
+                                },
+                                children: [{
+                                    type: "span",
+                                    class: "card-text small",
+                                    //innerText: `${v.deck ? v.deck.length : 0}:${v.sideboard ? v.sideboard.length : 0}`
+                                    innerText: `${v.info.missing} (${v.info.owned}/${v.info.used})`
+                                }]
+                            }]
+                        }]
+                    }))
+            }))
+        }
+    </script>
+</body>
+
+</html>

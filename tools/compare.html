@@ -2,116 +2,116 @@
 <html lang="en">
 
 <head>
-    <script src="./util.js"></script>
+    <script src="./common.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Compare</title>
-<style>
-    body,
-    input,
-    pre {
-        margin: 0px;
-        background: #ddd;
-        font-family: "Consolas", monospace;
-        padding: 10px 0;
-    }
+    <style>
+        body,
+        input,
+        pre {
+            margin: 0px;
+            background: #ddd;
+            font-family: "Consolas", monospace;
+            padding: 10px 0;
+        }
 
-    body {
-        font-size: 0;
-    }
+        body {
+            font-size: 0;
+        }
 
-    .hide {
-        display: none;
-    }
+        .hide {
+            display: none;
+        }
 
-    input:focus {
-        background: #ccc;
-    }
+        input:focus {
+            background: #ccc;
+        }
 
-    input {
-        border: 0px;
-        border-bottom: 1px solid;
-        width: 100vw;
-        margin: 0px;
-        display: block;
-        resize: none;
-    }
+        input {
+            border: 0px;
+            border-bottom: 1px solid;
+            width: 100vw;
+            margin: 0px;
+            display: block;
+            resize: none;
+        }
 
-    .error {
-        color: #F00;
-    }
+        .error {
+            color: #F00;
+        }
 
-    #flip:after {
-        content: "\0021BB";
+        #flip:after {
+            content: "\0021BB";
 
-    }
+        }
 
-    #hlOnly:after {
-        content: "\01F441";
-    }
+        #hlOnly:after {
+            content: "\01F441";
+        }
 
-    .btn-toggle::after {
-        font-size: 25px;
-        display: inline-block;
-        cursor: pointer;
-    }
+        .btn-toggle::after {
+            font-size: 25px;
+            display: inline-block;
+            cursor: pointer;
+        }
 
-    .btn-toggle:hover::after {
-        color: #0008;
-    }
+        .btn-toggle:hover::after {
+            color: #0008;
+        }
 
-    .container.flip {
-        flex-direction: row;
-    }
+        .container.flip {
+            flex-direction: row;
+        }
 
-    .container.flip .row {
-        flex-direction: column;
-    }
+        .container.flip .row {
+            flex-direction: column;
+        }
 
-    .container {
-        display: flex;
-        flex-direction: column;
-    }
+        .container {
+            display: flex;
+            flex-direction: column;
+        }
 
-    .container.hlOnly .row:not(.highlight) {
-        display: none;
-    }
+        .container.hlOnly .row:not(.highlight) {
+            display: none;
+        }
 
-    .row {
-        display: flex;
-        flex-direction: row;
-        cursor: pointer;
-    }
+        .row {
+            display: flex;
+            flex-direction: row;
+            cursor: pointer;
+        }
 
-    .row:hover {
-        background-color: #0001;
-    }
+        .row:hover {
+            background-color: #0001;
+        }
 
 
-    .row.highlight .cell {
-        background-color: #FF05;
-    }
+        .row.highlight .cell {
+            background-color: #FF05;
+        }
 
-    .cell {
+        .cell {
 
-        border-bottom: 1px solid #0002;
-        border-right: 1px solid #0002;
+            border-bottom: 1px solid #0002;
+            border-right: 1px solid #0002;
 
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
 
-        display: inline-block;
-        font-size: 13px;
-        padding: 10px;
-        width: 270px;
-        height: 1em;
-    }
+            display: inline-block;
+            font-size: 13px;
+            padding: 10px;
+            width: 270px;
+            height: 1em;
+        }
 
-    .header {
-        font-weight: bold;
-    }
-</style>
+        .header {
+            font-weight: bold;
+        }
+    </style>
 
 
 </head>
@@ -166,13 +166,13 @@
     }
 
     const getJson = (iValue) => {
-        if(!isHtml(iValue)){
+        if (!isHtml(iValue)) {
             const fcb = iValue.indexOf("{")/* first curly bracket */
             const lcb = iValue.lastIndexOf("}")/* last curly bracket */
             if (fcb < 0 || lcb < 0) return null;
             return iValue.substr(fcb, 1 + lcb - fcb);
         } else {
-            return JSON.stringify( cleanupXML( iValue ).split("\n").map(x=>htmlToJSON(x)));
+            return JSON.stringify(cleanupXML(iValue).split("\n").map(x => htmlToJSON(x)));
         }
     }
 
@@ -256,7 +256,7 @@
             const clz = getClass(k.value);
             tr.title = clz;
             tr.addEventListener("click", e => {
-                if(e.ctrlKey){
+                if (e.ctrlKey) {
                     let on = tr.classList.toggle("highlight");
                     if (on) {
                         HL.push(k.value);
