@@ -202,7 +202,7 @@
         const LOW_LETTER_WIDTH = 4;
         let DIFF =
             { "UPP": { "A": 6.3, "B": 6.1, "C": 6, "D": 7, "E": 6, "F": 4, "G": 7, "H": 7, "I": 4, "J": 3, "K": 6, "L": 6, "M": 9, "N": 6, "O": 8, "P": 6, "Q": 6, "R": 6, "S": 6, "T": 6, "U": 6, "V": 6, "W": 9, "X": 6, "Y": 6, "Z": 6 }, "LOW": { "a": 5.5, "b": 6, "c": 5.2, "d": 6, "e": 5.6, "f": 4, "g": 5, "h": 6.5, "i": 3.4, "j": 3, "k": 6, "l": 3.2, "m": 9, "n": 6.3, "o": 6, "p": 6, "q": 5, "r": 4, "s": 4, "t": 4, "u": 6, "v": 5, "w": 7, "x": 5, "y": 5, "z": 5, " ": 2.6, "-": 5, ",": 2, "'": 2 } }
-        
+
         /*
             document.querySelector("body").append(createElement({
             type: "textarea",
@@ -249,7 +249,9 @@
                 children: [{
                     type: "textarea",
                     id: "background",
-                    attrs: [["placeholder", "background"]],
+                    attrs: {
+                        placeholder: "background"
+                    },
                     events: {
                         input: (e, _this) => {
                             document.getElementById("img_bg").innerHTML = "";
@@ -257,9 +259,9 @@
                             document.getElementById("img_bg").append(createElement({
                                 type: "img",
                                 class: ["background"],
-                                attrs: [
-                                    ["src", bg.img],
-                                ]
+                                attrs: {
+                                    src: bg.img
+                                }
                             }))
                             document.getElementById("img_desc").style["background-image"] = `url("${bg.img}")`;
                             document.getElementById("img_title").style["background-image"] = `url("${bg.img}")`;
@@ -276,9 +278,9 @@
                             document.getElementById("img_bg").append(createElement({
                                 type: "img",
                                 class: ["background"],
-                                attrs: [
-                                    ["src", bg.img],
-                                ]
+                                attrs: {
+                                    src: bg.img
+                                }
                             }))
                             document.getElementById("img_desc").style["background-image"] = `url("${bg.img}")`;
                             document.getElementById("img_title").style["background-image"] = `url("${bg.img}")`;
@@ -287,15 +289,18 @@
                 }, {
                     type: "textarea",
                     id: "title",
-                    attrs: [["placeholder", "title"]],
+                    attrs: {
+                        placeholder: "title"
+                    },
                     events: {
                         input: (e, _this) => fillSection(e, _this, "img_title")
                     }
                 }, {
                     type: "textarea",
                     id: "description",
-                    attrs: [["placeholder", "description"]],
-                    events: {
+                    attrs: {
+                        placeholder: "description"
+                    }, events: {
                         input: (e, _this) => fillSection(e, _this, "img_desc")
                     }
                 }, {
@@ -349,7 +354,9 @@
             _tmp: pad = calc(w.obj.name, w.src),
             type: "span",
             class: ["img-wrap"],
-            attrs: [["style", `width:${pad.nlen}px`]],
+            attrs: {
+                style: `width:${pad.nlen}px`
+            },
             events: {
                 click: (e, _this) => {
                     const tmp = getWords(w.src, getShuffledArr(WORD_LIST));
@@ -359,11 +366,11 @@
             children: [{
                 type: "img",
                 class: ["card"],
-                attrs: [
-                    ["src", w.obj.img],
-                    ["title", JSON.stringify(pad)],
-                    ["style", `margin-left:-${FIXED_LEFT + pad.npad}px`]
-                ]
+                attrs: {
+                    src: w.obj.img,
+                    title: JSON.stringify(pad),
+                    style: `margin-left:-${FIXED_LEFT + pad.npad}px`
+                }
             }]
         })
     </script>
