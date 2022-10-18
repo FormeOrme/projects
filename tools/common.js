@@ -34,7 +34,7 @@ const createElement = (e) => {
         });
     !e.innerText || (node.innerText = e.innerText);
     if (!!e.class) {
-        Array.isArray(e.class) ? node.classList.add(...e.class) : node.classList.add(...e.class.trim().split(" "))
+        Array.isArray(e.class) ? node.classList.add(...e.class) : node.classList.add(...e.class.trim().split(" ").filter(c => !!c))
     }
     !e.attrs || Object.entries(e.attrs).forEach(([k, v]) => node.setAttribute(k, v));
     /* EVENTS */

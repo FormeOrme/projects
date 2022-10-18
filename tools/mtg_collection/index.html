@@ -10,6 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mtg Collection Helper</title>
     <script src="../common.js"></script>
+    <!--<link href="https://unpkg.com/@saeris/typeface-beleren-bold@latest/index.css" rel="stylesheet" type="text/css" />-->
     <style>
         body {
             overflow-y: scroll;
@@ -17,7 +18,12 @@
 
         .row-cols-8>* {
             flex: 0 0 auto;
-            width: 12.5%;
+            width: calc(100% / 8);
+        }
+
+        .row-cols-7>* {
+            flex: 0 0 auto;
+            width: calc(100% / 7);
         }
 
         .card-img-overlay-bottom {
@@ -29,6 +35,16 @@
 
         .cursor-pointer {
             cursor: pointer;
+        }
+
+        .card {
+            transition: filter .15s ease-in-out;
+            transition: filter 1s ease-in-out;
+        }
+
+        .blur {
+            filter: blur(3px);
+            opacity: 0.7 !important;
         }
     </style>
 </head>
@@ -47,13 +63,14 @@
                 .then(cards => {
                     const transaction = db.transaction("cards", "readwrite");
                     const objectStore = transaction.objectStore("cards");
-                    cards.map(c => c.split(";"))
+                    cards
                         /* "+2 Mace;e/8/e882c9f9-bf30-46b6-bedc-379d2c80e5cb.jpg?1627701221;O91504;C" */
                         .map(c => ({
-                            key_name: getKeyName(c[0]),
-                            rarity: c[2],
-                            name: c[0],
-                            img: BASE_IMG_URL + c[1],
+                            key_name: getKeyName(c.name),
+                            rarity: c.r,
+                            name: c.name,
+                            img: BASE_IMG_URL + c.img,
+                            set: c.set,
                         }))
                         .forEach(c => objectStore.put(c))
                 });
@@ -74,10 +91,9 @@
         request.onupgradeneeded = (event) => {
             console.log("onupgradeneeded")
             db = event.target.result;
+            const OS_cfg = db.createObjectStore("cfg", { keyPath: "type" });
             const OS_cards = db.createObjectStore("cards", { keyPath: "key_name" });
-            const OS_collection = db.createObjectStore("collection", { keyPath: "type" });
             const OS_decks = db.createObjectStore("decks", { keyPath: "id" });
-
             OS_cards.transaction.oncomplete = FILL_CARDS_DB;
         };
 
@@ -198,48 +214,54 @@
                                 children: [{
                                     class: "col col-sm-6",
                                     children: [{
-                                        type: "input",
-                                        class: "form-control mb-2",
-                                        id: "collection-input",
-                                        attrs: { type: "file" }
-                                    }, {
-                                        id: "update-collection",
-                                        type: "span",
-                                        class: "btn btn-outline-success",
-                                        innerText: "Update Collection",
-                                        events: {
-                                            click: (e, _this) => {
-                                                const input = gid("collection-input");
-                                                if (!!input.files) {
-                                                    var file = input.files[0];
-                                                    if (file) {
-                                                        var reader = new FileReader();
-                                                        reader.readAsText(file, "UTF-8");
-                                                        reader.onload = (evt) => {
-                                                            const collection = csvJSON(evt.target.result);
-                                                            const objectStore = db.transaction("collection", "readwrite").objectStore("collection");
-                                                            objectStore.put(({
-                                                                type: "arena",
-                                                                collection: collection
-                                                                    .filter(c => !!c['"Name"'])
-                                                                    .map(c => ({
-                                                                        n: getKeyName(c['"Name"']),
-                                                                        q: c['"Count"']
-                                                                    }))
-                                                            }))
+                                        class: "input-group mb-2",
+                                        children: [{
+                                            type: "input",
+                                            class: "form-control",
+                                            id: "collection-input",
+                                            attrs: { type: "file" }
+                                        }, {
+                                            id: "update-collection",
+                                            type: "span",
+                                            class: "btn btn-outline-success",
+                                            innerText: "Update Collection",
+                                            events: {
+                                                click: (e, _this) => {
+                                                    const input = gid("collection-input");
+                                                    if (!!input.files) {
+                                                        var file = input.files[0];
+                                                        if (file) {
+                                                            var reader = new FileReader();
+                                                            reader.readAsText(file, "UTF-8");
+                                                            reader.onload = (evt) => {
+                                                                const collection = csvJSON(evt.target.result);
+                                                                const objectStore = db.transaction("cfg", "readwrite").objectStore("cfg");
+                                                                objectStore.put(({
+                                                                    type: "collection",
+                                                                    collection: collection
+                                                                        .filter(c => !!c['"Name"'])
+                                                                        .map(c => ({
+                                                                            n: getKeyName(c['"Name"']),
+                                                                            q: c['"Count"']
+                                                                        }))
+                                                                }));
+                                                                updatePageData();
+                                                            }
+                                                            reader.onerror = (evt) => { console.log("ERROR LOADING FILE") }
                                                         }
-                                                        reader.onerror = (evt) => { console.log("ERROR LOADING FILE") }
                                                     }
                                                 }
                                             }
-                                        }
+                                        }]
                                     }, {
                                         type: "span",
-                                        class: "btn btn-outline-success",
-                                        innerText: "Reload Cards",
+                                        class: "btn btn-outline-success mb-2",
+                                        innerText: "Reload Scryfall Data",
                                         events: {
                                             click: FILL_CARDS_DB
                                         }
+                                    }, {
+                                        id: "edit-rarity",
                                     }]
                                 }]
                             }]
@@ -252,56 +274,64 @@
         const updatePageData = () => {
             const decksQuery = db.transaction("decks", 'readonly').objectStore("decks").getAll();
             decksQuery.onsuccess = (e) => {
-                const deckList = decksQuery.result;
+                const deckList = decksQuery.result.sort((a, b) => b.ts - a.ts);
 
-                /* Update Deck Edit Page */
-                const deckListEdit = gid("deck-list-edit-wrapper");
-                deckListEdit.innerHTML = "";
-                deckListEdit.append(createElement({
-                    id: "deck-list-edit",
-                    class: "row",
-                    children: deckList.map(d => ({
-                        class: "input-group mb-2",
-                        children: [{
-                            type: "input",
-                            class: "form-control",
-                            attrs: { value: d.name, placeholder: "Deck Name" },
-                            events: {
-                                change: (e, _this) => {
-                                    const decksQuery = db.transaction("decks", "readwrite").objectStore("decks");
-                                    d.name = _this.value
-                                    decksQuery.put(d);
-                                    updatePageData();
-                                }
-                            }
-                        }, {
-                            class: "btn btn-outline-danger",
+                const cardsQuery = db.transaction("cards", 'readonly').objectStore("cards").getAll();
+                cardsQuery.onsuccess = (e) => {
+                    /* Update Deck Edit Page */
+                    const deckListEdit = gid("deck-list-edit-wrapper");
+                    deckListEdit.innerHTML = "";
+                    deckListEdit.append(createElement({
+                        id: "deck-list-edit",
+                        class: "row",
+                        children: deckList.map(d => ({
+                            class: "input-group mb-2",
                             children: [{
-                                type: "i",
-                                class: "bi bi-trash"
-                            }],
-                            events: {
-                                click: (e, _this) => {
-                                    const decksQuery = db.transaction("decks", "readwrite").objectStore("decks");
-                                    decksQuery.delete(d.id);
-                                    updatePageData();
+                                type: "input",
+                                class: "form-control",
+                                attrs: { value: d.name, placeholder: "Deck Name" },
+                                events: {
+                                    focus: (e, _this) => {
+                                        const name = gid("deck-name");
+                                        name.value = d.name;
+                                        const list = gid("deck-content");
+                                        console.log(d);
+                                    },
+                                    change: (e, _this) => {
+                                        if (!!_this.value) {
+                                            const decksQuery = db.transaction("decks", "readwrite").objectStore("decks");
+                                            d.name = _this.value
+                                            decksQuery.put(d);
+                                        }
+                                        updatePageData();
+                                    }
                                 }
-                            }
-                        }]
-                    }))
-                }));
+                            }, {
+                                class: "btn btn-outline-danger",
+                                children: [{
+                                    type: "i",
+                                    class: "bi bi-trash"
+                                }],
+                                events: {
+                                    click: (e, _this) => {
+                                        const decksQuery = db.transaction("decks", "readwrite").objectStore("decks");
+                                        decksQuery.delete(d.id);
+                                        updatePageData();
+                                    }
+                                }
+                            }]
+                        }))
+                    }));
 
-                /* Update Card List Page */
-                const deckSection = gid("deck");
-                deckSection.innerHTML = "";
-                deckSection.append(createElement({
-                    id: "deck-name-list",
-                    class: "btn-toolbar",
-                    children: deckList.map(d => ({
-                        class: "btn-group me-2 mb-2",
-                        children: [{
+                    /* Update Card List Page */
+                    const deckSection = gid("deck");
+                    deckSection.innerHTML = "";
+                    deckSection.append(createElement({
+                        id: "deck-name-list",
+                        class: "btn-toolbar border-bottom mb-2",
+                        children: deckList.map(d => ({
                             type: "span",
-                            class: ["btn", "btn-sm", d.active ? "btn-primary" : "btn-outline-primary"],
+                            class: ["mb-2", "me-2", "btn", "btn-sm", d.active ? "btn-primary" : "btn-outline-secondary"],
                             innerText: d.name,
                             events: {
                                 click: (e, _this) => {
@@ -311,19 +341,114 @@
                                     updatePageData();
                                 }
                             }
-                        }]
+                        }))
+                    }));
+                    deckSection.append(createElement({
+                        id: "rarity-list",
+                        class: "btn-toolbar mb-2"
                     }))
-                }));
-                const cardsQuery = db.transaction("cards", 'readonly').objectStore("cards").getAll();
-                cardsQuery.onsuccess = (e) => {
-                    const cards = cardsQuery.result;
-                    const collectionQuery = db.transaction("collection", 'readonly').objectStore("collection").get("arena");
-                    collectionQuery.onsuccess = (k) => {
-                        const collection = collectionQuery.result;
-                        getCardListSection(deckList.filter(d => d.active), cards, collection.collection);
+                    const sfCards = cardsQuery.result.reduce((a, c) => { a[c.key_name] = c; return a; }, {});
+                    const cfgQuery = db.transaction("cfg", 'readonly').objectStore("cfg").get("collection");
+                    cfgQuery.onsuccess = (k) => {
+                        let coll = cfgQuery.result;
+                        coll = !coll ? [] : coll.collection
+                        const cfgRQuery = db.transaction("cfg", 'readonly').objectStore("cfg").get("rarity");
+                        cfgRQuery.onsuccess = (k) => {
+                            let rarityCfg = cfgRQuery.result;
+                            if (!rarityCfg) {
+                                Object.entries(RARITY_DATA).forEach(([k, v]) => {
+                                    v.q = 0;
+                                    v.active = true;
+                                });
+                                rarityCfg = RARITY_DATA;
+                            } else {
+                                rarityCfg = rarityCfg.value;
+                            }
+                            updateCardListSection(deckList.filter(d => d.active), sfCards, coll, rarityCfg);
+                            updateCardVisibiliy(rarityCfg);
+                        }
                     }
                 }
             }
+        }
+
+        const RARITY_DATA = {
+            C: { n: "Common" },
+            U: { n: "Uncommon" },
+            R: { n: "Rare" },
+            M: { n: "Mythic" },
+        }
+        const BNT_ACTIVE = "btn-primary";
+        const BNT_INACTIVE = "btn-outline-secondary";
+
+        const toggleRarity = (k, r, cfg) => {
+            const cfgQuery = db.transaction("cfg", "readwrite").objectStore("cfg");
+            r.active = cfg[k].active = !r.active;
+            cfgQuery.put({ type: "rarity", value: cfg });
+            Array.from(gqa(`.btn[data-rarity='${k}']`)).forEach(btn => {
+                btn.classList.toggle(BNT_ACTIVE, r.active)
+                btn.classList.toggle(BNT_INACTIVE, !r.active)
+            });
+            Array.from(gqa(`.card[data-rarity='${k}']`)).forEach(c => {
+                c.parentElement.classList.toggle("d-none", !r.active);
+            })
+        }
+
+        const updateCardVisibiliy = (rarityCfg) => {
+            console.time("updateCardVisibiliy")
+            gid("rarity-list").innerHTML = "";
+            gid("rarity-list").append(createElement({
+                class: "btn-group",
+                children: Object.entries(rarityCfg).map(([k, v]) => ({
+                    type: "span",
+                    class: `btn btn-sm ${v.active ? BNT_ACTIVE : BNT_INACTIVE}`,
+                    innerText: `${v.n}: ${v.q}/${v.m} (${Math.min(v.q - v.m)})`,
+                    attrs: {
+                        "data-rarity": k
+                    },
+                    events: {
+                        click: (e, _this) => toggleRarity(k, v, rarityCfg)
+                    }
+                }))
+            }))
+            gid("edit-rarity").innerHTML = "";
+            gid("edit-rarity").append(createElement({
+                class: "row",
+                children: Object.entries(rarityCfg).map(([k, v]) => ({
+                    class: "col col-sm-3",
+                    children: [{
+                        class: "input-group",
+                        children: [{
+                            type: "span",
+                            class: `btn ${v.active ? BNT_ACTIVE : BNT_INACTIVE}`,
+                            innerText: k,
+                            attrs: {
+                                "data-rarity": k
+                            },
+                            events: {
+                                click: (e, _this) => toggleRarity(k, v, rarityCfg)
+                            }
+                        }, {
+                            type: "input",
+                            class: "form-control",
+                            attrs: {
+                                type: "number",
+                                value: v.q,
+                                min: 0
+                            },
+                            events: {
+                                change: (e, _this) => {
+                                    const cfgQuery = db.transaction("cfg", "readwrite").objectStore("cfg");
+                                    rarityCfg[k].q = +_this.value;
+                                    cfgQuery.put({ type: "rarity", value: rarityCfg });
+                                    updateCardVisibiliy(rarityCfg);
+                                }
+                            }
+                        }]
+                    }]
+                }))
+            }))
+            console.timeEnd("updateCardVisibiliy")
         }
 
         const addCard = (obj, c, sect, deck) => {
@@ -341,22 +466,31 @@
             }
         }
 
-        const getCardListSection = (deckList, sfcards, collection) => {
+        const updateCardListSection = (deckList, sfcards, collection, rarityCfg) => {
+            console.time("updateCardListSection")
             console.log("deckList", deckList);
-            // console.log("sfcards", sfcards);
+            console.log("sfcards", sfcards);
             // console.log("collection", collection);
+
+            console.time("usedCards")
             const usedCards = {};
             deckList.forEach(dl => {
+                dl.commander?.forEach(c => addCard(usedCards, c, "deck", dl))
+                dl.commander?.forEach(c => addCard(usedCards, c, "full", dl))
                 dl.deck?.forEach(c => addCard(usedCards, c, "deck", dl))
                 dl.deck?.forEach(c => addCard(usedCards, c, "full", dl))
                 dl.sideboard?.forEach(c => addCard(usedCards, c, "sideboard", dl))
                 dl.sideboard?.forEach(c => addCard(usedCards, c, "full", dl))
             })
-            console.log("usedCards", usedCards);
             Object.entries(usedCards).forEach(([k, v]) => {
-                v.card = sfcards.find(sfc => sfc.key_name.startsWith(k))
+                v.card = sfcards[k];
                 if (!v.card) {
                     console.log("No card found for", k)
+                } else {
+                    const isAlchemy = sfcards[k.substring(1)]
+                    if (!!isAlchemy) {
+                        v.card = isAlchemy;
+                    }
                 }
                 v.owned = collection.find(col => col.n.startsWith(k));
                 v.info = {
@@ -364,21 +498,37 @@
                     owned: (v.owned?.q | 0),
                 };
                 v.info.missing = Math.max((v.info?.used | 0) - (v.info?.owned | 0), 0);
-            })
+            });
+            Object.entries(rarityCfg).forEach(([k, v]) => { v.m = 0 })
+            Object.entries(usedCards).forEach(([k, c]) => {
+                if (!!c.card) {
+                    rarityCfg[c.card.rarity].m += c.info.missing;
+                }
+            });
+            console.timeEnd("usedCards")
+
+            console.log("usedCards", usedCards);
+            console.log("rarityCfg", rarityCfg);
+
             const deckSection = gid("deck");
             deckSection.append(createElement({
                 id: "card-list",
-                class: "row row-cols-8 gx-2",
+                class: "row row-cols-7 gx-1",
                 children: Object.entries(usedCards)
                     .filter(([k, v]) => !!v.card)
                     //.sort(([a, c], [b, d]) => (!!d.deck ? d.deck.length : 0) - (!!c.deck ? c.deck.length : 0))
+                    .sort(([a, c], [b, d]) => d.full.length - c.full.length)
                     .sort(([a, c], [b, d]) => d.info.missing - c.info.missing)
                     .map(([k, v]) => ({
                         type: "span",
-                        class: "col mb-2",
+                        class: `col mb-1 ${rarityCfg[v.card.rarity].active ? "" : "d-none"}`,
                         children: [{
                             type: "span",
-                            class: "card p-1 shadow border-0 overflow-hidden",
+                            class: `card p-1 shadow-sm border-0 overflow-hidden`,
+                            attrs: {
+                                title: v.card.name,
+                                "data-rarity": v.card.rarity
+                            },
                             children: [{
                                 type: "img",
                                 class: ["card-img-top", "rounded", !v.info.missing ? "opacity-50" : "opacity-100"],
@@ -386,10 +536,10 @@
                                     src: v.card.img
                                 }
                             }, {
-                                class: "card-body card-img-overlay-bottom bg-light p-0 pb-1 px-2",
+                                class: "card-body card-img-overlay-bottom bg-light p-0 px-1 m-3 rounded-bottom border-secondary border-top",
                                 // attrs: { hidden: "false" },
                                 attrs: {
-                                    title: `${v.info.missing} Missing\n${v.info.owned} Owned\n${v.info.used} Used`
+                                    title: `${v.info.missing} Missing\n${v.info.owned} Owned\n${v.info.used} Used\nUsed in ${v.full.length} decks`
                                 },
                                 children: [{
                                     type: "span",
@@ -401,6 +551,7 @@
                         }]
                     }))
             }))
+            console.timeEnd("updateCardListSection")
         }
     </script>
 </body>
