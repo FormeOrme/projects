@@ -1,5 +1,5 @@
 class Utils {
-    static PRC = (w, m) => m / 100 * w;
+	static PRC = (w, m) => m / 100 * w;
 	static toX = (i, w) => i % w;
 	static toY = (i, w) => ~~(i / w);
 	static toXY = (i, w) => ({ x: toX(i, w), y: toY(i, w) });
