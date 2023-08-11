@@ -1,12 +1,12 @@
 class Utils {
     static PRC = (w, m) => m / 100 * w;
-	static toX = (i, w) => i % w
-	static toY = (i, w) => ~~(i / w)
-	static toXY = (i, w) => ({ x: toX(i, w), y: toY(i, w) })
-	static toID = (x, y, w) => y * w + x
-	static toID_O = (xy, w) => xy.y * w + xy.x
-	static toID_A = (xy, w) => xy[1] * w + xy[0]
-	static clone = o => JSON.parse(JSON.stringify(o))
+	static toX = (i, w) => i % w;
+	static toY = (i, w) => ~~(i / w);
+	static toXY = (i, w) => ({ x: toX(i, w), y: toY(i, w) });
+	static toID = (x, y, w) => y * w + x;
+	static toID_O = (xy, w) => xy.y * w + xy.x;
+	static toID_A = (xy, w) => xy[1] * w + xy[0];
+	static clone = o => JSON.parse(JSON.stringify(o));
 	static createElement = (e) => {
 		const node = document.createElement(e.type);
 		!e.id || (node.id = e.id);
