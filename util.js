@@ -17,8 +17,8 @@ class Utils {
 			});
 		!e.innerText || (node.innerText = e.innerText);
 		!e.class || node.classList.add(...e.class);
-		!e.attrs || e.attrs.forEach((a) => node.setAttribute(a[0], a[1]));
-		!e.events || Object.entries(e.events).map(([k, v]) => node.addEventListener(k, (e) => v(e, node), false));
+        	!e.attrs || Object.entries(e.attrs).forEach(([k, v]) => node.setAttribute(k, v));
+		!e.events || Object.entries(e.events).forEach(([k, v]) => node.addEventListener(k, (e) => v(e, node), false));
 		node.custom = e.custom;
 		return node;
 	};
