@@ -10,6 +10,23 @@ class Utils {
 		style.appendChild(document.createTextNode(s));
 	}
 
+	static djb2(str) {
+		let hash = 5381;
+		for (let i = 0; i < str.length; i++) {
+			hash = (hash * 33) ^ str.charCodeAt(i);
+		}
+		return hash >>> 0;
+	}
+
+	static fnv1a(str) {
+		let hash = 2166136261;
+		for (let i = 0; i < str.length; i++) {
+			hash ^= str.charCodeAt(i);
+			hash *= 16777619;
+		}
+		return hash >>> 0;
+	}
+
 	static prc = (current, max) => Utils.normalize(current, max) * 100;
 	static normalize = (current, max) => current / max;
 
@@ -89,8 +106,10 @@ class TBody extends Utils.Elem { }
 class TFoot extends Utils.Elem { }
 class TR extends Utils.Elem { }
 class TD extends Utils.Elem { }
+class TH extends Utils.Elem { }
 class Div extends Utils.Elem { }
 class Input extends Utils.Elem { }
 class Span extends Utils.Elem { }
 class Button extends Utils.Elem { }
 class TextArea extends Utils.Elem { }
+class BR extends Utils.Elem { }

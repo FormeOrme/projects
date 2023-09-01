@@ -1,0 +1,74 @@
+* {
+    font-size: 0;
+}
+
+body,
+input {
+    font-family: "Roboto", Verdana, Arial, Helvetica, sans-serif;
+    background: #0001;
+}
+
+input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+button {
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 15px;
+    user-select: none;
+    margin: 2px;
+    color: #FFF;
+}
+
+th {
+    font-size: 15px;
+}
+
+.delete {
+    background: #F006;
+}
+
+.add {
+    background: #0F06;
+}
+
+table,
+tr,
+td {
+    border-collapse: collapse;
+    margin: 0;
+    padding: 0;
+}
+
+tr:hover td {
+    background: #0001;
+}
+
+td {
+    border-bottom: 1px solid #0005;
+    padding: 0 5px;
+}
+
+input{
+    border: none;
+    background: transparent;
+    font-size: 15px;
+}
+
+td:has(input[type="checkbox"]),
+td:has(button) {
+    text-align: center;
+}
+
+.description {
+    width: 20em;
+}
+
+.amount {
+    text-align: right;
+    width: 5em;
+}

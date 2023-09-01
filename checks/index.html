@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- v4 -->
+    <script src='https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js'></script>
+    <script src="../util.js"></script>
+    <title>Document</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+    <script>
+
+        const payers = ["Forme", "Andrea", "Dave", "Emma", "Teo"];
+
+        const getRow = (t = "") => TR.with({
+            children: [
+                TD.with({
+                    children: Input.with({
+                        class: "description",
+                        value: t.trim().match(/(.+)\d+,\d{2}$/g)?.at(0) ?? t
+                    })
+                }),
+                TD.with({
+                    children: Input.with({
+                        class: "amount",
+                        value: t.trim().match(/(\d+,\d{2})$/g)?.at(0).replace(",", ".") ?? "",
+                        attribute: {
+                            type: "number",
+                            content: "amount",
+                            step: ".1"
+                        },
+                        event: {
+                            input: () => updateTotals()
+                        }
+                    })
+                }),
+                ...payers.map(p => TD.with({
+                    children: Input.with({
+                        attribute: {
+                            type: "checkbox",
+                            payer: p,
+                        },
+                        event: {
+                            click: () => updateTotals()
+                        }
+                    })
+                })),
+                TD.with({
+                    children: Button.with({
+                        innerText: "×",
+                        class: "delete",
+                        event: {
+                            click: (e) => {
+                                e.target.closest("tr").remove();
+                                updateTotals();
+                            }
+                        }
+                    })
+                })
+            ]
+        })
+
+        const getTable = (text = "") => Table.with({
+            children: [
+                THead.with({
+                    children: [
+                        TH.with({
+                            innerText: "Description"
+                        }),
+                        TH.with({
+                            innerText: "Amount"
+                        }),
+                        ...payers.map(p =>
+                            TH.with({
+                                innerText: p
+                            })
+                        ),
+                        TH.with({
+                            innerText: "Delete"
+                        })
+                    ]
+                }),
+                TBody.with({
+                    id: "mainBody",
+                    children: text?.trim().split(/\n/g).map(getRow)
+                }),
+                TFoot.with({
+                    children: [
+                        TH.with(),
+                        TH.with({
+                            children: Input.with({
+                                id: "total",
+                                class: "amount",
+                                attribute: {
+                                    readonly: true,
+                                    type: "number"
+                                }
+                            })
+                        }),
+                        ...payers.map(p =>
+                            TH.with({
+                                children: Input.with({
+                                    id: `total_${p}`,
+                                    class: "amount",
+                                    attribute: {
+                                        readonly: true,
+                                        type: "number",
+                                        payer: p
+                                    }
+                                })
+                            })
+                        ),
+                        TH.with({
+                            children: Button.with({
+                                innerText: "+",
+                                class: "add",
+                                event: {
+                                    click: (e) => {
+                                        const body = document.getElementById("mainBody");
+                                        body.append(getRow().create());
+                                    }
+                                }
+                            })
+                        })
+                    ]
+                })
+            ]
+        });
+
+        const buildTable = text => {
+            const tableContainer = document.getElementById("TableContainer");
+            tableContainer.innerText = "";
+            tableContainer.append(getTable(text).create());
+        }
+
+        const updateTotals = () => {
+            const total = document.getElementById("total");
+            total.value = 0;
+            [...document.querySelectorAll("[content='amount']")].forEach(q => {
+                total.value = +total.value + (+q.value ?? 0);
+            });
+            total.value = Math.floor(+total.value * 100) / 100;
+
+            payers.forEach(p => {
+                const total = document.getElementById(`total_${p}`);
+                total.value = 0;
+                [...document.querySelectorAll("tbody tr")].forEach(tr => {
+                    const amount = +tr.querySelector("[content='amount']")?.value ?? 0;
+                    const checked = [...tr.querySelectorAll("input[type='checkbox']:checked")];
+                    const payr = tr.querySelector(`[payer="${p}"]`);
+                    if (payr.checked) {
+                        total.value = +total.value + amount / checked.length;
+                    }
+                });
+                total.value = (+total.value).toFixed(2);
+            })
+        }
+
+        document.querySelector("body").append(Div.with({
+            children: [
+                Div.with({
+                    children: [
+                        Input.with({
+                            attribute: {
+                                type: "file"
+                            },
+                            event: {
+                                input: (e, node) => {
+                                    try {
+                                        Tesseract.recognize(
+                                            node.files[0],
+                                            'eng',
+                                            { logger: m => console.log(m) }
+                                        ).then(({ data: { text } }) => {
+                                            buildTable(text);
+                                            updateTotals();
+                                        });
+                                    } catch (e) {
+                                        console.log(e);
+                                    }
+                                }
+                            }
+                        })
+                    ]
+                }),
+                Div.with({
+                    id: "TableContainer"
+                })
+            ]
+        }).create());
+        buildTable();
+    </script>
+</body>
+
+</html>
