@@ -1,4 +1,3 @@
-
 class Utils {
 	/* STRING TO HSL COLOR */
 	static toH = (s, d = 210, k = 6, n = 13) => `hsla(${(Array.from(s).reduce((a, c, i) => a + c.charCodeAt() * n * (k + i), d) % 360)}, 72%, 65%, 1)`;
