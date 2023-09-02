@@ -114,3 +114,5 @@ class Button extends Utils.Elem { }
 class TextArea extends Utils.Elem { }
 class BR extends Utils.Elem { }
 class Img extends Utils.Elem { }
+
+Utils.loaded();
