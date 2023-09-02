@@ -72,9 +72,8 @@ class Utils {
 		window.addEventListener("animationend", e => { observe(); });
 	}
 
-	static UTILS_LOADED = "utils-loaded";
 	static loaded() {
-		document.dispatchEvent(new Event(UTILS_LOADED));
+		document.dispatchEvent(new Event("utils-loaded"));
 	}
 
 	static Elem = class {
