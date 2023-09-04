@@ -1,4 +1,3 @@
-
 class Utils {
 	/* STRING TO HSL COLOR */
 	static toH = (s, d = 210, k = 6, n = 13) => `hsla(${(Array.from(s).reduce((a, c, i) => a + c.charCodeAt() * n * (k + i), d) % 360)}, 72%, 65%, 1)`;
@@ -78,9 +77,8 @@ class Utils {
 		window.addEventListener("animationend", e => { observe(); });
 	}
 
-	static UTILS_LOADED = "utils-loaded";
 	static loaded() {
-		document.dispatchEvent(new Event(UTILS_LOADED));
+		document.dispatchEvent(new Event("utils-loaded"));
 	}
 
 	static hideClass = "hide";
@@ -125,3 +123,6 @@ class Span extends Utils.Elem { }
 class Button extends Utils.Elem { }
 class TextArea extends Utils.Elem { }
 class BR extends Utils.Elem { }
+class Img extends Utils.Elem { }
+
+Utils.loaded();
