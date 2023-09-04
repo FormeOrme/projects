@@ -38,9 +38,14 @@ class Utils {
 	static toID_A = (xy, w) => toID(xy[0], xy[1], w);
 
 	static clone = o => Object.setPrototypeOf(JSON.parse(JSON.stringify(o)), o.constructor.prototype);
+
+	static context = {};
 	static createElement = (e) => {
-		const node = document.createElement(e.type);
-		!e.id || (node.id = e.id);
+		const node = e.node = document.createElement(e.type);
+		if (!!e.id) {
+			node.id = e.id;
+			Utils.context[e.id] = e;
+		}
 		!e.innerText || (node.innerText = e.innerText);
 		!e.value || (node.value = e.value);
 		if (!!e.children) {
@@ -78,6 +83,7 @@ class Utils {
 		document.dispatchEvent(new Event(UTILS_LOADED));
 	}
 
+	static hideClass = "hide";
 	static Elem = class {
 		get type() {
 			return this.constructor.name;
@@ -96,6 +102,12 @@ class Utils {
 				type: this.type,
 				...this
 			}
+		}
+		show() {
+			this.node.classList.remove(Utils.hideClass);
+		}
+		hide() {
+			this.node.classList.add(Utils.hideClass);
 		}
 	}
 }

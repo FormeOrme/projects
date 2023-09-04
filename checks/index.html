@@ -16,15 +16,24 @@
 
         const payers = ["Forme", "Andrea", "Dave", "Emma", "Teo"];
 
-        const getRow = (t = "") => TR.with({
-            children: [
-                TD.with({
+        const columns = {
+            description: {
+                header: TH.with({
+                    innerText: "Description"
+                }),
+                row: t => TD.with({
                     children: Input.with({
                         class: "description",
                         value: t.trim().match(/(.+)\d+,\d{2}$/g)?.at(0) ?? t
                     })
                 }),
-                TD.with({
+                footer: TH.with()
+            },
+            amount: {
+                header: TH.with({
+                    innerText: "Amount"
+                }),
+                row: t => TD.with({
                     children: Input.with({
                         class: "amount",
                         value: t.trim().match(/(\d+,\d{2})$/g)?.at(0).replace(",", ".") ?? "",
@@ -38,7 +47,24 @@
                         }
                     })
                 }),
-                ...payers.map(p => TD.with({
+                footer: TH.with({
+                    children: Input.with({
+                        id: "total",
+                        class: "amount",
+                        attribute: {
+                            readonly: true,
+                            type: "number"
+                        }
+                    })
+                })
+            },
+            payerList: {
+                header: payers.map(p =>
+                    TH.with({
+                        innerText: p
+                    })
+                ),
+                row: t => payers.map(p => TD.with({
                     children: Input.with({
                         attribute: {
                             type: "checkbox",
@@ -49,9 +75,26 @@
                         }
                     })
                 })),
-                TD.with({
+                footer: payers.map(p =>
+                    TH.with({
+                        children: Input.with({
+                            id: `total_${p}`,
+                            class: "amount",
+                            attribute: {
+                                readonly: true,
+                                type: "number",
+                                payer: p
+                            }
+                        })
+                    })
+                )
+            },
+            delete: {
+                header: TH.with({
+                    innerText: "Delete"
+                }),
+                row: t => TD.with({
                     children: Button.with({
-                        innerText: "×",
                         class: "delete",
                         event: {
                             click: (e) => {
@@ -60,73 +103,55 @@
                             }
                         }
                     })
+                }),
+                footer: TH.with({
+                    children: Button.with({
+                        class: "add",
+                        event: {
+                            click: (e) => {
+                                const body = document.getElementById("mainBody");
+                                body.append(getRow().create());
+                            }
+                        }
+                    })
                 })
+            }
+        }
+
+        const getRow = (t = "") => TR.with({
+            children: [
+                columns.delete.row(t),
+                columns.description.row(t),
+                columns.amount.row(t),
+                ...columns.payerList.row(t),
             ]
         })
 
         const getTable = (text = "") => Table.with({
             children: [
                 THead.with({
-                    children: [
-                        TH.with({
-                            innerText: "Description"
-                        }),
-                        TH.with({
-                            innerText: "Amount"
-                        }),
-                        ...payers.map(p =>
-                            TH.with({
-                                innerText: p
-                            })
-                        ),
-                        TH.with({
-                            innerText: "Delete"
-                        })
-                    ]
+                    children: TR.with({
+                        children: [
+                            columns.delete.header,
+                            columns.description.header,
+                            columns.amount.header,
+                            ...columns.payerList.header,
+                        ]
+                    })
                 }),
                 TBody.with({
                     id: "mainBody",
                     children: text?.trim().split(/\n/g).map(getRow)
                 }),
                 TFoot.with({
-                    children: [
-                        TH.with(),
-                        TH.with({
-                            children: Input.with({
-                                id: "total",
-                                class: "amount",
-                                attribute: {
-                                    readonly: true,
-                                    type: "number"
-                                }
-                            })
-                        }),
-                        ...payers.map(p =>
-                            TH.with({
-                                children: Input.with({
-                                    id: `total_${p}`,
-                                    class: "amount",
-                                    attribute: {
-                                        readonly: true,
-                                        type: "number",
-                                        payer: p
-                                    }
-                                })
-                            })
-                        ),
-                        TH.with({
-                            children: Button.with({
-                                innerText: "+",
-                                class: "add",
-                                event: {
-                                    click: (e) => {
-                                        const body = document.getElementById("mainBody");
-                                        body.append(getRow().create());
-                                    }
-                                }
-                            })
-                        })
-                    ]
+                    children: TR.with({
+                        children: [
+                            columns.delete.footer,
+                            columns.description.footer,
+                            columns.amount.footer,
+                            ...columns.payerList.footer,
+                        ]
+                    })
                 })
             ]
         });
@@ -163,6 +188,9 @@
         document.querySelector("body").append(Div.with({
             children: [
                 Div.with({
+                    id: "progressContainer"
+                }),
+                Div.with({
                     children: [
                         Input.with({
                             attribute: {
@@ -171,11 +199,18 @@
                             event: {
                                 input: (e, node) => {
                                     try {
+                                        Utils.context.progressContainer.show();
                                         Tesseract.recognize(
                                             node.files[0],
                                             'eng',
-                                            { logger: m => console.log(m) }
+                                            {
+                                                logger: l => {
+                                                    const progress = !l.jobId ? 0 : l.progress;
+                                                    Utils.context.progressContainer.node.setAttribute("progress", progress.toFixed(2));
+                                                }
+                                            }
                                         ).then(({ data: { text } }) => {
+                                            Utils.context.progressContainer.hide();
                                             buildTable(text);
                                             updateTotals();
                                         });
@@ -192,6 +227,7 @@
                 })
             ]
         }).create());
+        Utils.context.progressContainer.hide();
         buildTable();
     </script>
 </body>
