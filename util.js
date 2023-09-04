@@ -26,6 +26,19 @@ class Utils {
 		return hash >>> 0;
 	}
 
+	static fetchJson(o) {
+		return fetch(o.url)
+			.then(r => r.json())
+			.then(r => ({
+				...o,
+				json: r
+			}));
+	}
+	static fetchAll(o) {
+		return Promise.all(o.map(k => fetchJson(k)))
+			.then(c => c.reduce((a, c) => ({ ...a, [c.id]: c.json }), {}));
+	}
+
 	static prc = (current, max) => Utils.normalize(current, max) * 100;
 	static normalize = (current, max) => current / max;
 
