@@ -35,7 +35,7 @@ class Utils {
 			}));
 	}
 	static fetchAll(o) {
-		return Promise.all(o.map(fetchJson))
+		return Promise.all(o.map(Utils.fetchJson))
 			.then(c => c.reduce((a, c) => ({ ...a, [c.id]: c.json }), {}));
 	}
 
