@@ -1,10 +1,8 @@
 class Utils {
-	/* STRING TO HSL COLOR */
 	static toH = (s, d = 210, k = 6, n = 13) => `hsla(${(Array.from(s).reduce((a, c, i) => a + c.charCodeAt() * n * (k + i), d) % 360)}, 72%, 65%, 1)`;
 
-	/* ADD STYLE NODE UTIL */
 	static addStyleNode = (s) => {
-		let style = document.createElement('style');
+		const style = document.createElement('style');
 		document.head.appendChild(style);
 		style.appendChild(document.createTextNode(s));
 	}
@@ -26,22 +24,20 @@ class Utils {
 		return hash >>> 0;
 	}
 
-	static vkMap(arr, v = o => o, k = o => o.id) {
-		return arr.reduce((a, c) => { a[k(c)] = v(c); return a; }, {})
-	}
+	static kvMap = (arr, k, v) => Utils.vkMap(arr, v, k);
+	static vkMap = (arr, v = o => o, k = o => o.id) =>
+		arr.reduce((a, c) => { a[k(c)] = v(c); return a; }, {});
 
-	static fetchJson(o) {
-		return fetch(o.url)
+	static fetchJson = (o) =>
+		fetch(o.url)
 			.then(r => r.json())
 			.then(r => ({
 				...o,
 				json: r
 			}));
-	}
-	static fetchAll(o) {
-		return Promise.all(o.map(Utils.fetchJson))
-			.then(c => Utils.vkMap(c, o => o.json));
-	}
+
+	static fetchAll = (o) => Promise.all(o.map(Utils.fetchJson))
+		.then(c => Utils.vkMap(c, o => o.json))
 
 	static prc = (current, max) => Utils.normalize(current, max) * 100;
 	static normalize = (current, max) => current / max;
