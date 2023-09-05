@@ -144,53 +144,59 @@
                                 children: [{
                                     class: "col col-sm-6",
                                     children: [{
-                                        id: "deck-name",
-                                        type: "input",
-                                        class: "form-control mb-2",
-                                        attrs: { placeholder: "Deck Name" }
+                                        class: "input-group mb-2",
+                                        children: [{
+                                            id: "deck-name",
+                                            type: "input",
+                                            class: "form-control",
+                                            attrs: { placeholder: "Deck Name" }
+                                        }, {
+                                            id: "add-deck",
+                                            type: "span",
+                                            class: "btn btn-outline-success",
+                                            innerText: "Add Deck",
+                                            events: {
+                                                click: (e, _this) => {
+                                                    const id = UUID();
+                                                    const name = gid("deck-name").value.trim();
+                                                    const list = gid("deck-content").value.trim();
+                                                    if (!!name && !!list) {
+                                                        const deck = { id: id, active: true, name: name, ts: Date.now() };
+                                                        let lastSection = "deck";
+                                                        list.toLowerCase().split(/\n/)
+                                                            .filter(s => !!s)
+                                                            .map(s => s.split("(")[0])
+                                                            .map(s => s.trim())
+                                                            .forEach(s => {
+                                                                if (!s.match(/\d/)) {
+                                                                    lastSection = s;
+                                                                }
+                                                                if (!deck[lastSection]) {
+                                                                    deck[lastSection] = [];
+                                                                }
+                                                                if (!!s.match(/\d/)) {
+                                                                    const split = s.split(/(\d+) (.+)/)
+                                                                    deck[lastSection].push({
+                                                                        q: +split[1],
+                                                                        n: getKeyName(split[2])
+                                                                    });
+                                                                }
+                                                            });
+                                                        // console.log(deck)
+                                                        const objectStore = db.transaction("decks", "readwrite").objectStore("decks");
+                                                        objectStore.add(deck);
+                                                        updatePageData();
+                                                    }
+                                                }
+                                            }
+                                        }]
                                     }, {
                                         id: "deck-content",
                                         type: "textarea",
                                         class: "form-control mb-2",
-                                        attrs: { placeholder: "Deck List" }
-                                    }, {
-                                        id: "add-deck",
-                                        type: "span",
-                                        class: "btn btn-outline-success",
-                                        innerText: "Add Deck",
-                                        events: {
-                                            click: (e, _this) => {
-                                                const id = UUID();
-                                                const name = gid("deck-name").value.trim();
-                                                const list = gid("deck-content").value.trim();
-                                                if (!!name && !!list) {
-                                                    const deck = { id: id, active: true, name: name, ts: Date.now() };
-                                                    let lastSection = "deck";
-                                                    list.toLowerCase().split(/\n/)
-                                                        .filter(s => !!s)
-                                                        .map(s => s.split("(")[0])
-                                                        .map(s => s.trim())
-                                                        .forEach(s => {
-                                                            if (!s.match(/\d/)) {
-                                                                lastSection = s;
-                                                            }
-                                                            if (!deck[lastSection]) {
-                                                                deck[lastSection] = [];
-                                                            }
-                                                            if (!!s.match(/\d/)) {
-                                                                const split = s.split(/(\d+) (.+)/)
-                                                                deck[lastSection].push({
-                                                                    q: +split[1],
-                                                                    n: getKeyName(split[2])
-                                                                });
-                                                            }
-                                                        });
-                                                    // console.log(deck)
-                                                    const objectStore = db.transaction("decks", "readwrite").objectStore("decks");
-                                                    objectStore.add(deck);
-                                                    updatePageData();
-                                                }
-                                            }
+                                        attrs: {
+                                            placeholder: "Deck List",
+                                            rows: "20"
                                         }
                                     }]
                                 }, {
@@ -278,6 +284,8 @@
 
                 const cardsQuery = db.transaction("cards", 'readonly').objectStore("cards").getAll();
                 cardsQuery.onsuccess = (e) => {
+                    const sfCards = cardsQuery.result.reduce((a, c) => { a[c.key_name] = c; return a; }, {});
+
                     /* Update Deck Edit Page */
                     const deckListEdit = gid("deck-list-edit-wrapper");
                     deckListEdit.innerHTML = "";
@@ -295,7 +303,15 @@
                                         const name = gid("deck-name");
                                         name.value = d.name;
                                         const list = gid("deck-content");
-                                        console.log(d);
+                                        console.log(d)
+                                        list.value = ["commander", "deck", "sideboard"]
+                                            .map(t => ({ t: t, l: d[t] }))
+                                            .filter(t => !!t.l)
+                                            .reduce((a, c) => `${a}${capitalize(c.t)}\n${c.l
+                                                .map(k => ({ n: k.n, c: sfCards[k.n], q: k.q }))
+                                                .map(k => `${k.q} ${!k.c ? k.n : k.c.name}`)
+                                                .join("\n")
+                                                }\n\n`, "")
                                     },
                                     change: (e, _this) => {
                                         if (!!_this.value) {
@@ -347,7 +363,6 @@
                         id: "rarity-list",
                         class: "btn-toolbar mb-2"
                     }))
-                    const sfCards = cardsQuery.result.reduce((a, c) => { a[c.key_name] = c; return a; }, {});
                     const cfgQuery = db.transaction("cfg", 'readonly').objectStore("cfg").get("collection");
                     cfgQuery.onsuccess = (k) => {
                         let coll = cfgQuery.result;
@@ -466,10 +481,10 @@
             }
         }
 
-        const updateCardListSection = (deckList, sfcards, collection, rarityCfg) => {
+        const updateCardListSection = (deckList, sfCards, collection, rarityCfg) => {
             console.time("updateCardListSection")
             console.log("deckList", deckList);
-            console.log("sfcards", sfcards);
+            console.log("sfCards", sfCards);
             // console.log("collection", collection);
 
             console.time("usedCards")
@@ -483,11 +498,11 @@
                 dl.sideboard?.forEach(c => addCard(usedCards, c, "full", dl))
             })
             Object.entries(usedCards).forEach(([k, v]) => {
-                v.card = sfcards[k];
+                v.card = sfCards[k];
                 if (!v.card) {
                     console.log("No card found for", k)
                 } else {
-                    const isAlchemy = sfcards[k.substring(1)]
+                    const isAlchemy = sfCards[k.substring(1)]
                     if (!!isAlchemy) {
                         v.card = isAlchemy;
                     }
@@ -539,7 +554,7 @@
                                 class: "card-body card-img-overlay-bottom bg-light p-0 px-1 m-3 rounded-bottom border-secondary border-top",
                                 // attrs: { hidden: "false" },
                                 attrs: {
-                                    title: `${v.info.missing} Missing\n${v.info.owned} Owned\n${v.info.used} Used\nUsed in ${v.full.length} decks`
+                                    title: `${v.info.missing} Missing\n${v.info.owned} Owned\n${v.info.used} Used\nUsed in ${v.full.length} decks:\n${v.full.reduce((a, c) => `${a}- ${c.d.name}\n`, "")}`
                                 },
                                 children: [{
                                     type: "span",
