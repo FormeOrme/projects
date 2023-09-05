@@ -37,6 +37,10 @@ th {
     content: "✅";
 }
 
+tr:has(td):not(:has(input:checked)){
+    background: #F001;
+}
+
 table,
 tr,
 td,
