@@ -26,6 +26,11 @@ class Utils {
 		return hash >>> 0;
 	}
 
+	static vkMap(arr, v = o => o, k = o => o.id) {
+		return arr.reduce((a, c) =>
+			({ ...a, [k(c)]: v(c) }), {})
+	}
+
 	static fetchJson(o) {
 		return fetch(o.url)
 			.then(r => r.json())
@@ -36,7 +41,7 @@ class Utils {
 	}
 	static fetchAll(o) {
 		return Promise.all(o.map(Utils.fetchJson))
-			.then(c => c.reduce((a, c) => ({ ...a, [c.id]: c.json }), {}));
+			.then(c => Utils.vkMap(c, o => o.json));
 	}
 
 	static prc = (current, max) => Utils.normalize(current, max) * 100;
