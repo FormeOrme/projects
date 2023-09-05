@@ -27,8 +27,7 @@ class Utils {
 	}
 
 	static vkMap(arr, v = o => o, k = o => o.id) {
-		return arr.reduce((a, c) =>
-			({ ...a, [k(c)]: v(c) }), {})
+		return arr.reduce((a, c) => { a[k(c)] = v(c); return a; }, {})
 	}
 
 	static fetchJson(o) {
