@@ -27,7 +27,7 @@ class Utils {
 	static clone = o => Object.setPrototypeOf(JSON.parse(JSON.stringify(o)), o.constructor.prototype);
 
 	static context = {};
-	static createElement = (e) => {
+	static createElement(e) {
 		const node = e.node = document.createElement(e.type);
 		!!e.id && ((node.id = e.id) && (Utils.context[e.id] = e));
 		!!e.innerText && (node.textContent = e.innerText);
@@ -70,7 +70,6 @@ class Utils {
 	}
 	static load() { document.dispatchEvent(new Event("utils-loaded")); }
 }
-Utils.load();
 
 class Table extends Utils.Elem { }
 class THead extends Utils.Elem { }
@@ -86,3 +85,5 @@ class Button extends Utils.Elem { }
 class TextArea extends Utils.Elem { }
 class BR extends Utils.Elem { }
 class Img extends Utils.Elem { }
+
+Utils.load();// must be last line
