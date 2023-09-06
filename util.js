@@ -68,7 +68,7 @@ class Utils {
 		show() { this.node.classList.remove(Utils.hideClass); }
 		hide() { this.node.classList.add(Utils.hideClass); }
 	}
-	static load = () => document.dispatchEvent(new Event("utils-loaded"));
+	static load() { document.dispatchEvent(new Event("utils-loaded")); }
 }
 Utils.load();
 
