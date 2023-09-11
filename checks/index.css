@@ -6,6 +6,7 @@ body,
 input {
     font-family: "Roboto", Verdana, Arial, Helvetica, sans-serif;
     background: #0001;
+    margin: 0;
 }
 
 input[type="checkbox"] {
@@ -25,10 +26,6 @@ button {
     padding: 0;
 }
 
-th {
-    font-size: 15px;
-}
-
 .delete::before {
     content: "❌";
 }
@@ -37,7 +34,7 @@ th {
     content: "✅";
 }
 
-tr:has(td):not(:has(input:checked)){
+tr:has(td):not(:has(input:checked)) {
     background: #F001;
 }
 
@@ -48,11 +45,7 @@ th {
     border-collapse: collapse;
     margin: 0;
     padding: 0;
-}
-
-td,
-th {
-    height: 30px;
+    position: relative;
 }
 
 tr:hover td {
@@ -77,12 +70,12 @@ td:has(button) {
 }
 
 .description {
-    width: 10em;
+    width: 150px;
 }
 
 .amount {
     text-align: right;
-    width: 5em;
+    width: 67px;
 }
 
 #progressContainer {
@@ -95,6 +88,15 @@ td:has(button) {
     z-index: 9999;
 }
 
+#progressPercent {
+    font-size: 100px;
+}
+
 .hide {
     display: none;
+}
+
+.header {
+    display: inline-block;
+    font-size: 15px;
 }
