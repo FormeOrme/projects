@@ -9,13 +9,17 @@ class LoStMan /* Local Store Manager */ {
 }
 
 class QueStMan /* Query String Manager */ {
-	static queryString = Object.fromEntries((new URLSearchParams(window.location.search)).entries());
+	static queryString = new Proxy(new URLSearchParams(window.location.search), {
+		get: (qs, id) => qs.get(id),
+	});
 	static get(name) {
 		return QueStMan.queryString[name];
 	}
 }
 
 class Utils {
+	static load() { document.dispatchEvent(new Event("utils-loaded")); }
+
 	static toH = (s, d = 210, k = 6, n = 13) => `hsla(${(Array.from(s).reduce((a, c, i) => a + c.charCodeAt() * n * (k + i), d) % 360)}, 72%, 65%, 1)`;
 
 	static getId() {
@@ -92,7 +96,6 @@ class Utils {
 		create() { return Utils.createElement(this); }
 		toJSON() { return ({ _type: this._type, ...this }); }
 	}
-	static load() { document.dispatchEvent(new Event("utils-loaded")); }
 }
 
 class Table extends Utils.Elem { }
@@ -110,5 +113,6 @@ class TextArea extends Utils.Elem { }
 class BR extends Utils.Elem { }
 class Img extends Utils.Elem { }
 class Label extends Utils.Elem { }
+class I extends Utils.Elem { }
 
 Utils.load();// must be last line

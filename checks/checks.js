@@ -1,6 +1,6 @@
-
-
 const payers = ["Forme", "Andrea", "Dave", "Emma", "Teo"];
+
+const BUTTON_CLASSES = "col-2 col-md-1 col-lg-1 ";
 
 const columns = {
     description: {
@@ -13,7 +13,7 @@ const columns = {
         row: t => Div.with({
             class: "col-4 me-1",
             children: Input.with({
-                class: "form-control",
+                class: "form-control form-control-sm",
                 value: t.trim().match(/(.+)\d+,\d{2}$/g)?.at(0) ?? t
             })
         }),
@@ -31,7 +31,7 @@ const columns = {
         row: t => Div.with({
             class: "col-2 me-1",
             children: Input.with({
-                class: "form-control px-1 amount",
+                class: "form-control form-control-sm px-1 amount",
                 value: t.trim().match(/(\d+,\d{2})$/g)?.at(0).replace(",", ".") ?? "",
                 attribute: {
                     type: "number",
@@ -47,7 +47,7 @@ const columns = {
             class: "col-2 me-1",
             children: Input.with({
                 id: "total",
-                class: "form-control px-1 amount",
+                class: "form-control form-control-sm px-1 amount",
                 attribute: {
                     readonly: true,
                     type: "number"
@@ -58,14 +58,14 @@ const columns = {
     payerList: {
         header: payers.map(p =>
             Div.with({
-                class: "col-2 me-1",
+                class: BUTTON_CLASSES + "me-1",
                 children: Span.with({
                     innerText: p
                 })
             })
         ),
         row: t => payers.map(p => Div.with({
-            class: "col-2 me-1",
+            class: BUTTON_CLASSES + "me-1",
             children: [
                 Input.with({
                     id: id = Utils.getId(),
@@ -75,24 +75,32 @@ const columns = {
                         payer: p,
                     },
                     event: {
-                        input: () => updateTotals()
+                        input: (e) => {
+                            const row = e.target.closest(".flex-row");
+                            const checked = row.querySelectorAll("input:checked").length > 0;
+                            [...row.querySelectorAll("input[type='checkbox']+.btn")].forEach((btn) => {
+                                btn.classList.toggle("btn-outline-primary", checked);
+                                btn.classList.toggle("btn-outline-danger", !checked);
+                            })
+                            updateTotals()
+                        }
                     }
                 }),
                 Label.with({
-                    class: "btn btn-outline-primary col-6",
+                    class: "btn btn-sm btn-outline-danger col-12",
                     attribute: {
                         for: id
                     },
-                    innerText: "."
+                    children: I.with({ class: "bi bi-check-lg" }),
                 }),
             ]
         })),
         footer: payers.map(p =>
             Div.with({
-                class: "col-2 me-1",
+                class: BUTTON_CLASSES + "me-1",
                 children: Input.with({
                     id: `total_${p}`,
-                    class: "form-control px-1 amount",
+                    class: "form-control form-control-sm px-1 amount",
                     attribute: {
                         readonly: true,
                         type: "number",
@@ -104,13 +112,13 @@ const columns = {
     },
     action: {
         header: Div.with({
-            class: "col-1 me-1"
+            class: BUTTON_CLASSES + "me-1"
         }),
         row: t => Div.with({
-            class: "col-1 me-1",
+            class: BUTTON_CLASSES + "me-1",
             children: Button.with({
-                class: "btn btn-danger col-12",
-                innerText: "x",
+                class: "btn btn-sm btn-danger col-12",
+                children: I.with({ class: "bi bi-trash-fill" }),
                 type: "button",
                 event: {
                     click: (e) => {
@@ -121,10 +129,10 @@ const columns = {
             })
         }),
         footer: Div.with({
-            class: "col-1 me-1",
+            class: BUTTON_CLASSES + "me-1",
             children: Button.with({
-                class: "btn btn-success col-12",
-                innerText: "+",
+                class: "btn btn-sm btn-success col-12",
+                children: I.with({ class: "bi bi-plus-lg" }),
                 type: "button",
                 event: {
                     click: (e) => {
@@ -214,7 +222,7 @@ document.querySelector("body").append(Div.with({
             class: "mb-1",
             children: [
                 Input.with({
-                    class: "form-control",
+                    class: "form-control form-control-sm",
                     attribute: {
                         type: "file"
                     },
