@@ -1,17 +1,16 @@
 name: Generate Folder List
 
 on:
-  push:
+  push: 
+    paths-ignore: 
+      - readme.md
     branches:
-      - master  
-    paths:
-      - *.md
-      - **/*.md  
+      - master
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
+      
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -26,5 +25,7 @@ jobs:
           done > readme.md
           # Debugging: Display the contents of readme.md
           cat readme.md
+          git commit -am "Update README"
+          git push
 
         shell: bash
