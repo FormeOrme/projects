@@ -15,9 +15,6 @@ jobs:
 
       - name: Generate Folder List
         run: |
-          # Navigate to the main folder
-          cd main
-
           # List all directories in the main folder and create links
           for dir in */; do
             echo "- [${dir%/}](${dir})"
