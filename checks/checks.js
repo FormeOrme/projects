@@ -68,7 +68,7 @@ const columns = {
             class: BUTTON_CLASSES + "me-1",
             children: [
                 Input.with({
-                    id: id = Utils.getId(),
+                    id: id = Utils.HID,
                     class: "btn-check",
                     attribute: {
                         type: "checkbox",
@@ -187,7 +187,7 @@ const getTable = (text = "") => Div.with({
 });
 
 const buildTable = text => {
-    const tableContainer = Utils.NODES.TableContainer;
+    const tableContainer = Dom.NODES.TableContainer;
     tableContainer.innerText = "";
     tableContainer.append(getTable(text).create());
 }
@@ -201,7 +201,7 @@ const updateTotals = () => {
     total.value = Math.floor(+total.value * 100) / 100;
 
     payers.forEach(p => {
-        const total = Utils.NODES[`total_${p}`];
+        const total = Dom.NODES[`total_${p}`];
         total.value = 0;
         [...document.querySelectorAll("#mainBody .flex-row")].forEach(tr => {
             const amount = +tr.querySelector("[content='amount']")?.value ?? 0;
@@ -229,18 +229,18 @@ document.querySelector("body").append(Div.with({
                     event: {
                         input: (e, node) => {
                             try {
-                                Utils.NODES.progressContainer.show();
+                                Dom.NODES.progressContainer.show();
                                 Tesseract.recognize(
                                     node.files[0],
                                     'eng',
                                     {
                                         logger: l => {
                                             const progress = !l.jobId ? 0 : l.progress;
-                                            Utils.NODES.progressPercent.style = `width: ${(progress * 100).toFixed(0)}%`;
+                                            Dom.NODES.progressPercent.style = `width: ${(progress * 100).toFixed(0)}%`;
                                         }
                                     }
                                 ).then(({ data: { text } }) => {
-                                    Utils.NODES.progressContainer.hide();
+                                    Dom.NODES.progressContainer.hide();
                                     buildTable(text);
                                     updateTotals();
                                 });
@@ -272,7 +272,7 @@ document.querySelector("body").append(Div.with({
         })
     ]
 }).create());
-Utils.NODES.progressContainer.hide();
+Dom.NODES.progressContainer.hide();
 buildTable();
 
 class GroupManager {
