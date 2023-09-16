@@ -1,8 +1,9 @@
 name: Update README
 
 on:
-  schedule:
-    - cron: '0 * * * *' # Set the schedule as per your preference
+  push:
+    branches:
+      - master
 
 jobs:
   build:
@@ -12,9 +13,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Update README
+      - name: Generate Folder List
         run: |
-          # Add your script here to update the README.md file
-          echo "Hello, GitHub!" >> README.md
-          git commit -am "Update README"
-          git push
+          # Navigate to the main folder
+          cd main
+
+          # List all directories in the main folder and create links
+          for dir in */; do
+            echo "- [${dir%/}](${dir})"
+          done > folders.md
+
+          # Append the generated list to the README.md file
+          cat folders.md >> ../README.md
+        shell: bash
