@@ -3,7 +3,10 @@ name: Generate Folder List
 on:
   push:
     branches:
-      - master
+      - master  
+    paths:
+      - *.md
+      - **/*.md  
 
 jobs:
   build:
