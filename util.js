@@ -135,7 +135,6 @@ class Dom {
 		return node;
 	}
 
-
 	static Elem = class {
 		get _type() { return this.constructor.name; }
 		static with(obj) {
@@ -144,24 +143,10 @@ class Dom {
 		create() { return Dom.createElement(this); }
 		toJSON() { return ({ _type: this._type, ...this }); }
 	}
+
+	static DOM_ELEMENTS = 'Menu,A,BR,Button,Div,I,Img,Input,LI,Label,Section,Span,TBody,TD,TFoot,TH,THead,TR,Table,TextArea,UL'.split(",");
 }
 
-class BR extends Dom.Elem { }
-class Button extends Dom.Elem { }
-class Div extends Dom.Elem { }
-class I extends Dom.Elem { }
-class Img extends Dom.Elem { }
-class Input extends Dom.Elem { }
-class Label extends Dom.Elem { }
-class Section extends Dom.Elem { }
-class Span extends Dom.Elem { }
-class Table extends Dom.Elem { }
-class TBody extends Dom.Elem { }
-class TD extends Dom.Elem { }
-class TextArea extends Dom.Elem { }
-class TFoot extends Dom.Elem { }
-class TH extends Dom.Elem { }
-class THead extends Dom.Elem { }
-class TR extends Dom.Elem { }
+Dom.DOM_ELEMENTS.forEach(e => eval(`class ${e} extends Dom.Elem {}; window.${e} = ${e};`));
 
 Utils.load();// must be last line

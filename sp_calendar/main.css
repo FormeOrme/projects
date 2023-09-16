@@ -4,7 +4,7 @@
 }
 
 body{
-    font-family: "Roboto Mono";
+    font-family: Consolas;
     margin: 0px;
 }
 
@@ -69,7 +69,7 @@ div#calendarTable {
     border: none;
     text-align: center;
     font-size: 16px;
-    font-family: "Roboto mono";
+    font-family: Consolas;
     outline: none;
 }
 

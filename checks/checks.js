@@ -216,7 +216,7 @@ const updateTotals = () => {
 }
 
 document.querySelector("body").append(Div.with({
-    class: "container",
+    class: ["container", "mt-1"],
     children: [
         Div.with({
             class: "mb-1",

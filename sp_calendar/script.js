@@ -10,19 +10,24 @@ function weekdays() {
     return Array.from(Array(7).keys()).map(n => (new Date(2010, 1, n + 1)).toLocaleString(CURRENT.locale, { weekday: "short" }));
 };
 
+function getMonthLabel(date) {
+    return date.toLocaleString(CURRENT.locale, { month: 'short' })
+}
+
 const CURRENT = {
-    now : new Date(),
+    now: new Date(),
+    month: () => getMonthLabel(new Date()),
+    date: new Date().getDate(),
+    year: (new Date()).getFullYear(),
     locale: LANGS[0],
     weekdays: weekdays,
-    year: (new Date()).getFullYear(),
-    months: ()=>months(CURRENT.year),
+    months: () => months(CURRENT.year),
     template: {
         row: { nodeName: "div", classList: ["row"] },
         col: { nodeName: "div", classList: ["col"] }
     },
     commands: {}
 };
-
 
 function createElement(e, classList) {
     let n = document.createElement(e.nodeName);
@@ -43,19 +48,22 @@ function append(container, content, varName) {
     container.append(content);
 }
 
-function fillMonths(months){
-    months.row.map(r=>{ r.month.map(m=> m.dataset.label="") });
+function fillMonths(months) {
+    months.row.map(r => { r.month.map(m => m.dataset.label = "") });
     let rowIndex = Array(7).fill(0);
     CURRENT.months().map(m => {
-        let i = (m.getDay()+6) % 7;
+        let i = (m.getDay() + 6) % 7;
         let val = months.row[rowIndex[i]++].month[i];
-        val.dataset.label = m.toLocaleString(CURRENT.locale, { month: 'short' });
+        val.dataset.label = getMonthLabel(m);
+        if (CURRENT.month() == val.dataset.label) {
+            val.classList.add("active");
+        }
     });
 }
-function fillWeekDays(weekDays){
+function fillWeekDays(weekDays) {
     let TMP_weekDays = CURRENT.weekdays();
-    weekDays.row.map((o, y)=>{
-        o.weekDay.map((w, x)=>{
+    weekDays.row.map((o, y) => {
+        o.weekDay.map((w, x) => {
             w.dataset.label = TMP_weekDays[(x + y) % 7];
             if ((x + y) % 7 == 6) {
                 w.classList.add("sunday");
@@ -83,18 +91,18 @@ function buildContent() {
 
     CURRENT.commands.dateInput = dateInput;
     append(commands, dateInput, "dateInput");
-    
+
     let langSelect = document.createElement("select");
     langSelect.id = "langSelect";
     langSelect.classList.add("command");
-    LANGS.map(l=>{
+    LANGS.map(l => {
         let option = document.createElement("option");
         option.value = l;
         option.innerText = l;
         langSelect.append(option);
     });
     langSelect.value = CURRENT.locale;
-    langSelect.addEventListener("change", (e)=>{
+    langSelect.addEventListener("change", (e) => {
         CURRENT.locale = e.target.value;
         init();
     })
@@ -107,18 +115,18 @@ function buildContent() {
         let row = createElement(CURRENT.template.row);
         Array.from(Array(7).keys()).map((x) => {
             let month = createElement(CURRENT.template.col, ["month", "printLabel"]);
-            month.addEventListener("click", (e)=>{
-                document.querySelectorAll(".month.active").forEach(m=>m.classList.remove("active"));
+            month.addEventListener("click", (e) => {
+                document.querySelectorAll(".month.active").forEach(m => m.classList.remove("active"));
                 e.target.classList.add("active");
             });
-
             append(row, month, "month");
         });
         append(months, row, "row");
     });
 
-    dateInput.addEventListener("change", (e)=>{
-        CURRENT.year = e.target.value*1;
+    dateInput.addEventListener("change", (e) => {
+        CURRENT.year = e.target.value * 1;
+        months.row.forEach(r => r.month.forEach(m => m.classList.remove("active")));
         fillMonths(months);
     })
 
@@ -140,8 +148,11 @@ function buildContent() {
             if (number.dataset.label > 31) {
                 number.dataset.label = "";
             }
-            number.addEventListener("click", (e)=>{
-                document.querySelectorAll(".number.active").forEach(m=>m.classList.remove("active"));
+            if (CURRENT.date == number.dataset.label) {
+                number.classList.add("active");
+            }
+            number.addEventListener("click", (e) => {
+                document.querySelectorAll(".number.active").forEach(m => m.classList.remove("active"));
                 e.target.classList.add("active");
             });
             append(row, number, "number");
