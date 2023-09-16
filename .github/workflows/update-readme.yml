@@ -15,17 +15,13 @@ jobs:
 
       - name: Generate Folder List
         run: |
+          # Empty the content of the readme.md file (with a lowercase "r")
+          echo "" > readme.md
           # List all directories in the repository root and create links
           for dir in */; do
             echo "- [${dir%/}](${dir})"
-          done > folders.md
-
-          # Append the generated list to the readme.md file (with a lowercase "r")
-          cat folders.md >> readme.md
-
+          done > readme.md
           # Debugging: Display the contents of readme.md
           cat readme.md
 
-          # Debugging: List files in the current directory
-          ls -al
         shell: bash
