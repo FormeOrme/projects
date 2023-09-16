@@ -1,30 +1,4 @@
-/* SHORTHANDS */
-const gid = document.getElementById.bind(document);
-const gq = document.querySelector.bind(document);
-const gqa = document.querySelectorAll.bind(document);
 
-/* STRING UTILS */
-const capitalize = s => s.charAt(0).toUpperCase() + s.slice(1);
-
-/* STRING TO HSL COLOR */
-const toH = (str, l = 72, s = 65, d = 210, k = 6, n = 13) =>
-    `hsla(${(Array.from(str).reduce((a, c, i) => a + c.charCodeAt() * n * (k + i), d) % 360)}, ${l}%, ${s}%, 1)`
-
-const UUID = () => self.crypto.randomUUID();
-
-const isHtml = s => s.includes("<") && (!s.includes("{") || (s.includes("{") && (s.indexOf("{") > s.indexOf("<"))))
-
-/* ADD STYLE NODE UTIL */
-const addStyleNode = (s) => {
-    let style = document.createElement('style');
-    document.head.appendChild(style);
-    style.type = 'text/css';
-    style.appendChild(document.createTextNode(s));
-}
-
-/* LOCAL STORAGE UTILS */
-Storage.prototype.getObject = function (n) { return JSON.parse(this.getItem(n)) }
-Storage.prototype.setObject = function (n, v) { this.setItem(n, JSON.stringify(v)) }
 
 /* CREATE DOM ELEMENT */
 const createElement = (e) => {

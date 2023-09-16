@@ -17,18 +17,48 @@ class QueStMan /* Query String Manager */ {
 	}
 }
 
+
+class StringUtils {
+	static capitalize = s => s.charAt(0).toUpperCase() + s.slice(1);
+}
+
 class Utils {
+	static get UUID() {
+		return self.crypto.randomUUID();
+	}
+	static get ID() {
+		const array = new Uint32Array(1);
+		window.crypto.getRandomValues(array);
+		return array[0];
+	}
+	static get HID() {
+		return Utils.ID.toString(16);
+	}
+
 	static load() { document.dispatchEvent(new Event("utils-loaded")); }
 
 	static toH = (s, d = 210, k = 6, n = 13) => `hsla(${(Array.from(s).reduce((a, c, i) => a + c.charCodeAt() * n * (k + i), d) % 360)}, 72%, 65%, 1)`;
 
-	static getId() {
-		const array = new Uint32Array(1);
-		window.crypto.getRandomValues(array);
-		return array[0].toString(16);
+	static addStyleNode = s => (document.head.appendChild(document.createElement('style')).appendChild(document.createTextNode(s)));
+
+	static getType(s) {
+		s = s?.trim();
+		if (/<[^>]*>/.test(s)) {
+			return "xml";
+		}
+		if (Utils.isJSON(s)) {
+			return "json";
+		}
 	}
 
-	static addStyleNode = s => (document.head.appendChild(document.createElement('style')).appendChild(document.createTextNode(s)));
+	static isJSON(s) {
+		try {
+			JSON.parse(s);
+			return true;
+		} catch {
+			return false;
+		}
+	}
 
 	static kvMap = (arr, k, v) => Utils.vkMap(arr, v, k);
 	static vkMap = (arr, v = o => o, k = o => o.id) =>
@@ -53,24 +83,15 @@ class Utils {
 
 	static clone = o => Object.setPrototypeOf(JSON.parse(JSON.stringify(o)), o.constructor.prototype);
 
-	static NODES = {};
-	static createElement(e) {
-		const node = document.createElement(e._type);
-		!!e.id && ((node.id = e.id) && (Utils.NODES[e.id] = node));
-		!!e.innerText && (node.textContent = e.innerText);
-		!!e.value && (node.value = e.value);
-		!!e.type && (node.type = e.type);
-		!!e.class && node.classList.add(...Array.isArray(e.class) ? e.class : e.class.trim().split(" "));
-		!!e.attribute && Object.entries(e.attribute).forEach(([k, v]) => node.setAttribute(k, v));
-		!!e.event && Object.entries(e.event).forEach(([k, v]) => node.addEventListener(k, (e) => v(e, node), false));
-		!!e.children && (Array.isArray(e.children) ? e.children : [e.children]).forEach((c) => {
-			node.appendChild(Utils.createElement(c));
-		});
-		!!e.function && Object.entries(e.function).forEach(([k, v]) => {
-			node[k] = () => v(node, e);
-		});
-		return node;
+	static shuffle = (array) => {
+		for (var i = array.length - 1; i > 0; i--) {
+			var rand = Math.floor(Math.random() * (i + 1));
+			[array[i], array[rand]] = [array[rand], array[i]]
+		}
+		return array;
 	}
+
+	static shuffleNew = arr => Utils.shuffle(arr.slice());
 
 	static monitor(parent, target, callback) {
 		var mObs = new window.MutationObserver(() => {
@@ -88,31 +109,59 @@ class Utils {
 	}
 
 	static hideClass = "d-none";
+}
+
+class Dom {
+	static id = (id) => document.getElementById(id);
+	static qs = (selector) => document.querySelector(selector);
+	static qsa = (selector) => document.querySelectorAll(selector);
+
+	static NODES = {};
+	static createElement(e) {
+		const node = document.createElement(e._type);
+		!!e.id && ((node.id = e.id) && (Dom.NODES[e.id] = node));
+		!!e.innerText && (node.textContent = e.innerText);
+		!!e.value && (node.value = e.value);
+		!!e.type && (node.type = e.type);
+		!!e.class && node.classList.add(...Array.isArray(e.class) ? e.class : e.class.trim().split(" "));
+		!!e.attribute && Object.entries(e.attribute).forEach(([k, v]) => node.setAttribute(k, v));
+		!!e.event && Object.entries(e.event).forEach(([k, v]) => node.addEventListener(k, (e) => v(e, node), false));
+		!!e.children && (Array.isArray(e.children) ? e.children : [e.children]).forEach((c) => {
+			node.appendChild(Dom.createElement(c));
+		});
+		!!e.function && Object.entries(e.function).forEach(([k, v]) => {
+			node[k] = () => v(node, e);
+		});
+		return node;
+	}
+
+
 	static Elem = class {
 		get _type() { return this.constructor.name; }
 		static with(obj) {
 			return Object.assign(new this(), obj);
 		}
-		create() { return Utils.createElement(this); }
+		create() { return Dom.createElement(this); }
 		toJSON() { return ({ _type: this._type, ...this }); }
 	}
 }
 
-class Table extends Utils.Elem { }
-class THead extends Utils.Elem { }
-class TBody extends Utils.Elem { }
-class TFoot extends Utils.Elem { }
-class TR extends Utils.Elem { }
-class TD extends Utils.Elem { }
-class TH extends Utils.Elem { }
-class Div extends Utils.Elem { }
-class Input extends Utils.Elem { }
-class Span extends Utils.Elem { }
-class Button extends Utils.Elem { }
-class TextArea extends Utils.Elem { }
-class BR extends Utils.Elem { }
-class Img extends Utils.Elem { }
-class Label extends Utils.Elem { }
-class I extends Utils.Elem { }
+class BR extends Dom.Elem { }
+class Button extends Dom.Elem { }
+class Div extends Dom.Elem { }
+class I extends Dom.Elem { }
+class Img extends Dom.Elem { }
+class Input extends Dom.Elem { }
+class Label extends Dom.Elem { }
+class Section extends Dom.Elem { }
+class Span extends Dom.Elem { }
+class Table extends Dom.Elem { }
+class TBody extends Dom.Elem { }
+class TD extends Dom.Elem { }
+class TextArea extends Dom.Elem { }
+class TFoot extends Dom.Elem { }
+class TH extends Dom.Elem { }
+class THead extends Dom.Elem { }
+class TR extends Dom.Elem { }
 
 Utils.load();// must be last line
