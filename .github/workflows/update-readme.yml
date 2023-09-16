@@ -1,0 +1,20 @@
+name: Update README
+
+on:
+  schedule:
+    - cron: '0 * * * *' # Set the schedule as per your preference
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Update README
+        run: |
+          # Add your script here to update the README.md file
+          echo "Hello, GitHub!" >> README.md
+          git commit -am "Update README"
+          git push
