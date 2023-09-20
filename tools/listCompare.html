@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>List Compare</title>
-    <script src="common.js"></script>
+    <script src="../util.js"></script>
     <style>
         *::-webkit-scrollbar {
             width: 10px;
@@ -37,33 +37,33 @@
 
 <body spellcheck="false">
     <script>
-        const TEXTAREA_INPUT = () => ({
-            type: "textarea",
-            attrs: [["placeholder", " "], ["style", `background: ${toH(UUID(), 10)};`]],
-            events: {
+        const TEXTAREA_INPUT = () => TextArea.with({
+            attribute: {
+                placeholder: " ",
+                style: `background: ${Utils.toH(Utils.UUID, 10)};`
+            },
+            event: {
                 input: (e, _this) => {
                     if (!_this.value.trim()) {
                         _this.remove();
                     }
                     if (!document.querySelector("#input textarea:placeholder-shown")) {
-                        document.querySelector("#input").append(createElement(TEXTAREA_INPUT()));
+                        document.querySelector("#input").append(Dom.createElement(TEXTAREA_INPUT()));
                     }
                 }
             }
         })
 
-        document.querySelector("body").append(createElement({
+        document.querySelector("body").append(Div.with({
             id: "container",
-            type: "div",
-            children: [{
-                type: "section",
-                id: "input",
-                children: [TEXTAREA_INPUT()]
-            }, {
-                type: "section",
-                id: "output"
-            }]
-        }))
+            children: [
+                Section.with({
+                    id: "input",
+                    children: [TEXTAREA_INPUT()]
+                }), Section.with({
+                    id: "output"
+                })]
+        }).create())
     </script>
 </body>
 

@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <script src="./common.js"></script>
+    <script src="../util.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Compare</title>
@@ -166,21 +166,20 @@
     }
 
     const getJson = (iValue) => {
-        if (!isHtml(iValue)) {
-            const fcb = iValue.indexOf("{")/* first curly bracket */
-            const lcb = iValue.lastIndexOf("}")/* last curly bracket */
-            if (fcb < 0 || lcb < 0) return null;
-            return iValue.substr(fcb, 1 + lcb - fcb);
-        } else {
-            return JSON.stringify(cleanupXML(iValue).split("\n").map(x => htmlToJSON(x)));
+        switch (Utils.getType(iValue)) {
+            case "xml":
+                const fcb = iValue.indexOf("{")/* first curly bracket */
+                const lcb = iValue.lastIndexOf("}")/* last curly bracket */
+                if (fcb < 0 || lcb < 0) return null;
+                return iValue.substr(fcb, 1 + lcb - fcb);
+            case "json":
+                return JSON.stringify(cleanupXML(iValue).split("\n").map(x => htmlToJSON(x)));
         }
     }
 
-    const ID = () => "_" + Math.floor((Math.random() * Date.now())).toString("36");
-
     const getInput = () => {
         const input = document.createElement("input");
-        input.id = ID();
+        input.id = Utils.XID;
         input.addEventListener("paste", (e) => {
             e.stopPropagation();
             e.preventDefault();

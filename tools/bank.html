@@ -45,83 +45,6 @@
 </head>
 
 <body>
-    <script>
-        const BANKS = [
-            { id: "01005", name: "BNL" },
-            { id: "01030", name: "Monte dei Paschi (MPS)" },
-            { id: "02007", name: "Unicredit CZ" },
-            { id: "02008", name: "Unicredit IT" },
-            { id: "03058", name: "Che Banca!" },
-            { id: "03062", name: "Banca Mediolanum" },
-            { id: "03075", name: "Banca Generali" },
-            { id: "03115", name: "Findomestic" },
-            { id: "03268", name: "Banca Sella" },
-            { id: "03268", name: "Hype" },
-            { id: "03287", name: "Banca Sanmarinese Investimento (BSI)" },
-            { id: "03442", name: "Widiba" },
-            { id: "03475", name: "ING" },
-            { id: "03493", name: "Raiffeisen" },
-            { id: "03589", name: "Allianz Bank" },
-            { id: "03599", name: "Cassa Centrale" },
-            { id: "05676", name: "Banca di Sassari - BiBanca" },
-            { id: "05856", name: "BP Alto Adige" },
-            { id: "06230", name: "Cariparma - Credit Agricole" },
-            { id: "09509", name: "Poste" },
-            { id: "31287", name: "Agos" },
-            { id: "32532", name: "Sisalpay QFS" },
-            { id: "33604", name: "SIApay" },
-            { id: "36000", name: "Carta LIS" },
-            { id: "36003", name: "MedLab - Flowe" },
-            { id: "36024", name: "CPP" },
-            { id: "36068", name: "Telepass Pa" },
-            { id: "36085", name: "EnelX" },
-            { id: "48136", name: "Santander" },
-            { id: "70106", name: "Compass" },
-            { id: "80094", name: "Granit Bank" },
-            { id: "80095", name: "MagNet" },
-            { id: "80350", name: "Cetelem HU" },
-            { id: "80352", name: "CSOB SK" },
-            { id: "80353", name: "CSOB CZ - MallPay" },
-            { id: "80356", name: "Unicredit DE (HVB)" },
-            { id: "80357", name: "Banif (BNF)" },
-            { id: "80359", name: "Unicredit SK" },
-            { id: "80362", name: "KeH" },
-            { id: "80364", name: "Unicredit HU" },
-            { id: "80383", name: "FCA Bank" },
-            { id: "80568", name: "Lombard Bank" },
-            { id: "80570", name: "BNP PF BG" },
-            { id: "80571", name: "Cetelem CZ" },
-            { id: "80572", name: "Budapest Bank" },
-            { id: "80579", name: "Ancoria Bank" },
-            { id: "80647", name: "LBB ADAC Pay" },
-            { id: "80647", name: "LBB" },
-            { id: "80675", name: "APS Bank" },
-            { id: "80680", name: "J&T CZ" },
-            { id: "80681", name: "J&T SK" },
-            { id: "80682", name: "OTP Banka" },
-            { id: "80684", name: "Prima Banka" },
-            { id: "80685", name: "Privatbanka" },
-            { id: "80686", name: "Sberbank CZ" },
-            { id: "80687", name: "Credins" },
-            { id: "80688", name: "Ohridska" },
-            { id: "80689", name: "Sberbank BIH" },
-            { id: "80690", name: "Sberbank Serbia" },
-            { id: "80692", name: "SocGen" },
-            { id: "80693", name: "Telenor" },
-            { id: "80695", name: "Union Bank" },
-            { id: "80699", name: "Sberbank HU" },
-            { id: "80725", name: "BNPP Accor" },
-            { id: "80734", name: "Takarek" },
-            { id: "80735", name: "Unicredit RS" },
-            { id: "80743", name: "Santander Consumer Finance (SCF) Next" },
-            { id: "80744", name: "Aircash" },
-            { id: "88603", name: "TPay" },
-            { id: "89066", name: "Sella Personal Credit" },
-            { id: "89069", name: "Consumit" },
-        ]
-
-        const getName = id => { k = BANKS.find(b => b.id == id); return !!k ? k.name : "" } 
-    </script>
     <div id="content">
         <label>SORT<input id="sort" name="sort" type="checkbox" checked/></label>
         <textarea id="input" spellcheck="false"></textarea>
@@ -131,19 +54,14 @@
         const OUTPUT = () => {
             let text = "";
             Array.from(new Set(input.value.trim().split("\n").map(t => t.trim())))
-                .sort((a, b)=> sort.checked ? a > b : true)
+                .sort((a, b)=> sort.checked ? a.localeCompare(b) : true)
                 .forEach(i => {
-                    let name = getName(i);
-                    text += `${i}` + (!name ? "" : ` - ${name}`) + `\n`
+                    text += `${i}\n`
                 })
             output.innerHTML = text;
         }
         sort.addEventListener("input", OUTPUT);
         input.addEventListener("input", OUTPUT);
-        input.innerHTML = BANKS
-            .sort((b1, b2)=>b1.name.localeCompare(b2.name))
-            .map(b=>b.id)
-            .reduce((a, c)=>`${a}${c}\n`, "");
         OUTPUT();
     </script>
 </body>

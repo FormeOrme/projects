@@ -132,9 +132,6 @@ class Dom {
 		!!e.function && Object.entries(e.function).forEach(([k, v]) => {
 			node[k] = v;
 		});
-		!!e.self && Object.entries(e.self).forEach(([k, v]) => {
-			node[k] = () => v(node, e);
-		});
 		return node;
 	}
 

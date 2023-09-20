@@ -259,8 +259,8 @@ document.querySelector("body").append(Div.with({
                 style: "height: 30px"
             },
             function: {
-                show: (node) => { node.classList.remove(Utils.hideClass); },
-                hide: (node) => { node.classList.add(Utils.hideClass); },
+                show: function () { this.classList.remove(Utils.hideClass); },
+                hide: function () { this.classList.add(Utils.hideClass); },
             },
             children: Div.with({
                 id: "progressPercent",

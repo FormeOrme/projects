@@ -2,16 +2,16 @@
 <html lang="en">
 
 <head>
-    <script src="./common.js"></script>
     <script src="https://cdn.rawgit.com/beautify-web/js-beautify/v1.13.6/js/lib/beautify.js"></script>
     <script src="https://cdn.rawgit.com/beautify-web/js-beautify/v1.13.6/js/lib/beautify-html.js"></script>
+    <script src="../util.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Beautify</title>
     <style>
         body,
         input,
-        pre{
+        pre {
             margin: 0px;
             background: #ddd;
             font-family: "Consolas", monospace;
@@ -29,14 +29,14 @@
             margin: 0px;
             display: block;
             resize: none;
-            padding:10px 0;
-            position:sticky;
-            top:0px;
-        }
-        #output{
             padding: 10px 0;
+            position: sticky;
+            top: 0px;
         }
 
+        #output {
+            padding: 10px 0;
+        }
     </style>
     <script>
         const BEAUTIFY_OPTIONS = {
@@ -62,10 +62,13 @@
             window.addEventListener("focus", () => { input.focus(); input.select(); })
             input.addEventListener("input", (e) => {
                 const iValue = input.value.trim();
-                if (isHtml(iValue)) {
-                    output.innerText = html_beautify(iValue, BEAUTIFY_OPTIONS);
-                } else {
-                    output.innerText = js_beautify(iValue, BEAUTIFY_OPTIONS);
+                switch (Utils.getType(iValue)) {
+                    case "json":
+                        output.innerText = js_beautify(iValue, BEAUTIFY_OPTIONS);
+                        break;
+                    case "xml":
+                        output.innerText = html_beautify(iValue, BEAUTIFY_OPTIONS);
+                        break;
                 }
             })
             input.focus();
@@ -75,8 +78,8 @@
 </head>
 
 <body>
-<input id="input" spellcheck="false"/>
-<pre id="output"></pre>
+    <input id="input" spellcheck="false" />
+    <pre id="output"></pre>
 </body>
 
 </html>
