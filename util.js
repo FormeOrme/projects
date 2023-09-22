@@ -39,8 +39,6 @@ class Utils {
 
 	static toH = (s, d = 210, k = 6, n = 13) => `hsla(${(Array.from(s).reduce((a, c, i) => a + c.charCodeAt() * n * (k + i), d) % 360)}, 72%, 65%, 1)`;
 
-	static addStyleNode = s => (document.head.appendChild(document.createElement('style')).appendChild(document.createTextNode(s)));
-
 	static getType(s) {
 		s = s?.trim();
 		if (/<[^>]*>/.test(s)) {
@@ -115,6 +113,8 @@ class Dom {
 	static id = (id) => document.getElementById(id);
 	static qs = (selector) => document.querySelector(selector);
 	static qsa = (selector) => document.querySelectorAll(selector);
+	
+	static addStyleNode = (css) => document.head.appendChild(Style.with({innerText:css}).create());
 
 	static NODES = {};
 	static createElement(e) {
@@ -144,7 +144,7 @@ class Dom {
 		toJSON() { return ({ _type: this._type, ...this }); }
 	}
 
-	static DOM_ELEMENTS = 'Menu,A,BR,Button,Div,I,Img,Input,LI,H1,H2,H3,H4,H5,Label,Section,Small,Span,TBody,TD,TFoot,TH,THead,TR,Table,TextArea,UL'.split(",");
+	static DOM_ELEMENTS = 'Menu,A,BR,Button,Div,I,Img,Input,LI,H1,H2,H3,H4,H5,Label,Section,Small,Span,Style,TBody,TD,TFoot,TH,THead,TR,Table,TextArea,UL'.split(",");
 }
 
 Dom.DOM_ELEMENTS.forEach(e => eval(`class ${e} extends Dom.Elem {}; window.${e} = ${e};`));
