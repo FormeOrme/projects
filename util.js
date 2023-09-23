@@ -113,8 +113,8 @@ class Dom {
 	static id = (id) => document.getElementById(id);
 	static qs = (selector) => document.querySelector(selector);
 	static qsa = (selector) => document.querySelectorAll(selector);
-	
-	static addStyleNode = (css) => document.head.appendChild(Style.with({innerText:css}).create());
+
+	static addStyleNode = (css) => document.head.appendChild(Style.with({ innerText: css }).create());
 
 	static NODES = {};
 	static createElement(e) {
@@ -145,8 +145,12 @@ class Dom {
 	}
 
 	static DOM_ELEMENTS = 'Menu,A,BR,Button,Div,I,Img,Input,LI,H1,H2,H3,H4,H5,Label,Section,Small,Span,Style,TBody,TD,TFoot,TH,THead,TR,Table,TextArea,UL'.split(",");
+
+	static evalNodes(nodes) {
+		nodes.forEach(e => eval(`class ${e} extends Dom.Elem {}; window.${e} = ${e};`));
+	}
 }
 
-Dom.DOM_ELEMENTS.forEach(e => eval(`class ${e} extends Dom.Elem {}; window.${e} = ${e};`));
+Dom.evalNodes(Dom.DOM_ELEMENTS);
 
 Utils.load();// must be last line
