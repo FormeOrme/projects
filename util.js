@@ -142,6 +142,14 @@ class Dom {
 		}
 		create() { return Dom.createElement(this); }
 		toJSON() { return ({ _type: this._type, ...this }); }
+		wrapWith(element, options = {}) {
+            if (!options?.optional) {
+                return this;
+            }
+            element.children = Array.isArray(element.children) ? element.children : (element.children ? [element.children] : []);
+            element.children.splice(options?.position === undefined ? element.children.length : options.position, 0, this);
+            return element;
+        }
 	}
 
 	static DOM_ELEMENTS = 'Menu,A,BR,Button,Div,I,Img,Input,LI,H1,H2,H3,H4,H5,Label,Section,Small,Span,Style,TBody,TD,TFoot,TH,THead,TR,Table,TextArea,UL'.split(",");
