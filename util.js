@@ -109,6 +109,10 @@ class Utils {
 	static hideClass = "d-none";
 }
 
+class Filter {
+	static notNull = c => !!c;
+}
+
 class Dom {
 	static id = (id) => document.getElementById(id);
 	static qs = (selector) => document.querySelector(selector);
@@ -126,7 +130,7 @@ class Dom {
 		!!e.class && node.classList.add(...Array.isArray(e.class) ? e.class : e.class.trim().split(/\s+/));
 		!!e.attribute && Object.entries(e.attribute).forEach(([k, v]) => node.setAttribute(k, v));
 		!!e.event && Object.entries(e.event).forEach(([k, v]) => node.addEventListener(k, (e) => v(e, node), false));
-		!!e.children && (Array.isArray(e.children) ? e.children : [e.children]).forEach((c) => {
+		!!e.children && (Array.isArray(e.children) ? e.children : [e.children]).filter(Filter.notNull).forEach((c) => {
 			node.appendChild(Dom.createElement(c));
 		});
 		!!e.function && Object.entries(e.function).forEach(([k, v]) => {
@@ -143,13 +147,13 @@ class Dom {
 		create() { return Dom.createElement(this); }
 		toJSON() { return ({ _type: this._type, ...this }); }
 		wrapWith(element, options = {}) {
-            if (!options?.optional) {
-                return this;
-            }
-            element.children = Array.isArray(element.children) ? element.children : (element.children ? [element.children] : []);
-            element.children.splice(options?.position === undefined ? element.children.length : options.position, 0, this);
-            return element;
-        }
+			if (!options?.optional) {
+				return this;
+			}
+			element.children = Array.isArray(element.children) ? element.children : (element.children ? [element.children] : []);
+			element.children.splice(options?.position === undefined ? element.children.length : options.position, 0, this);
+			return element;
+		}
 	}
 
 	static DOM_ELEMENTS = 'Menu,A,BR,Button,Div,I,Img,Input,LI,H1,H2,H3,H4,H5,Label,Section,Small,Span,Style,TBody,TD,TFoot,TH,THead,TR,Table,TextArea,UL'.split(",");
