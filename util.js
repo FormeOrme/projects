@@ -106,19 +106,28 @@ class Dom {
 	static addStyleNode = (css) => document.head.appendChild(Style.with({ innerText: css }).create());
 
 	static monitor(parentSelector, targetSelector, callback) {
-		const mutationObserver = new window.MutationObserver(() => {
-			const targetElement = document.querySelector(targetSelector);
-			if (targetElement) {
-				console.log(`[${targetSelector}] found in [${parentSelector}]`);
-				callback(targetElement);
-				mutationObserver.disconnect();
-			}
+		const parent = document.querySelector(parentSelector);
+		if (!parent) return;
+
+		const observer = new MutationObserver((mutationsList, observer) => {
+			mutationsList.forEach(mutation => {
+				if (mutation.type === 'childList') {
+					Array.from(mutation.addedNodes).forEach(node => {
+						if (node.nodeType === Node.ELEMENT_NODE) {
+							if (node.matches(targetSelector)) {
+								callback(node, observer);
+								return;
+							}
+							node.querySelectorAll(targetSelector).forEach(child => {
+								callback(child, observer);
+							});
+						}
+					});
+				}
+			});
 		})
-		const observe = () => mutationObserver
-			.observe(document.querySelector(parentSelector),
-				{ childList: true, subtree: true });
-		observe();
-		window.addEventListener("animationend", observe);
+		observer.observe(parent, { childList: true, subtree: true });
+		document.querySelectorAll(targetSelector).forEach(element => callback(element, observer));
 	}
 
 	static NODES = {};
