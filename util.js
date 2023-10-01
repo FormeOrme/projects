@@ -109,7 +109,7 @@ class Dom {
 		const mutationObserver = new window.MutationObserver(() => {
 			const targetElement = document.querySelector(targetSelector);
 			if (targetElement) {
-				console.log("called", parentSelector, targetElement);
+				console.log(`[${targetSelector}] found in [${parentSelector}]`);
 				callback(targetElement);
 				mutationObserver.disconnect();
 			}
