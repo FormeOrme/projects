@@ -91,21 +91,6 @@ class Utils {
 
 	static shuffleNew = arr => Utils.shuffle(arr.slice());
 
-	static monitor(parent, target, callback) {
-		var mObs = new window.MutationObserver(() => {
-			if (!!document.querySelector(target)) {
-				callback();
-				console.log("called", parent, target);
-				mObs.disconnect();
-			}
-		})
-		const observe = () => mObs
-			.observe(document.querySelector(parent),
-				{ childList: true, subtree: true });
-		observe();
-		window.addEventListener("animationend", observe);
-	}
-
 	static hideClass = "d-none";
 }
 
@@ -119,6 +104,22 @@ class Dom {
 	static qsa = (selector) => document.querySelectorAll(selector);
 
 	static addStyleNode = (css) => document.head.appendChild(Style.with({ innerText: css }).create());
+
+	static monitor(parentSelector, targetSelector, callback) {
+		const mutationObserver = new window.MutationObserver(() => {
+			const targetElement = document.querySelector(targetSelector);
+			if (targetElement) {
+				console.log("called", parentSelector, targetElement);
+				callback(targetElement);
+				mutationObserver.disconnect();
+			}
+		})
+		const observe = () => mutationObserver
+			.observe(document.querySelector(parentSelector),
+				{ childList: true, subtree: true });
+		observe();
+		window.addEventListener("animationend", observe);
+	}
 
 	static NODES = {};
 	static createElement(e) {
