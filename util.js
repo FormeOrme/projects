@@ -95,7 +95,7 @@ class Utils {
 }
 
 class Filter {
-	static notNull = c => !!c;
+	static notNull = Boolean;
 }
 
 class Dom {
