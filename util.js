@@ -17,7 +17,6 @@ class QueStMan /* Query String Manager */ {
 	}
 }
 
-
 class StringUtils {
 	static capitalize = s => s.charAt(0).toUpperCase() + s.slice(1);
 }
@@ -165,13 +164,34 @@ class Dom {
 		}
 	}
 
-	static DOM_ELEMENTS = 'Menu,A,BR,Button,Div,I,Img,Input,LI,H1,H2,H3,H4,H5,Label,Section,Small,Span,Style,TBody,TD,TFoot,TH,THead,TR,Table,TextArea,UL'.split(",");
+	static TextElements = "Div,Span,P,Small,Section,Menu";
+	static HeadingElements = "H1,H2,H3,H4,H5,H6";
+	static InlineTextElements = "I,Strong,Em,Mark,Abbr,Code,Pre";
+	static ListElements = "UL,OL,LI";
+	static FormElements = "Form,Input,Textarea,Button,Label,Select,Option";
+	static MediaElements = "Img,Audio,Video";
+	static TableElements = "Table,TR,TD,TH,TBody,Tfoot,Thead";
+	static InteractiveElements = "Button,A";
+	static EmbeddedElements = "Iframe,Canvas,Svg";
+	static MiscellaneousElements = "HR,BR,Style,Blockquote,Cite,Sup,Sub";
 
-	static evalNodes(nodes) {
-		nodes.forEach(e => eval(`class ${e} extends Dom.Elem {}; window.${e} = ${e};`));
-	}
+	static AllElements = [
+		Dom.TextElements,
+		Dom.HeadingElements,
+		Dom.InlineTextElements,
+		Dom.ListElements,
+		Dom.FormElements,
+		Dom.MediaElements,
+		Dom.TableElements,
+		Dom.InteractiveElements,
+		Dom.EmbeddedElements,
+		Dom.MiscellaneousElements,
+	].join().split(",");
+
+	static evalNode = e => eval(`class ${e} extends Dom.Elem {}; window.${e} = ${e};`);
+	static evalNodes = nodes => nodes.forEach(Dom.evalNode);
 }
 
-Dom.evalNodes(Dom.DOM_ELEMENTS);
+Dom.evalNodes(Dom.AllElements);
 
 Utils.load();// must be last line
