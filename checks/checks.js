@@ -1,4 +1,4 @@
-const payers = ["Forme", "Andrea", "Dave", "Emma", "Teo"];
+const payers = "1234#".split("");
 
 const BUTTON_CLASSES = "col-2 col-md-1 col-lg-1 ";
 
@@ -59,54 +59,67 @@ const columns = {
         header: payers.map(p =>
             Div.with({
                 class: BUTTON_CLASSES + "me-1",
-                children: Span.with({
-                    innerText: p
-                })
+                children: ("#" == p)
+                    ? Button.with({
+                        class: "btn btn-sm btn-success col-12",
+                        children: I.with({ class: "bi bi-plus-lg" }),
+                        type: "button",
+                        event: {
+                        }
+                    })
+                    : Input.with({
+                        class: "form-control form-control-sm",
+                        value: p
+                    })
             })
         ),
         row: t => payers.map(p => Div.with({
             class: BUTTON_CLASSES + "me-1",
-            children: [
-                Input.with({
-                    id: id = Utils.HID,
-                    class: "btn-check",
-                    attribute: {
-                        type: "checkbox",
-                        payer: p,
-                    },
-                    event: {
-                        input: (e) => {
-                            const row = e.target.closest(".flex-row");
-                            const checked = row.querySelectorAll("input:checked").length > 0;
-                            [...row.querySelectorAll("input[type='checkbox']+.btn")].forEach((btn) => {
-                                btn.classList.toggle("btn-outline-primary", checked);
-                                btn.classList.toggle("btn-outline-danger", !checked);
-                            })
-                            updateTotals()
+            children: ("#" == p)
+                ? undefined
+                : [
+                    Input.with({
+                        id: id = Utils.HID,
+                        class: "btn-check",
+                        attribute: {
+                            type: "checkbox",
+                            payer: p,
+                        },
+                        event: {
+                            input: (e) => {
+                                const row = e.target.closest(".flex-row");
+                                const checked = row.querySelectorAll("input:checked").length > 0;
+                                [...row.querySelectorAll("input[type='checkbox']+.btn")].forEach((btn) => {
+                                    btn.classList.toggle("btn-outline-primary", checked);
+                                    btn.classList.toggle("btn-outline-danger", !checked);
+                                })
+                                updateTotals()
+                            }
                         }
-                    }
-                }),
-                Label.with({
-                    class: "btn btn-sm btn-outline-danger col-12",
-                    attribute: {
-                        for: id
-                    },
-                    children: I.with({ class: "bi bi-check-lg" }),
-                }),
-            ]
+                    }),
+                    Label.with({
+                        class: "btn btn-sm btn-outline-danger col-12",
+                        attribute: {
+                            for: id
+                        },
+                        children: I.with({ class: "bi bi-check-lg" }),
+                    }),
+                ]
         })),
         footer: payers.map(p =>
             Div.with({
                 class: BUTTON_CLASSES + "me-1",
-                children: Input.with({
-                    id: `total_${p}`,
-                    class: "form-control form-control-sm px-1 amount",
-                    attribute: {
-                        readonly: true,
-                        type: "number",
-                        payer: p
-                    }
-                })
+                children: ("#" == p)
+                    ? undefined
+                    : Input.with({
+                        id: `total_${p}`,
+                        class: "form-control form-control-sm px-1 amount",
+                        attribute: {
+                            readonly: true,
+                            type: "number",
+                            payer: p
+                        }
+                    })
             })
         )
     },

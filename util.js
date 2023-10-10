@@ -97,6 +97,15 @@ class Filter {
 	static notNull = Boolean;
 }
 
+class Sort {
+	static localeCompare(func) {
+		return (o1, o2) => (func(o1) || '').localeCompare(func(o2) || '');
+	}
+	static desc(func) {
+		return (o1, o2) => (func(o2) || 0) - (func(o1) || 0);
+	}
+}
+
 class Dom {
 	static id = (id) => document.getElementById(id);
 	static qs = (selector) => document.querySelector(selector);
