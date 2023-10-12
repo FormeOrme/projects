@@ -98,11 +98,11 @@ class Filter {
 }
 
 class Sort {
-	static localeCompare(func) {
+	static alpha(func = o => o) {
 		return (o1, o2) => (func(o1) || '').localeCompare(func(o2) || '');
 	}
-	static desc(func) {
-		return (o1, o2) => (func(o2) || 0) - (func(o1) || 0);
+	static asc(func = o => o) {
+		return (o1, o2) => (func(o1) || 0) - (func(o2) || 0);
 	}
 }
 
@@ -153,6 +153,7 @@ class Dom {
 		});
 		!!e.style && Object.entries(e.style).forEach(([k, v]) => { node.style[k] = v; });
 		!!e.function && Object.entries(e.function).forEach(([k, v]) => { node[k] = v; });
+		e.node = node;
 		return node;
 	}
 
