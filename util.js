@@ -184,6 +184,7 @@ class Dom {
 	static InteractiveElements = "Button,A";
 	static EmbeddedElements = "Iframe,Canvas,Svg";
 	static MiscellaneousElements = "HR,BR,Style,Blockquote,Cite,Sup,Sub";
+	static SvgBaseElements = "Svg,Defs,G,Path,Line,Rect,Circle,Ellipse,Polygon";
 
 	static AllElements = [
 		Dom.TextElements,
@@ -196,6 +197,7 @@ class Dom {
 		Dom.InteractiveElements,
 		Dom.EmbeddedElements,
 		Dom.MiscellaneousElements,
+		Dom.SvgBaseElements,
 	].join().split(",");
 
 	static evalNode = e => eval(`class ${e} extends Dom.Elem {}; window.${e} = ${e};`);
