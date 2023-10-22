@@ -1,4 +1,4 @@
-const payers = "1234#".split("");
+const payers = "123456#".split("");
 
 const BUTTON_CLASSES = "col-2 col-md-1 col-lg-1 ";
 
@@ -213,7 +213,9 @@ const updateTotals = () => {
     });
     total.value = Math.floor(+total.value * 100) / 100;
 
-    payers.forEach(p => {
+    const ids = payers.slice(0, -1);
+
+    ids.forEach(p => {
         const total = Dom.NODES[`total_${p}`];
         total.value = 0;
         [...document.querySelectorAll("#mainBody .flex-row")].forEach(tr => {
