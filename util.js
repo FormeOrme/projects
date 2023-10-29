@@ -17,10 +17,6 @@ class QueStMan /* Query String Manager */ {
 	}
 }
 
-class StringUtils {
-	static capitalize = s => s.charAt(0).toUpperCase() + s.slice(1);
-}
-
 class Utils {
 	static get UUID() {
 		return self.crypto.randomUUID();
@@ -93,17 +89,21 @@ class Utils {
 	static hideClass = "d-none";
 }
 
-const Identity = o => o;
+class StringUtils {
+	static capitalize = s => s.charAt(0).toUpperCase() + s.slice(1);
+}
 
 class Filter {
 	static notNull = Boolean;
 }
 
+const Identity = o => o;
+
 class Sort {
-	static alpha(func = o => o) {
+	static alpha(func = Identity) {
 		return (o1, o2) => (func(o1) || '').localeCompare(func(o2) || '');
 	}
-	static asc(func = o => o) {
+	static asc(func = Identity) {
 		return (o1, o2) => (func(o1) || 0) - (func(o2) || 0);
 	}
 }
