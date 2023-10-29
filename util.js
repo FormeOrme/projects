@@ -93,6 +93,8 @@ class Utils {
 	static hideClass = "d-none";
 }
 
+const Identity = o => o;
+
 class Filter {
 	static notNull = Boolean;
 }
@@ -103,6 +105,12 @@ class Sort {
 	}
 	static asc(func = o => o) {
 		return (o1, o2) => (func(o1) || 0) - (func(o2) || 0);
+	}
+}
+
+class Reduce {
+	static with(func) {
+		return (a, c) => { func(a, c); return a; }
 	}
 }
 

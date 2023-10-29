@@ -1,6 +1,14 @@
 const payers = "123456#".split("");
 
-const BUTTON_CLASSES = "col-2 col-md-1 col-lg-1 ";
+const BUTTON_CLASSES = "col-05 col-2 col-md-1 col-lg-1 ";
+
+const REGEX_AMOUNT = /(\d+[,.]\d{2})/g;
+
+const PAYER_NAMES = "PAYER_NAMES";
+
+const getPayers = () => Array.from(Dom.qsa(".payer")).reduce(Reduce.with((a, c) => a[c.getAttribute("key")] = c.value), {})
+
+const PAYER_NAMES_INIT = LoStMan.getObj(PAYER_NAMES) ?? {};
 
 const columns = {
     description: {
@@ -32,7 +40,7 @@ const columns = {
             class: "col-2 me-1",
             children: Input.with({
                 class: "form-control form-control-sm px-1 amount",
-                value: t.trim().match(/(\d+,\d{2})$/g)?.at(0).replace(",", ".") ?? "",
+                value: t.trim().match(REGEX_AMOUNT)?.findLast(Identity).replace(",", ".") ?? "",
                 attribute: {
                     type: "number",
                     content: "amount",
@@ -68,8 +76,14 @@ const columns = {
                         }
                     })
                     : Input.with({
-                        class: "form-control form-control-sm",
-                        value: p
+                        class: "payer form-control form-control-sm",
+                        value: PAYER_NAMES_INIT[p] ?? p,
+                        attribute: {
+                            "key": p
+                        },
+                        event: {
+                            change: () => LoStMan.setObj(PAYER_NAMES, getPayers())
+                        }
                     })
             })
         ),
@@ -183,7 +197,10 @@ const getTable = (text = "") => Div.with({
         }),
         Div.with({
             id: "mainBody",
-            children: text?.trim().split(/\n/g).map(getRow)
+            children: text?.trim()
+                .split(/\n/g)
+                .filter(Filter.notNull)
+                .map(getRow)
         }),
         Div.with({
             children: Div.with({
