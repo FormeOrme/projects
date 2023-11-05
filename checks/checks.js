@@ -5,10 +5,14 @@ const BUTTON_CLASSES = "col-05 col-2 col-md-1 col-lg-1 ";
 const REGEX_AMOUNT = /(\d+[,.]\d{2})/g;
 
 const PAYER_NAMES = "PAYER_NAMES";
+const TABLE_CONTENT = "TABLE_CONTENT";
 
-const getPayers = () => Array.from(Dom.qsa(".payer")).reduce(Reduce.with((a, c) => a[c.getAttribute("key")] = c.value), {})
+const getPayers = () => Dom.qsa(".payer").reduce(Reduce.with((a, c) => a[c.getAttribute("key")] = c.value), {})
+const getTableContent = () => Dom.qsa("[row]").map(r => `${r.querySelector("[content='description']").value}    ${r.querySelector("[content='amount']").value}`).join(`
+`);
 
 const PAYER_NAMES_INIT = LoStMan.getObj(PAYER_NAMES) ?? {};
+const TABLE_CONTENT_INIT = LoStMan.getObj(TABLE_CONTENT) ?? "";
 
 const columns = {
     description: {
@@ -22,7 +26,13 @@ const columns = {
             class: "col-4 me-1",
             children: Input.with({
                 class: "form-control form-control-sm",
-                value: t.trim().match(/(.+)\d+,\d{2}$/g)?.at(0) ?? t
+                value: t.trim().match(/(.+)\s(\d+[,.]\d{2})/)?.at(1) ?? t,
+                attribute: {
+                    content: "description",
+                },
+                event: {
+                    input: () => LoStMan.setObj(TABLE_CONTENT, getTableContent())
+                }
             })
         }),
         footer: Div.with({
@@ -82,7 +92,10 @@ const columns = {
                             "key": p
                         },
                         event: {
-                            change: () => LoStMan.setObj(PAYER_NAMES, getPayers())
+                            change: () => {
+                                LoStMan.setObj(PAYER_NAMES, getPayers())
+                                LoStMan.setObj(TABLE_CONTENT, getTableContent())
+                            }
                         }
                     })
             })
@@ -150,6 +163,7 @@ const columns = {
                 event: {
                     click: (e) => {
                         e.target.closest(".flex-row").remove();
+                        LoStMan.setObj(TABLE_CONTENT, getTableContent());
                         updateTotals();
                     }
                 }
@@ -174,6 +188,9 @@ const columns = {
 
 const getRow = (t = "", i) => Div.with({
     class: "d-flex flex-row mb-1",
+    attribute: {
+        row: ""
+    },
     children: [
         columns.action.row(t),
         columns.description.row(t),
@@ -220,6 +237,8 @@ const buildTable = text => {
     const tableContainer = Dom.NODES.TableContainer;
     tableContainer.innerText = "";
     tableContainer.append(getTable(text).create());
+    LoStMan.setObj(TABLE_CONTENT, getTableContent());
+    updateTotals();
 }
 
 const updateTotals = () => {
@@ -244,7 +263,9 @@ const updateTotals = () => {
             }
         });
         total.value = (+total.value).toFixed(2);
-    })
+    });
+
+    LoStMan.setObj(TABLE_CONTENT, getTableContent())
 }
 
 document.querySelector("body").append(Div.with({
@@ -274,7 +295,6 @@ document.querySelector("body").append(Div.with({
                                 ).then(({ data: { text } }) => {
                                     Dom.NODES.progressContainer.hide();
                                     buildTable(text);
-                                    updateTotals();
                                 });
                             } catch (e) {
                                 console.log(e);
@@ -305,7 +325,7 @@ document.querySelector("body").append(Div.with({
     ]
 }).create());
 Dom.NODES.progressContainer.hide();
-buildTable();
+buildTable(TABLE_CONTENT_INIT);
 
 class GroupManager {
     constructor(apikey, id) {
