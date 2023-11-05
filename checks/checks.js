@@ -26,9 +26,10 @@ const columns = {
             class: "col-4 me-1",
             children: Input.with({
                 class: "form-control form-control-sm",
-                value: t.trim().match(/(.+)\s(\d+[,.]\d{2})/)?.at(1) ?? t,
+                value: t.trim().match(/(.+)\s(\d+[,.]\d{2})/)?.at(1)?.trim() ?? t,
                 attribute: {
                     content: "description",
+                    spellcheck: "false"
                 },
                 event: {
                     input: () => LoStMan.setObj(TABLE_CONTENT, getTableContent())
@@ -89,7 +90,8 @@ const columns = {
                         class: "payer form-control form-control-sm",
                         value: PAYER_NAMES_INIT[p] ?? p,
                         attribute: {
-                            "key": p
+                            key: p,
+                            spellcheck: "false"
                         },
                         event: {
                             change: () => {
