@@ -69,10 +69,10 @@ class Utils {
 
 	static toX = (i, w) => i % w;
 	static toY = (i, w) => ~~(i / w);
-	static toXY = (i, w) => ({ x: toX(i, w), y: toY(i, w) });
+	static toXY = (i, w) => ({ x: Utils.toX(i, w), y: Utils.toY(i, w) });
 	static toID = (x, y, w) => y * w + x;
-	static toID_O = (xy, w) => toID(xy.x, xy.y, w);
-	static toID_A = (xy, w) => toID(xy[0], xy[1], w);
+	static toID_O = (xy, w) => Utils.toID(xy.x, xy.y, w);
+	static toID_A = (xy, w) => Utils.toID(xy[0], xy[1], w);
 
 	static clone = o => Object.setPrototypeOf(JSON.parse(JSON.stringify(o)), o.constructor.prototype);
 
