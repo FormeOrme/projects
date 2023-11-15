@@ -89,10 +89,6 @@ class Utils {
 	static hideClass = "d-none";
 }
 
-class StringUtils {
-	static capitalize = s => s.charAt(0).toUpperCase() + s.slice(1);
-}
-
 class Filter {
 	static notNull = Boolean;
 }
