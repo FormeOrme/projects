@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/gh/FormeOrme/projects/util.js"></script>
+</head>
+
+<body>
+    <script>
+        const START_HEIGHT = `calc(${10}lh + .5rem + var(--bs-border-width) * 2)`;
+
+        const countNewLines = s => s.match(/\n/g).length + 1;
+
+        const _function = (input, output) =>
+            output.innerText = input.value
+                .split(",")
+                .sort(Sort.alpha(o => o))
+                .join("\n");
+
+        const apply = (e, n) => {
+            try {
+                Dom.NODES.func.classList.remove("is-invalid");
+                Dom.NODES.func.classList.add("is-valid");
+                eval(Dom.NODES.func.value)(Dom.NODES.input, Dom.NODES.output);
+            } catch (e) {
+                Dom.NODES.func.classList.remove("is-valid");
+                Dom.NODES.func.classList.add("is-invalid");
+                console.log(e);
+            }
+        }
+
+        const func = Textarea.with({
+            id: "func",
+            class: "form-control font-monospace form-control-sm",
+            attribute: { spellcheck: false },
+            value: _function.toString().split("\n").map(s => s.trim()).join("\n"),
+            event: { input: apply },
+            style: { height: START_HEIGHT }
+        });
+        const input = Textarea.with({
+            id: "input",
+            class: "form-control form-control-sm",
+            event: { input: apply },
+            style: { height: START_HEIGHT },
+            attribute: { placeholder: "input" }
+        });
+        const output = Pre.with({
+            id: "output",
+            class: "lh-sm mt-3 form-control form-control-sm",
+        });
+        Dom.qs("body").append(Section.with({
+            class: "container mt-2",
+            attribute: { spellcheck: false },
+            children: [
+                H1.with({ innerText:"Textarea Func" }),
+                Section.with({
+                    class: "row",
+                    children: [
+                        Span.with({ class: "col-4", children: func }),
+                        Span.with({ class: "col-8", children: input }),
+                    ]
+                }),
+                output
+            ]
+        }).create());
+    </script>
+</body>
+
+</html>
