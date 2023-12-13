@@ -85,7 +85,6 @@ class Utils {
 	}
 
 	static shuffleNew = arr => Utils.shuffle(arr.slice());
-
 	static hideClass = "d-none";
 }
 
@@ -93,24 +92,19 @@ class Filter {
 	static first = (o, i) => i === 0;
 	static last = (o, i, a) => i === a.length - 1;
 	static notNull = Boolean;
-	not = function (func) { return () => !func.apply(this, arguments); }
+	static not = (f) => (...a) => !f(...a);
 }
+const F = Filter;
 
 const Identity = o => o;
 
 class Sort {
-	static alpha(func = Identity) {
-		return (o1, o2) => (func(o1) || '').localeCompare(func(o2) || '');
-	}
-	static asc(func = Identity) {
-		return (o1, o2) => (func(o1) || 0) - (func(o2) || 0);
-	}
+	static alpha = (func = Identity) => (o1, o2) => (func(o1) || '').localeCompare(func(o2) || '');
+	static asc = (func = Identity) => (o1, o2) => (func(o1) || 0) - (func(o2) || 0);
 }
 
 class Reduce {
-	static with(func) {
-		return (a, c) => { func(a, c); return a; }
-	}
+	static with = (func) => (a, c) => { func(a, c); return a; }
 }
 
 class Dom {
