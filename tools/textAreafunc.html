@@ -30,7 +30,7 @@
             try {
                 Dom.NODES.func.classList.remove("is-invalid");
                 Dom.NODES.func.classList.add("is-valid");
-                QueStMan.set("func", btoa(Dom.NODES.func.value));
+                QueStMan.set("func", btoa(Dom.NODES.func.value).replaceAll("=", ""));
                 eval(_head + Dom.NODES.func.value + _tail)(Dom.NODES.input.value, (out) => {Dom.NODES.output.innerText = out; });
             } catch (e) {
                 Dom.NODES.func.classList.remove("is-valid");
