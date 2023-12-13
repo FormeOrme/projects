@@ -42,7 +42,6 @@
         const func = Textarea.with({
             id: "func",
             class: "form-control font-monospace form-control-sm",
-            attribute: { spellcheck: false },
             value: _body.map(s => s.trim()).join("\n"),
             event: { input: apply },
             style: { height: START_HEIGHT }
@@ -56,7 +55,7 @@
         });
         const output = Pre.with({
             id: "output",
-            class: "lh-sm mt-3 form-control form-control-sm",
+            class: "lh-sm mt-3 form-control form-control-sm text-wrap text-break",
         });
         Dom.qs("body").append(Section.with({
             class: "container mt-2",
