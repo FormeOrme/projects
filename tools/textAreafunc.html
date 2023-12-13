@@ -43,7 +43,7 @@
         const func = Textarea.with({
             id: "func",
             class: "form-control font-monospace form-control-sm",
-            value: QueStMan.get("func") || _body.map(s => s.trim()).join("\n"),
+            value: atob(QueStMan.get("func")) || _body.map(s => s.trim()).join("\n"),
             event: { input: apply },
             style: { height: START_HEIGHT }
         });
