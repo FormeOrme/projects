@@ -22,7 +22,7 @@
             );
         
         const _func = _default.toString().split("\n");
-        const _head = _func.splice(1, 1);
+        const _head = _func.slice(0, 1);
         const _body = _func.slice(1, -1);
         const _tail = _func.slice(-1);
 
