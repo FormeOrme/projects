@@ -3,6 +3,13 @@ const repoName = 'projects';
 const apiUrl = `https://api.github.com/repos/${username}/${repoName}/contents`;
 const link = (path) => `https://formeorme.github.io/projects/${path}/`;
 
+Dom.qs("head").append(Link.with({
+    attribute:{
+        rel:"icon",
+        type:"image/x-icon",
+        href:"./favicon.ico"
+    }
+}).create());
 
 Utils.fetchJson({
     url: apiUrl
@@ -18,11 +25,11 @@ Utils.fetchJson({
                 class:"d-flex flex-wrap",
                 children: response.json
                     .filter(r => r.size === 0)
-                    .sort((r1, r2) => r1.path.localeCompare(r2.path))
+                    .sort((r1, r2) => Sort.alpha(r => r.path))
                     .map(r => Span.with({
                         class: "flex-fill",
                         children: A.with({
-                            class: "btn btn-light m-3",
+                            class: "btn btn-light",
                             attribute: {
                                 href: link(r.path)
                             },
