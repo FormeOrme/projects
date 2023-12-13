@@ -186,7 +186,7 @@ class Dom {
 	static MediaElements = "Img,Audio,Video";
 	static TableElements = "Table,TR,TD,TH,TBody,Tfoot,Thead";
 	static InteractiveElements = "Button,A";
-	static EmbeddedElements = "Iframe,Canvas,Svg";
+	static EmbeddedElements = "Iframe,Canvas,Svg,Link";
 	static MiscellaneousElements = "HR,BR,Style,Blockquote,Cite,Sup,Sub";
 	static SvgBaseElements = "Svg,Defs,G,Path,Line,Rect,Circle,Ellipse,Polygon";
 
