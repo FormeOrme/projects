@@ -14,9 +14,8 @@ Dom.qs("head").append(Link.with({
 Utils.fetchJson({
     url: apiUrl
 }).then(response => {
-
-    Dom.qs("body").append(Div.with({
-        class: "container",
+    Dom.qs("body").append(Section.with({
+        class: "container mt-2",
         children: [
             H1.with({
                innerText: "Projects" 
@@ -29,7 +28,7 @@ Utils.fetchJson({
                     .map(r => Span.with({
                         class: "flex-fill",
                         children: A.with({
-                            class: "btn btn-light",
+                            class: "btn btn-light m-1",
                             attribute: {
                                 href: link(r.path)
                             },
