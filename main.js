@@ -1,38 +1,38 @@
 const username = 'FormeOrme';
 const repoName = 'projects';
-const apiUrl = `https://api.github.com/repos/${username}/${repoName}/contents`;
-const link = (path) => `https://formeorme.github.io/projects/${path}/`;
+const link = (path) => `https://formeorme.github.io/projects/${path}`;
 
 Dom.qs("head").append(Link.with({
-    attribute:{
-        rel:"icon",
-        type:"image/x-icon",
-        href:"./favicon.ico"
+    attribute: {
+        rel: "icon",
+        type: "image/x-icon",
+        href: "./projects/favicon.ico"
     }
 }).create());
 
+Dom.qs("head").append(Title.with({ innerText: title }).create());
+
 Utils.fetchJson({
-    url: apiUrl
+    url: apiUrl()
 }).then(response => {
     Dom.qs("body").append(Section.with({
         class: "container mt-2",
         children: [
             H1.with({
-               innerText: "Projects" 
+                innerText: title
             }),
             Div.with({
-                class:"d-flex flex-wrap",
+                class: "d-flex flex-wrap justify-content-between",
                 children: response.json
-                    .filter(r => r.size === 0)
-                    .sort((r1, r2) => Sort.alpha(r => r.path))
+                    .filter(responseFilter)
+                    .sort(Sort.alpha(r => r.path))
                     .map(r => Span.with({
-                        class: "flex-fill",
                         children: A.with({
                             class: "btn btn-light m-1",
                             attribute: {
                                 href: link(r.path)
                             },
-                            innerText: r.path
+                            innerText: r.name
                         })
                     }))
             })

@@ -185,9 +185,10 @@ class Dom {
 	static MediaElements = "Img,Audio,Video";
 	static TableElements = "Table,TR,TD,TH,TBody,Tfoot,Thead";
 	static InteractiveElements = "Button,A";
-	static EmbeddedElements = "Iframe,Canvas,Svg,Link";
+	static EmbeddedElements = "Iframe,Canvas,Svg";
 	static MiscellaneousElements = "HR,BR,Style,Blockquote,Cite,Sup,Sub";
 	static SvgBaseElements = "Svg,Defs,G,Path,Line,Rect,Circle,Ellipse,Polygon";
+	static HeadElements = "Link,Title";
 
 	static AllElements = [
 		Dom.TextElements,
@@ -201,6 +202,7 @@ class Dom {
 		Dom.EmbeddedElements,
 		Dom.MiscellaneousElements,
 		Dom.SvgBaseElements,
+		Dom.HeadElements,
 	].join().split(",");
 
 	static evalNode = e => eval(`class ${e} extends Dom.Elem {}; window.${e} = ${e};`);
