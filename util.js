@@ -1,4 +1,4 @@
-class LoStMan /* Local Store Manager */ {
+class LoStMan /* Local Storage Manager */ {
 	static getObj(id, proto) {
 		const parsed = JSON.parse(localStorage.getItem(id));
 		return !proto ? parsed : Object.setPrototypeOf(parsed, proto);
