@@ -37,10 +37,19 @@
 
 <body spellcheck="false">
     <script>
-        const TEXTAREA_INPUT = () => TextArea.with({
+        Dom.qs("head").append(Style.with({
+            innerText: Utils.toHRoot({
+                sat: 28,
+                light: 80
+            })
+        }).create())
+
+        const TEXTAREA_INPUT = () => Textarea.with({
             attribute: {
                 placeholder: " ",
-                style: `background: ${Utils.toH(Utils.UUID, 10)};`
+                style: `background: ${Utils.toH(Utils.UUID, {
+                    saturation: 10
+                })};`
             },
             event: {
                 input: (e, _this) => {

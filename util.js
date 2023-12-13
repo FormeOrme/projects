@@ -13,7 +13,7 @@ class QueStMan /* Query String Manager */ {
 		return new URLSearchParams(window.location.search).get(key);
 	}
 	static set(key, value) {
-		const url = new URL( window.location.href);
+		const url = new URL(window.location.href);
 		url.searchParams.set(key, value);
 		window.location.href !== url.href && window.history.replaceState({}, document.title, url.toString());
 	}
@@ -34,7 +34,19 @@ class Utils {
 
 	static load() { document.dispatchEvent(new Event("utils-loaded")); }
 
-	static toH = (s, d = 210, k = 6, n = 13) => `hsla(${(Array.from(s).reduce((a, c, i) => a + c.charCodeAt() * n * (k + i), d) % 360)}, 72%, 65%, 1)`;
+	static toHRoot(options = {}) {
+		const { sat = 72, light = 65, opacity = 1 } = options;
+		return (`:root{--sat: ${sat}%; --lht: ${light}%; --opy: ${opacity};}`)
+	}
+	static toH = (s, options = {}) => {
+		const { baseHue = 210, multiplier = 6, charWeight = 13, sat = 72, light = 65, opacity = 1, global = true } = options;
+		const hue = (Array.from(s).reduce((a, c, i) => a + c.charCodeAt() * charWeight * (multiplier + i), baseHue) % 360);
+		const pfx = `${Utils.HID}_`;
+		const gpfx = global ? "" : pfx;
+		return (`var(--${pfx}color); --${pfx}hue: ${hue};`)
+			+ (global ? "" : `--${pfx}sat: ${sat}%; --${pfx}lht: ${light}%; --${pfx}opy: ${opacity};`)
+			+ (`--${pfx}color: hsla(var(--${pfx}hue), var(--${gpfx}sat), var(--${gpfx}lht), var(--${gpfx}opy))`);
+	}
 
 	static getType(s) {
 		s = s?.trim();
