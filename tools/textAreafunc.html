@@ -16,16 +16,17 @@
         const countNewLines = s => s.match(/\n/g).length + 1;
 
         const _function = (input, output) =>
-            output.innerText = input.value
+            output(input
                 .split(",")
                 .sort(Sort.alpha(o => o))
-                .join("\n");
+                .join("\n")
+            )
 
         const apply = (e, n) => {
             try {
                 Dom.NODES.func.classList.remove("is-invalid");
                 Dom.NODES.func.classList.add("is-valid");
-                eval(Dom.NODES.func.value)(Dom.NODES.input, Dom.NODES.output);
+                eval(Dom.NODES.func.value)(Dom.NODES.input.value, (out) => {Dom.NODES.output.innerText=out; });
             } catch (e) {
                 Dom.NODES.func.classList.remove("is-valid");
                 Dom.NODES.func.classList.add("is-invalid");
