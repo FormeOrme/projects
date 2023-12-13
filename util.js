@@ -93,6 +93,7 @@ class Filter {
 	static first = (o, i) => i === 0;
 	static last = (o, i, a) => i === a.length - 1;
 	static notNull = Boolean;
+	not = function (func) { return () => !func.apply(this, arguments); }
 }
 
 const Identity = o => o;
