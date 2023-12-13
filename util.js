@@ -48,25 +48,6 @@ class Utils {
 			+ (`--${pfx}color: hsla(var(--${pfx}hue), var(--${gpfx}sat), var(--${gpfx}lht), var(--${gpfx}opy))`);
 	}
 
-	static getType(s) {
-		s = s?.trim();
-		if (/<[^>]*>/.test(s)) {
-			return "xml";
-		}
-		if (Utils.isJSON(s)) {
-			return "json";
-		}
-	}
-
-	static isJSON(s) {
-		try {
-			JSON.parse(s);
-			return true;
-		} catch {
-			return false;
-		}
-	}
-
 	static kvMap = (arr, k, v) => Utils.vkMap(arr, v, k);
 	static vkMap = (arr, v = o => o, k = o => o.id) =>
 		Object.fromEntries(arr.map(c => [k(c), v(c)]));
