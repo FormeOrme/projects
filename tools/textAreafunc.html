@@ -15,8 +15,7 @@
 
         const countNewLines = s => s.match(/\n/g).length + 1;
 
-        const _default = (input, output) =>
-            output(input
+        const _default = (input, output) => output(input
                 .split(",")
                 .sort(Sort.alpha(o => o))
                 .join("\n")
