@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>TextAreaFunc</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css">
-    <script src="https://cdn.jsdelivr.net/gh/FormeOrme/projects/util.js"></script>
+    <script src="../util.js"></script>
 </head>
 
 <body>
@@ -15,18 +15,23 @@
 
         const countNewLines = s => s.match(/\n/g).length + 1;
 
-        const _function = (input, output) =>
+        const _default = (input, output) =>
             output(input
                 .split(",")
                 .sort(Sort.alpha(o => o))
                 .join("\n")
-            )
+            );
+        
+        const _func = _default.toString().split("\n");
+        const _head = _func.splice(1, 1);
+        const _body = _func.slice(1, -1);
+        const _tail = _func.slice(-1);
 
         const apply = (e, n) => {
             try {
                 Dom.NODES.func.classList.remove("is-invalid");
                 Dom.NODES.func.classList.add("is-valid");
-                eval(Dom.NODES.func.value)(Dom.NODES.input.value, (out) => {Dom.NODES.output.innerText = out; });
+                eval(_head + Dom.NODES.func.value + _tail)(Dom.NODES.input.value, (out) => {Dom.NODES.output.innerText = out; });
             } catch (e) {
                 Dom.NODES.func.classList.remove("is-valid");
                 Dom.NODES.func.classList.add("is-invalid");
@@ -39,7 +44,7 @@
             id: "func",
             class: "form-control font-monospace form-control-sm",
             attribute: { spellcheck: false },
-            value: _function.toString().split("\n").map(s => s.trim()).join("\n"),
+            value: _body.map(s => s.trim()).join("\n"),
             event: { input: apply },
             style: { height: START_HEIGHT }
         });
