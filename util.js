@@ -9,11 +9,13 @@ class LoStMan /* Local Store Manager */ {
 }
 
 class QueStMan /* Query String Manager */ {
-	static queryString = new Proxy(new URLSearchParams(window.location.search), {
-		get: (qs, id) => qs.get(id),
-	});
-	static get(name) {
-		return QueStMan.queryString[name];
+	static get(key) {
+		return new URLSearchParams(window.location.search).get(key);
+	}
+	static set(key, value) {
+		const url = new URL( window.location.href);
+		url.searchParams.set(key, value);
+		window.location.href !== url.href && window.history.replaceState({}, document.title, url.toString());
 	}
 }
 
