@@ -6,7 +6,7 @@ Dom.qs("head").append(Link.with({
     attribute: {
         rel: "icon",
         type: "image/x-icon",
-        href: "./projects/favicon.ico"
+        href: favicon
     }
 }).create());
 
