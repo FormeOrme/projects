@@ -198,7 +198,10 @@ class Dom {
 		Dom.HeadElements,
 	].join().split(",");
 
-	static evalNode = e => eval(`class ${e} extends Dom.Elem {}; window.${e} = ${e};`);
+// 	static evalNode = e => eval(`class ${e} extends Dom.Elem {}; window.${e} = ${e};`);
+	static clazz = (name, cls) => ({ [name]: class extends cls {} })[name];
+	static evalNode = e => window[e] = Dom.clazz(e, Dom.Elem);
+
 	static evalNodes = nodes => nodes.forEach(Dom.evalNode);
 }
 
