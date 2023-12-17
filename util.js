@@ -83,6 +83,10 @@ class Utils {
 	static hideClass = "d-none";
 }
 
+class SUtils {
+	static trimAndFill = (s, n, c) => s.length > n ? s.substring(0, n) : s.padEnd(n, c);
+} 
+
 class Filter {
 	static first = (o, i) => i === 0;
 	static last = (o, i, a) => i === a.length - 1;
