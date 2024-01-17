@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Date Difference Calculator</title>
+</head>
+
+<body>
+    <h2>Date Difference Calculator</h2>
+    <label for="date1">Date 1:</label>
+    <input type="text" id="date1" placeholder="YYYY-MM-DD HH:mm:ss,SSS" oninput="calculateDifference()" />
+    <br>
+    <label for="date2">Date 2:</label>
+    <input type="text" id="date2" placeholder="YYYY-MM-DD HH:mm:ss,SSS" oninput="calculateDifference()" />
+    <br>
+    <div id="result"></div>
+    <script>
+        function parseDateString(dateString) {
+            const [datePart, timePart] = dateString.split(' ');
+            const [year, month, day] = datePart.split('-');
+            const [hours, minutes, secondsAndMillis] = timePart.split(':');
+            const [seconds, milliseconds] = secondsAndMillis.split(',');
+
+            return new Date(year, month - 1, day, hours, minutes, seconds, milliseconds);
+        }
+
+        function calculateDifference() {
+            const date1 = document.getElementById("date1").value;
+            const date2 = document.getElementById("date2").value;
+
+            // Check if both input fields are filled
+            if (date1 && date2) {
+                const resultDiv = document.getElementById("result");
+
+                // Parse the date strings
+                const dateObj1 = parseDateString(date1);
+                const dateObj2 = parseDateString(date2);
+
+                // Calculate the time difference in milliseconds
+                const timeDifference = Math.abs(dateObj1 - dateObj2);
+
+                // Convert the time difference to a human-readable format
+                // Convert the time difference to a human-readable format
+                const milliseconds = timeDifference % 1000;
+                const seconds = Math.floor((timeDifference / 1000) % 60);
+                const minutes = Math.floor((timeDifference / (1000 * 60)) % 60);
+                const hours = Math.floor((timeDifference / (1000 * 60 * 60)) % 24);
+                const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+
+                // Print the difference
+                const difference = (`Time difference: ${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds, ${milliseconds} milliseconds`);
+
+                // Display the result
+                resultDiv.innerHTML = difference;
+            }
+        }
+    </script>
+
+</body>
+
+</html>
