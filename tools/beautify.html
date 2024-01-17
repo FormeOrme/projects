@@ -58,11 +58,30 @@
             "e4x": false,
             "indent_empty_lines": false
         }
+
+        function parseStringType(inputString) {
+            try {
+                // Try parsing as JSON
+                JSON.parse(inputString);
+                return "json";
+            } catch (jsonError) {
+                try {
+                    // Try parsing as XML
+                    let parser = new DOMParser();
+                    parser.parseFromString(inputString, "text/xml");
+                    return "xml";
+                } catch (xmlError) {
+                    // Return empty string for any other cases
+                    return "";
+                }
+            }
+        }
+
         document.addEventListener("DOMContentLoaded", function (event) {
             window.addEventListener("focus", () => { input.focus(); input.select(); })
             input.addEventListener("input", (e) => {
                 const iValue = input.value.trim();
-                switch (Utils.getType(iValue)) {
+                switch (parseStringType(iValue)) {
                     case "json":
                         output.innerText = js_beautify(iValue, BEAUTIFY_OPTIONS);
                         break;
