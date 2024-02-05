@@ -4,7 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TextAreaFunc</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css">
     <script src="../util.js"></script>
     <link rel="icon" type="image/x-icon" href="../../projects/favicon.ico">
@@ -12,16 +11,17 @@
 
 <body>
     <script>
+        const TITLE = 'TextAreaFunc';
         const START_HEIGHT = `calc(${10}lh + .5rem + var(--bs-border-width) * 2)`;
 
         const countNewLines = s => s.match(/\n/g).length + 1;
 
         const _default = (input, output) => output(input
-                .split(`,`)
-                .sort(Sort.alpha(Identity))
-                .join(`\n`)
-            );
-        
+            .split(`,`)
+            .sort(Sort.alpha(Identity))
+            .join(`\n`)
+        );
+
         const _func = _default.toString().split("\n");
         const _head = _func.slice(0, 1);
         const _body = _func.slice(1, -1);
@@ -31,20 +31,26 @@
             try {
                 Dom.NODES.func.classList.remove("is-invalid");
                 Dom.NODES.func.classList.add("is-valid");
-                eval(_head + Dom.NODES.func.value + _tail)(Dom.NODES.input.value, (out) => {Dom.NODES.output.innerText = out; });
+                eval(_head + Dom.NODES.func.value + _tail)(Dom.NODES.input.value, (out) => { Dom.NODES.output.innerText = out; });
                 QueStMan.set("func", btoa(Dom.NODES.func.value).replaceAll("=", ""));
+                Dom.NODES.title.innerText = TITLE;
             } catch (e) {
                 Dom.NODES.func.classList.remove("is-valid");
                 Dom.NODES.func.classList.add("is-invalid");
                 Dom.NODES.output.innerText = e.message;
+                Dom.NODES.title.innerText = TITLE + `[${e.message.substr(0, 30)}]`;
                 console.log(e);
             }
         }
 
+        const title = Title.with({
+            id: "title",
+            innerText: TITLE
+        })
         const func = Textarea.with({
             id: "func",
             class: "form-control font-monospace form-control-sm",
-            value: atob(QueStMan.get("func")||'') || _body.map(s => s.trim()).join("\n"),
+            value: atob(QueStMan.get("func") || '') || _body.map(s => s.trim()).join("\n"),
             event: { input: apply },
             style: { height: START_HEIGHT }
         });
@@ -63,7 +69,7 @@
             class: "container mt-2",
             attribute: { spellcheck: false },
             children: [
-                H1.with({ innerText:"Textarea Func" }),
+                H1.with({ innerText: "Textarea Func" }),
                 Section.with({
                     class: "row",
                     children: [
@@ -74,6 +80,7 @@
                 output
             ]
         }).create());
+        Dom.qs("head").append(title.create());
     </script>
 </body>
 
