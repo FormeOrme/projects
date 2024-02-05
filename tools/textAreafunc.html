@@ -31,9 +31,11 @@
             try {
                 Dom.NODES.func.classList.remove("is-invalid");
                 Dom.NODES.func.classList.add("is-valid");
-                eval(_head + Dom.NODES.func.value + _tail)(Dom.NODES.input.value, (out) => { Dom.NODES.output.innerText = out; });
+                eval(_head + Dom.NODES.func.value + _tail)(Dom.NODES.input.value, (out) => {
+                    Dom.NODES.title.innerText = TITLE + `[${out.substr(0, 30)}]`;
+                    Dom.NODES.output.innerText = out;
+                });
                 QueStMan.set("func", btoa(Dom.NODES.func.value).replaceAll("=", ""));
-                Dom.NODES.title.innerText = TITLE + `[${e.message.substr(0, 30)}]`;
             } catch (e) {
                 Dom.NODES.func.classList.remove("is-valid");
                 Dom.NODES.func.classList.add("is-invalid");
