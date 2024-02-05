@@ -79,14 +79,16 @@ class Utils {
 		return array;
 	}
 
-	static shuffleNew = arr => Utils.shuffle(arr.slice());
+	static shuffleNew = arr => this.shuffle(arr.slice());
 	static hideClass = "d-none";
 }
 
 class SUtils {
 	static trimAndFill = (s, n, c) => s.length > n ? s.substring(0, n) : s.padEnd(n, c);
+	static sentenceCase = s => s.replaceAll('_', ' ').replace(/(?<![A-Z\s])(?<=.)([A-Z])/g, ' $1');
+	static snakeCase = s => this.sentenceCase(s).replaceAll(' ', '_').toUpperCase();
 	static camelCase = s => s.replace(/^(\w)/g, (_, c) => c.toLowerCase());
-} 
+}
 
 class Filter {
 	static first = (o, i) => i === 0;
@@ -177,7 +179,7 @@ class Dom {
 
 	static TextElements = "Div,Span,P,Small,Section,Menu";
 	static HeadingElements = "H1,H2,H3,H4,H5,H6";
-	static InlineTextElements = "I,Strong,Em,Mark,Abbr,Code,Pre";
+	static InlineTextElements = "I,Strong,Em,Mark,Abbr,Code,Pre,Kbd,Samp";
 	static ListElements = "UL,OL,LI";
 	static FormElements = "Form,Input,Textarea,Button,Label,Select,Option";
 	static MediaElements = "Img,Audio,Video";
@@ -203,8 +205,8 @@ class Dom {
 		Dom.HeadElements,
 	].join().split(",");
 
-// 	static evalNode = e => eval(`class ${e} extends Dom.Elem {}; window.${e} = ${e};`);
-	static clazz = (name, cls) => ({ [name]: class extends cls {} })[name];
+	// 	static evalNode = e => eval(`class ${e} extends Dom.Elem {}; window.${e} = ${e};`);
+	static clazz = (name, cls) => ({ [name]: class extends cls { } })[name];
 	static evalNode = e => window[e] = Dom.clazz(e, Dom.Elem);
 
 	static evalNodes = nodes => nodes.forEach(Dom.evalNode);
