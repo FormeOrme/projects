@@ -17,9 +17,9 @@
         const countNewLines = s => s.match(/\n/g).length + 1;
 
         const _default = (input, output) => output(input
-                .split(",")
-                .sort(Sort.alpha(o => o))
-                .join("\n")
+                .split(`,`)
+                .sort(Sort.alpha(Identity))
+                .join(`\n`)
             );
         
         const _func = _default.toString().split("\n");
@@ -67,8 +67,8 @@
                 Section.with({
                     class: "row",
                     children: [
-                        Span.with({ class: "col-4", children: func }),
-                        Span.with({ class: "col-8", children: input }),
+                        Span.with({ class: "col-6", children: func }),
+                        Span.with({ class: "col-6", children: input }),
                     ]
                 }),
                 output

@@ -85,6 +85,7 @@ class Utils {
 
 class SUtils {
 	static trimAndFill = (s, n, c) => s.length > n ? s.substring(0, n) : s.padEnd(n, c);
+	static camelCase = s => s.replace(/^(\w)/g, (_, c) => c.toLowerCase());
 } 
 
 class Filter {
