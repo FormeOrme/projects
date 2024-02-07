@@ -88,6 +88,12 @@ class SUtils {
 	static sentenceCase = s => s.replaceAll('_', ' ').replace(/(?<![A-Z\s])(?<=.)([A-Z])/g, ' $1');
 	static snakeCase = s => this.sentenceCase(s).replaceAll(' ', '_').toUpperCase();
 	static camelCase = s => s.replace(/^(\w)/g, (_, c) => c.toLowerCase());
+
+	static enhance = () => {
+		String.prototype.map = function (f) {
+			return f(this);
+		};
+	}
 }
 
 class Filter {

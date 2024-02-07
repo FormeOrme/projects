@@ -11,10 +11,10 @@
 
 <body>
     <script>
+        SUtils.enhance();
+
         const TITLE = 'TextAreaFunc';
         const START_HEIGHT = `calc(${10}lh + .5rem + var(--bs-border-width) * 2)`;
-
-        const countNewLines = s => s.match(/\n/g).length + 1;
 
         const _default = (input, output) => output(input
             .split(`,`)
@@ -32,7 +32,7 @@
                 Dom.NODES.func.classList.remove("is-invalid");
                 Dom.NODES.func.classList.add("is-valid");
                 eval(_head + Dom.NODES.func.value + _tail)(Dom.NODES.input.value, (out) => {
-                    Dom.NODES.title.innerText = TITLE + `[${out.substr(0, 30)}]`;
+                    Dom.NODES.title.innerText = TITLE + (!out ? '' : ` [${out.substr(0, 30)}]`);
                     Dom.NODES.output.innerText = out;
                 });
                 QueStMan.set("func", btoa(Dom.NODES.func.value).replaceAll("=", ""));
@@ -41,48 +41,38 @@
                 Dom.NODES.func.classList.add("is-invalid");
                 Dom.NODES.output.innerText = e.message;
                 Dom.NODES.title.innerText = TITLE;
-                console.log(e);
             }
         }
 
-        const title = Title.with({
+        Dom.qs("head").append(Title.with({
             id: "title",
             innerText: TITLE
-        })
-        const func = Textarea.with({
-            id: "func",
-            class: "form-control font-monospace form-control-sm",
-            value: atob(QueStMan.get("func") || '') || _body.map(s => s.trim()).join("\n"),
-            event: { input: apply },
-            style: { height: START_HEIGHT }
-        });
-        const input = Textarea.with({
-            id: "input",
-            class: "form-control form-control-sm",
-            event: { input: apply },
-            style: { height: START_HEIGHT },
-            attribute: { placeholder: "input" }
-        });
-        const output = Pre.with({
-            id: "output",
-            class: "lh-sm mt-3 form-control form-control-sm text-wrap text-break",
-        });
+        }).create());
         Dom.qs("body").append(Section.with({
             class: "container mt-2",
             attribute: { spellcheck: false },
             children: [
                 H1.with({ innerText: "Textarea Func" }),
-                Section.with({
-                    class: "row",
-                    children: [
-                        Span.with({ class: "col-6", children: func }),
-                        Span.with({ class: "col-6", children: input }),
-                    ]
+                Textarea.with({
+                    id: "input",
+                    class: "border-3 lh-sm form-control font-monospace border-bottom-0 rounded-0 rounded-top-2 pb-0",
+                    event: { input: apply },
+                    style: { height: 'calc(1.5em + .75rem + calc(var(--bs-border-width) * 2))', },
+                    attribute: { placeholder: "input" }
                 }),
-                output
+                Textarea.with({
+                    id: "func",
+                    class: "border-3 lh-sm form-control font-monospace border-top-0 rounded-0 rounded-bottom-2 pt-0",
+                    value: atob(QueStMan.get("func") || '') || _body.map(s => s.trim()).join("\n"),
+                    event: { input: apply },
+                    style: { height: START_HEIGHT }
+                }),
+                Pre.with({
+                    id: "output",
+                    class: "border-3 lh-sm form-control mt-3 text-wrap text-break",
+                })
             ]
         }).create());
-        Dom.qs("head").append(title.create());
     </script>
 </body>
 
