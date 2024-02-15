@@ -159,7 +159,7 @@ const columns = {
         row: t => Div.with({
             class: BUTTON_CLASSES + "me-1",
             children: Button.with({
-                class: "btn btn-sm btn-danger col-12",
+                class: "btn btn-sm btn-outline-danger col-12",
                 children: I.with({ class: "bi bi-trash-fill" }),
                 type: "button",
                 event: {
