@@ -194,7 +194,7 @@ class Dom {
 	static EmbeddedElements = "Iframe,Canvas,Svg";
 	static MiscellaneousElements = "HR,BR,Style,Blockquote,Cite,Sup,Sub";
 	static SvgBaseElements = "Svg,Defs,G,Path,Line,Rect,Circle,Ellipse,Polygon";
-	static HeadElements = "Link,Title";
+	static HeadElements = "Link,Title,Meta";
 
 	static AllElements = [
 		Dom.TextElements,
