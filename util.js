@@ -86,7 +86,7 @@ class Utils {
 class SUtils {
 	static trimAndFill = (s, n, c) => s.length > n ? s.substring(0, n) : s.padEnd(n, c);
 	static sentenceCase = s => s.replaceAll('_', ' ').replace(/(?<![A-Z\s])(?<=.)([A-Z])/g, ' $1');
-	static snakeCase = s => this.sentenceCase(s).replaceAll(' ', '_').toUpperCase();
+	static snakeCase = s => this.sentenceCase(s?.trim()).replaceAll(/\s+/g, '_').toUpperCase();
 	static camelCase = s => s.replace(/^(\w)/g, (_, c) => c.toLowerCase());
 
 	static enhance = () => {
