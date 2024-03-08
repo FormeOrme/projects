@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compare</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/gh/google/diff-match-patch/javascript/diff_match_patch.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/FormeOrme/projects/util.js"></script>
+</head>
+
+<body autocomplete="off" autocorrect="off" spellcheck="false">
+    <script>
+        function computeDiff(txt1, txt2, ec = 4) {
+            const dmp = new diff_match_patch();
+            dmp.Diff_Timeout = 1;
+            dmp.Diff_EditCost = ec;
+            const diff = dmp.diff_main(txt1, txt2);
+            dmp.diff_cleanupEfficiency(diff);
+            return diff;
+        }
+
+        function updateOut() {
+            const [ec, t1, t2, out] = Object.values(Dom.NODES);
+            const diff = computeDiff(t1.value, t2.value, ec.value);
+            console.log(diff);
+            out.innerText = "";
+            out.append(createDiff(diff).create());
+        }
+
+        function createDiff(diff) {
+            return Pre.with({
+                class: "form-control fs-6",
+                children: diff.map(d => Code.with({
+                    innerText: d[1],
+                    class: ({
+                        "1": "bg-success-subtle",
+                        "-1": "bg-danger-subtle text-decoration-line-through"
+                    })[d[0]] || ""
+                }))
+            });
+        }
+
+        Dom.qs("body").append(Section.with({
+            class: "container mt-2",
+            children: [
+                H1.with({
+                    innerText: "Compare"
+                }),
+                Div.with({
+                    class: "row mb-3",
+                    children: Div.with({
+                        class: "col",
+                        children: Input.with({
+                            id: "editCost",
+                            class: "form-range fs-6 font-monospace",
+                            attribute: {
+                                type: "range",
+                                min: 0,
+                                max: 8,
+                                step: 1,
+                                value: 4
+                            },
+                            event: { input: () => updateOut() }
+                        })
+                    })
+                }),
+                Div.with({
+                    class: "row mb-3",
+                    children: ["t1", "t2"].map(t => Div.with({
+                        class: "col",
+                        children: Textarea.with({
+                            id: t,
+                            class: "form-control fs-6 font-monospace",
+                            attribute: { placeholder: t },
+                            event: { input: () => updateOut() }
+                        })
+                    }))
+                }),
+                Div.with({
+                    class: "row mb-3",
+                    children: Div.with({
+                        id: "output",
+                        class: "col"
+                    })
+                })
+            ]
+        }).create());        
+    </script>
+</body>
+
+</html>
