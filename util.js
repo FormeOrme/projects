@@ -187,8 +187,8 @@ class Dom {
 	static HeadingElements = "H1,H2,H3,H4,H5,H6";
 	static InlineTextElements = "I,Strong,Em,Mark,Abbr,Code,Pre,Kbd,Samp";
 	static ListElements = "UL,OL,LI";
-	static FormElements = "Form,Input,Textarea,Button,Label,Select,Option";
-	static MediaElements = "Img,Audio,Video";
+	static FormElements = "Form,Input,Textarea,Button,Label,Select,Option_";
+	static MediaElements = "Img,Audio_,Video";
 	static TableElements = "Table,TR,TD,TH,TBody,Tfoot,Thead";
 	static InteractiveElements = "Button,A";
 	static EmbeddedElements = "Iframe,Canvas,Svg";
@@ -218,6 +218,7 @@ class Dom {
 	static evalNodes = nodes => nodes.forEach(Dom.evalNode);
 }
 
+console.log(Dom.AllElements.map(e=>window[e]).filter(Boolean));
 Dom.evalNodes(Dom.AllElements);
 
 Utils.load();// must be last line
