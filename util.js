@@ -88,6 +88,7 @@ class SUtils {
 	static sentenceCase = s => s.replaceAll('_', ' ').replace(/(?<![A-Z\s])(?<=.)([A-Z])/g, ' $1');
 	static snakeCase = s => this.sentenceCase(s?.trim()).replaceAll(/\s+/g, '_').toUpperCase();
 	static camelCase = s => s.replace(/^(\w)/g, (_, c) => c.toLowerCase());
+	static capitalize = str => str.charAt(0).toUpperCase() + str.slice(1);
 
 	static enhance = () => {
 		String.prototype.map = function (f) {
