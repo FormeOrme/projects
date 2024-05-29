@@ -219,7 +219,7 @@ class Dom {
 	static evalNodes = nodes => nodes.forEach(Dom.evalNode);
 }
 
-console.log(Dom.AllElements.map(e=>window[e]).filter(Boolean));
+/*console.log(Dom.AllElements.map(e=>window[e]).filter(Boolean));*/
 Dom.evalNodes(Dom.AllElements);
 
 Utils.load();// must be last line
