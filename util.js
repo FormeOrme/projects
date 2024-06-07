@@ -221,3 +221,12 @@ class Dom {
 Dom.evalNodes(Dom.AllElements);
 
 Utils.load();// must be last line
+
+window.Dom = Dom;
+window.Filter = Filter;
+window.LoStMan = LoStMan;
+window.QueStMan = QueStMan;
+window.Reduce = Reduce;
+window.Sort = Sort;
+window.SUtils = SUtils;
+window.Utils = Utils;
