@@ -32,8 +32,6 @@ class Utils {
 		return Utils.ID.toString(16);
 	}
 
-	static load() { document.dispatchEvent(new Event("utils-loaded")); }
-
 	static toHRoot(options = {}) {
 		const { sat = 72, light = 65, opacity = 1 } = options;
 		return (`:root{--sat: ${sat}%; --lht: ${light}%; --opy: ${opacity};}`)
@@ -219,16 +217,4 @@ class Dom {
 	static evalNodes = nodes => nodes.forEach(Dom.evalNode);
 }
 
-/*console.log(Dom.AllElements.map(e=>window[e]).filter(Boolean));*/
 Dom.evalNodes(Dom.AllElements);
-
-Utils.load();// must be last line
-
-window.Dom = Dom;
-window.Filter = Filter;
-window.LoStMan = LoStMan;
-window.QueStMan = QueStMan;
-window.Reduce = Reduce;
-window.Sort = Sort;
-window.SUtils = SUtils;
-window.Utils = Utils;
