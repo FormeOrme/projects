@@ -3,39 +3,187 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>List Compare</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css">
     <script src="../util.js"></script>
-    <style>
-        *::-webkit-scrollbar {
-            width: 10px;
-            height: 6px;
-        }
-
-        *::-webkit-scrollbar-thumb {
-            background-color: #0003;
-            border-radius: 3px;
-        }
-
-        body {
-            margin: 0;
-            font-size: 0;
-            background: #CCC;
-        }
-
-        textarea {
-            background: #BBB;
-            font-family: Consolas;
-            border: 0;
-            width: 250px;
-            height: 600px;
-            resize: none;
-        }
-    </style>
+    <link rel="icon" type="image/x-icon" href="../../projects/favicon.ico">
 </head>
 
 <body spellcheck="false">
+
+    <script>
+        const L1 = `About
+Name mana cat
+
+Commander
+1 Roxanne, Starfall Savant
+
+Deck
+1 Abrade
+1 Arboreal Grazer
+1 Arcane Signet
+1 Armored Scrapgorger
+1 Ashaya, Soul of the Wild
+1 Bloodstained Mire
+1 Boseiju, Who Endures
+1 Castle Embereth
+1 Castle Garenbrig
+1 Cavern of Souls
+1 Cityscape Leveler
+1 Command Tower
+1 Copperline Gorge
+1 Cragcrown Pathway
+1 Craterhoof Behemoth
+1 Delighted Halfling
+1 Delina, Wild Mage
+1 Domri, Anarch of Bolas
+1 Elvish Mystic
+1 Esika's Chariot
+1 Etali, Primal Conqueror
+1 Fable of the Mirror-Breaker
+12 Forest
+1 Forsaken Crossroads
+1 Gala Greeters
+1 Garruk's Uprising
+1 Goblin Anarchomancer
+1 Goldspan Dragon
+1 Heroic Intervention
+1 Ilysian Caryatid
+1 Kami of Bamboo Groves
+1 Karplusan Forest
+1 Kogla and Yidaro
+1 Kogla, the Titan Ape
+1 Lair of the Hydra
+1 Lightning Bolt
+1 Llanowar Elves
+1 Llanowar Loamspeaker
+1 Magda, Brazen Outlaw
+1 Mephit's Enthusiasm
+1 Mind Stone
+12 Mountain
+1 Mythweaver Poq
+1 Nylea, Keen-Eyed
+1 Obliterating Bolt
+1 Ojer Kaslem, Deepest Growth
+1 Oracle of Mul Daya
+1 Panharmonicon
+1 Parallel Lives
+1 Primeval Titan
+1 Professional Face-Breaker
+1 Ragavan, Nimble Pilferer
+1 Reclamation Sage
+1 Rhythm of the Wild
+1 Rising of the Day
+1 Rockfall Vale
+1 Rootbound Crag
+1 Ruby, Daring Tracker
+1 Settle the Wilds
+1 Shatterskull Smashing
+1 Shove Aside
+1 Sokenzan, Crucible of Defiance
+1 Somberwald Sage
+1 Spiteful Banditry
+1 Stomping Ground
+1 Swiftfoot Boots
+1 Tamiyo's Safekeeping
+1 The Great Henge
+1 The Irencrag
+1 Tireless Provisioner
+1 Titan of Industry
+1 Topiary Stomper
+1 Turntimber Symbiosis
+1 Ulamog, the Ceaseless Hunger
+1 Utopia Sprawl
+1 Vorinclex
+1 Wooded Foothills`
+
+        const L2 = `About
+Name Casting Meteor more than Sephiroth
+
+Commander
+1 Roxanne, Starfall Savant
+
+Deck
+1 Abrade
+1 Ancient Grudge
+1 Anzrag, the Quake-Mole
+1 Arcane Signet
+1 Atraxa's Fall
+1 Boseiju, Who Endures
+1 Brittle Blast
+1 Broken Bond
+1 Cabaretti Revels
+1 Captain Lannery Storm
+1 Castle Garenbrig
+1 Cavern of Souls
+1 Command Tower
+1 Commercial District
+1 Copperline Gorge
+1 Cragcrown Pathway
+1 Cultivate
+1 Delighted Halfling
+1 Doubling Season
+1 Elvish Mystic
+1 Embercleave
+1 Escape to the Wilds
+1 Ferocification
+1 Frost Bite
+1 Garruk's Uprising
+1 Gate to Manorborn
+1 Gate to Tumbledown
+1 Gilded Goose
+1 Glimpse the Core
+1 Glorybringer
+1 God-Eternal Rhonas
+1 Goldspan Dragon
+1 Guardian Project
+1 Hajar, Loyal Bodyguard
+1 Halana and Alena, Partners
+1 Heroic Intervention
+1 Hunter's Insight
+1 Into the North
+1 Karplusan Forest
+1 Klothys, God of Destiny
+1 Lightning Bolt
+1 Llanowar Elves
+1 Magda, Brazen Outlaw
+1 Obliterating Bolt
+1 Panharmonicon
+1 Parallel Lives
+1 Primal Vigor
+1 Questing Beast
+1 Racketeer Boss
+1 Radha, Heart of Keld
+1 Ragavan, Nimble Pilferer
+1 Rampaging Raptor
+1 Rebel Salvo
+1 Reckless Stormseeker
+1 Restless Ridgeline
+1 Return of the Wildspeaker
+1 Rhythm of the Wild
+1 Rishkar's Expertise
+1 Rising of the Day
+1 Rockfall Vale
+1 Rootbound Crag
+1 Shadowspear
+1 Shapers' Sanctuary
+1 Sheltered Thicket
+12 Snow-Covered Forest
+11 Snow-Covered Mountain
+1 Stomping Ground
+1 Storm's Wrath
+1 Strangle
+1 Tamiyo's Safekeeping
+1 Temple of Abandon
+1 Tribute to the World Tree
+1 Tuktuk Rubblefort
+1 Uthgardt Fury
+1 Utopia Sprawl
+1 Windswept Heath
+1 Wooded Foothills
+1 Xenagos, God of Revels`
+    </script>
+
     <script>
         Dom.qs("head").append(Style.with({
             innerText: Utils.toHRoot({
@@ -44,13 +192,17 @@
             })
         }).create())
 
-        const TEXTAREA_INPUT = () => Textarea.with({
+        const TEXTAREA_INPUT = (innerText) => Pre.with({
             attribute: {
-                placeholder: " ",
-                style: `background: ${Utils.toH(Utils.UUID, {
-                    saturation: 10
-                })};`
+                title: "input",
+                contenteditable:true,
             },
+            innerText:innerText,
+            style: {
+                /*background: `${Utils.toH(Utils.UUID, { saturation: 10 })}`, FIXME */
+                height: "100vh"
+            },
+            class: "form-control",
             event: {
                 input: (e, _this) => {
                     if (!_this.value.trim()) {
@@ -64,16 +216,18 @@
         })
 
         document.querySelector("body").append(Div.with({
-            id: "container",
+            class: "container",
             children: [
                 Section.with({
                     id: "input",
-                    children: [TEXTAREA_INPUT()]
+                    class: "form-floating d-flex flex-row",
+                    children: [TEXTAREA_INPUT(L1), TEXTAREA_INPUT(L2)]
                 }), Section.with({
                     id: "output"
                 })]
         }).create())
     </script>
+
 </body>
 
 </html>

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Sprite Sort</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css">
+    <link rel="icon" type="image/x-icon" href="https://cdn.jsdelivr.net/gh/FormeOrme/projects@latest/favicon.ico">
+    <script src="https://cdn.jsdelivr.net/npm/pixi.js@7.x/dist/pixi.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
+    <style>
+        canvas {
+            max-width: 100%;
+        }
+
+        .maxw-100 {
+            max-width: 100px;
+        }
+
+        .sortable-ghost canvas {
+            opacity: 0.5;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container mt-3">
+        <div class="input-container sticky-top bg-body shadow p-2 img-thumbnail">
+            <label for="upload">Upload Image:</label>
+            <input type="file" id="upload" accept="image/*" class="form-control mb-3">
+
+            <div class="row mb-3">
+                <div class="col">
+                    <label for="sprite-width">Sprite Width:</label>
+                    <input type="range" id="sprite-width" min="88" max="333" value="270" class="form-control">
+                </div>
+                <div class="col">
+                    <label for="sprite-height">Sprite Height:</label>
+                    <input type="range" id="sprite-height" min="88" max="333" value="270" class="form-control">
+                </div>
+                <div class="col">
+                    <label for="grid-size">Grid Size:</label>
+                    <input type="range" id="grid-size" min="1" max="10" value="1" class="form-control">
+                </div>
+            </div>
+
+            <div class="form-check mb-3">
+                <input type="checkbox" id="show-grid" class="form-check-input" checked>
+                <label for="show-grid" class="form-check-label">Show Grid</label>
+            </div>
+        </div>
+
+        <div id="canvas-container" class="mt-3"></div>
+        <div id="sprites-container" class="d-flex flex-wrap mt-3"></div>
+    </div>
+
+    <script>
+        // Wait for the DOM to load
+        document.addEventListener("DOMContentLoaded", () => {
+            // Create a PixiJS Application with initial small size
+            const app = new PIXI.Application({
+                width: 1,
+                height: 1,
+                backgroundAlpha: 0
+            });
+            window.app = app;
+            document.getElementById('canvas-container').appendChild(app.view);
+
+            // Get references to the input elements
+            const upload = document.getElementById('upload');
+            const spriteWidthInput = document.getElementById('sprite-width');
+            const spriteHeightInput = document.getElementById('sprite-height');
+            const gridSizeInput = document.getElementById('grid-size');
+            const showGridInput = document.getElementById('show-grid');
+            const spritesContainer = document.getElementById('sprites-container');
+
+            // Function to draw grid
+            const drawGrid = (width, height, gridSize) => {
+                const grid = new PIXI.Graphics();
+                grid.lineStyle(gridSize, 0xff0000, 1);
+                for (let x = 0; x < app.renderer.width; x += width) {
+                    grid.moveTo(x, 0);
+                    grid.lineTo(x, app.renderer.height);
+                }
+                for (let y = 0; y < app.renderer.height; y += height) {
+                    grid.moveTo(0, y);
+                    grid.lineTo(app.renderer.width, y);
+                }
+                return grid;
+            };
+
+            let grid, bgSprite;
+
+            // Handle file upload
+            upload.addEventListener('change', (event) => {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const img = new Image();
+                        img.src = e.target.result;
+                        img.onload = () => {
+                            // Resize the PixiJS application to match the image size
+                            app.renderer.resize(img.width, img.height);
+
+                            // Clear previous children and sprites
+                            app.stage.removeChildren();
+                            spritesContainer.innerHTML = '';
+
+                            // Create a texture from the image
+                            const texture = PIXI.Texture.from(img);
+                            bgSprite = new PIXI.Sprite(texture);
+
+                            // Set background sprite dimensions
+                            bgSprite.width = img.width;
+                            bgSprite.height = img.height;
+                            bgSprite.x = 0;
+                            bgSprite.y = 0;
+                            bgSprite.alpha = 0.3
+
+                            // Add the background sprite to the stage
+                            app.stage.addChild(bgSprite);
+
+                            // Draw grid if the checkbox is checked
+                            if (showGridInput.checked) {
+                                grid = drawGrid(parseInt(spriteWidthInput.value, 10), parseInt(spriteHeightInput.value, 10), parseInt(gridSizeInput.value, 10));
+                                app.stage.addChild(grid);
+                            }
+
+                            // Function to create and place sprites on the grid
+                            const createSprites = () => {
+                                const spriteWidth = parseInt(spriteWidthInput.value, 10);
+                                const spriteHeight = parseInt(spriteHeightInput.value, 10);
+                                const gridSize = parseInt(gridSizeInput.value, 10);
+
+                                // Remove all children except the background sprite
+                                app.stage.removeChildren();
+                                app.stage.addChild(bgSprite);
+                                spritesContainer.innerHTML = '';
+                                const SPRITE_MAP = new Map();
+                                const HCOUNT = Math.floor(img.width / spriteWidth);
+
+
+
+                                console.log("UPDATE SPRITE_MAP")
+                                for (let y = 0; y < img.height; y += spriteHeight) {
+                                    for (let x = 0; x < img.width; x += spriteWidth) {
+                                        if (x + spriteWidth > texture.width || y + spriteHeight > texture.height) {
+                                            break;
+                                        }
+                                        const frame = new PIXI.Texture(texture.baseTexture, new PIXI.Rectangle(x, y, spriteWidth, spriteHeight));
+                                        const sprite = new PIXI.Sprite(frame);
+                                        sprite.x = x;
+                                        sprite.y = y;
+                                        app.stage.addChild(sprite);
+                                        const Y = y / spriteHeight;
+                                        const X = x / spriteWidth;
+                                        const ID = X + Y * HCOUNT;
+                                        SPRITE_MAP.set(ID, sprite);
+
+                                        // Create individual canvas for each sprite
+                                        const spriteCanvas = document.createElement('canvas');
+                                        spriteCanvas.width = spriteWidth;
+                                        spriteCanvas.height = spriteHeight;
+                                        spriteCanvas.classList.add("maxw-100");
+                                        spriteCanvas.classList.add("img-thumbnail");
+                                        spriteCanvas.classList.add("m-1");
+                                        spriteCanvas.classList.add("p-1");
+                                        spriteCanvas.classList.add("shadow");
+                                        spriteCanvas.dataset.id = ID;
+                                        spriteCanvas.dataset.y = Y;
+                                        spriteCanvas.dataset.x = X;
+
+                                        const ctx = spriteCanvas.getContext('2d');
+                                        ctx.drawImage(img, x, y, spriteWidth, spriteHeight, 0, 0, spriteWidth, spriteHeight);
+                                        spritesContainer.appendChild(spriteCanvas);
+
+                                    }
+                                }
+                                const sortable = new Sortable(spritesContainer, {
+                                    animation: 150,
+                                    onEnd: () => {
+                                        const newSort = [...spritesContainer.querySelectorAll("canvas")].map(c => c.dataset.id);
+                                        console.log(SPRITE_MAP)
+                                        console.log(newSort)
+                                        let count = 0;
+
+                                        const NX = Math.floor(img.width / spriteWidth);
+                                        const NY = Math.floor(img.height / spriteHeight);
+
+                                        for (let y = 0; y < NX; y++) {
+                                            for (let x = 0; x < NY; x++) {
+                                                SPRITE_MAP.get(Number(newSort[count])).x = x * spriteWidth;
+                                                SPRITE_MAP.get(Number(newSort[count])).y = y * spriteHeight;
+                                                count++;
+                                            }
+                                        }
+                                    }
+                                });
+
+                                if (showGridInput.checked) {
+                                    grid = drawGrid(spriteWidth, spriteHeight, gridSize);
+                                    app.stage.addChild(grid);
+                                }
+                            };
+
+                            // Update grid when toggled
+                            showGridInput.addEventListener('change', () => {
+                                if (showGridInput.checked) {
+                                    grid = drawGrid(parseInt(spriteWidthInput.value, 10), parseInt(spriteHeightInput.value, 10), parseInt(gridSizeInput.value, 10));
+                                    app.stage.addChild(grid);
+                                } else {
+                                    if (grid) {
+                                        app.stage.removeChild(grid);
+                                    }
+                                }
+                            });
+
+                            // Create initial sprites
+                            createSprites();
+
+                            // Update sprite dimensions and grid when inputs change
+                            spriteWidthInput.addEventListener('input', createSprites);
+                            spriteHeightInput.addEventListener('input', createSprites);
+                            gridSizeInput.addEventListener('input', createSprites);
+                        };
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -21,12 +21,21 @@
             return diff;
         }
 
-        function updateOut() {
-            const [ec, t1, t2, out] = Object.values(Dom.NODES);
+        function updateOut(input) {
+            const ec = Dom.NODES.editCost;
+            const t1 = Dom.NODES.t1;
+            const t2 = Dom.NODES.t2;
+            const out = Dom.NODES.output;
+
             const diff = computeDiff(t1.value, t2.value, ec.value);
-            console.log(diff);
             out.innerText = "";
             out.append(createDiff(diff).create());
+            if (input) {
+                ["t1", "t2"].forEach(t => {
+                    Dom.NODES[`${t}_s`].innerText = "";
+                    createInput(diff, t).forEach(span => Dom.NODES[`${t}_s`].append(span.create()));
+                });
+            }
         }
 
         function createDiff(diff) {
@@ -42,6 +51,15 @@
             });
         }
 
+        function createInput(diff, type) {
+            return diff
+                .filter(type != "t1" ? d => d[0] >= 0 : d => d[0] <= 0)
+                .map(d => Code.with({
+                    innerText: d[1],
+                    class: [d[0]] == 0 ? "" : "bg-info-subtle"
+                }));
+        }
+
         Dom.qs("body").append(Section.with({
             class: "container mt-2",
             children: [
@@ -54,11 +72,11 @@
                         class: "col",
                         children: Input.with({
                             id: "editCost",
-                            class: "form-range fs-6 font-monospace",
+                            class: "form-range",
                             attribute: {
                                 type: "range",
                                 min: 0,
-                                max: 8,
+                                max: 5,
                                 step: 1,
                                 value: 4
                             },
@@ -69,13 +87,36 @@
                 Div.with({
                     class: "row mb-3",
                     children: ["t1", "t2"].map(t => Div.with({
-                        class: "col",
-                        children: Textarea.with({
-                            id: t,
-                            class: "form-control fs-6 font-monospace",
-                            attribute: { placeholder: t },
-                            event: { input: () => updateOut() }
+                        class: "col-sm-6",
+                        children: Span.with({
+                            class: "position-relative p-0",
+                            children: [
+                                Pre.with({
+                                    id: `${t}_s`,
+                                    class: "form-control fs-6 font-monospace m-0 text-wrap",
+                                    innerText: t,
+                                    style: {
+                                        height: "300px",
+                                    },
+
+                                }),
+                                Textarea.with({
+                                    id: t,
+                                    class: "form-control fs-6 font-monospace bg-transparent position-absolute top-50 start-50 translate-middle",
+                                    attribute: {
+                                        placeholder: t,
+                                    },
+                                    innerText: t,
+                                    style: {
+                                        height: "300px",
+                                        color: "transparent"
+                                    },
+                                    event: {
+                                        input: (e) => updateOut(t, e),
+                                    }
+                                })]
                         })
+
                     }))
                 }),
                 Div.with({
@@ -86,7 +127,18 @@
                     })
                 })
             ]
-        }).create());        
+        }).create());
+        updateOut();
+        ["t1", "t2"].reduce((a, c) => {
+            a.push(c);
+            a.push(`${c}_s`)
+            return a;
+        }, []).map(k => Dom.NODES[k])
+            .map((ta, i, a) => new ResizeObserver(() => a
+                .filter(o => o != ta)
+                .map(o => o.style.height = ta.style.height))
+                .observe(ta));
+
     </script>
 </body>
 

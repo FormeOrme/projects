@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Match3</title>
+    <link rel="icon" type="image/x-icon" href="https://cdn.jsdelivr.net/gh/FormeOrme/projects@latest/favicon.ico">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/pixi.js@7.x/dist/pixi.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+        }
+
+        canvas {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        // Initialize PixiJS
+        const app = new PIXI.Application({ width: 666, height: 666 });
+        document.body.appendChild(app.view);
+
+        const spriteSize = 270;
+        const tileSize = 100;
+
+        const scale = tileSize / spriteSize;
+
+        const gridSize = 6;
+        const types = ["red", "blue", "green", "yellow", "purple"];
+        let grid = [];
+
+        // Load textures
+        const textures = split(spriteSize, spriteSize);
+
+        function split(width, height) {
+            const texture = PIXI.Texture.from('sprites/sorted.png');
+            const nx = Math.floor(texture.width / width);
+            const ny = Math.floor(texture.height / height);
+            const sprites = [];
+            for (let y = 0; y < ny; y++) {
+                for (let x = 0; x < nx; x++) {
+                    sprites.push(new PIXI.Texture(texture.baseTexture,
+                        new PIXI.Rectangle(x * width, y * height, width, height)));
+                }
+            }
+            return ({
+                red: sprites[0],
+                blue: sprites[4],
+                green: sprites[9],
+                yellow: sprites[13],
+                purple: sprites[22],
+            })
+        }
+
+        // Create the grid and populate with random tiles
+        for (let i = 0; i < gridSize; i++) {
+            grid[i] = [];
+            for (let j = 0; j < gridSize; j++) {
+                const tile = getRandomTile(i, j);
+                grid[i][j] = tile;
+                app.stage.addChild(tile);
+            }
+        }
+
+        let selectedTile = null;
+
+        // Tile click handler
+        function onTileClick() {
+            if (selectedTile) {
+                // Swap tiles
+                const tile1 = selectedTile;
+                const tile2 = this;
+                swapTiles(tile1, tile2);
+                selectedTile = null;
+            } else {
+                selectedTile = this;
+            }
+        }
+
+        // Swap tiles
+        function swapTiles(tile1, tile2) {
+            const tempX = tile1.gridX;
+            const tempY = tile1.gridY;
+            grid[tile1.gridY][tile1.gridX] = tile2;
+            grid[tile2.gridY][tile2.gridX] = tile1;
+            tile1.gridX = tile2.gridX;
+            tile1.gridY = tile2.gridY;
+            tile2.gridX = tempX;
+            tile2.gridY = tempY;
+
+            // Animate tile swap
+            const tempPosX = tile1.x;
+            const tempPosY = tile1.y;
+            tile1.x = tile2.x;
+            tile1.y = tile2.y;
+            tile2.x = tempPosX;
+            tile2.y = tempPosY;
+
+            // Check for matches after swap
+            setTimeout(checkMatches, 500);
+        }
+
+        // Check for matches
+        function checkMatches() {
+            // Horizontal matches
+            for (let i = 0; i < gridSize; i++) {
+                for (let j = 0; j < gridSize - 2; j++) {
+                    if (grid[i][j].type === grid[i][j + 1].type && grid[i][j].type === grid[i][j + 2].type) {
+                        console.log('Horizontal match found at:', i, j);
+                        // Remove matching tiles
+                        removeTiles([grid[i][j], grid[i][j + 1], grid[i][j + 2]]);
+                    }
+                }
+            }
+            // Vertical matches
+            for (let i = 0; i < gridSize - 2; i++) {
+                for (let j = 0; j < gridSize; j++) {
+                    if (grid[i][j].type === grid[i + 1][j].type && grid[i][j].type === grid[i + 2][j].type) {
+                        console.log('Vertical match found at:', i, j);
+                        // Remove matching tiles
+                        removeTiles([grid[i][j], grid[i + 1][j], grid[i + 2][j]]);
+                    }
+                }
+            }
+        }
+
+        // Remove matching tiles and shift tiles down
+        function removeTiles(tiles) {
+            tiles.forEach(tile => {
+                app.stage.removeChild(tile);
+                grid[tile.gridY][tile.gridX] = null;
+            });
+
+            // Shift tiles down and fill empty spaces
+            for (let j = 0; j < gridSize; j++) {
+                for (let i = gridSize - 1; i >= 0; i--) {
+                    if (grid[i][j] === null) {
+                        for (let k = i - 1; k >= 0; k--) {
+                            if (grid[k][j] !== null) {
+                                grid[k][j].y += tileSize;
+                                grid[k + 1][j] = grid[k][j];
+                                grid[k][j] = null;
+                                grid[k + 1][j].gridY = k + 1;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Fill empty spaces with new tiles
+            for (let i = 0; i < gridSize; i++) {
+                for (let j = 0; j < gridSize; j++) {
+                    if (grid[i][j] === null) {
+                        const tile = getRandomTile(i, j);
+                        grid[i][j] = tile;
+                        app.stage.addChild(tile);
+                    }
+                }
+            }
+        }
+
+        function getRandomTile(i, j) {
+            const type = types[Math.floor(Math.random() * types.length)];
+            const tile = new PIXI.Sprite(textures[type]);
+            tile.x = j * tileSize;
+            tile.y = i * tileSize;
+            tile.scale.x = scale;
+            tile.scale.y = scale;
+            tile.interactive = true;
+            tile.buttonMode = true;
+            tile.type = type;
+            tile.gridX = j;
+            tile.gridY = i;
+            tile.on('pointerdown', onTileClick);
+            tile.on('mouseenter', (mouseinfo) => {
+                tile.rotation = 10;
+            });
+            tile.on('mouseleave', (mouseinfo) => {
+                tile.rotation = 0;
+            });
+            return tile;
+        }
+    </script>
+</body>
+
+</html>

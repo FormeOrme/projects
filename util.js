@@ -84,9 +84,11 @@ class Utils {
 class SUtils {
 	static trimAndFill = (s, n, c) => s.length > n ? s.substring(0, n) : s.padEnd(n, c);
 	static sentenceCase = s => s.replaceAll('_', ' ').replace(/(?<![A-Z\s])(?<=.)([A-Z])/g, ' $1');
-	static snakeCase = s => this.sentenceCase(s?.trim()).replaceAll(/\s+/g, '_').toUpperCase();
+	static snakeCase = s => SUtils.sentenceCase(s?.trim()).replaceAll(/\s+/g, '_').toUpperCase();
 	static camelCase = s => s.replace(/^(\w)/g, (_, c) => c.toLowerCase());
 	static capitalize = str => str.charAt(0).toUpperCase() + str.slice(1);
+	static strip = (s) => SUtils.normalize(s)?.split("/")[0]?.trim().replace(/\W+/g, "_").toLowerCase();
+	static normalize = (s) => s?.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 
 	static enhance = () => {
 		String.prototype.map = function (f) {
