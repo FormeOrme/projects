@@ -46,6 +46,8 @@ class Utils {
 			+ (`--${pfx}color: hsla(var(--${pfx}hue), var(--${gpfx}sat), var(--${gpfx}lht), var(--${gpfx}opy))`);
 	}
 
+	static deduplicate = a => [...new Set(a)];
+
 	static kvMap = (arr, k, v) => Utils.vkMap(arr, v, k);
 	static vkMap = (arr, v = o => o, k = o => o.id) =>
 		Object.fromEntries(arr.map(c => [k(c), v(c)]));
@@ -184,10 +186,11 @@ class Dom {
 		}
 	}
 
-	static TextElements = "Div,Span,P,Small,Section,Menu";
-	static HeadingElements = "H1,H2,H3,H4,H5,H6";
+	static TextElements = "Div,Span,P,Small,Menu";
+	static HeadingElements = "H1,H2,H3,H4,H5,H6,Hgroup";
 	static InlineTextElements = "I,Strong,Em,Mark,Abbr,Code,Pre,Kbd,Samp";
-	static ListElements = "UL,OL,LI";
+	static SectionElements = "Header,Footer,Article,Aside,Section";
+	static ListElements = "UL,OL,LI,Nav";
 	static FormElements = "Form,Input,Textarea,Button,Label,Select,Option_";
 	static MediaElements = "Img,Audio_,Video";
 	static TableElements = "Table,TR,TD,TH,TBody,Tfoot,Thead";
@@ -197,10 +200,11 @@ class Dom {
 	static SvgBaseElements = "Svg,Defs,G,Path,Line,Rect,Circle,Ellipse,Polygon";
 	static HeadElements = "Link,Title,Meta";
 
-	static AllElements = [
+	static AllElements = Utils.deduplicate([
 		Dom.TextElements,
 		Dom.HeadingElements,
 		Dom.InlineTextElements,
+		Dom.SectionElements,
 		Dom.ListElements,
 		Dom.FormElements,
 		Dom.MediaElements,
@@ -210,7 +214,7 @@ class Dom {
 		Dom.MiscellaneousElements,
 		Dom.SvgBaseElements,
 		Dom.HeadElements,
-	].join().split(",");
+	].join().split(","));
 
 	// 	static evalNode = e => eval(`class ${e} extends Dom.Elem {}; window.${e} = ${e};`);
 	static clazz = (name, cls) => ({ [name]: class extends cls { } })[name];
