@@ -163,8 +163,8 @@ class Dom {
 		!!e.children && (Array.isArray(e.children) ? e.children : [e.children]).filter(Filter.notNull).forEach((c) => {
 			node.appendChild(Dom.createElement(c));
 		});
-		!!e.style && Object.entries(e.style).forEach(([k, v]) => { node.style[k] = v; });
-		!!e.function && Object.entries(e.function).forEach(([k, v]) => { node[k] = v; });
+		!!e.style && Object.entries(e.style).forEach(([k, v]) => node.style.setProperty(k, v, "important"));
+	  	!!e.function && Object.entries(e.function).forEach(([k, v]) => { node[k] = v; });
 		e.node = node;
 		return node;
 	}
