@@ -153,18 +153,16 @@ class Dom {
 	static NODES = {};
 	static createElement(e) {
 		const node = document.createElement(e._type);
-		!!e.id && ((node.id = e.id) && (Dom.NODES[e.id] = node));
-		!!e.innerText && (node.textContent = e.innerText);
-		!!e.value && (node.value = e.value);
-		!!e.type && (node.type = e.type);
-		!!e.class && node.classList.add(...Array.isArray(e.class) ? e.class : e.class.trim().split(/\s+/));
-		!!e.attribute && Object.entries(e.attribute).forEach(([k, v]) => node.setAttribute(k, v));
-		!!e.event && Object.entries(e.event).forEach(([k, v]) => node.addEventListener(k, (e) => v(e, node), false));
-		!!e.children && (Array.isArray(e.children) ? e.children : [e.children]).filter(Filter.notNull).forEach((c) => {
-			node.appendChild(Dom.createElement(c));
-		});
-		!!e.style && Object.entries(e.style).forEach(([k, v]) => node.style.setProperty(k, v, "important"));
-	  	!!e.function && Object.entries(e.function).forEach(([k, v]) => { node[k] = v; });
+		e.id && ((node.id = e.id) && (Dom.NODES[e.id] = node));
+		e.innerText && (node.textContent = e.innerText);
+		e.value && (node.value = e.value);
+		e.type && (node.type = e.type);
+		e.class && node.classList.add(...Array.isArray(e.class) ? e.class : e.class.trim().split(/\s+/));
+		e.attribute && Object.entries(e.attribute).forEach(([k, v]) => node.setAttribute(k, v));
+		e.event && Object.entries(e.event).forEach(([k, v]) => node.addEventListener(k, (e) => v(e, node), false));
+		e.children && (Array.isArray(e.children) ? e.children : [e.children]).filter(Filter.notNull).forEach((c) => node.appendChild(Dom.createElement(c)));
+		e.style && Object.entries(e.style).forEach(([k, v]) => node.style.setProperty(k, v.replace('!important', '').trim(), v.includes('!important') ? 'important' : ''));
+	  	e.function && Object.entries(e.function).forEach(([k, v]) => { node[k] = v; });
 		e.node = node;
 		return node;
 	}
