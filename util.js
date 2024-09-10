@@ -47,6 +47,7 @@ class Utils {
 	}
 
 	static deduplicate = a => [...new Set(a)];
+	static tween = (v, r1, r2, m1, m2) => m1 + (m2 - m1) * ((v - r1) / (r2 - r1));
 
 	static kvMap = (arr, k, v) => Utils.vkMap(arr, v, k);
 	static vkMap = (arr, v = o => o, k = o => o.id) =>
