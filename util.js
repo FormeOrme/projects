@@ -157,7 +157,7 @@ class Dom {
 		e.innerText && (node.textContent = e.innerText);
 		e.value && (node.value = e.value);
 		e.type && (node.type = e.type);
-		e.class && node.classList.add(...Array.isArray(e.class) ? e.class : e.class.trim().split(/\s+/));
+		e.class && node.classList.add(...(Array.isArray(e.class) ? e.class : e.class.trim().split(/\s+/)).filter(Boolean));
 		e.attribute && Object.entries(e.attribute).forEach(([k, v]) => node.setAttribute(k, v));
 		e.event && Object.entries(e.event).forEach(([k, v]) => node.addEventListener(k, (e) => v(e, node), false));
 		e.children && (Array.isArray(e.children) ? e.children : [e.children]).filter(Filter.notNull).forEach((c) => node.appendChild(Dom.createElement(c)));
