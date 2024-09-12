@@ -113,6 +113,13 @@ const Identity = o => o;
 class Sort {
 	static alpha = (func = Identity) => (o1, o2) => (func(o1) || '').localeCompare(func(o2) || '');
 	static asc = (func = Identity) => (o1, o2) => (func(o1) || 0) - (func(o2) || 0);
+	static multiSort = (...functions) => (a, b) => {
+	    for (let fn of functions) {
+	        const result = fn(a, b);
+	        if (result !== 0) return result;
+	    }
+	    return 0;
+	};	
 }
 
 class Reduce {
