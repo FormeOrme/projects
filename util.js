@@ -199,7 +199,7 @@ class Dom {
 	static ListElements = "UL,OL,LI,Nav";
 	static FormElements = "Form,Input,Textarea,Button,Label,Select,Option_";
 	static MediaElements = "Img,Audio_,Video";
-	static TableElements = "Table,TR,TD,TH,TBody,Tfoot,Thead";
+	static TableElements = "Table,TR,TD,TH,TBody,Tfoot,Thead,ColGroup,Col,Caption";
 	static InteractiveElements = "Button,A";
 	static EmbeddedElements = "Iframe,Canvas,Svg";
 	static MiscellaneousElements = "HR,BR,Style,Blockquote,Cite,Sup,Sub";
