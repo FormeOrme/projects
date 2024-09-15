@@ -36,14 +36,16 @@ class IdUtils {
 	static toY = (i, w) => ~~(i / w);
 	static toXY = (i, w) => ({ x: Utils.toX(i, w), y: Utils.toY(i, w) });
 	static toID = (x, y, w) => y * w + x;
-	static toID_O = (xy, w) => Utils.toID(xy.x, xy.y, w);
+	static toID_O = ({ x, y }, w) => Utils.toID(x, y, w);
 	static toID_A = (xy, w) => Utils.toID(xy[0], xy[1], w);
 }
 
 class Utils {
 
-	static deduplicate = a => [...new Set(a)];
 	static tween = (v, r1, r2, m1, m2) => m1 + (m2 - m1) * ((v - r1) / (r2 - r1));
+
+	static normalize = (current, max) => current / max;
+	static prc = (current, max) => Utils.normalize(current, max) * 100;
 
 	static kvMap = (arr, k, v) => Utils.vkMap(arr, v, k);
 	static vkMap = (arr, v = o => o, k = o => o.id) =>
@@ -56,11 +58,9 @@ class Utils {
 	static fetchAll = (o) => Promise.all(o.map(Utils.fetchJson))
 		.then(c => Utils.vkMap(c, o => o.json))
 
-	static normalize = (current, max) => current / max;
-	static prc = (current, max) => Utils.normalize(current, max) * 100;
-
 	static clone = o => Object.setPrototypeOf(JSON.parse(JSON.stringify(o)), o.constructor.prototype);
 
+	static deduplicate = a => [...new Set(a)];
 	static shuffle = (array) => {
 		for (var i = array.length - 1; i > 0; i--) {
 			var rand = Math.floor(Math.random() * (i + 1));
@@ -68,7 +68,6 @@ class Utils {
 		}
 		return array;
 	}
-
 	static shuffleNew = arr => this.shuffle(arr.slice());
 }
 
@@ -158,9 +157,9 @@ class Dom {
 		if (e.id) {
 			node.id = e.id;
 		}
-		if (e.innerText) node.textContent = e.innerText;
-		if (e.value) node.value = e.value;
-		if (e.type) node.type = e.type;
+		if (e.innerText) { node.textContent = e.innerText; }
+		if (e.value) { node.value = e.value; }
+		if (e.type) { node.type = e.type; }
 		if (e.class) {
 			const classes = (Array.isArray(e.class) ? e.class.join(" ") : e.class).split(/\s+/);
 			node.classList.add(...classes.map(SUtils.trim).filter(Boolean));
@@ -194,9 +193,9 @@ class Dom {
 			return Object.assign(new this(), obj);
 		}
 		create(profile = false) {
-			if (profile) console.profile(profile);
+			if (profile) { console.profile(profile) };
 			const created = Dom.createElement(this);
-			if (profile) console.profileEnd(profile);
+			if (profile) { console.profileEnd(profile) };
 			return created;
 		}
 		toJSON() { return ({ _type: this._type, ...this }); }
@@ -240,9 +239,9 @@ class Dom {
 		Dom.HeadElements,
 	].join().split(","));
 
-	// 	static evalNode = e => eval(`class ${e} extends Dom.Elem {}; window.${e} = ${e};`);
+	// 	static clazz = (name, cls) => eval(`class ${name} extends ${cls} {};`);
 	static clazz = (name, cls) => ({ [name]: class extends cls { } })[name];
-	static evalNode = e => window[e] = Dom.clazz(e, Dom.Elem);
+	static evalNode = node => window[node] = Dom.clazz(node, Dom.Elem);
 
 	static evalNodes = nodes => nodes.forEach(Dom.evalNode);
 }
