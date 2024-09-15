@@ -19,7 +19,7 @@ class QueStMan /* Query String Manager */ {
 	}
 }
 
-class Utils {
+class IdUtils {
 	static get UUID() {
 		return self.crypto.randomUUID();
 	}
@@ -32,19 +32,15 @@ class Utils {
 		return Utils.ID.toString(16);
 	}
 
-	static toHRoot(options = {}) {
-		const { sat = 72, light = 65, opacity = 1 } = options;
-		return (`:root{--sat: ${sat}%; --lht: ${light}%; --opy: ${opacity};}`)
-	}
-	static toH = (s, options = {}) => {
-		const { baseHue = 210, multiplier = 6, charWeight = 13, sat = 72, light = 65, opacity = 1, global = true } = options;
-		const hue = (Array.from(s).reduce((a, c, i) => a + c.charCodeAt() * charWeight * (multiplier + i), baseHue) % 360);
-		const pfx = `${Utils.HID}_`;
-		const gpfx = global ? "" : pfx;
-		return (`var(--${pfx}color); --${pfx}hue: ${hue};`)
-			+ (global ? "" : `--${pfx}sat: ${sat}%; --${pfx}lht: ${light}%; --${pfx}opy: ${opacity};`)
-			+ (`--${pfx}color: hsla(var(--${pfx}hue), var(--${gpfx}sat), var(--${gpfx}lht), var(--${gpfx}opy))`);
-	}
+	static toX = (i, w) => i % w;
+	static toY = (i, w) => ~~(i / w);
+	static toXY = (i, w) => ({ x: Utils.toX(i, w), y: Utils.toY(i, w) });
+	static toID = (x, y, w) => y * w + x;
+	static toID_O = (xy, w) => Utils.toID(xy.x, xy.y, w);
+	static toID_A = (xy, w) => Utils.toID(xy[0], xy[1], w);
+}
+
+class Utils {
 
 	static deduplicate = a => [...new Set(a)];
 	static tween = (v, r1, r2, m1, m2) => m1 + (m2 - m1) * ((v - r1) / (r2 - r1));
@@ -63,13 +59,6 @@ class Utils {
 	static normalize = (current, max) => current / max;
 	static prc = (current, max) => Utils.normalize(current, max) * 100;
 
-	static toX = (i, w) => i % w;
-	static toY = (i, w) => ~~(i / w);
-	static toXY = (i, w) => ({ x: Utils.toX(i, w), y: Utils.toY(i, w) });
-	static toID = (x, y, w) => y * w + x;
-	static toID_O = (xy, w) => Utils.toID(xy.x, xy.y, w);
-	static toID_A = (xy, w) => Utils.toID(xy[0], xy[1], w);
-
 	static clone = o => Object.setPrototypeOf(JSON.parse(JSON.stringify(o)), o.constructor.prototype);
 
 	static shuffle = (array) => {
@@ -81,7 +70,6 @@ class Utils {
 	}
 
 	static shuffleNew = arr => this.shuffle(arr.slice());
-	static hideClass = "d-none";
 }
 
 class SUtils {
@@ -92,6 +80,8 @@ class SUtils {
 	static capitalize = str => str.charAt(0).toUpperCase() + str.slice(1);
 	static strip = (s) => SUtils.normalize(s)?.split("/")[0]?.trim().replace(/\W+/g, "_").toLowerCase();
 	static normalize = (s) => s?.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+
+	static trim = (s) => s?.trim();
 
 	static enhance = () => {
 		String.prototype.map = function (f) {
@@ -106,7 +96,6 @@ class Filter {
 	static notNull = Boolean;
 	static not = (f) => (...a) => !f(...a);
 }
-const F = Filter;
 
 const Identity = o => o;
 
@@ -114,12 +103,12 @@ class Sort {
 	static alpha = (func = Identity) => (o1, o2) => (func(o1) || '').localeCompare(func(o2) || '');
 	static asc = (func = Identity) => (o1, o2) => (func(o1) || 0) - (func(o2) || 0);
 	static multiSort = (...functions) => (a, b) => {
-	    for (let fn of functions) {
-	        const result = fn(a, b);
-	        if (result !== 0) return result;
-	    }
-	    return 0;
-	};	
+		for (let fn of functions) {
+			const result = fn(a, b);
+			if (result !== 0) return result;
+		}
+		return 0;
+	};
 }
 
 class Reduce {
@@ -155,22 +144,44 @@ class Dom {
 			});
 		})
 		observer.observe(parent, { childList: true, subtree: true });
-		document.querySelectorAll(targetSelector).forEach(element => callback(element, observer));
+		document.querySelectorAll(targetSelector)
+			.forEach(element => callback(element, observer));
 	}
 
 	static NODES = {};
 	static createElement(e) {
 		const node = document.createElement(e._type);
-		e.id && ((node.id = e.id) && (Dom.NODES[e.id] = node));
-		e.innerText && (node.textContent = e.innerText);
-		e.value && (node.value = e.value);
-		e.type && (node.type = e.type);
-		e.class && node.classList.add(...(Array.isArray(e.class) ? e.class : e.class.trim().split(/\s+/)).filter(Boolean));
-		e.attribute && Object.entries(e.attribute).forEach(([k, v]) => node.setAttribute(k, v));
-		e.event && Object.entries(e.event).forEach(([k, v]) => node.addEventListener(k, (e) => v(e, node), false));
-		e.children && (Array.isArray(e.children) ? e.children : [e.children]).filter(Filter.notNull).forEach((c) => node.appendChild(Dom.createElement(c)));
-		e.style && Object.entries(e.style).forEach(([k, v]) => node.style.setProperty(k, v.replace('!important', '').trim(), v.includes('!important') ? 'important' : ''));
-	  	e.function && Object.entries(e.function).forEach(([k, v]) => { node[k] = v; });
+		if (e.id) {
+			node.id = e.id;
+			Dom.NODES[e.id] = node;
+		}
+		if (e.innerText) node.textContent = e.innerText;
+		if (e.value) node.value = e.value;
+		if (e.type) node.type = e.type;
+		if (e.class) {
+			const classes = Array.isArray(e.class) ? e.class : e.class.split(/\s+/);
+			node.classList.add(...classes.map(SUtils.trim).filter(Boolean));
+		}
+		if (e.attribute) {
+			Object.entries(e.attribute).forEach(([k, v]) => node.setAttribute(k, v));
+		}
+		if (e.event) {
+			Object.entries(e.event).forEach(([k, v]) => node.addEventListener(k, (ev) => v(ev, node), false));
+		}
+		if (e.children) {
+			(Array.isArray(e.children) ? e.children : [e.children])
+				.filter(Boolean)
+				.forEach((child) => node.appendChild(Dom.createElement(child)));
+		}
+		if (e.style) {
+			Object.entries(e.style).forEach(([k, v]) => {
+				const important = v.includes('!important') ? 'important' : '';
+				node.style.setProperty(k, v.replace('!important', '').trim(), important);
+			});
+		}
+		if (e.function) {
+			Object.entries(e.function).forEach(([k, v]) => node[k] = v);
+		}
 		e.node = node;
 		return node;
 	}
