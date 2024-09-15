@@ -148,18 +148,17 @@ class Dom {
 			.forEach(element => callback(element, observer));
 	}
 
-	static NODES = {};
+	static nodes = document.createDocumentFragment();
 	static createElement(e) {
 		const node = document.createElement(e._type);
 		if (e.id) {
 			node.id = e.id;
-			Dom.NODES[e.id] = node;
 		}
 		if (e.innerText) node.textContent = e.innerText;
 		if (e.value) node.value = e.value;
 		if (e.type) node.type = e.type;
 		if (e.class) {
-			const classes = Array.isArray(e.class) ? e.class : e.class.split(/\s+/);
+			const classes = (Array.isArray(e.class) ? e.class.join(" ") : e.class).split(/\s+/);
 			node.classList.add(...classes.map(SUtils.trim).filter(Boolean));
 		}
 		if (e.attribute) {
@@ -183,6 +182,8 @@ class Dom {
 			Object.entries(e.function).forEach(([k, v]) => node[k] = v);
 		}
 		e.node = node;
+		node.source = e;
+		Dom.nodes.append(node);
 		return node;
 	}
 
@@ -191,7 +192,12 @@ class Dom {
 		static with(obj) {
 			return Object.assign(new this(), obj);
 		}
-		create() { return Dom.createElement(this); }
+		create(profile = false) {
+			if (profile) console.profile(profile);
+			const created = Dom.createElement(this);
+			if (profile) console.profileEnd(profile);
+			return created;
+		}
 		toJSON() { return ({ _type: this._type, ...this }); }
 		wrapWith(element, options = {}) {
 			if (!options?.optional) {
