@@ -148,9 +148,13 @@ class Dom {
 			.forEach(element => callback(element, observer));
 	}
 
-	static nodes = document.createDocumentFragment();
+	static nodes = [];
 	static createElement(e) {
 		const node = document.createElement(e._type);
+		Dom.nodes.push(node);
+		e.node = node;
+		node.source = e;
+
 		if (e.id) {
 			node.id = e.id;
 		}
@@ -181,9 +185,6 @@ class Dom {
 		if (e.function) {
 			Object.entries(e.function).forEach(([k, v]) => node[k] = v);
 		}
-		e.node = node;
-		node.source = e;
-		Dom.nodes.append(node);
 		return node;
 	}
 
