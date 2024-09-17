@@ -29,7 +29,7 @@ class IdUtils {
 		return array[0];
 	}
 	static get HID() {
-		return Utils.ID.toString(16);
+		return IdUtils.ID.toString(16);
 	}
 
 	static toX = (i, w) => i % w;
