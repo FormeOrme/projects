@@ -111,7 +111,16 @@ class Sort {
 }
 
 class Reduce {
-	static with = (func) => (a, c) => { func(a, c); return a; }
+	static with = (func) => (a, c) => {
+		func(a, c);
+		return a;
+	}
+	static combine = (a, c, i, f) => {
+		for (let j = i + 1; j < f.length; j++) {
+			a.push([c, f[j]]);
+		}
+		return a;
+	}
 }
 
 class Dom {
@@ -240,7 +249,9 @@ class Dom {
 	].join().split(","));
 
 	// 	static clazz = (name, cls) => eval(`class ${name} extends ${cls} {};`);
-	static clazz = (name, cls) => ({ [name]: class extends cls { } })[name];
+	static clazz = (name, cls) => ({
+		[name]: class extends cls {}
+	})[name];
 	static evalNode = node => window[node] = Dom.clazz(node, Dom.Elem);
 
 	static evalNodes = nodes => nodes.forEach(Dom.evalNode);
