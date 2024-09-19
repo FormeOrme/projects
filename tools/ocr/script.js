@@ -47,23 +47,27 @@ document.querySelector("body").append(Div.with({
         })
     ]
 }).create());
-Dom.NODES.progressSpinner.hide();
 
+const progressSpinner = Dom.nodes.querySelector("#progressSpinner");
+const progressPercent = Dom.nodes.querySelector("#progressPercent");
+const output = Dom.nodes.querySelector("#output");
+
+progressSpinner.classList.add("d-none");
 
 function parse(file) {
-    Dom.NODES.progressPercent.hide();
-    Dom.NODES.progressSpinner.show();
+    progressPercent.classList.add("d-none");
+    progressSpinner.classList.remove("d-none");
     Tesseract.recognize(file, 'eng', {
         logger: l => {
             const progress = !l.jobId ? 0 : l.progress;
             if (progress != 0) {
-                Dom.NODES.progressSpinner.hide();
-                Dom.NODES.progressPercent.show();
+                progressSpinner.classList.add("d-none");
+                progressPercent.classList.remove("d-none");
             }
-            Dom.NODES.progressPercent.style = `width: ${(progress * 100).toFixed(0)}%`;
+            progressPercent.style = `width: ${(progress * 100).toFixed(0)}%`;
         }
     }).then(({ data: { text } }) => {
-        Dom.NODES.output.innerText = text;
+        output.innerText = text;
     });
 }
 

@@ -114,6 +114,15 @@ class Reduce {
 	static with = (func) => (a, c) => { func(a, c); return a; }
 }
 
+class Nodes extends Array {
+	querySelector(query) {
+		return this.find(e => e.matches(query))
+	}
+	querySelectorAll(query) {
+		return this.filter(e => e.matches(query))
+	}
+}
+
 class Dom {
 	static id = (id) => document.getElementById(id);
 	static qs = (selector) => document.querySelector(selector);
@@ -147,7 +156,7 @@ class Dom {
 			.forEach(element => callback(element, observer));
 	}
 
-	static nodes = [];
+	static nodes = new Nodes();
 	static createElement(e) {
 		const node = document.createElement(e._type);
 		Dom.nodes.push(node);
