@@ -40,6 +40,8 @@ class IdUtils {
 	static toID_A = (xy, w) => Utils.toID(xy[0], xy[1], w);
 }
 
+const Identity = o => o;
+
 class Utils {
 
 	static tween = (v, r1, r2, m1, m2) => m1 + (m2 - m1) * ((v - r1) / (r2 - r1));
@@ -48,7 +50,7 @@ class Utils {
 	static prc = (current, max) => Utils.normalize(current, max) * 100;
 
 	static kvMap = (arr, k, v) => Utils.vkMap(arr, v, k);
-	static vkMap = (arr, v = o => o, k = o => o.id) =>
+	static vkMap = (arr, v = Identity, k = o => o.id) =>
 		Object.fromEntries(arr.map(c => [k(c), v(c)]));
 
 	static fetchJson = (o) => fetch(o.url, o.options)
@@ -95,8 +97,6 @@ class Filter {
 	static notNull = Boolean;
 	static not = (f) => (...a) => !f(...a);
 }
-
-const Identity = o => o;
 
 class Sort {
 	static alpha = (func = Identity) => (o1, o2) => (func(o1) || '').localeCompare(func(o2) || '');
