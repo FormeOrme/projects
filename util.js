@@ -228,15 +228,15 @@ class Dom {
 	}
 
 	static TextElements = "Div,Span,P,Small,Menu";
-	static HeadingElements = "H1,H2,H3,H4,H5,H6,Hgroup";
+	static HeadingElements = "H1,H2,H3,H4,H5,H6,HGroup";
 	static InlineTextElements = "I,Strong,Em,Mark,Abbr,Code,Pre,Kbd,Samp";
 	static SectionElements = "Header,Footer,Article,Aside,Section";
 	static ListElements = "UL,OL,LI,Nav";
-	static FormElements = "Form,Input,Textarea,Button,Label,Select,Option_";
+	static FormElements = "Form,Input,TextArea,Button,Label,Select,Option_";
 	static MediaElements = "Img,Audio_,Video";
-	static TableElements = "Table,TR,TD,TH,TBody,Tfoot,Thead,ColGroup,Col,Caption";
+	static TableElements = "Table,TR,TD,TH,TBody,TFoot,THead,ColGroup,Col,Caption";
 	static InteractiveElements = "Button,A";
-	static EmbeddedElements = "Iframe,Canvas,Svg";
+	static EmbeddedElements = "IFrame,Canvas,Svg";
 	static MiscellaneousElements = "HR,BR,Style,Blockquote,Cite,Sup,Sub";
 	static SvgBaseElements = "Svg,Defs,G,Path,Line,Rect,Circle,Ellipse,Polygon";
 	static HeadElements = "Link,Title,Meta";
