@@ -111,16 +111,27 @@ class Sort {
 }
 
 class Reduce {
-	static with = (func) => (a, c) => {
-		func(a, c);
+	static with = (func) => (a, c, i, f) => {
+		func(a, c, i, f);
 		return a;
 	}
-	static combine = (a, c, i, f) => {
+	static combine = Reduce.with((a, c, i, f) => {
 		for (let j = i + 1; j < f.length; j++) {
 			a.push([c, f[j]]);
 		}
-		return a;
-	}
+	})
+	static fullCombine = Reduce.with((a, _, i, f) => {
+		const rl = a.length;
+		for (let j = 0; j < Math.pow(2, i); j++) {
+			const c = [];
+			for (let k = 0; k < f.length; k++) {
+				if ((rl + j + 1) & (1 << k)) {
+					c.push(f[k]);
+				}
+			}
+			a.push(c);
+		}
+	})
 }
 
 class Nodes extends Array {
