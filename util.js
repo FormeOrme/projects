@@ -1,3 +1,7 @@
+Object.prototype.morph = function (f) {
+	return f(this);
+}
+
 class LoStMan /* Local Storage Manager */ {
 	static getObj(id, proto) {
 		const parsed = JSON.parse(localStorage.getItem(id));
@@ -81,14 +85,8 @@ class SUtils {
 	static capitalize = str => str.charAt(0).toUpperCase() + str.slice(1);
 	static strip = (s) => SUtils.normalize(s)?.split("/")[0]?.trim().replace(/\W+/g, "_").toLowerCase();
 	static normalize = (s) => s?.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-
+	
 	static trim = (s) => s?.trim();
-
-	static enhance = () => {
-		String.prototype.map = function (f) {
-			return f(this);
-		};
-	}
 }
 
 class Filter {
