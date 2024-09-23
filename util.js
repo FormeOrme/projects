@@ -134,6 +134,12 @@ class Reduce {
 	})
 }
 
+class CacheMap extends Map {
+	fetch(key, value) {
+		return this.get(key) || this.set(key, value).get(key);
+	}
+}
+
 class Nodes extends Array {
 	querySelector(query) {
 		return this.find(e => e.matches(query))
