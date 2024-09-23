@@ -85,7 +85,7 @@ class SUtils {
 	static capitalize = str => str.charAt(0).toUpperCase() + str.slice(1);
 	static strip = (s) => SUtils.normalize(s)?.split("/")[0]?.trim().replace(/\W+/g, "_").toLowerCase();
 	static normalize = (s) => s?.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-	
+
 	static trim = (s) => s?.trim();
 }
 
