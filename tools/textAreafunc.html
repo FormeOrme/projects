@@ -29,18 +29,18 @@
 
         const apply = (e, n) => {
             try {
-                Dom.NODES.func.classList.remove("is-invalid");
-                Dom.NODES.func.classList.add("is-valid");
-                eval(_head + Dom.NODES.func.value + _tail)(Dom.NODES.input.value, (out) => {
-                    Dom.NODES.title.innerText = TITLE + (!out ? '' : ` [${Dom.NODES.func.value?.trim().substr(0, 20)}]`);
-                    Dom.NODES.output.innerText = String(out);
+                Dom.nodes.func.classList.remove("is-invalid");
+                Dom.nodes.func.classList.add("is-valid");
+                eval(_head + Dom.nodes.func.value + _tail)(Dom.nodes.input.value, (out) => {
+                    Dom.nodes.title.innerText = TITLE + (!out ? '' : ` [${Dom.nodes.func.value?.trim().substr(0, 20)}]`);
+                    Dom.nodes.output.innerText = String(out);
                 });
-                QueStMan.set("func", btoa(Dom.NODES.func.value).replaceAll("=", ""));
+                QueStMan.set("func", btoa(Dom.nodes.func.value).replaceAll("=", ""));
             } catch (e) {
-                Dom.NODES.func.classList.remove("is-valid");
-                Dom.NODES.func.classList.add("is-invalid");
-                Dom.NODES.output.innerText = e.message;
-                Dom.NODES.title.innerText = TITLE;
+                Dom.nodes.func.classList.remove("is-valid");
+                Dom.nodes.func.classList.add("is-invalid");
+                Dom.nodes.output.innerText = e.message;
+                Dom.nodes.title.innerText = TITLE;
             }
         }
 
@@ -53,14 +53,14 @@
             attribute: { spellcheck: false },
             children: [
                 H1.with({ innerText: "Textarea Func" }),
-                Textarea.with({
+                TextArea.with({
                     id: "input",
                     class: "border-3 lh-sm form-control font-monospace border-bottom-0 rounded-0 rounded-top-2 pb-0",
                     event: { input: apply },
                     style: { height: 'calc(1.5em + .75rem + calc(var(--bs-border-width) * 2))', },
                     attribute: { placeholder: "input" }
                 }),
-                Textarea.with({
+                TextArea.with({
                     id: "func",
                     class: "border-3 lh-sm form-control font-monospace border-top-0 rounded-0 rounded-bottom-2 pt-0",
                     value: atob(QueStMan.get("func") || '') || _body.map(s => s.trim()).join("\n"),
@@ -80,7 +80,7 @@
                                 class: "btn btn-sm btn-light",
                                 innerText: "📋",
                                 event: {
-                                    click: () => navigator.clipboard.writeText(Dom.NODES.output.innerText)
+                                    click: () => navigator.clipboard.writeText(Dom.nodes.output.innerText)
                                 }
                             })
                         })

@@ -141,42 +141,18 @@ class Nodes extends Array {
 	querySelectorAll(query) {
 		return this.filter(e => e.matches(query))
 	}
+	getElementById(id) {
+		return this.querySelector(`#${id}`);
+	}
 }
 
 class Dom {
-	static id = (id) => document.getElementById(id);
-	static qs = (selector) => document.querySelector(selector);
-	static qsa = (selector) => Array.from(document.querySelectorAll(selector));
+	static nodes = new Proxy(new Nodes(), {
+		get(target, key) {
+			return target[key] ?? target.getElementById(key);
+		}
+	});
 
-	static addStyleNode = (css) => document.head.appendChild(Style.with({ innerText: css }).create());
-
-	static monitor(parentSelector, targetSelector, callback) {
-		const parent = document.querySelector(parentSelector);
-		if (!parent) return;
-
-		const observer = new MutationObserver((mutationsList, observer) => {
-			mutationsList.forEach(mutation => {
-				if (mutation.type === 'childList') {
-					Array.from(mutation.addedNodes).forEach(node => {
-						if (node.nodeType === Node.ELEMENT_NODE) {
-							if (node.matches(targetSelector)) {
-								callback(node, observer);
-								return;
-							}
-							node.querySelectorAll(targetSelector).forEach(child => {
-								callback(child, observer);
-							});
-						}
-					});
-				}
-			});
-		})
-		observer.observe(parent, { childList: true, subtree: true });
-		document.querySelectorAll(targetSelector)
-			.forEach(element => callback(element, observer));
-	}
-
-	static nodes = new Nodes();
 	static createElement(e) {
 		const node = document.createElement(e._type);
 		Dom.nodes.push(node);
@@ -214,6 +190,38 @@ class Dom {
 			Object.entries(e.function).forEach(([k, v]) => node[k] = v);
 		}
 		return node;
+	}
+
+	static id = (id) => document.getElementById(id);
+	static qs = (selector) => document.querySelector(selector);
+	static qsa = (selector) => Array.from(document.querySelectorAll(selector));
+
+	static addStyleNode = (css) => document.head.appendChild(Style.with({ innerText: css }).create());
+
+	static monitor(parentSelector, targetSelector, callback) {
+		const parent = document.querySelector(parentSelector);
+		if (!parent) return;
+
+		const observer = new MutationObserver((mutationsList, observer) => {
+			mutationsList.forEach(mutation => {
+				if (mutation.type === 'childList') {
+					Array.from(mutation.addedNodes).forEach(node => {
+						if (node.nodeType === Node.ELEMENT_NODE) {
+							if (node.matches(targetSelector)) {
+								callback(node, observer);
+								return;
+							}
+							node.querySelectorAll(targetSelector).forEach(child => {
+								callback(child, observer);
+							});
+						}
+					});
+				}
+			});
+		})
+		observer.observe(parent, { childList: true, subtree: true });
+		document.querySelectorAll(targetSelector)
+			.forEach(element => callback(element, observer));
 	}
 
 	static Elem = class {
@@ -270,7 +278,7 @@ class Dom {
 
 	// 	static clazz = (name, cls) => eval(`class ${name} extends ${cls} {};`);
 	static clazz = (name, cls) => ({
-		[name]: class extends cls {}
+		[name]: class extends cls { }
 	})[name];
 	static evalNode = node => window[node] = Dom.clazz(node, Dom.Elem);
 
