@@ -113,11 +113,23 @@ class Reduce {
 		func(a, c, i, f);
 		return a;
 	}
-	static combine = Reduce.with((a, c, i, f) => {
-		for (let j = i + 1; j < f.length; j++) {
-			a.push([c, f[j]]);
+
+	static combineN = (N) => Reduce.with((acc, _, index, full) => {
+		let v = []
+		const fn = (i) => {
+			v.push(full[i])
+			if (v.length == N) {
+				acc.push([...v]);
+			} else {
+				for (let j = i + 1; j < full.length; j++) {
+					fn(j)
+				}
+			}
+			v.pop();
 		}
+		fn(index)
 	})
+	static combine = Reduce.combineN(2)
 	static fullCombine = Reduce.with((a, _, i, f) => {
 		const rl = a.length;
 		for (let j = 0; j < Math.pow(2, i); j++) {
