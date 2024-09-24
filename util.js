@@ -163,9 +163,7 @@ class Dom {
 		e.node = node;
 		node.source = e;
 
-		if (e.id) {
-			node.id = e.id;
-		}
+		if (e.id) { node.id = e.id; }
 		if (e.innerText) { node.textContent = e.innerText; }
 		if (e.value) { node.value = e.value; }
 		if (e.type) { node.type = e.type; }
@@ -200,7 +198,12 @@ class Dom {
 	static qs = (selector) => document.querySelector(selector);
 	static qsa = (selector) => Array.from(document.querySelectorAll(selector));
 
-	static addStyleNode = (css) => document.head.appendChild(Style.with({ innerText: css }).create());
+	static addStyleNode = (css) => document.head.appendChild(Style.with({
+		innerText: css,
+		attribute: {
+			type: "text/css"
+		}
+	}).create());
 
 	static monitor(parentSelector, targetSelector, callback) {
 		const parent = document.querySelector(parentSelector);
