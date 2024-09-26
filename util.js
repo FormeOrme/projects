@@ -145,8 +145,8 @@ class Reduce {
 }
 
 class CacheMap extends Map {
-	fetch(key, value) {
-		return this.get(key) || this.set(key, value).get(key);
+	fetch(key, func) {
+		return this.get(key) || this.set(key, func()).get(key);
 	}
 }
 
