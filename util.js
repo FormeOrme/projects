@@ -1,7 +1,3 @@
-Object.prototype.morph = function (f) {
-	return f(this);
-}
-
 class LoStMan /* Local Storage Manager */ {
 	static getObj(id, proto) {
 		const parsed = JSON.parse(localStorage.getItem(id));
@@ -75,6 +71,14 @@ class Utils {
 		return array;
 	}
 	static shuffleNew = arr => this.shuffle(arr.slice());
+
+	static get location() { return new URL(window.location.href) }
+
+	static enhance = function () {
+		Object.prototype.morph = function (f) {
+			return f(this);
+		}
+	}
 }
 
 class SUtils {
