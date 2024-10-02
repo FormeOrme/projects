@@ -62,6 +62,7 @@ class Utils {
 
 	static clone = o => Object.setPrototypeOf(JSON.parse(JSON.stringify(o)), o.constructor.prototype);
 
+	static range = n => Array.from({ length: n }, (_, i) => i);
 	static deduplicate = a => [...new Set(a)];
 	static shuffle = (array) => {
 		for (var i = array.length - 1; i > 0; i--) {
