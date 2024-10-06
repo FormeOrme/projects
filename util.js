@@ -175,7 +175,7 @@ class Dom {
 	});
 
 	static createElement(e) {
-		const node = document.createElement(e._type);
+		const node = document.createElement(e._type.replace('_', ''));
 		Dom.nodes.push(node);
 		e.node = node;
 		node.source = e;
