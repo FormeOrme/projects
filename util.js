@@ -175,38 +175,53 @@ class Dom {
 	});
 
 	static createElement(e) {
-		const node = document.createElement(e._type.replace('_', ''));
+		const node = document.createElement(e._type);
 		Dom.nodes.push(node);
 		e.node = node;
 		node.source = e;
 
-		if (e.id) { node.id = e.id; }
-		if (e.innerText) { node.textContent = e.innerText; }
-		if (e.value) { node.value = e.value; }
-		if (e.type) { node.type = e.type; }
+		if (e.id) node.id = e.id;
+		if (e.innerText) node.textContent = e.innerText;
+		if (e.value) node.value = e.value;
+		if (e.type) node.type = e.type;
+
 		if (e.class) {
-			const classes = (Array.isArray(e.class) ? e.class.join(" ") : e.class).split(/\s+/);
-			node.classList.add(...classes.map(SUtils.trim).filter(Boolean));
+			const classList = Array.isArray(e.class) ? e.class.join(" ") : e.class;
+			node.className = classList.trim();
 		}
 		if (e.attribute) {
-			Object.entries(e.attribute).forEach(([k, v]) => node.setAttribute(k, v));
+			for (let k in e.attribute) {
+				node.setAttribute(k, e.attribute[k]);
+			}
 		}
 		if (e.event) {
-			Object.entries(e.event).forEach(([k, v]) => node.addEventListener(k, (ev) => v(ev, node), false));
+			for (let k in e.event) {
+				node.addEventListener(k, e.event[k].bind(null, node), false);
+			}
 		}
 		if (e.children) {
-			(Array.isArray(e.children) ? e.children : [e.children])
-				.filter(Boolean)
-				.forEach((child) => node.appendChild(Dom.createElement(child)));
+			const children = Array.isArray(e.children)
+				? e.children.filter(Boolean)
+				: (e.children ? [e.children] : []);
+
+			for (let i = 0, len = children.length; i < len; i++) {
+				node.appendChild(Dom.createElement(children[i]));
+			}
 		}
 		if (e.style) {
-			Object.entries(e.style).forEach(([k, v]) => {
-				const important = v.includes('!important') ? 'important' : '';
-				node.style.setProperty(k, v.replace('!important', '').trim(), important);
-			});
+			for (let k in e.style) {
+				const val = e.style[k];
+				const important = val.includes('!important') ? 'important' : '';
+				node.style.setProperty(k, val.replace('!important', '').trim(), important);
+			}
 		}
 		if (e.function) {
-			Object.entries(e.function).forEach(([k, v]) => node[k] = v);
+			for (let k in e.function) {
+				node[k] = e.function[k];
+			}
+		}
+		if (e.callback) {
+			e.callback(node);
 		}
 		return node;
 	}
@@ -249,7 +264,7 @@ class Dom {
 	}
 
 	static Elem = class {
-		get _type() { return this.constructor.name; }
+		get _type() { return this.constructor.name.replace('_', ''); }
 		static with(obj) {
 			return Object.assign(new this(), obj);
 		}
