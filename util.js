@@ -290,7 +290,7 @@ class Dom {
 	static InlineTextElements = "I,Strong,Em,Mark,Abbr,Code,Pre,Kbd,Samp";
 	static SectionElements = "Header,Footer,Article,Aside,Section";
 	static ListElements = "UL,OL,LI,Nav";
-	static FormElements = "Form,Input,TextArea,Button,Label,Select,Option_";
+	static FormElements = "Form,Input,Output,TextArea,Button,Label,Select,Option_";
 	static MediaElements = "Img,Audio_,Video";
 	static TableElements = "Table,TR,TD,TH,TBody,TFoot,THead,ColGroup,Col,Caption";
 	static InteractiveElements = "Button,A";
