@@ -46,6 +46,13 @@ class Utils {
 
 	static tween = (v, r1, r2, m1, m2) => m1 + (m2 - m1) * ((v - r1) / (r2 - r1));
 
+	static rpt({ a, b, c, d }) {
+		if (!a) return (b * c) / d;
+		if (!b) return (a * d) / c;
+		if (!c) return (a * d) / b;
+		if (!d) return (b * c) / a;
+	}
+
 	static normalize = (current, max) => current / max;
 	static prc = (current, max) => Utils.normalize(current, max) * 100;
 
@@ -62,7 +69,7 @@ class Utils {
 
 	static clone = o => Object.setPrototypeOf(JSON.parse(JSON.stringify(o)), o.constructor.prototype);
 
-	static range = n => Array.from({ length: n }, (_, i) => i);
+	static range = (n, fn = (_, i) => i) => Array.from({ length: n }, fn);
 	static deduplicate = a => [...new Set(a)];
 	static shuffle = (array) => {
 		for (var i = array.length - 1; i > 0; i--) {
@@ -74,12 +81,6 @@ class Utils {
 	static shuffleNew = arr => this.shuffle(arr.slice());
 
 	static get location() { return new URL(window.location.href) }
-
-	static enhance = function () {
-		Object.prototype.morph = function (f) {
-			return f(this);
-		}
-	}
 }
 
 class SUtils {
