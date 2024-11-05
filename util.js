@@ -175,8 +175,10 @@ class Dom {
 		}
 	});
 
-	static createElement(e) {
-		const node = document.createElement(e._type);
+	static createElement(e, namespace) {
+		const node = namespace
+			? document.createElementNS(namespace, e._type)
+			: document.createElement(e._type);
 		Dom.nodes.push(node);
 		e.node = node;
 		node.source = e;
@@ -206,7 +208,7 @@ class Dom {
 				: (e.children ? [e.children] : []);
 
 			for (let i = 0, len = children.length; i < len; i++) {
-				node.appendChild(Dom.createElement(children[i]));
+				node.appendChild(Dom.createElement(children[i], namespace));
 			}
 		}
 		if (e.style) {
@@ -265,13 +267,13 @@ class Dom {
 	}
 
 	static Elem = class {
-		get _type() { return this.constructor.name.replace('_', ''); }
+		get _type() { return this.constructor.name.replace('_', '').toLowerCase(); }
 		static with(obj) {
 			return Object.assign(new this(), obj);
 		}
-		create(profile = false) {
+		create({ profile, namespace } = {}) {
 			if (profile) { console.profile(profile) };
-			const created = Dom.createElement(this);
+			const created = Dom.createElement(this, namespace);
 			if (profile) { console.profileEnd(profile) };
 			return created;
 		}
@@ -295,9 +297,10 @@ class Dom {
 	static MediaElements = "Img,Audio_,Video";
 	static TableElements = "Table,TR,TD,TH,TBody,TFoot,THead,ColGroup,Col,Caption";
 	static InteractiveElements = "Button,A";
-	static EmbeddedElements = "IFrame,Canvas,Svg";
-	static MiscellaneousElements = "HR,BR,Style,Blockquote,Cite,Sup,Sub";
-	static SvgBaseElements = "Svg,Defs,G,Path,Line,Rect,Circle,Ellipse,Polygon";
+	static EmbeddedElements = "IFrame,Canvas";
+	static MiscElements = "HR,BR,Style,Blockquote,Cite,Sup,Sub";
+	static SvgBaseElements = "Svg,Defs,G,Path,Line,Rect,Circle,Ellipse,Polygon,Polyline";
+	static SvgDefElements = "LinearGradient,Stop";
 	static HeadElements = "Link,Title,Meta";
 
 	static AllElements = Utils.deduplicate([
@@ -311,8 +314,9 @@ class Dom {
 		Dom.TableElements,
 		Dom.InteractiveElements,
 		Dom.EmbeddedElements,
-		Dom.MiscellaneousElements,
+		Dom.MiscElements,
 		Dom.SvgBaseElements,
+		Dom.SvgDefElements,
 		Dom.HeadElements,
 	].join().split(","));
 
@@ -325,4 +329,8 @@ class Dom {
 	static evalNodes = nodes => nodes.forEach(Dom.evalNode);
 }
 
-Dom.evalNodes(Dom.AllElements);
+if (typeof window !== 'undefined') {
+	Dom.evalNodes(Dom.AllElements);
+} else {
+	module.exports = ({ Sort });
+}
