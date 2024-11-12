@@ -34,10 +34,13 @@ class IdUtils {
 
 	static toX = (i, w) => i % w;
 	static toY = (i, w) => ~~(i / w);
-	static toXY = (i, w) => ({ x: Utils.toX(i, w), y: Utils.toY(i, w) });
-	static toID = (x, y, w) => y * w + x;
-	static toID_O = ({ x, y }, w) => Utils.toID(x, y, w);
-	static toID_A = (xy, w) => Utils.toID(xy[0], xy[1], w);
+	static toXY = (i, w) => ({
+		x: IdUtils.toX(i, w),
+		y: IdUtils.toY(i, w)
+	});
+	static toID = (x, y, w) => Math.floor(y) * w + Math.floor(x);
+	static toID_O = ({ x, y }, w) => IdUtils.toID(x, y, w);
+	static toID_A = (xy, w) => IdUtils.toID(xy[0], xy[1], w);
 }
 
 const Identity = o => o;
@@ -79,6 +82,8 @@ class Utils {
 		return array;
 	}
 	static shuffleNew = arr => this.shuffle(arr.slice());
+	static randomElement = arr => arr[(Math.random() * arr.length) | 0];
+	static chance = c => Math.random() * 100 < c;
 
 	static get location() { return new URL(window.location.href) }
 }
@@ -288,6 +293,14 @@ class Dom {
 		}
 	}
 
+	// 	static clazz = (name, cls) => eval(`class ${name} extends ${cls} {};`);
+	static clazz = (name, cls) => ({
+		[name]: class extends cls { }
+	})[name];
+	static evalNode = node => window[node] = Dom.clazz(node, Dom.Elem);
+
+	static evalNodes = nodes => nodes.forEach(Dom.evalNode);
+
 	static TextElements = "Div,Span,P,Small,Menu";
 	static HeadingElements = "H1,H2,H3,H4,H5,H6,HGroup";
 	static InlineTextElements = "I,Strong,Em,Mark,Abbr,Code,Pre,Kbd,Samp";
@@ -314,19 +327,11 @@ class Dom {
 		Dom.TableElements,
 		Dom.InteractiveElements,
 		Dom.EmbeddedElements,
-		Dom.MiscElements,
+		Dom.MiscellaneousElements,
 		Dom.SvgBaseElements,
 		Dom.SvgDefElements,
 		Dom.HeadElements,
 	].join().split(","));
-
-	// 	static clazz = (name, cls) => eval(`class ${name} extends ${cls} {};`);
-	static clazz = (name, cls) => ({
-		[name]: class extends cls { }
-	})[name];
-	static evalNode = node => window[node] = Dom.clazz(node, Dom.Elem);
-
-	static evalNodes = nodes => nodes.forEach(Dom.evalNode);
 }
 
 if (typeof window !== 'undefined') {

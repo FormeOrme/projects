@@ -108,14 +108,14 @@ const columns = {
                 ? undefined
                 : [
                     Input.with({
-                        id: id = Utils.HID,
+                        id: id = IdUtils.HID,
                         class: "btn-check",
                         attribute: {
                             type: "checkbox",
                             payer: p,
                         },
                         event: {
-                            input: (e) => {
+                            input: (node, e) => {
                                 const row = e.target.closest(".flex-row");
                                 const checked = row.querySelectorAll("input:checked").length > 0;
                                 [...row.querySelectorAll("input[type='checkbox']+.btn")].forEach((btn) => {
@@ -163,7 +163,7 @@ const columns = {
                 children: I.with({ class: "bi bi-trash-fill" }),
                 type: "button",
                 event: {
-                    click: (e) => {
+                    click: (node, e) => {
                         e.target.closest(".flex-row").remove();
                         LoStMan.setObj(TABLE_CONTENT, getTableContent());
                         updateTotals();
@@ -178,7 +178,7 @@ const columns = {
                 children: I.with({ class: "bi bi-plus-lg" }),
                 type: "button",
                 event: {
-                    click: (e) => {
+                    click: () => {
                         const body = document.getElementById("mainBody");
                         body.append(getRow().create());
                     }
@@ -236,7 +236,7 @@ const getTable = (text = "") => Div.with({
 });
 
 const buildTable = text => {
-    const tableContainer = Dom.NODES.TableContainer;
+    const tableContainer = Dom.nodes.TableContainer;
     tableContainer.innerText = "";
     tableContainer.append(getTable(text).create());
     LoStMan.setObj(TABLE_CONTENT, getTableContent());
@@ -254,7 +254,7 @@ const updateTotals = () => {
     const ids = payers.slice(0, -1);
 
     ids.forEach(p => {
-        const total = Dom.NODES[`total_${p}`];
+        const total = Dom.nodes[`total_${p}`];
         total.value = 0;
         [...document.querySelectorAll("#mainBody .flex-row")].forEach(tr => {
             const amount = +tr.querySelector("[content='amount']")?.value ?? 0;
@@ -282,20 +282,20 @@ document.querySelector("body").append(Div.with({
                         type: "file"
                     },
                     event: {
-                        input: (e, node) => {
+                        input: (node) => {
                             try {
-                                Dom.NODES.progressContainer.show();
+                                Dom.nodes.progressContainer.show();
                                 Tesseract.recognize(
                                     node.files[0],
                                     'eng',
                                     {
                                         logger: l => {
                                             const progress = !l.jobId ? 0 : l.progress;
-                                            Dom.NODES.progressPercent.style = `width: ${(progress * 100).toFixed(0)}%`;
+                                            Dom.nodes.progressPercent.style = `width: ${(progress * 100).toFixed(0)}%`;
                                         }
                                     }
                                 ).then(({ data: { text } }) => {
-                                    Dom.NODES.progressContainer.hide();
+                                    Dom.nodes.progressContainer.hide();
                                     buildTable(text);
                                 });
                             } catch (e) {
@@ -326,7 +326,7 @@ document.querySelector("body").append(Div.with({
         })
     ]
 }).create());
-Dom.NODES.progressContainer.hide();
+Dom.nodes.progressContainer.hide();
 buildTable(TABLE_CONTENT_INIT);
 
 class GroupManager {
