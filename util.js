@@ -81,11 +81,23 @@ class Utils {
 		}
 		return array;
 	}
-	static shuffleNew = arr => this.shuffle(arr.slice());
+	static shuffleNew = arr => this.shuffle([...arr]);
 	static randomElement = arr => arr[(Math.random() * arr.length) | 0];
 	static chance = c => Math.random() * 100 < c;
 
 	static get location() { return new URL(window.location.href) }
+
+	static deepMerge(target, source) {
+		for (const key of Object.keys(source)) {
+			if (source[key] && typeof source[key] === 'object' && !Array.isArray(source[key])) {
+				target[key] = Utils.deepMerge(target[key] || {}, source[key]);
+			} else {
+				target[key] = source[key];
+			}
+		}
+		return target;
+	};
+
 }
 
 class SUtils {
@@ -98,6 +110,56 @@ class SUtils {
 	static normalize = (s) => s?.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 
 	static trim = (s) => s?.trim();
+}
+
+class MUtils {
+	static circleIntersectionPoints({
+		x1, y1, r1,
+		x2, y2, r2,
+		cx, cy }) {
+
+		// Calculate the distance between the centers
+		const dx = x2 - x1;
+		const dy = y2 - y1;
+		const d2 = dx ** 2 + dy ** 2; // Squared distance for efficiency
+		const d = d2 ** (1 / 2);
+
+		// Check if there are no intersections
+		if (d > r1 + r2 || d < (r1 - r2) ** 2 || d === 0) {
+			return []; // No intersection
+		}
+
+		// Calculate the distance from the first circle's center to the midpoint between the intersection points
+		const r1Sq = r1 ** 2;
+		const r2Sq = r2 ** 2;
+		const a = (r1Sq - r2Sq + d2) / (2 * d);
+
+		// Find the midpoint
+		const xm = x1 + (dx * a) / d;
+		const ym = y1 + (dy * a) / d;
+
+		// Calculate the height of the intersection points above or below the line
+		const h2 = r1Sq - a ** 2; // h squared for efficiency
+		const h = h2 > 0 ? h2 ** (1 / 2) : 0; // Ensure h2 is non-negative to avoid NaN
+
+		// The offsets from the midpoint
+		const rx = -(dy * h) / d;
+		const ry = (dx * h) / d;
+
+		// Intersection points
+		const p1x = xm + rx, p1y = ym + ry;
+		const p2x = xm - rx, p2y = ym - ry;
+
+		// Precompute squared distances to the center (cx, cy) for sorting
+		const d1Sq = (p1x - cx) ** 2 + (p1y - cy) ** 2;
+		const d2Sq = (p2x - cx) ** 2 + (p2y - cy) ** 2;
+
+		// Return points sorted by squared distance to avoid square root computation
+		return d1Sq <= d2Sq
+			? [{ x: p1x, y: p1y }, { x: p2x, y: p2y }]
+			: [{ x: p2x, y: p2y }, { x: p1x, y: p1y }];
+	}
+	static random(l) { return Math.floor(Math.random() * l) }
 }
 
 class Filter {
@@ -161,7 +223,38 @@ class CacheMap extends Map {
 	}
 }
 
+if(typeof document !== 'undefined'){
+	document.addEventListener('DOMContentLoaded', () => {
+		const observer = new MutationObserver((mutations) => {
+			mutations.forEach((mutation) => {
+				mutation.removedNodes.forEach((node) => {
+					const indexesToRemove = [];
+					if (node.nodeType === Node.ELEMENT_NODE) {
+						indexesToRemove.push(Dom.nodes.indexOf(node))
+						getAllDescendants(node).forEach((child) => {
+							indexesToRemove.push(Dom.nodes.indexOf(child))
+						});
+					}
+					Dom.nodes.removeIndexes(indexesToRemove);
+				});
+			});
+		});
+		function getAllDescendants(element) {
+			return [...element.querySelectorAll("*")];
+		}
+		observer.observe(document.body, { childList: true, subtree: true });
+	});
+}
+
 class Nodes extends Array {
+	removeIndexes(indexes) {
+		indexes.sort((a, b) => b - a);
+		indexes.forEach(index => {
+			if (index >= 0 && index < this.length) {
+				this.splice(index, 1);
+			}
+		});
+	}
 	querySelector(query) {
 		return this.find(e => e.matches(query))
 	}
@@ -234,10 +327,6 @@ class Dom {
 		return node;
 	}
 
-	static id = (id) => document.getElementById(id);
-	static qs = (selector) => document.querySelector(selector);
-	static qsa = (selector) => Array.from(document.querySelectorAll(selector));
-
 	static addStyleNode = (css) => document.head.appendChild(Style.with({
 		innerText: css,
 		attribute: {
@@ -276,6 +365,11 @@ class Dom {
 		static with(obj) {
 			return Object.assign(new this(), obj);
 		}
+		and(obj) {
+			const updated = Object.create(Object.getPrototypeOf(this));
+			return Utils.deepMerge(Object.assign(updated, this), obj);
+		}
+
 		create({ profile, namespace } = {}) {
 			if (profile) { console.profile(profile) };
 			const created = Dom.createElement(this, namespace);

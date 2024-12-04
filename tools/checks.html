@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="preload"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/fonts/bootstrap-icons.woff2?856008caa5eb66df68595e734e59580d"
+        as="font" type="font/woff2" crossorigin="anonymous">
+
+    <link rel="icon" type="image/x-icon" href="https://cdn.jsdelivr.net/gh/FormeOrme/projects@latest/favicon.ico">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- v4 -->
+    <script src='https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js'></script>
+    <script src="../util.js"></script>
+    <title>Checks</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <style>
+        .btn {
+            transition: none;
+        }
+
+        @media (min-width: 992px) {
+            .col-05 {
+                flex: 0 0 auto;
+                width: calc(100% / 24);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        const payers = "123456#".split("");
+
+        const BUTTON_CLASSES = "col-05 col-2 col-md-1 col-lg-1 ";
+
+
+        const payerNames = "PAYER_NAMES";
+        const lostKeyTableContent = "TABLE_CONTENT";
+
+        const getPayers = () => [...Dom.nodes.header.querySelectorAll(".payer")]
+            .reduce(Reduce.with((a, c) => a[c.dataset.payer] = c.value), {})
+        const getTableContent = () => [...Dom.nodes.mainBody.querySelectorAll(".item")].map(item => ({
+            desc: item.querySelector(".description").value,
+            price: Number(item.querySelector(".price").value),
+            checks: [...item.querySelectorAll(".check:checked")].map(check => check.getAttribute("data-payer"))
+        }));
+
+        const payerNamesInit = LoStMan.getObj(payerNames) ?? {};
+        const tableContentInit = LoStMan.getObj(lostKeyTableContent) ?? [];
+
+        const columns = {
+            description: {
+                header: Div.with({
+                    class: "col-4 me-1",
+                    children: Span.with({
+                        innerText: "Description"
+                    })
+                }),
+                row: rowData => Div.with({
+                    class: "col-4 me-1",
+                    children: Input.with({
+                        class: "form-control form-control-sm description",
+                        value: rowData?.desc ?? '',
+                        event: {
+                            input: () => LoStMan.setObj(lostKeyTableContent, getTableContent())
+                        }
+                    })
+                }),
+                footer: Div.with({
+                    class: "col-4 me-1",
+                })
+            },
+            price: {
+                header: Div.with({
+                    class: "col-1 me-1",
+                    children: Span.with({
+                        innerText: "Amount"
+                    })
+                }),
+                row: rowData => Div.with({
+                    class: "col-1 me-1",
+                    children: Input.with({
+                        class: "form-control form-control-sm px-1 price",
+                        value: rowData?.price ? Number(rowData.price).toFixed(2) : '',
+                        attribute: {
+                            type: "number",
+                            step: ".1"
+                        },
+                        event: {
+                            input: () => updateTotals(),
+                            change: (node) => {
+                                node.value = Number(node.value).toFixed(2)
+                            }
+                        }
+                    })
+                }),
+                footer: Div.with({
+                    class: "col-1 me-1",
+                    children: Input.with({
+                        id: "total",
+                        class: "form-control form-control-sm px-1 total-amount",
+                        attribute: {
+                            readonly: ""
+                        }
+                    })
+                })
+            },
+            payerList: {
+                header: payers.map(p =>
+                    Div.with({
+                        class: BUTTON_CLASSES + "me-1",
+                        children: ("#" == p)
+                            ? Button.with({
+                                class: "btn btn-sm btn-success col-12",
+                                children: I.with({ class: "bi bi-plus-lg" }),
+                                type: "button",
+                                event: {
+                                }
+                            })
+                            : Input.with({
+                                class: "payer form-control form-control-sm",
+                                value: payerNamesInit[p] ?? p,
+                                attribute: {
+                                    "data-payer": p
+                                },
+                                event: {
+                                    change: () => {
+                                        LoStMan.setObj(payerNames, getPayers())
+                                        LoStMan.setObj(lostKeyTableContent, getTableContent())
+                                    }
+                                }
+                            })
+                    })
+                ),
+                row: rowData => payers.map(p => Div.with({
+                    class: BUTTON_CLASSES + "me-1",
+                    children: ("#" == p)
+                        ? undefined
+                        : [
+                            Input.with({
+                                id: id = IdUtils.HID,
+                                class: "btn-check check",
+                                attribute: {
+                                    type: "checkbox",
+                                    "data-payer": p,
+                                    ...(rowData?.checks?.includes(p) ? { checked: "" } : {})
+                                },
+                                event: {
+                                    input: (node) => {
+                                        const row = node.closest(".item");
+                                        const checked = row.querySelectorAll("input:checked").length > 0;
+                                        [...row.querySelectorAll("input[type='checkbox']+.btn")].forEach((btn) => {
+                                            btn.classList.toggle("btn-outline-primary", checked);
+                                            btn.classList.toggle("btn-outline-danger", !checked);
+                                        })
+                                        updateTotals()
+                                    }
+                                }
+                            }),
+                            Label.with({
+                                class: ["btn btn-sm col-12", rowData?.checks?.length != 0 ? 'btn-outline-primary' : 'btn-outline-danger'],
+                                attribute: {
+                                    for: id
+                                },
+                                children: I.with({ class: "bi bi-check-lg" }),
+                            }),
+                        ]
+                })),
+                footer: payers.map(p =>
+                    Div.with({
+                        class: BUTTON_CLASSES + "me-1",
+                        children: ("#" == p)
+                            ? undefined
+                            : Input.with({
+                                id: `split_${p}`,
+                                class: "form-control form-control-sm px-1 split-amount",
+                                attribute: {
+                                    readonly: "",
+                                    "data-payer": p
+                                }
+                            })
+                    })
+                )
+            },
+            action: {
+                header: Div.with({
+                    class: BUTTON_CLASSES + "me-1"
+                }),
+                row: () => Div.with({
+                    class: BUTTON_CLASSES + "me-1",
+                    children: Button.with({
+                        class: "btn btn-sm btn-outline-danger col-12",
+                        children: I.with({ class: "bi bi-trash-fill" }),
+                        type: "button",
+                        event: {
+                            click: (node, e) => {
+                                e.target.closest(".flex-row").remove();
+                                LoStMan.setObj(lostKeyTableContent, getTableContent());
+                                updateTotals();
+                            }
+                        }
+                    })
+                }),
+                footer: Div.with({
+                    class: BUTTON_CLASSES + "me-1",
+                    children: Button.with({
+                        class: "btn btn-sm btn-success col-12",
+                        children: I.with({ class: "bi bi-plus-lg" }),
+                        type: "button",
+                        event: {
+                            click: () => Dom.nodes.mainBody.append(getRow().create())
+                        }
+                    })
+                })
+            }
+        }
+
+        const getRow = (rowData, i) => Div.with({
+            id: IdUtils.HID,
+            class: "d-flex flex-row mb-1 item",
+            children: [
+                columns.action.row(),
+                columns.description.row(rowData),
+                columns.price.row(rowData),
+                ...columns.payerList.row(rowData),
+            ]
+        })
+
+        const getTable = (tableContent) => Div.with({
+            attributes: {
+                spellcheck: "false"
+            },
+            children: [
+                Div.with({
+                    id: "header",
+                    children: Div.with({
+                        class: "d-flex flex-row mb-1",
+                        children: [
+                            columns.action.header,
+                            columns.description.header,
+                            columns.price.header,
+                            ...columns.payerList.header,
+                        ]
+                    })
+                }),
+                Div.with({
+                    id: "mainBody",
+                    children: tableContent.map(getRow)
+                }),
+                Div.with({
+                    id: "footer",
+                    children: Div.with({
+                        class: "d-flex flex-row mb-1",
+                        children: [
+                            columns.action.footer,
+                            columns.description.footer,
+                            columns.price.footer,
+                            ...columns.payerList.footer,
+                        ]
+                    })
+                })
+            ]
+        });
+
+        const regex = /(.+)(\d[,.]+ *\d*)/;
+        const tableDataFromText = text => text
+            .split("\n")
+            .map(SUtils.trim)
+            .map(line => {
+                const res = line.match(regex);
+                const price = res?.[2]?.trim().replace(/[,. ]+/, `.`);
+                const desc = price ? res?.[1]?.trim() : line;
+                return ({ desc, price, line, res });
+            }).filter(o => o.desc)
+
+        const buildTable = tableData => {
+            const tableContainer = Dom.nodes.TableContainer;
+            tableContainer.innerText = "";
+            tableContainer.append(getTable(tableData).create());
+            updateTotals();
+        }
+
+        const updateTotals = () => {
+            const total = document.getElementById("total");
+            total.value = 0;
+            document.querySelectorAll(".price").forEach(amount => {
+                total.value = +total.value + (+amount.value ?? 0);
+            });
+            total.value = (+total.value).toFixed(2);
+
+            const ids = payers.slice(0, -1);
+
+            ids.forEach(p => {
+                const total = Dom.nodes[`split_${p}`];
+                total.value = 0;
+                [...document.querySelectorAll("#mainBody .flex-row")].forEach(tr => {
+                    const amount = +tr.querySelector(".price")?.value ?? 0;
+                    const checked = [...tr.querySelectorAll("input[type='checkbox']:checked")];
+                    const payr = tr.querySelector(`[data-payer="${p}"]`);
+                    if (payr.checked) {
+                        total.value = +total.value + amount / checked.length;
+                    }
+                });
+                total.value = (+total.value).toFixed(2);
+            });
+
+            LoStMan.setObj(lostKeyTableContent, getTableContent())
+        }
+
+        document.querySelector("body").append(Div.with({
+            class: ["container", "mt-1"],
+            children: [
+                Div.with({
+                    class: "mb-1",
+                    children: [
+                        Input.with({
+                            class: "form-control form-control-sm",
+                            attribute: {
+                                type: "file"
+                            },
+                            event: {
+                                input: (node) => {
+                                    try {
+                                        Dom.nodes.progressContainer.show();
+                                        Tesseract.recognize(
+                                            node.files[0],
+                                            'eng',
+                                            {
+                                                logger: l => {
+                                                    const progress = !l.jobId ? 0 : l.progress;
+                                                    Dom.nodes.progressPercent.style = `width: ${(progress * 100).toFixed(0)}%`;
+                                                }
+                                            }
+                                        ).then(({ data: { text } }) => {
+                                            Dom.nodes.progressContainer.hide();
+                                            buildTable(tableDataFromText(text));
+                                        });
+                                    } catch (e) {
+                                        console.log(e);
+                                    }
+                                }
+                            }
+                        })
+                    ]
+                }),
+                Div.with({
+                    id: "progressContainer",
+                    class: "progress mb-1",
+                    style: {
+                        height: "30px"
+                    },
+                    function: {
+                        show: function () { this.classList.remove("d-none"); },
+                        hide: function () { this.classList.add("d-none"); },
+                    },
+                    children: Div.with({
+                        id: "progressPercent",
+                        class: "progress-bar"
+                    })
+                }),
+                Div.with({
+                    id: "TableContainer"
+                })
+            ]
+        }).create());
+        Dom.nodes.progressContainer.hide();
+        buildTable(tableContentInit);        
+    </script>
+</body>
+
+</html>

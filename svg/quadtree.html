@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="vector.js"></script>
+    <script src="quadtree.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <canvas id="canvas" width="1400" height="800"></canvas>
+
+    <script>
+        const canvas = document.getElementById("canvas");
+        const ctx = canvas.getContext("2d");
+
+        const boundary = new Rectangle(0, 0, canvas.width, canvas.height);
+        const qt = new Quadtree(boundary, 4);
+
+        function addRandomVectors(quadtree, numVectors) {
+            const rows = Math.floor(numVectors ** .5);  // Number of rows
+            const cols = Math.ceil(numVectors / rows);       // Number of columns
+
+            const boundary = quadtree.boundary;  // Get the boundary from the quadtree
+
+            // Calculate the width and height of each cell in the grid
+            const cellWidth = boundary.width / cols;
+            const cellHeight = boundary.height / rows;
+
+            // Loop to generate random vectors
+            let vectorIndex = 0;
+            for (let row = 0; row < rows; row++) {
+                for (let col = 0; col < cols; col++) {
+                    if (vectorIndex >= numVectors) break;
+
+                    // Randomly choose the position within the grid cell
+                    const x = boundary.x + col * cellWidth + Math.random() * cellWidth;
+                    const y = boundary.y + row * cellHeight + Math.random() * cellHeight;
+
+                    // Create a new vector and insert it into the quadtree
+                    const vector = new Vector({ x, y });
+                    quadtree.insert(vector);
+
+                    vectorIndex++;
+                }
+            }
+        }
+        addRandomVectors(qt, 2);
+
+        function findClosestConnections(vectors, quadtree) {
+            const connections = [];
+
+            // Define the search radius to query nearby points
+            const searchRadius = 150;  // Adjust based on your needs
+
+            for (const vector of vectors) {
+                let closest = null;
+                let minDist = Infinity;
+
+                // Query a region around the current vector
+                const range = new Rectangle(
+                    vector.x - searchRadius, vector.y - searchRadius,
+                    searchRadius * 2, searchRadius * 2
+                );
+                const nearbyVectors = quadtree.query(range);
+
+                for (const other of nearbyVectors) {
+                    if (vector === other) continue;
+
+                    // Calculate the squared distance (avoids the expensive square root)
+                    const dx = vector.x - other.x;
+                    const dy = vector.y - other.y;
+                    const dist = (dx ** 2 + dy ** 2);
+
+                    if (dist < minDist) {
+                        minDist = dist;
+                        closest = other;
+                    }
+                }
+
+                // If a closest point is found, store the connection
+                if (closest) {
+                    connections.push([vector, closest]);
+                }
+            }
+
+            return connections;
+        }
+
+
+        // Render the quadtree and draw the closest connections
+        function draw() {
+            console.time("draw");
+
+            for (let i = 0; i < 50; i++) {
+                qt.insert(new Vector({ x: Math.random() * canvas.width, y: Math.random() * canvas.height }))
+            }
+
+            // Clear the canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            function drawQt(qt) {
+                if (qt.divided) {
+                    drawQt(qt.northwest)
+                    drawQt(qt.northeast)
+                    drawQt(qt.southwest)
+                    drawQt(qt.southeast)
+                } else {
+                    ctx.strokeStyle = "black";
+                    ctx.lineWidth = .1;
+                    ctx.beginPath();
+                    const { x, y, width, height } = qt.boundary; // Destructure the boundary of the quadtree
+                    ctx.rect(x, y, width, height); // Draw the rectangle for the current quadtree
+                    ctx.stroke(); // Actually draw the rectangle on the canvas
+                }
+            }
+
+            // drawQt(qt)
+
+
+            // Draw vectors
+            const allVectors = qt.query(boundary);
+            for (const vector of allVectors) {
+                ctx.fillStyle = "red";
+                ctx.fillRect(vector.x - 1, vector.y - 1, 2, 2);
+            }
+
+            // Find and draw connections
+            const connections = findClosestConnections(allVectors, qt);
+            ctx.strokeStyle = "gray";
+            ctx.lineWidth = 1;
+
+            for (const [v1, v2] of connections) {
+                ctx.beginPath();
+                ctx.moveTo(v1.x, v1.y);
+                ctx.lineTo(v2.x, v2.y);
+                ctx.stroke();
+            }
+            console.timeEnd("draw");
+            requestAnimationFrame(draw);
+        }
+
+        requestAnimationFrame(draw);
+
+    </script>
+</body>
+
+</html>
