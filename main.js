@@ -2,7 +2,7 @@ const username = 'FormeOrme';
 const repoName = 'projects';
 const link = (path) => `https://formeorme.github.io/projects/${path}`;
 
-Dom.qs("head").append(Link.with({
+document.head.append(Link.with({
     attribute: {
         rel: "icon",
         type: "image/x-icon",
@@ -10,12 +10,12 @@ Dom.qs("head").append(Link.with({
     }
 }).create());
 
-Dom.qs("head").append(Title.with({ innerText: title }).create());
+document.head.append(Title.with({ innerText: title }).create());
 
 Utils.fetchJson({
     url: apiUrl()
 }).then(response => {
-    Dom.qs("body").append(Section.with({
+    document.body.append(Section.with({
         class: "container mt-2",
         children: [
             H1.with({
