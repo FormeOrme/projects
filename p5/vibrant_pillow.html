@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.0/p5.js"></script>
+    <script src="../util.js"></script>
+    <script src="../vector.js"></script>
+    <link rel="stylesheet" href="common.css">
+    <meta charset="utf-8" />
+    <style>
+        body {
+            background: #000;
+        }
+
+        /* center canvas */
+        main {
+            display: flex;
+            justify-content: center;
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+    </main>
+    <script>
+
+        function rgbToHsl(rgb = [0, 0, 0]) {
+            // Destructure RGB values and normalize to [0, 1]
+            const [r, g, b] = rgb.map(value => value / 255);
+
+            // Find min and max values
+            const max = Math.max(r, g, b);
+            const min = Math.min(r, g, b);
+            const delta = max - min;
+
+            // Calculate lightness
+            const l = (max + min) / 2;
+
+            // Calculate saturation
+            let s = 0;
+            if (delta !== 0) {
+                s = delta / (1 - Math.abs(2 * l - 1));
+            }
+
+            // Calculate hue
+            let h = 0;
+            if (delta !== 0) {
+                if (max === r) {
+                    h = ((g - b) / delta) % 6;
+                } else if (max === g) {
+                    h = (b - r) / delta + 2;
+                } else if (max === b) {
+                    h = (r - g) / delta + 4;
+                }
+            }
+            h = Math.round(h * 60);
+            if (h < 0) h += 360;
+
+            // Convert saturation and lightness to percentages
+            const hsl = [
+                h,
+                Math.round(s * 100),
+                Math.round(l * 100)
+            ];
+
+            return hsl;
+        }
+
+        class Sensor {
+            constructor(x, y) {
+                this.position = new Vector({ x, y });
+            }
+
+            inCanvas() {
+                return this.position.x >= 0
+                    && this.position.x <= canvasWidth
+                    && this.position.y >= 0
+                    && this.position.y <= canvasHeight;
+            }
+
+            sense(canvas) {
+                return canvas.get(canvasWidth + this.position.x, this.position.y);
+            }
+        }
+
+        class Ant {
+            static sensorN = 3;
+            static sensorLength = 7;
+            static sensorAngle = 30;
+            static stepDistance = 1;
+
+            static get sensorRadians() {
+                return Ant.sensorAngle / 180 * Math.PI;
+            }
+
+            constructor(from, to) {
+                this.from = from;
+                this.to = to;
+
+                this.position = from.position.copy();
+                this.direction = Vector.fromAngle(MUtils.random(360) / 180 * Math.PI);
+                this.updateSensors();
+            }
+
+
+            move(canvas) {
+                const targetColor = this.to.color;
+                // if every sensor is out of canvas turn 90 degrees
+                if (this.sensors.some(sensor => !sensor.inCanvas())) {
+                    this.position = this.from.position.copy();
+                    return;
+                }
+
+                const targetSensor = this.sensors[1];
+                this.position.add(Vector.sub(targetSensor.position, this.position).normalize().mult(Ant.stepDistance))
+
+            }
+
+            updateSensors() {
+                const currentAngle = this.direction.angle();
+                const sensorDiff = Ant.sensorRadians * 2 / (Ant.sensorN - 1);
+                this.sensors = Array.from({ length: Ant.sensorN }, (_, i) => {
+                    const angle = currentAngle - Ant.sensorRadians + i * sensorDiff;
+                    return new Sensor(
+                        this.position.x + Ant.sensorLength * Math.cos(angle),
+                        this.position.y + Ant.sensorLength * Math.sin(angle)
+                    );
+                });
+            }
+
+            update(canvas) {
+                this.move(canvas);
+                this.updateSensors();
+            }
+
+            leaveTrail(canvas) {
+                fill(this.from.color);
+                ellipse(canvasWidth + this.position.x, this.position.y, 2);
+            }
+
+            draw(canvas) {
+                noFill();
+                stroke(0);
+                this.sensors.forEach(sensor => {
+                    line(this.position.x, this.position.y, sensor.position.x, sensor.position.y);
+                });
+                noStroke();
+                // fill(...this.to.color);
+                this.sensors.forEach(sensor => {
+                    fill(sensor.sense(canvas));
+                    ellipse(sensor.position.x, sensor.position.y, 3);
+                });
+                fill(this.to.color);
+                ellipse(this.position.x, this.position.y, 3);
+            }
+        }
+
+        const ants = [];
+
+        const canvasWidth = 600;
+        const canvasHeight = 700;
+        let canvas;
+
+        const colonies = {
+            red: { color: [255, 0, 0], position: new Vector({ x: 100, y: 100 }) },
+            green: { color: [0, 255, 0], position: new Vector({ x: 500, y: 100 }) },
+            blue: { color: [0, 0, 255], position: new Vector({ x: 300, y: 600 }) }
+        }
+
+        function randomFromTo() {
+            const keys = Object.keys(colonies);
+            const from = colonies[keys[MUtils.random(keys.length)]];
+            do {
+                var to = colonies[keys[MUtils.random(keys.length)]];
+            } while (to === from);
+            return [from, to];
+        }
+
+        function setup() {
+            canvas = createCanvas(canvasWidth * 2, canvasHeight);
+            for (let i = 0; i < 222; i++) {
+                ants.push(new Ant(...randomFromTo()));
+            }
+            background(0);
+        }
+
+        function draw() {
+            fill(10);
+            rect(0, 0, canvasWidth, canvasHeight);
+            ants.forEach(ant => ant.update(canvas));
+            ants.forEach(ant => ant.draw(canvas));
+
+            fill(0);
+            rect(canvasWidth - 5, 0, 10, canvasHeight);
+
+            fill(0, 0, 0, 10);
+            rect(canvasWidth, 0, canvasWidth * 2, canvasHeight);
+            ants.forEach(ant => ant.leaveTrail());
+        }
+    </script>
+</body>
+
+</html>

@@ -43,11 +43,11 @@
             }
         }
 
-        Dom.qs("head").append(Title.with({
+        document.querySelector("head").append(Title.with({
             id: "title",
             innerText: TITLE
         }).create());
-        Dom.qs("body").append(Section.with({
+        document.querySelector("body").append(Section.with({
             class: "container mt-2",
             attribute: { spellcheck: false },
             children: [

@@ -1,11 +1,28 @@
 class Vector {
-    constructor(obj) {
-        Object.assign(this, obj)
+    constructor(x, y) {
+        if (Object.hasOwn(x, "x")) {
+            Object.assign(this, x)
+        } else {
+            this.x = x;
+            this.y = y;
+        }
+    }
+
+    // Create a new vector with the same x and y values
+    copy() {
+        return new Vector({ x: this.x, y: this.y });
     }
 
     // Calculate the magnitude of the vector
     magnitude() {
         return (this.x ** 2 + this.y ** 2) ** (1 / 2);
+    }
+
+    normalize() {
+        const mag = this.magnitude();
+        this.x /= mag;
+        this.y /= mag;
+        return this;
     }
 
     // Calculate the unit vector (vector in the same direction with magnitude of 1)
@@ -22,10 +39,14 @@ class Vector {
     }
 
     // Subtract two vectors (modify the current vector in-place)
-    subtract({ x = 0, y = 0 }) {
+    sub({ x = 0, y = 0 }) {
         this.x -= x;
         this.y -= y;
         return this;
+    }
+
+    static sub(a, b) {
+        return new Vector({ x: a.x - b.x, y: a.y - b.y });
     }
 
     // Dot product of two vectors
@@ -34,7 +55,7 @@ class Vector {
     }
 
     // Scalar multiplication (modify the current vector in-place)
-    multiplyScalar(scalar) {
+    mult(scalar) {
         this.x *= scalar;
         this.y *= scalar;
         return this;
@@ -50,7 +71,7 @@ class Vector {
     }
 
     // Rotate the vector around a center point by an angle in degrees (counterclockwise)
-    rotate(center, angle) {
+    rotateAround(center, angle) {
         const radians = (Math.PI / 180) * angle; // Convert degrees to radians
         const cos = Math.cos(radians);
         const sin = Math.sin(radians);
@@ -63,6 +84,24 @@ class Vector {
         const yNew = sin * dx + cos * dy + cy;
 
         return new Vector({ x: xNew, y: yNew });
+    }
+
+    rotate(angle) {
+        const xNew = this.x * Math.cos(angle) - this.y * Math.sin(angle);
+        const yNew = this.x * Math.sin(angle) + this.y * Math.cos(angle);
+        return new Vector({ x: xNew, y: yNew });
+    }
+
+    angle() {
+        return Math.atan2(this.y, this.x);
+    }
+
+    angleTo({ x, y }) {
+        return Math.atan2(y - this.y, x - this.x);
+    }
+
+    static fromAngle(angle) {
+        return new Vector({ x: Math.cos(angle), y: Math.sin(angle) });
     }
 
     // Return string representation of the vector

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css">
+    <link rel="icon" type="image/x-icon" href="https://cdn.jsdelivr.net/gh/FormeOrme/projects@latest/favicon.ico">
+    <title>Text to Speech</title>
+</head>
+
+<body>
+    <script>// Check if the browser supports SpeechRecognition
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+        if (SpeechRecognition) {
+            // Create a new SpeechRecognition instance
+            const recognition = new SpeechRecognition();
+
+            // Configure the recognition settings
+            recognition.lang = 'en-US'; // Default language
+            recognition.interimResults = true; // Allow interim results
+            recognition.continuous = true; // Keep listening until stopped
+
+            // Create a container for the app
+            const container = document.createElement('div');
+            container.className = 'container mt-5';
+            document.body.appendChild(container);
+
+            // Create a language selector input with a datalist
+            const langLabel = document.createElement('label');
+            langLabel.textContent = 'Select Language:';
+            langLabel.className = 'form-label';
+            container.appendChild(langLabel);
+
+            const langInput = document.createElement('input');
+            langInput.type = 'text';
+            langInput.className = 'form-control mb-3';
+            langInput.setAttribute('list', 'languages');
+            langInput.placeholder = 'e.g., en-US';
+            langInput.value = 'en-US'; // Default value
+            container.appendChild(langInput);
+
+            const langDatalist = document.createElement('datalist');
+            langDatalist.id = 'languages';
+
+            const langOption1 = document.createElement('option');
+            langOption1.value = 'en-US';
+            langDatalist.appendChild(langOption1);
+
+            const langOption2 = document.createElement('option');
+            langOption2.value = 'it-IT';
+            langDatalist.appendChild(langOption2);
+
+            container.appendChild(langDatalist);
+
+            // Get the textarea element
+            const textarea = document.createElement('textarea');
+            textarea.rows = 10;
+            textarea.className = 'form-control mb-3';
+            textarea.placeholder = 'Start speaking...';
+            container.appendChild(textarea);
+
+            // Add a start/stop button
+            const button = document.createElement('button');
+            button.textContent = 'Start Listening';
+            button.className = 'btn btn-primary';
+            container.appendChild(button);
+
+            let isListening = false;
+
+            // Update recognition language based on input
+            langInput.addEventListener('change', () => {
+                recognition.lang = langInput.value || 'en-US';
+            });
+
+            // Handle recognition results
+            recognition.onresult = (event) => {
+                const transcript = Array.from(event.results)
+                    .map(result => result[0].transcript)
+                    .join('');
+
+                textarea.value = transcript;
+            };
+
+            // Handle recognition errors
+            recognition.onerror = (event) => {
+                console.error('Speech recognition error:', event.error);
+                alert('Speech recognition error: ' + event.error);
+            };
+
+            // Handle recognition end
+            recognition.onend = () => {
+                if (isListening) {
+                    recognition.start(); // Restart if still listening
+                }
+            };
+
+            // Start/stop listening on button click
+            button.addEventListener('click', () => {
+                if (!isListening) {
+                    recognition.start();
+                    button.textContent = 'Stop Listening';
+                    isListening = true;
+                } else {
+                    recognition.stop();
+                    button.textContent = 'Start Listening';
+                    isListening = false;
+                }
+            });
+        } else {
+            alert('Your browser does not support Speech Recognition.');
+        }
+    </script>
+</body>
+
+</html>

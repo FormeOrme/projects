@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/face-api.js/dist/face-api.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.0/p5.js"></script>
+    <script src="../util.js"></script>
+    <link rel="stylesheet" href="common.css">
+    <meta charset="utf-8" />
+</head>
+
+<body>
+    <main>
+    </main>
+    <script>
+
+        function getLandMarks(imgElement) {
+            return Promise.all([
+                faceapi.nets.ssdMobilenetv1.loadFromUri('./models'),
+                faceapi.nets.faceLandmark68Net.loadFromUri('./models')
+            ]).then(() => {
+                return faceapi.detectSingleFace(imgElement).withFaceLandmarks();
+            }).then(detections => {
+                if (!detections) {
+                    console.error('No face detected.');
+                    return;
+                }
+                // Get landmarks
+                const landmarks = detections.landmarks;
+                const nose = landmarks.getNose()[3]; // Tip of the nose
+                const leftEye = landmarks.getLeftEye();
+                const rightEye = landmarks.getRightEye();
+                return { nose, leftEye, rightEye };
+            }).catch(error => {
+                console.error('Error detecting face:', error);
+            });
+        }
+
+        let images;
+
+        function preload() {
+            images = [
+                { url: 'photos/PXL_20241223_084824508.MP.jpg', image: loadImage('photos/PXL_20241223_084824508.MP.jpg'), },
+                { url: 'photos/PXL_20241224_084242729.MP.jpg', image: loadImage('photos/PXL_20241224_084242729.MP.jpg'), },
+                { url: 'photos/PXL_20241225_101637577.MP.jpg', image: loadImage('photos/PXL_20241225_101637577.MP.jpg'), },
+                { url: 'photos/PXL_20241228_144754607.jpg', image: loadImage('photos/PXL_20241228_144754607.jpg'), },
+                { url: 'photos/PXL_20241229_115327725.MP.jpg', image: loadImage('photos/PXL_20241229_115327725.MP.jpg'), },
+                { url: 'photos/PXL_20241231_092124378.jpg', image: loadImage('photos/PXL_20241231_092124378.jpg'), },
+                { url: 'photos/PXL_20250102_001135615.MP.jpg', image: loadImage('photos/PXL_20250102_001135615.MP.jpg'), },
+                { url: 'photos/PXL_20250104_003107753.jpg', image: loadImage('photos/PXL_20250104_003107753.jpg'), },
+                { url: 'photos/PXL_20250105_234413982.jpg', image: loadImage('photos/PXL_20250105_234413982.jpg'), },
+            ];
+        }
+
+        function manageImg(img, canvas) {
+            return new Promise((resolve, reject) => {
+                const landmarks = LoStMan.getObj(img.url);
+                if (landmarks) {
+                    img.landmarks = landmarks;
+                    resolve();
+                    return;
+                }
+
+                console.log("start manageImg");
+                background(255);
+
+                // resize image width to fit canvas
+                const fitFactor = (canvas.width / img.image.width);
+
+                push();
+                scale(fitFactor);
+                image(img.image, 0, 0);
+                pop();
+
+                getLandMarks(canvas.elt).then(({ nose, leftEye, rightEye }) => {
+                    const eyeAngle = Math.atan2(
+                        rightEye[3].y - leftEye[0].y,
+                        rightEye[3].x - leftEye[0].x
+                    );
+
+                    const eyeCenter = {
+                        x: (rightEye[3].x + leftEye[0].x) / 2,
+                        y: (rightEye[3].y + leftEye[0].y) / 2
+                    };
+                    const scaleFactor = 150 / Math.abs(rightEye[3].x - leftEye[0].x); // Desired eye distance
+
+                    //draw landmarks as red dots:
+                    fill(255, 0, 0);
+                    noStroke();
+                    rightEye.forEach(p => ellipse(p.x, p.y, 5, 5));
+                    leftEye.forEach(p => ellipse(p.x, p.y, 5, 5));
+                    ellipse(nose.x, nose.y, 5, 5);
+
+                    img.landmarks = { nose, eyeAngle, eyeCenter, rightEye, leftEye, scaleFactor, fitFactor };
+
+                    LoStMan.setObj(img.url, img.landmarks)
+
+                    resolve();
+                });
+            });
+        }
+
+        function setup() {
+            const canvas = createCanvas(500, 600);
+            images.reduce(
+                (p, img) =>
+                    p.then(() => manageImg(img, canvas)),
+                Promise.resolve()
+            )
+        }
+
+        let count = 0;
+        function draw() {
+            if (images.every(i => i.landmarks)) {
+                // background(255, 2);
+                // images.forEach(i => drawImage(i));
+                drawImage(images[count]);
+            }
+            count = (count + 1) % images.length;
+            frameRate(10);
+        }
+
+        const commons = {
+            stripeWidth: 20,
+            gazeHeight: 100,
+            inv: (s, f) => 1 / (s * f)
+        }
+
+        function drawImage(img) {
+            const { nose, eyeCenter, eyeAngle, rightEye, leftEye, scaleFactor, fitFactor } = img.landmarks;
+            push();
+            translate(width / 2, height / 2); // Move to canvas center
+            rotate(-eyeAngle); // Align eyes horizontally
+            scale(scaleFactor);
+            translate(-eyeCenter.x, -eyeCenter.y); // Center the nose
+            scale(fitFactor);
+
+            //  const stripeWidth = Math.max(1, commons.stripeWidth / (scaleFactor * fitFactor));
+            //  //const stripeWidth = 30;
+            //  if (Utils.chance(50)) {
+            //      const x = eyeCenter.x + MUtils.random(100) - 50; // x value near the eye center
+            //      const crop = img.image.get(x, 0, stripeWidth, img.image.height);
+            //      image(crop, x, 0);
+            //  } else {
+            //      const y = eyeCenter.y + MUtils.random(50) - 25; // x value near the eye center
+            //      const crop = img.image.get(0, y, img.image.width, stripeWidth);
+            //      image(crop, 0, y);
+            //  }
+
+            // const totalScale = 1 / fitFactor*scaleFactor;
+            // const gazeHeight = Math.max(1, commons.gazeHeight * totalScale);
+            // const y = eyeCenter.y + MUtils.random(gazeHeight * 2) - gazeHeight; // x value near the eye center
+            // const crop = img.image.get(0, y, img.image.width, commons.stripeWidth * totalScale);
+            // image(crop, 0, y);
+            // tint(255, 30);
+            image(img.image, 0, 0);
+            // ellipse(nose.x, nose.y, 5, 5);
+            // rightEye.forEach(p => ellipse(p.x, p.y, 5, 5));
+            // leftEye.forEach(p => ellipse(p.x, p.y, 5, 5));
+            pop();
+
+        }
+
+    </script>
+</body>
+
+</html>

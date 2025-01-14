@@ -215,6 +215,20 @@ class Reduce {
 			a.push(c);
 		}
 	})
+
+	static permutations = (acc, current) => {
+		if (acc.length === 0) {
+			return [[current]];
+		}
+		const newPermutations = [];
+		for (const perm of acc) {
+			for (let i = 0; i <= perm.length; i++) {
+				const newPerm = [...perm.slice(0, i), current, ...perm.slice(i)];
+				newPermutations.push(newPerm);
+			}
+		}
+		return newPermutations;
+	};
 }
 
 class CacheMap extends Map {
@@ -223,7 +237,7 @@ class CacheMap extends Map {
 	}
 }
 
-if(typeof document !== 'undefined'){
+if (typeof document !== 'undefined') {
 	document.addEventListener('DOMContentLoaded', () => {
 		const observer = new MutationObserver((mutations) => {
 			mutations.forEach((mutation) => {
