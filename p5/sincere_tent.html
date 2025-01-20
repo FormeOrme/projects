@@ -49,13 +49,23 @@
                 { url: 'photos/PXL_20250102_001135615.MP.jpg', image: loadImage('photos/PXL_20250102_001135615.MP.jpg'), },
                 { url: 'photos/PXL_20250104_003107753.jpg', image: loadImage('photos/PXL_20250104_003107753.jpg'), },
                 { url: 'photos/PXL_20250105_234413982.jpg', image: loadImage('photos/PXL_20250105_234413982.jpg'), },
+                { url: 'photos/PXL_20250113_003742547.MP.jpg', image: loadImage('photos/PXL_20250113_003742547.MP.jpg'), },
+                { url: 'photos/PXL_20250115_225148186.MP.jpg', image: loadImage('photos/PXL_20250115_225148186.MP.jpg'), },
             ];
+        }
+
+        class Vector {
+            get x() { return this._x; }
+            get y() { return this._y; }
         }
 
         function manageImg(img, canvas) {
             return new Promise((resolve, reject) => {
                 const landmarks = LoStMan.getObj(img.url);
                 if (landmarks) {
+                    Object.setPrototypeOf(landmarks.nose, Vector.prototype);
+                    landmarks.leftEye.forEach(p => Object.setPrototypeOf(p, Vector.prototype));
+                    landmarks.rightEye.forEach(p => Object.setPrototypeOf(p, Vector.prototype));
                     img.landmarks = landmarks;
                     resolve();
                     return;
@@ -117,46 +127,65 @@
                 drawImage(images[count]);
             }
             count = (count + 1) % images.length;
-            frameRate(10);
         }
 
         const commons = {
-            stripeWidth: 20,
-            gazeHeight: 100,
+            stripeWidth: 4,
+            gazeHeight: 40,
+            faceWidth: 90,
             inv: (s, f) => 1 / (s * f)
         }
 
         function drawImage(img) {
             const { nose, eyeCenter, eyeAngle, rightEye, leftEye, scaleFactor, fitFactor } = img.landmarks;
             push();
+
+            // align eyeCenter and nose
+            const align = (-Math.PI / 2) + Math.atan2(
+                nose.y - eyeCenter.y,
+                nose.x - eyeCenter.x
+            );
+            const alignScale = 100 / Math.abs(nose.y - eyeCenter.y); // Desired eye distance
+            const midpoint = {
+                x: (nose.x + eyeCenter.x) / 2,
+                y: (nose.y + eyeCenter.y) / 2
+            };
+
             translate(width / 2, height / 2); // Move to canvas center
             rotate(-eyeAngle); // Align eyes horizontally
             scale(scaleFactor);
-            translate(-eyeCenter.x, -eyeCenter.y); // Center the nose
+            translate(-eyeCenter.x, -eyeCenter.y); // Center the eyes
+            //translate(-midpoint.x, -midpoint.y); // Center the nose
             scale(fitFactor);
 
-            //  const stripeWidth = Math.max(1, commons.stripeWidth / (scaleFactor * fitFactor));
-            //  //const stripeWidth = 30;
-            //  if (Utils.chance(50)) {
-            //      const x = eyeCenter.x + MUtils.random(100) - 50; // x value near the eye center
-            //      const crop = img.image.get(x, 0, stripeWidth, img.image.height);
-            //      image(crop, x, 0);
-            //  } else {
-            //      const y = eyeCenter.y + MUtils.random(50) - 25; // x value near the eye center
-            //      const crop = img.image.get(0, y, img.image.width, stripeWidth);
-            //      image(crop, 0, y);
-            //  }
+            // image(img.image, 0, 0);
 
-            // const totalScale = 1 / fitFactor*scaleFactor;
-            // const gazeHeight = Math.max(1, commons.gazeHeight * totalScale);
-            // const y = eyeCenter.y + MUtils.random(gazeHeight * 2) - gazeHeight; // x value near the eye center
-            // const crop = img.image.get(0, y, img.image.width, commons.stripeWidth * totalScale);
+
+            const fitScale = 1 / fitFactor;
+            const gazeHeight = Math.max(1, commons.gazeHeight * fitScale);
+            const stripeWidth = Math.max(1, commons.stripeWidth * fitScale);
+            const faceWidth = Math.max(1, commons.faceWidth * fitScale);
+
+
+            if (Utils.chance(50)) {
+                // const framePos = Utils.tween((frameCount * 0.005) % 1, 0, 1, -1, 1);
+                const framePos = cos(frameCount * 0.01);
+                //                 const x = eyeCenter.x * fitScale + MUtils.random(faceWidth * 2) - faceWidth; // x value near the eye center
+                const x = eyeCenter.x * fitScale + framePos * faceWidth; // x value near the eye center
+                const crop = img.image.get(x, 0, stripeWidth, img.image.height);
+                image(crop, x, 0);
+            } else {
+                const framePos = cos(frameCount * 0.03);
+                // const y = eyeCenter.y * fitScale + MUtils.random(gazeHeight * 2) - gazeHeight; // x value near the eye center
+                const y = eyeCenter.y * fitScale + framePos * gazeHeight; // x value near the eye center
+                const crop = img.image.get(0, y, img.image.width, stripeWidth);
+                image(crop, 0, y);
+            }
+
+            // const y = eyeCenter.y * fitScale + MUtils.random(gazeHeight * 2) - gazeHeight; // x value near the eye center
+            // const crop = img.image.get(0, y, img.image.width, commons.stripeWidth * fitScale);
             // image(crop, 0, y);
-            // tint(255, 30);
-            image(img.image, 0, 0);
-            // ellipse(nose.x, nose.y, 5, 5);
-            // rightEye.forEach(p => ellipse(p.x, p.y, 5, 5));
-            // leftEye.forEach(p => ellipse(p.x, p.y, 5, 5));
+
             pop();
 
         }

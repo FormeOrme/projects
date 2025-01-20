@@ -33,13 +33,22 @@
             langLabel.className = 'form-label';
             container.appendChild(langLabel);
 
+            const langInputContainer = document.createElement('div');
+            langInputContainer.className = 'input-group mb-3';
+            container.appendChild(langInputContainer);
+
             const langInput = document.createElement('input');
             langInput.type = 'text';
-            langInput.className = 'form-control mb-3';
+            langInput.className = 'form-control';
             langInput.setAttribute('list', 'languages');
             langInput.placeholder = 'e.g., en-US';
             langInput.value = 'en-US'; // Default value
-            container.appendChild(langInput);
+            langInputContainer.appendChild(langInput);
+
+            const langClearButton = document.createElement('button');
+            langClearButton.textContent = 'Clear';
+            langClearButton.className = 'btn btn-secondary';
+            langInputContainer.appendChild(langClearButton);
 
             const langDatalist = document.createElement('datalist');
             langDatalist.id = 'languages';
@@ -108,9 +117,16 @@
                     isListening = false;
                 }
             });
+
+            // Clear language input when the clear button is clicked
+            langClearButton.addEventListener('click', () => {
+                langInput.value = '';
+                recognition.lang = 'en-US'; // Reset to default language
+            });
         } else {
             alert('Your browser does not support Speech Recognition.');
         }
+
     </script>
 </body>
 
