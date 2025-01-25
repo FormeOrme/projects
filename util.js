@@ -6,6 +6,10 @@ class LoStMan /* Local Storage Manager */ {
 	static setObj(id, o) {
 		localStorage.setItem(id, JSON.stringify(o))
 	}
+
+	static remove(id) {
+		localStorage.removeItem(id);
+	}
 }
 
 class QueStMan /* Query String Manager */ {

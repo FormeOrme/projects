@@ -40,17 +40,20 @@
 
         function preload() {
             images = [
-                { url: 'photos/PXL_20241223_084824508.MP.jpg', image: loadImage('photos/PXL_20241223_084824508.MP.jpg'), },
-                { url: 'photos/PXL_20241224_084242729.MP.jpg', image: loadImage('photos/PXL_20241224_084242729.MP.jpg'), },
-                { url: 'photos/PXL_20241225_101637577.MP.jpg', image: loadImage('photos/PXL_20241225_101637577.MP.jpg'), },
-                { url: 'photos/PXL_20241228_144754607.jpg', image: loadImage('photos/PXL_20241228_144754607.jpg'), },
-                { url: 'photos/PXL_20241229_115327725.MP.jpg', image: loadImage('photos/PXL_20241229_115327725.MP.jpg'), },
-                { url: 'photos/PXL_20241231_092124378.jpg', image: loadImage('photos/PXL_20241231_092124378.jpg'), },
-                { url: 'photos/PXL_20250102_001135615.MP.jpg', image: loadImage('photos/PXL_20250102_001135615.MP.jpg'), },
-                { url: 'photos/PXL_20250104_003107753.jpg', image: loadImage('photos/PXL_20250104_003107753.jpg'), },
-                { url: 'photos/PXL_20250105_234413982.jpg', image: loadImage('photos/PXL_20250105_234413982.jpg'), },
-                { url: 'photos/PXL_20250113_003742547.MP.jpg', image: loadImage('photos/PXL_20250113_003742547.MP.jpg'), },
-                { url: 'photos/PXL_20250115_225148186.MP.jpg', image: loadImage('photos/PXL_20250115_225148186.MP.jpg'), },
+                { url: 'PXL_20241223_084824508.MP.jpg', image: loadImage('photos/PXL_20241223_084824508.MP.jpg'), },
+                { url: 'PXL_20241224_084242729.MP.jpg', image: loadImage('photos/PXL_20241224_084242729.MP.jpg'), },
+                { url: 'PXL_20241225_101637577.MP.jpg', image: loadImage('photos/PXL_20241225_101637577.MP.jpg'), },
+                { url: 'PXL_20241228_144754607.jpg', image: loadImage('photos/PXL_20241228_144754607.jpg'), },
+                { url: 'PXL_20241229_115327725.MP.jpg', image: loadImage('photos/PXL_20241229_115327725.MP.jpg'), },
+                { url: 'PXL_20241231_092124378.jpg', image: loadImage('photos/PXL_20241231_092124378.jpg'), },
+                { url: 'PXL_20250102_001135615.MP.jpg', image: loadImage('photos/PXL_20250102_001135615.MP.jpg'), },
+                { url: 'PXL_20250104_003107753.jpg', image: loadImage('photos/PXL_20250104_003107753.jpg'), },
+                { url: 'PXL_20250105_234413982.jpg', image: loadImage('photos/PXL_20250105_234413982.jpg'), },
+                { url: 'PXL_20250109_082453078.jpg', image: loadImage('photos/PXL_20250109_082453078.jpg'), },
+                { url: 'PXL_20250113_003742547.MP.jpg', image: loadImage('photos/PXL_20250113_003742547.MP.jpg'), },
+                { url: 'PXL_20250115_225148186.MP.jpg', image: loadImage('photos/PXL_20250115_225148186.MP.jpg'), },
+                { url: 'PXL_20250116_230541853.jpg', image: loadImage('photos/PXL_20250116_230541853.jpg'), },
+                { url: 'PXL_20250121_081920404.jpg', image: loadImage('photos/PXL_20250121_081920404.jpg'), },
             ];
         }
 
@@ -153,14 +156,13 @@
 
             translate(width / 2, height / 2); // Move to canvas center
             rotate(-eyeAngle); // Align eyes horizontally
-            scale(scaleFactor);
+            scale(scaleFactor * .8);
             translate(-eyeCenter.x, -eyeCenter.y); // Center the eyes
             //translate(-midpoint.x, -midpoint.y); // Center the nose
             scale(fitFactor);
 
-            // image(img.image, 0, 0);
-
-
+            image(img.image, 0, 0);
+            /*
             const fitScale = 1 / fitFactor;
             const gazeHeight = Math.max(1, commons.gazeHeight * fitScale);
             const stripeWidth = Math.max(1, commons.stripeWidth * fitScale);
@@ -185,7 +187,7 @@
             // const y = eyeCenter.y * fitScale + MUtils.random(gazeHeight * 2) - gazeHeight; // x value near the eye center
             // const crop = img.image.get(0, y, img.image.width, commons.stripeWidth * fitScale);
             // image(crop, 0, y);
-
+*/
             pop();
 
         }
