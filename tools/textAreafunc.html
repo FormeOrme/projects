@@ -17,6 +17,7 @@
 
 <body>
     <script>
+        String.prototype.map = function(f){ return f(this); }
 
         const TITLE = 'TextAreaFunc';
         const START_HEIGHT = `calc(${10}lh + .5rem + var(--bs-border-width) * 2)`;
