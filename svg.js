@@ -8,6 +8,10 @@ class PathBuilder {
         this.firstPoint = this.lastPoint = new Vector({ x, y });
     }
 
+    static moveTo({ x, y }) {
+        return new PathBuilder({ x, y });
+    }
+
     moveTo({ x, y }) {
         this.d += `M ${x} ${y} `;
         this.lastPoint = new Vector({ x, y });

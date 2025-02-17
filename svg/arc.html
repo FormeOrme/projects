@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="../util.js"></script>
+    <script src="../vector.js"></script>
+    <script src="../svg.js"></script>
+    <meta charset="utf-8" />
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+
+        const svg = Svg.with({
+            attribute: {
+                xmlns: "http://www.w3.org/2000/svg",
+                version: "1.1",
+                width: 325,
+                height: 325
+            },
+            children: [
+                PathBuilder
+                    .moveTo({ x: 80, y: 80 })
+                    .arc({ rx: 45, ry: 45, xAxisRotation: 0, largeArcFlag: 0, sweepFlag: 0, x: 125, y: 125 })
+                    .lineTo({ x: 125, y: 80 })
+                    .closePath()
+                    .build({ stroke: "black", fill: "transparent", "stroke-width": 1, "fill-opacity": 0.1 })
+                ,
+                PathBuilder
+                    .moveTo({ x: 80, y: 80 })
+                    .arc({ rx: 160, ry: 45, xAxisRotation: 0, largeArcFlag: 0, sweepFlag: 0, x: 125, y: 125 })
+                    .lineTo({ x: 125, y: 80 })
+                    .closePath()
+                    .build({ stroke: "black", fill: "transparent", "stroke-width": 1, "fill-opacity": 0.1 })
+                ,
+                PathBuilder
+                    .moveTo({ x: 80, y: 80 })
+                    .arc({ rx: 45, ry: 160, xAxisRotation: 0, largeArcFlag: 0, sweepFlag: 0, x: 125, y: 125 })
+                    .lineTo({ x: 125, y: 80 })
+                    .closePath()
+                    .build({ stroke: "black", fill: "transparent", "stroke-width": 1, "fill-opacity": 0.1 })
+            ]
+        });
+
+        document.body.append(svg.create({ namespace: "http://www.w3.org/2000/svg" }))
+    </script>
+</body>
+
+</html>

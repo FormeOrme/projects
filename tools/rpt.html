@@ -1,54 +1,76 @@
 <html>
 
 <head>
-    <title>Tools - rpt</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="main.css">
+    <link rel="icon" type="image/x-icon" href="https://cdn.jsdelivr.net/gh/FormeOrme/projects@latest/favicon.ico">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="../util.js"></script>
+    <title>RPT</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css">
 </head>
 
-<body>
-    <section>
-        <h1><a href="index.html" id="title">T00LS</a></h1>
-        <div class="row">
-            <input id="a" type="number" step="any"/>
-            <span>:</span>
-            <input id="b" type="number" step="any"/>
-            <span>=</span>
-            <input id="c" type="number" step="any"/>
-            <span>:</span>
-            <input id="d" type="number" step="any"/>
-        </div>
-    </section>
+<body class="bg-light">
+
+    <script>
+        const section = Section.with({
+            class: "container container-sm",
+            children: [
+                H1.with({ innerText: "RPT" }),
+                Div.with({
+                    id: "row",
+                    class: "d-flex justify-content-between align-items-center",
+                    children: [
+                        Input.with({ class: "form-control form-control-lg", id: "a", type: "number", step: "any" }),
+                        H2.with({ class: "px-2", innerText: ":" }),
+                        Input.with({ class: "form-control form-control-lg", id: "b", type: "number", step: "any" }),
+                        H2.with({ class: "px-2", innerText: "=" }),
+                        Input.with({ class: "form-control form-control-lg", id: "c", type: "number", step: "any" }),
+                        H2.with({ class: "px-2", innerText: ":" }),
+                        Input.with({ class: "form-control form-control-lg", id: "d", type: "number", step: "any" }),
+                    ]
+                })
+            ]
+        })
+
+        document.body.appendChild(section.create());
+    </script>
+
     <script>
         const MAP = {
-            a:["b", "c", "d"],
-            b:["a", "d", "c"],
-            c:["d", "a", "b"],
-            d:["c", "b", "a"],
-        }
+            a: ["b", "c", "d"],
+            b: ["a", "d", "c"],
+            c: ["d", "a", "b"],
+            d: ["c", "b", "a"],
+        };
+
         const CUR = { i: {}, act: [] };
-        document.querySelectorAll(".row input").forEach(i => {
-            CUR.i[i.id] = i;
+
+        document.querySelectorAll("#row input").forEach(input => {
+            CUR.i[input.id] = input;
         });
-        Object.values(CUR.i).forEach(i => {
-            i.addEventListener("input", e => {
-                Object.values(CUR.i).forEach(i => i.classList.remove("active"));
-                if (!CUR.act.includes(e.target.id)) {
-                    if (CUR.act.length == 3) {
+
+        const inputs = Object.values(CUR.i);
+
+        inputs.forEach(input => {
+            input.addEventListener("input", e => {
+                inputs.forEach(i => i.classList.remove("bg-light"));
+
+                const targetId = e.target.id;
+                if (!CUR.act.includes(targetId)) {
+                    if (CUR.act.length === 3) {
                         CUR.act.shift();
                     }
-                    CUR.act.push(e.target.id);
+                    CUR.act.push(targetId);
                 }
 
-                let o = Object.keys(CUR.i).filter(k => !CUR.act.includes(k));
-                if (o.length == 1) {
-                    o = CUR.i[o[0]];
-                    o.classList.add("active");
-                    o.value = (CUR.i[MAP[o.id][0]].value*CUR.i[MAP[o.id][1]].value)/CUR.i[MAP[o.id][2]].value; 
+                const remaining = inputs.filter(i => !CUR.act.includes(i.id));
+                if (remaining.length === 1) {
+                    const o = remaining[0];
+                    o.classList.add("bg-light");
+                    o.value = (CUR.i[MAP[o.id][0]].value * CUR.i[MAP[o.id][1]].value) / CUR.i[MAP[o.id][2]].value;
                 }
             });
         });
-
     </script>
 </body>
 

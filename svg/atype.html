@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="icon" type="image/x-icon" href="https://cdn.jsdelivr.net/gh/FormeOrme/projects@latest/favicon.ico">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css">
+
+    <script src="../util.js"></script>
+    <script src="../controlPanel.js"></script>
+    <script src="../svg.js"></script>
+    <meta charset="utf-8" />
+    <style>
+        .filter-blur {
+            filter: blur(2.9px);
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+
+        const gliphMap = {
+            A: "57", B: "710", C: "35",
+            D: "71", E: "246", F: "46",
+            G: "352", H: "04", I: "4",
+            J: "01", K: "354", L: "42",
+            M: "046", N: "047", O: "136",
+            P: "456", Q: "025", R: "346",
+            S: "37", T: "06", U: "024",
+            V: "13", W: "123", X: "71",
+            Y: "45", Z: "15",
+        }
+
+        const output = Svg.with({
+            namespace: "http://www.w3.org/2000/svg",
+            attribute: {
+                xmlns: "http://www.w3.org/2000/svg",
+                version: "1.1",
+                width: 600,
+                height: 300
+            },
+            id: "output"
+        });
+
+        const controlPanel = new ControlPanel({ id: "params", callback: updateOutput })
+            .addRange({ value: 12, id: "maxGlyphsInRow", label: "Max Glyphs in Row", min: 1 })
+            .addRange({ value: 6, id: "IR", label: "Inner Radius", min: 1, max: 25, step: .1 })
+            .addRange({ value: 14, id: "LL", label: "Line Length", min: 0, max: 25, step: .1 })
+            .addRange({ value: 40, id: "HP", label: "Horizontal kerning" })
+            .addRange({ value: 40, id: "VP", label: "Vertical kerning" })
+            .addRange({ value: 2, id: "zoom", label: "Zoom", min: .1, max: 5, step: .1 })
+            .addRange({ value: 0.1, id: "lsw", label: "Light Stroke Width", min: 0, max: 10, step: .1 })
+            .addRange({ value: 10, id: "dsw", label: "Dark Stroke Width", min: 0, max: 10, step: .1 })
+
+        const input = TextArea.with({
+            id: "input",
+            class: "form-control font-monospace mt-2 filter-blur",
+            style: {
+                "field-sizing": "content"
+            },
+            placeholder: "Text 1",
+            event: {
+                input: updateOutput
+            },
+            innerText: [
+                " THE  QUICK",
+                " BROWN  FOX",
+                " JUMPS OVER",
+                "THE LAZY DOG",
+            ].join("\n")
+        })
+
+        document.body.append(Section.with({
+            class: "container",
+            children: [
+                H1.with({ innerText: "Octopus" }),
+                Span.with({
+                    class: "card card-body mt-2",
+                    children: controlPanel.get()
+                }),
+                input,
+                Span.with({
+                    class: "card card-body mt-2",
+                    children: output
+                })
+            ]
+        }).create());
+        updateOutput();
+
+        function updateOutput() {
+            output.node.innerHTML = "";
+            output.node.style.zoom = controlPanel.values.zoom;
+            output.node.append(
+                groupFrom(input.node.value, controlPanel.values)
+                    .create({ namespace: "http://www.w3.org/2000/svg" })
+            );
+        }
+
+        function groupFrom(s, args) {
+            const maxGlyphsInRow = args.maxGlyphsInRow;
+            return G.with({
+                attribute: {
+                    "data-args": JSON.stringify(args)
+                },
+                children: s.split("").map((v, i) => glyph({
+                    args,
+                    x: args.HP * (i % maxGlyphsInRow),
+                    y: args.VP * Math.floor(i / maxGlyphsInRow),
+                    v: v
+                }))
+            })
+        }
+
+        function glyph({ args, x, y, v }) {
+            const IR = args.IR; // inner radius
+            // list of the point on the ellipse in clockwise order, every 45 degrees.
+
+            const LL = args.LL; // line length
+
+            const g = gliphMap[v.toUpperCase()];
+            const list = Array.from({ length: 8 }, (_, i) => {
+                const angle = i * Math.PI / 4;
+                return {
+                    on: g?.includes(i) || false,
+                    i,
+                    angle,
+                    x: x + 50 + IR * Math.cos(angle),
+                    y: y + 50 + IR * Math.sin(angle)
+                }
+            })
+            // .filter(p => p.on);
+
+            const lightStroke = { stroke: "#0005", "stroke-width": args.lsw };
+            const darkStroke = { stroke: "#000", "stroke-width": args.dsw };
+
+            return G.with({
+                attribute: { fill: "none", stroke: "black", "stroke-width": 1, "stroke-linecap": "round" },
+                children: [
+                    // Ellipse.with({ attribute: { cx: x + 50, cy: y + 50, rx: 25, ry: 25, ...lightStroke } }),
+                    // Ellipse.with({ attribute: { cx: x + 50, cy: y + 50, rx: IR, ry: IR, ...lightStroke } }),
+                    ...list.map(p => {
+                        const lineAngle = p.angle + Math.PI / 2;
+                        return G.with({
+                            children: Line.with({
+                                attribute: {
+                                    ...(p.on ? darkStroke : lightStroke),
+                                    x1: p.x + LL * Math.cos(lineAngle),
+                                    y1: p.y + LL * Math.sin(lineAngle),
+                                    x2: p.x + LL * Math.cos(lineAngle + Math.PI),
+                                    y2: p.y + LL * Math.sin(lineAngle + Math.PI)
+                                }
+                            })
+                        })
+                    })
+                ]
+            });
+        }
+
+    </script>
+</body>

@@ -22,18 +22,18 @@
         }
 
         function updateOut(input) {
-            const ec = Dom.NODES.editCost;
-            const t1 = Dom.NODES.t1;
-            const t2 = Dom.NODES.t2;
-            const out = Dom.NODES.output;
+            const ec = Dom.nodes.editCost;
+            const t1 = Dom.nodes.t1;
+            const t2 = Dom.nodes.t2;
+            const out = Dom.nodes.output;
 
             const diff = computeDiff(t1.value, t2.value, ec.value);
             out.innerText = "";
             out.append(createDiff(diff).create());
             if (input) {
                 ["t1", "t2"].forEach(t => {
-                    Dom.NODES[`${t}_s`].innerText = "";
-                    createInput(diff, t).forEach(span => Dom.NODES[`${t}_s`].append(span.create()));
+                    Dom.nodes[`${t}_s`].innerText = "";
+                    createInput(diff, t).forEach(span => Dom.nodes[`${t}_s`].append(span.create()));
                 });
             }
         }
@@ -60,7 +60,7 @@
                 }));
         }
 
-        Dom.qs("body").append(Section.with({
+        document.body.append(Section.with({
             class: "container mt-2",
             children: [
                 H1.with({
@@ -100,7 +100,7 @@
                                     },
 
                                 }),
-                                Textarea.with({
+                                TextArea.with({
                                     id: t,
                                     class: "form-control fs-6 font-monospace bg-transparent position-absolute top-50 start-50 translate-middle",
                                     attribute: {
@@ -133,7 +133,7 @@
             a.push(c);
             a.push(`${c}_s`)
             return a;
-        }, []).map(k => Dom.NODES[k])
+        }, []).map(k => Dom.nodes[k])
             .map((ta, i, a) => new ResizeObserver(() => a
                 .filter(o => o != ta)
                 .map(o => o.style.height = ta.style.height))

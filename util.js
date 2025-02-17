@@ -241,46 +241,15 @@ class CacheMap extends Map {
 	}
 }
 
-if (typeof document !== 'undefined') {
-	document.addEventListener('DOMContentLoaded', () => {
-		const observer = new MutationObserver((mutations) => {
-			mutations.forEach((mutation) => {
-				mutation.removedNodes.forEach((node) => {
-					const indexesToRemove = [];
-					if (node.nodeType === Node.ELEMENT_NODE) {
-						indexesToRemove.push(Dom.nodes.indexOf(node))
-						getAllDescendants(node).forEach((child) => {
-							indexesToRemove.push(Dom.nodes.indexOf(child))
-						});
-					}
-					Dom.nodes.removeIndexes(indexesToRemove);
-				});
-			});
-		});
-		function getAllDescendants(element) {
-			return [...element.querySelectorAll("*")];
-		}
-		observer.observe(document.body, { childList: true, subtree: true });
-	});
-}
-
 class Nodes extends Array {
-	removeIndexes(indexes) {
-		indexes.sort((a, b) => b - a);
-		indexes.forEach(index => {
-			if (index >= 0 && index < this.length) {
-				this.splice(index, 1);
-			}
-		});
-	}
 	querySelector(query) {
-		return this.find(e => e.matches(query))
+		return document.querySelector(query);
 	}
 	querySelectorAll(query) {
-		return this.filter(e => e.matches(query))
+		return document.querySelectorAll(query);
 	}
 	getElementById(id) {
-		return this.querySelector(`#${id}`);
+		return document.getElementById(id);
 	}
 }
 
@@ -292,10 +261,11 @@ class Dom {
 	});
 
 	static createElement(e, namespace) {
+		namespace = namespace || e.namespace;
 		const node = namespace
 			? document.createElementNS(namespace, e._type)
 			: document.createElement(e._type);
-		Dom.nodes.push(node);
+
 		e.node = node;
 		node.source = e;
 
@@ -310,7 +280,9 @@ class Dom {
 		}
 		if (e.attribute) {
 			for (let k in e.attribute) {
-				node.setAttribute(k, e.attribute[k]);
+				if (e.attribute[k] !== undefined) {
+					node.setAttribute(k, e.attribute[k]);
+				}
 			}
 		}
 		if (e.event) {
@@ -338,9 +310,6 @@ class Dom {
 			for (let k in e.function) {
 				node[k] = e.function[k];
 			}
-		}
-		if (e.callback) {
-			e.callback(node);
 		}
 		return node;
 	}
@@ -403,6 +372,11 @@ class Dom {
 			element.children.splice(options?.position === undefined ? element.children.length : options.position, 0, this);
 			return element;
 		}
+		addChild(child) {
+			this.children = Array.isArray(this.children) ? this.children : (this.children ? [this.children] : []);
+			this.children.push(child);
+			return this;
+		}
 	}
 
 	// 	static clazz = (name, cls) => eval(`class ${name} extends ${cls} {};`);
@@ -439,7 +413,7 @@ class Dom {
 		Dom.TableElements,
 		Dom.InteractiveElements,
 		Dom.EmbeddedElements,
-		Dom.MiscellaneousElements,
+		Dom.MiscElements,
 		Dom.SvgBaseElements,
 		Dom.SvgDefElements,
 		Dom.HeadElements,
