@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>p5.js with OffscreenCanvas</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css">
+  <script src="https://cdn.jsdelivr.net/gh/FormeOrme/projects/util.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.0/p5.js"></script>
+</head>
+
+<body>
+  <script>
+    const worker = new Worker('worker.js');
+
+    function setup() {
+      createCanvas(600, 500);
+    }
+
+    function draw() {
+      worker.postMessage({ canvas: offscreen }, [offscreen]);
+      background(1);
+    }
+  </script>
+</body>
+
+</html>
