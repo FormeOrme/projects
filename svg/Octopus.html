@@ -27,15 +27,15 @@
         }
 
         const controlPanel = new ControlPanel({ id: "params", callback: updateOutput })
-            .addRange({ value: 12, id: "MGR", label: "Max Glyphs in Row", min: 1, max: 15 })
-            .addRange({ value: 10, id: "PAD", label: "Padding", min: 0, max: 20 })
             .addRange({ value: 6, id: "IR", label: "Inner Radius", min: 1, max: 25 })
             .addRange({ value: 14, id: "LL", label: "Line Length", min: 0, max: 25 })
-            .addRange({ value: 50, id: "HK", label: "Horizontal kerning" })
-            .addRange({ value: 50, id: "VK", label: "Vertical kerning" })
+            .addRange({ value: 12, id: "MGR", label: "Max Glyphs in Row", min: 1, max: 15 })
             .addRange({ value: 2, id: "ZOOM", label: "Zoom", min: .1, max: 5, step: .1 })
             .addRange({ value: 0, id: "LSW", label: "Light Stroke Width", min: 0, max: 10, step: .1 })
             .addRange({ value: 6, id: "DSW", label: "Dark Stroke Width", min: 0, max: 10 })
+            .addRange({ value: 50, id: "HK", label: "Horizontal kerning" })
+            .addRange({ value: 50, id: "VK", label: "Vertical kerning" })
+            .addRange({ value: 10, id: "PAD", label: "Padding", min: 0, max: 20 })
 
         const input = Pre.with({
             id: "input",
@@ -46,17 +46,16 @@
                 filter: "blur(2.9px)"
             },
             placeholder: "Text 1",
-            event: {
-                input: () => updateOutput()
-            },
+            event: { input: updateOutput },
             text: "SPHINX OF   BLACK QUARTZJUDGE MY VOW"
         })
 
+        const namespace = "http://www.w3.org/2000/svg";
 
         const output = Svg.with({
-            namespace: "http://www.w3.org/2000/svg",
+            namespace,
             attribute: {
-                xmlns: "http://www.w3.org/2000/svg",
+                xmlns: namespace,
                 version: "1.1",
                 width: 600,
                 height: 300
@@ -79,42 +78,33 @@
                 })
             ]
         }).create());
-        updateOutput();
 
-        function updateOutput(args = controlPanel.values) {
+        function updateOutput() {
+            const args = controlPanel.values;
+            const { MGR, PAD, HK, VK, ZOOM } = args;
             const value = input.node.innerText;
-
             output.node.innerHTML = "";
-            output.node.style.zoom = args.ZOOM;
-
-            const numberOfRows = Math.ceil(value.length / args.MGR);
-
-            output.node.setAttribute("width", (args.HK * args.MGR) + args.PAD * 2);
-            output.node.setAttribute("height", (args.VK * numberOfRows) + args.PAD * 2);
-
-            output.node.append(
-                groupFrom(value, args)
-                    .create({ namespace: "http://www.w3.org/2000/svg" })
-            );
+            output.node.style.zoom = ZOOM;
+            const numberOfRows = Math.ceil(value.length / MGR);
+            output.node.setAttribute("width", (HK * MGR) + PAD * 2);
+            output.node.setAttribute("height", (VK * numberOfRows) + PAD * 2);
+            output.node.append(groupFrom(value, args).create({ namespace }));
         }
 
         function groupFrom(s, args) {
-            const MGR = args.MGR;
-            // https://stackoverflow.com/questions/17098397/how-to-translate-an-svg-group-by-a-percentage-of-the-viewport
-
+            const { DSW, HK, VK, MGR, PAD } = args;
             return Svg.with({
-                attribute: { x: args.PAD, y: args.PAD },
                 children: G.with({
                     attribute: {
                         stroke: "black",
-                        "stroke-width": args.DSW,
+                        "stroke-width": DSW,
                         "stroke-linecap": "round",
                         "data-args": JSON.stringify(args)
                     },
                     children: s.split("").map((v, i) => glyph({
                         args,
-                        x: args.HK * (i % MGR),
-                        y: args.VK * Math.floor(i / MGR),
+                        x: HK * (i % MGR) + PAD,
+                        y: VK * Math.floor(i / MGR) + PAD,
                         v: v
                     }))
                 })
@@ -122,31 +112,28 @@
         }
 
         function glyph({ args, x, y, v }) {
-            const IR = args.IR; // inner radius
-            const LL = args.LL; // line length
+            const { IR, LL, LSW, HK, VK } = args;
 
             const glyph = gliphMap[v.toUpperCase()];
 
-            // list of the point on the ellipse in clockwise order, every 45 degrees.
             const list = Array.from({ length: 8 }, (_, i) => {
                 const angle = i * Math.PI / 4;
                 return {
                     on: glyph?.includes(i) || false,
-                    i,
-                    angle,
-                    x: (args.HK / 2) + x + (IR * Math.cos(angle)),
-                    y: (args.VK / 2) + y + (IR * Math.sin(angle))
+                    i, angle,
+                    x: (HK / 2) + x + (IR * Math.cos(angle)),
+                    y: (VK / 2) + y + (IR * Math.sin(angle)),
                 }
             });
 
-            const lightStroke = { stroke: "#0005", "stroke-width": args.LSW };
+            const lightStroke = { stroke: "#0005", "stroke-width": LSW };
 
             const P = 4; // precision
 
             const lines = list.map(p => {
                 const lineAngle = p.angle + Math.PI / 2;
                 return Line.with({
-                    disabled: !p.on && args.LSW === 0,
+                    disabled: !p.on && LSW === 0,
                     attribute: {
                         ...(p.on ? {} : lightStroke),
                         x1: (p.x + LL * Math.cos(lineAngle)).toPrecision(P),
@@ -157,14 +144,9 @@
                 })
             }).filter(e => !e.disabled)
 
-            return lines.length ? G.with({
-                children: [
-                    // Ellipse.with({ attribute: { cx: x + 50, cy: y + 50, rx: 25, ry: 25, ...lightStroke } }),
-                    // Ellipse.with({ attribute: { cx: x + 50, cy: y + 50, rx: IR, ry: IR, ...lightStroke } }),
-                    ...lines
-                ]
-            }) : null;
+            return lines.length ? G.with({ children: lines }) : null;
         }
 
+        updateOutput();
     </script>
 </body>
