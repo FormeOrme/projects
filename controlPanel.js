@@ -13,41 +13,47 @@ class ControlPanel {
     }
 
     addRange({ id, min = 0, max = 100, step, value, label }) {
-        const code = Span.with({ class: "mx-1 badge bg-secondary", innerText: value });
         this.values[id] = value;
+
+        const controlPanel = this;
+
+        function updateValue(e) {
+            const value = Number(e.value);
+            text.node.value = value;
+            slider.node.value = value;
+            controlPanel.values[id] = value;
+            controlPanel.callback();
+        }
+
+        const text = Input.with({
+            id,
+            value,
+            type: "number",
+            class: "col-2 input-group-text",
+            event: { input: updateValue }
+        })
+        const slider = Input.with({
+            id,
+            value,
+            type: "range",
+            class: "form-control form-range",
+            attribute: { min, max, step },
+            style: { height: "auto" },
+            event: { input: updateValue }
+        })
+
         this.container.addChild(Div.with({
-            class: "col-3",
+            class: "col-3 mb-1",
             children: [
                 Label.with({
-                    class: "form-label",
-                    attribute: {
-                        for: id
-                    },
-                    children: [
-                        code,
-                        Span.with({
-                            innerText: label
-                        })
-                    ]
+                    class: "form-label mb-0",
+                    attribute: { for: id },
+                    text: label
                 }),
-                Input.with({
-                    id,
-                    value,
-                    type: "range",
-                    class: "form-range ",
-                    attribute: {
-                        min,
-                        max,
-                        step
-                    },
-                    event: {
-                        input: (e) => {
-                            code.node.innerText = e.value;
-                            this.values[id] = e.value;
-                            this.callback();
-                        }
-                    }
-                })
+                Span.with({
+                    class: "input-group input-group-sm",
+                    children: [text, slider]
+                }),
             ]
         }))
         return this;

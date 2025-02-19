@@ -270,9 +270,11 @@ class Dom {
 		node.source = e;
 
 		if (e.id) node.id = e.id;
-		if (e.innerText) node.textContent = e.innerText;
-		if (e.value) node.value = e.value;
+		if (e.innerText !== undefined) node.textContent = e.innerText;
+		if (e.text !== undefined) node.textContent = e.text;
+		if (e.value != undefined) node.value = e.value;
 		if (e.type) node.type = e.type;
+		if (e.editable) node.contentEditable = e.editable;
 
 		if (e.class) {
 			const classList = Array.isArray(e.class) ? e.class.join(" ") : e.class;

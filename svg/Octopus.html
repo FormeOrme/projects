@@ -9,27 +9,49 @@
     <script src="../controlPanel.js"></script>
     <script src="../svg.js"></script>
     <meta charset="utf-8" />
-    <style>
-        .filter-blur {
-            filter: blur(2.9px);
-        }
-    </style>
 </head>
 
 <body>
     <script>
 
         const gliphMap = {
-            A: "57", B: "710", C: "35",
-            D: "471", E: "246", F: "46",
-            G: "352", H: "04", I: "4",
-            J: "01", K: "354", L: "42",
+            A: "57", B: "017", C: "35",
+            D: "147", E: "246", F: "46",
+            G: "235", H: "04", I: "4",
+            J: "01", K: "345", L: "24",
             M: "046", N: "047", O: "136",
             P: "456", Q: "025", R: "346",
             S: "37", T: "06", U: "024",
-            V: "13", W: "123", X: "71",
+            V: "13", W: "123", X: "17",
             Y: "45", Z: "15",
         }
+
+        const controlPanel = new ControlPanel({ id: "params", callback: updateOutput })
+            .addRange({ value: 12, id: "MGR", label: "Max Glyphs in Row", min: 1, max: 15 })
+            .addRange({ value: 10, id: "PAD", label: "Padding", min: 0, max: 20 })
+            .addRange({ value: 6, id: "IR", label: "Inner Radius", min: 1, max: 25 })
+            .addRange({ value: 14, id: "LL", label: "Line Length", min: 0, max: 25 })
+            .addRange({ value: 50, id: "HK", label: "Horizontal kerning" })
+            .addRange({ value: 50, id: "VK", label: "Vertical kerning" })
+            .addRange({ value: 2, id: "ZOOM", label: "Zoom", min: .1, max: 5, step: .1 })
+            .addRange({ value: 0, id: "LSW", label: "Light Stroke Width", min: 0, max: 10, step: .1 })
+            .addRange({ value: 6, id: "DSW", label: "Dark Stroke Width", min: 0, max: 10 })
+
+        const input = Pre.with({
+            id: "input",
+            class: "form-control font-monospace mt-2",
+            editable: true,
+            style: {
+                "field-sizing": "content",
+                filter: "blur(2.9px)"
+            },
+            placeholder: "Text 1",
+            event: {
+                input: () => updateOutput()
+            },
+            text: "SPHINX OF   BLACK QUARTZJUDGE MY VOW"
+        })
+
 
         const output = Svg.with({
             namespace: "http://www.w3.org/2000/svg",
@@ -42,118 +64,106 @@
             id: "output"
         });
 
-        const controlPanel = new ControlPanel({ id: "params", callback: updateOutput })
-            .addRange({ value: 12, id: "maxGlyphsInRow", label: "Max Glyphs in Row", min: 1 })
-            .addRange({ value: 6, id: "IR", label: "Inner Radius", min: 1, max: 25, step: .1 })
-            .addRange({ value: 14, id: "LL", label: "Line Length", min: 0, max: 25, step: .1 })
-            .addRange({ value: 40, id: "HP", label: "Horizontal kerning" })
-            .addRange({ value: 40, id: "VP", label: "Vertical kerning" })
-            .addRange({ value: 2, id: "zoom", label: "Zoom", min: .1, max: 5, step: .1 })
-            .addRange({ value: 0.1, id: "lsw", label: "Light Stroke Width", min: 0, max: 10, step: .1 })
-            .addRange({ value: 10, id: "dsw", label: "Dark Stroke Width", min: 0, max: 10, step: .1 })
-
-        const input = TextArea.with({
-            id: "input",
-            class: "form-control font-monospace mt-2 filter-blur",
-            style: {
-                "field-sizing": "content"
-            },
-            placeholder: "Text 1",
-            event: {
-                input: updateOutput
-            },
-            innerText: [
-                " THE  QUICK",
-                " BROWN  FOX",
-                " JUMPS OVER",
-                "THE LAZY DOG",
-            ].join("\n")
-        })
-
         document.body.append(Section.with({
             class: "container",
             children: [
-                H1.with({ innerText: "Octopus" }),
+                H1.with({ text: "Octopus" }),
                 Span.with({
                     class: "card card-body mt-2",
                     children: controlPanel.get()
                 }),
                 input,
                 Span.with({
-                    class: "card card-body mt-2",
+                    class: "card overflow-hidden mt-2",
                     children: output
                 })
             ]
         }).create());
         updateOutput();
 
-        function updateOutput() {
+        function updateOutput(args = controlPanel.values) {
+            const value = input.node.innerText;
+
             output.node.innerHTML = "";
-            output.node.style.zoom = controlPanel.values.zoom;
+            output.node.style.zoom = args.ZOOM;
+
+            const numberOfRows = Math.ceil(value.length / args.MGR);
+
+            output.node.setAttribute("width", (args.HK * args.MGR) + args.PAD * 2);
+            output.node.setAttribute("height", (args.VK * numberOfRows) + args.PAD * 2);
+
             output.node.append(
-                groupFrom(input.node.value, controlPanel.values)
+                groupFrom(value, args)
                     .create({ namespace: "http://www.w3.org/2000/svg" })
             );
         }
 
         function groupFrom(s, args) {
-            const maxGlyphsInRow = args.maxGlyphsInRow;
-            return G.with({
-                attribute: {
-                    "data-args": JSON.stringify(args)
-                },
-                children: s.split("").map((v, i) => glyph({
-                    args,
-                    x: args.HP * (i % maxGlyphsInRow),
-                    y: args.VP * Math.floor(i / maxGlyphsInRow),
-                    v: v
-                }))
+            const MGR = args.MGR;
+            // https://stackoverflow.com/questions/17098397/how-to-translate-an-svg-group-by-a-percentage-of-the-viewport
+
+            return Svg.with({
+                attribute: { x: args.PAD, y: args.PAD },
+                children: G.with({
+                    attribute: {
+                        stroke: "black",
+                        "stroke-width": args.DSW,
+                        "stroke-linecap": "round",
+                        "data-args": JSON.stringify(args)
+                    },
+                    children: s.split("").map((v, i) => glyph({
+                        args,
+                        x: args.HK * (i % MGR),
+                        y: args.VK * Math.floor(i / MGR),
+                        v: v
+                    }))
+                })
             })
         }
 
         function glyph({ args, x, y, v }) {
             const IR = args.IR; // inner radius
-            // list of the point on the ellipse in clockwise order, every 45 degrees.
-
             const LL = args.LL; // line length
 
-            const g = gliphMap[v.toUpperCase()];
+            const glyph = gliphMap[v.toUpperCase()];
+
+            // list of the point on the ellipse in clockwise order, every 45 degrees.
             const list = Array.from({ length: 8 }, (_, i) => {
                 const angle = i * Math.PI / 4;
                 return {
-                    on: g?.includes(i) || false,
+                    on: glyph?.includes(i) || false,
                     i,
                     angle,
-                    x: x + 50 + IR * Math.cos(angle),
-                    y: y + 50 + IR * Math.sin(angle)
+                    x: (args.HK / 2) + x + (IR * Math.cos(angle)),
+                    y: (args.VK / 2) + y + (IR * Math.sin(angle))
                 }
-            })
-            // .filter(p => p.on);
+            });
 
-            const lightStroke = { stroke: "#0005", "stroke-width": args.lsw };
-            const darkStroke = { stroke: "#000", "stroke-width": args.dsw };
+            const lightStroke = { stroke: "#0005", "stroke-width": args.LSW };
 
-            return G.with({
-                attribute: { fill: "none", stroke: "black", "stroke-width": 1, "stroke-linecap": "round" },
+            const P = 4; // precision
+
+            const lines = list.map(p => {
+                const lineAngle = p.angle + Math.PI / 2;
+                return Line.with({
+                    disabled: !p.on && args.LSW === 0,
+                    attribute: {
+                        ...(p.on ? {} : lightStroke),
+                        x1: (p.x + LL * Math.cos(lineAngle)).toPrecision(P),
+                        y1: (p.y + LL * Math.sin(lineAngle)).toPrecision(P),
+                        x2: (p.x + LL * Math.cos(lineAngle + Math.PI)).toPrecision(P),
+                        y2: (p.y + LL * Math.sin(lineAngle + Math.PI)).toPrecision(P),
+                    }
+                })
+            }).filter(e => !e.disabled)
+
+            return lines.length ? G.with({
                 children: [
                     // Ellipse.with({ attribute: { cx: x + 50, cy: y + 50, rx: 25, ry: 25, ...lightStroke } }),
                     // Ellipse.with({ attribute: { cx: x + 50, cy: y + 50, rx: IR, ry: IR, ...lightStroke } }),
-                    ...list.map(p => {
-                        const lineAngle = p.angle + Math.PI / 2;
-                        return G.with({
-                            children: Line.with({
-                                attribute: {
-                                    ...(p.on ? darkStroke : lightStroke),
-                                    x1: p.x + LL * Math.cos(lineAngle),
-                                    y1: p.y + LL * Math.sin(lineAngle),
-                                    x2: p.x + LL * Math.cos(lineAngle + Math.PI),
-                                    y2: p.y + LL * Math.sin(lineAngle + Math.PI)
-                                }
-                            })
-                        })
-                    })
+                    ...lines
                 ]
-            });
+            }) : null;
         }
 
     </script>
