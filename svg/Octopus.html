@@ -20,7 +20,7 @@
             G: "235", H: "04", I: "4",
             J: "01", K: "345", L: "24",
             M: "046", N: "047", O: "136",
-            P: "456", Q: "025", R: "346",
+            P: "016", Q: "025", R: "346",
             S: "37", T: "06", U: "024",
             V: "13", W: "123", X: "17",
             Y: "45", Z: "15",
@@ -30,11 +30,13 @@
             .addRange({ value: 6, id: "IR", label: "Inner Radius", min: 1, max: 25 })
             .addRange({ value: 14, id: "LL", label: "Line Length", min: 0, max: 25 })
             .addRange({ value: 12, id: "MGR", label: "Max Glyphs in Row", min: 1, max: 15 })
-            .addRange({ value: 2, id: "ZOOM", label: "Zoom", min: .1, max: 5, step: .1 })
+            .addRange({ value: 2, id: "ZOOM", label: "Zoom", min: 0, max: 5, step: .5 })
             .addRange({ value: 0, id: "LSW", label: "Light Stroke Width", min: 0, max: 10, step: .1 })
             .addRange({ value: 6, id: "DSW", label: "Dark Stroke Width", min: 0, max: 10 })
             .addRange({ value: 50, id: "HK", label: "Horizontal kerning" })
             .addRange({ value: 50, id: "VK", label: "Vertical kerning" })
+            .addColorPicker({ value: "#CCCCCC", id: "LC", label: "Light Color" })
+            .addColorPicker({ value: "#000000", id: "DC", label: "Dark Color" })
             .addRange({ value: 10, id: "PAD", label: "Padding", min: 0, max: 20 })
 
         const input = Pre.with({
@@ -92,59 +94,67 @@
         }
 
         function groupFrom(s, args) {
-            const { DSW, HK, VK, MGR, PAD } = args;
-            return Svg.with({
-                children: G.with({
-                    attribute: {
-                        stroke: "black",
-                        "stroke-width": DSW,
-                        "stroke-linecap": "round",
-                        "data-args": JSON.stringify(args)
-                    },
-                    children: s.split("").map((v, i) => glyph({
-                        args,
-                        x: HK * (i % MGR) + PAD,
-                        y: VK * Math.floor(i / MGR) + PAD,
-                        v: v
-                    }))
-                })
+            const { DSW, LSW, HK, VK, MGR, PAD, DC, LC } = args;
+
+            const background = G.with({ attribute: { stroke: LC, "stroke-width": LSW } });
+            const foreground = G.with({ attribute: { stroke: DC, "stroke-width": DSW } });
+
+            s.split("").map((v, i) => glyph({
+                args,
+                x: HK * (i % MGR) + PAD,
+                y: VK * Math.floor(i / MGR) + PAD,
+                v: v
+            })).forEach(([bg, fg]) => {
+                background.addChild(bg)
+                foreground.addChild(fg)
+            });
+
+            return G.with({
+                attribute: {
+                    "stroke-linecap": "round",
+                    "data-args": JSON.stringify(args)
+                },
+                children: [
+                    background,
+                    foreground
+                ]
             })
         }
 
         function glyph({ args, x, y, v }) {
-            const { IR, LL, LSW, HK, VK } = args;
+            const { IR, LL, LSW, DSW, HK, VK } = args;
 
             const glyph = gliphMap[v.toUpperCase()];
-
-            const list = Array.from({ length: 8 }, (_, i) => {
-                const angle = i * Math.PI / 4;
-                return {
-                    on: glyph?.includes(i) || false,
-                    i, angle,
-                    x: (HK / 2) + x + (IR * Math.cos(angle)),
-                    y: (VK / 2) + y + (IR * Math.sin(angle)),
-                }
-            });
-
-            const lightStroke = { stroke: "#0005", "stroke-width": LSW };
-
             const P = 4; // precision
 
-            const lines = list.map(p => {
-                const lineAngle = p.angle + Math.PI / 2;
-                return Line.with({
-                    disabled: !p.on && LSW === 0,
-                    attribute: {
-                        ...(p.on ? {} : lightStroke),
-                        x1: (p.x + LL * Math.cos(lineAngle)).toPrecision(P),
-                        y1: (p.y + LL * Math.sin(lineAngle)).toPrecision(P),
-                        x2: (p.x + LL * Math.cos(lineAngle + Math.PI)).toPrecision(P),
-                        y2: (p.y + LL * Math.sin(lineAngle + Math.PI)).toPrecision(P),
-                    }
-                })
-            }).filter(e => !e.disabled)
+            const calcLine = (i, angle = i * Math.PI / 4) => ({
+                i, angle,
+                x: (HK / 2) + x + (IR * Math.cos(angle)),
+                y: (VK / 2) + y + (IR * Math.sin(angle)),
+            })
 
-            return lines.length ? G.with({ children: lines }) : null;
+            const drawLine = (p, lineAngle = p.angle + Math.PI / 2) => Line.with({
+                attribute: {
+                    x1: (p.x + LL * Math.cos(lineAngle)).toPrecision(P),
+                    y1: (p.y + LL * Math.sin(lineAngle)).toPrecision(P),
+                    x2: (p.x + LL * Math.cos(lineAngle + Math.PI)).toPrecision(P),
+                    y2: (p.y + LL * Math.sin(lineAngle + Math.PI)).toPrecision(P),
+                }
+            })
+
+            return [
+                LSW !== 0 ? G.with({
+                    children: Array.from({ length: 8 },
+                        (_, i) => calcLine(i))
+                        .map(p => drawLine(p))
+                }) : null,
+                DSW !== 0 ? G.with({
+                    children: Array.from({ length: 8 },
+                        (_, i) => glyph?.includes(i) ? calcLine(i) : null)
+                        .filter(Boolean)
+                        .map(p => drawLine(p))
+                }) : null
+            ];
         }
 
         updateOutput();

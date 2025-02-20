@@ -117,6 +117,9 @@ class SUtils {
 }
 
 class MUtils {
+	static toRadians = (degrees) => degrees * (Math.PI / 180);
+	static toDegrees = (radians) => radians * (180 / Math.PI);
+
 	static circleIntersectionPoints({
 		x1, y1, r1,
 		x2, y2, r2,
@@ -375,8 +378,10 @@ class Dom {
 			return element;
 		}
 		addChild(child) {
-			this.children = Array.isArray(this.children) ? this.children : (this.children ? [this.children] : []);
-			this.children.push(child);
+			if (child) {
+				this.children = Array.isArray(this.children) ? this.children : (this.children ? [this.children] : []);
+				this.children.push(child);
+			}
 			return this;
 		}
 	}

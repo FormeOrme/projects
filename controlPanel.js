@@ -59,4 +59,39 @@ class ControlPanel {
         return this;
     }
 
+    addColorPicker({ id, value, label }) {
+        this.values[id] = value;
+
+        const colorPicker = Input.with({
+            id,
+            value,
+            type: "color",
+            class: "form-control",
+            style: { height: "31px" },
+            event: {
+                change: (e) => {
+                    this.values[id] = e.value;
+                    this.callback();
+                }
+            }
+        });
+
+        this.container.addChild(Div.with({
+            class: "col-3 mb-1",
+            children: [
+                Label.with({
+                    class: "form-label mb-0",
+                    attribute: { for: id },
+                    text: label
+                }),
+                Span.with({
+                    class: "input-group input-group-sm",
+                    children: colorPicker
+                }),
+            ]
+        }))
+
+        return this;
+    }
+
 }
