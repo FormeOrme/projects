@@ -4,7 +4,7 @@ class ControlPanel {
             ...args,
             class: "row"
         });
-        this.callback = args.callback;
+        this.callback = args?.callback;
         this.values = {};
     }
 
@@ -22,14 +22,14 @@ class ControlPanel {
             text.node.value = value;
             slider.node.value = value;
             controlPanel.values[id] = value;
-            controlPanel.callback();
+            controlPanel.callback?.();
         }
 
         const text = Input.with({
             id,
             value,
             type: "number",
-            class: "col-2 input-group-text",
+            class: "col-4 input-group-text",
             event: { input: updateValue }
         })
         const slider = Input.with({
@@ -62,16 +62,22 @@ class ControlPanel {
     addColorPicker({ id, value, label }) {
         this.values[id] = value;
 
+
+        const display = Div.with({
+            class: "col-2 input-group-text",
+            style: { background: value }
+        });
+
         const colorPicker = Input.with({
             id,
             value,
-            type: "color",
-            class: "form-control",
-            style: { height: "31px" },
+            type: "text",
+            class: "form-control font-monospace",
             event: {
                 change: (e) => {
                     this.values[id] = e.value;
-                    this.callback();
+                    display.node.style.background = e.value;
+                    this.callback?.();
                 }
             }
         });
@@ -86,7 +92,7 @@ class ControlPanel {
                 }),
                 Span.with({
                     class: "input-group input-group-sm",
-                    children: colorPicker
+                    children: [colorPicker, display]
                 }),
             ]
         }))

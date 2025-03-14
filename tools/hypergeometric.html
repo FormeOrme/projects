@@ -1,0 +1,191 @@
+<html>
+
+<head>
+    <link rel="icon" type="image/x-icon" href="https://cdn.jsdelivr.net/gh/FormeOrme/projects@latest/favicon.ico">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="../util.js"></script>
+    <script src="../controlPanel.js"></script>
+    <title>RPT</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css">
+</head>
+
+<body class="bg-light">
+    <script>
+        // Helper function to calculate binomial coefficient
+        function binomialCoefficient(n, k) {
+            if (k > n) return 0;
+            if (k === 0 || k === n) return 1;
+            let coeff = 1;
+            for (let i = 0; i < k; i++) {
+                coeff = coeff * (n - i) / (i + 1);
+            }
+            return coeff;
+        }
+
+        function hypergeometricProbability(populationSize, sampleSize, successesInPopulation, successesInSample) {
+            // Calculate the hypergeometric probability
+            const prob = (binomialCoefficient(successesInPopulation, successesInSample) *
+                binomialCoefficient(populationSize - successesInPopulation, sampleSize - successesInSample)) /
+                binomialCoefficient(populationSize, sampleSize);
+            return prob;
+        }
+
+        function calculateChances(populationSize, sampleSize, successesInPopulation, successesInSample) {
+            let chanceOneOrMore = 0;
+            let chanceExactlyOne = 0;
+            let chanceOneOrLess = 0;
+            let chanceZero = 0;
+            let chanceExactlySuccessesInSample = 0;
+            let chanceSuccessesInSampleOrMore = 0;
+            let chanceSuccessesInSampleOrLess = 0;
+
+            // Calculate the probability for each possible number of successes in the sample
+            for (let k = 0; k <= sampleSize; k++) {
+                const prob = hypergeometricProbability(populationSize, sampleSize, successesInPopulation, k);
+
+                if (k === 0) {
+                    chanceZero = prob;
+                }
+                if (k === 1) {
+                    chanceExactlyOne = prob;
+                }
+                if (k >= 1) {
+                    chanceOneOrMore += prob;
+                }
+                if (k <= 1) {
+                    chanceOneOrLess += prob;
+                }
+                if (k === successesInSample) {
+                    chanceExactlySuccessesInSample = prob;
+                }
+                if (k >= successesInSample) {
+                    chanceSuccessesInSampleOrMore += prob;
+                }
+                if (k <= successesInSample) {
+                    chanceSuccessesInSampleOrLess += prob;
+                }
+            }
+
+            const fixed = (num) => (num*100).toFixed(2);
+
+            chanceOneOrMore = fixed(chanceOneOrMore);
+            chanceExactlyOne = fixed(chanceExactlyOne);
+            chanceOneOrLess = fixed(chanceOneOrLess);
+            chanceZero = fixed(chanceZero);
+            chanceExactlySuccessesInSample = fixed(chanceExactlySuccessesInSample);
+            chanceSuccessesInSampleOrMore = fixed(chanceSuccessesInSampleOrMore);
+            chanceSuccessesInSampleOrLess = fixed(chanceSuccessesInSampleOrLess);
+
+            return {
+                chanceOneOrMore,
+                chanceExactlyOne,
+                chanceOneOrLess,
+                chanceZero,
+                chanceExactlySuccessesInSample,
+                chanceSuccessesInSampleOrMore,
+                chanceSuccessesInSampleOrLess
+            };
+        }
+
+        const output = H4.with({ id: "output", class: "card card-body mt-2" });
+
+        function updateOutput() {
+            const {
+                populationSize,
+                sampleSize,
+                successesInPopulation,
+                successesInSample,
+            } = controlPanel.values;
+
+            const chances = calculateChances(populationSize, sampleSize, successesInPopulation, successesInSample);
+
+            output.node.innerHTML = "";
+
+            const primaryclass = "d-inline-flex px-2 py-1 fw-semibold text-primary-emphasis bg-primary-subtle border border-primary-subtle rounded-2";
+            const secondaryclass = "d-inline-flex px-2 py-1 fw-semibold text-secondary-emphasis bg-secondary-subtle border border-secondary-subtle rounded-2";
+
+            output.node.append(Span.with({
+                children: [
+                    H4.with({
+                        children: [
+                            Span.with({ text: `Chance to draw ` }),
+                            Span.with({ text: `exactly ${successesInSample}`, class: primaryclass }),
+                            Span.with({ text: ` of the wanted card: ` }),
+                            Span.with({ text: `${chances.chanceExactlySuccessesInSample}%`, class: primaryclass })
+                        ]
+                    }),
+                    H4.with({
+                        children: [
+                            Span.with({ text: `Chance to draw ` }),
+                            Span.with({ text: `${successesInSample} or more`, class: secondaryclass }),
+                            Span.with({ text: ` of the wanted card: ` }),
+                            Span.with({ text: `${chances.chanceSuccessesInSampleOrMore}%`, class: secondaryclass })
+                        ]
+                    }),
+                    H4.with({
+                        children: [
+                            Span.with({ text: `Chance to draw ` }),
+                            Span.with({ text: `${successesInSample} or less`, class: secondaryclass }),
+                            Span.with({ text: ` of the wanted card: ` }),
+                            Span.with({ text: `${chances.chanceSuccessesInSampleOrLess}%`, class: secondaryclass })
+                        ]
+                    }),
+                    H4.with({
+                        children: [
+                            Span.with({ text: `Chance to draw ` }),
+                            Span.with({ text: `1 or more`, class: primaryclass }),
+                            Span.with({ text: ` of the wanted card: ` }),
+                            Span.with({ text: `${chances.chanceOneOrMore}%`, class: primaryclass })
+                        ]
+                    }),
+                    H4.with({
+                        children: [
+                            Span.with({ text: "Chance to draw " }),
+                            Span.with({ text: "exactly 1", class: secondaryclass }),
+                            Span.with({ text: " of the wanted card: " }),
+                            Span.with({ text: `${chances.chanceExactlyOne}%`, class: secondaryclass })
+                        ]
+                    }),
+                    H4.with({
+                        children: [
+                            Span.with({ text: `Chance to draw ` }),
+                            Span.with({ text: `1 or less`, class: secondaryclass }),
+                            Span.with({ text: ` of the wanted card: ` }),
+                            Span.with({ text: `${chances.chanceOneOrLess}%`, class: secondaryclass })
+                        ]
+                    }),
+                    H4.with({
+                        children: [
+                            Span.with({ text: `Chance to draw ` }),
+                            Span.with({ text: `0`, class: secondaryclass }),
+                            Span.with({ text: ` of the wanted card: ` }),
+                            Span.with({ text: `${chances.chanceZero}%`, class: secondaryclass })
+                        ]
+                    }),
+                ]
+            }).create())
+        }
+
+        const controlPanel = new ControlPanel({ id: "params", callback: updateOutput })
+            .addRange({ value: 60, id: "populationSize", label: "Population Size", min: 0, max: 100 })
+            .addRange({ value: 7, id: "sampleSize", label: "Sample Size", min: 0, max: 10 })
+            .addRange({ value: 4, id: "successesInPopulation", label: "Successes In Population", min: 0, max: 100 })
+            .addRange({ value: 1, id: "successesInSample", label: "Successes In Sample", min: 0, max: 10 })
+
+        document.body.append(Section.with({
+            class: "container",
+            children: [
+                H1.with({ text: "HyperG" }),
+                Span.with({
+                    class: "card card-body mt-2",
+                    children: controlPanel.get()
+                }),
+                output
+            ]
+        }).create());
+        updateOutput();
+    </script>
+</body>
+
+</html>

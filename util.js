@@ -1,4 +1,5 @@
-class LoStMan /* Local Storage Manager */ {
+/* Local Storage Manager */
+class LoStMan {
 	static getObj(id, proto) {
 		const parsed = JSON.parse(localStorage.getItem(id));
 		return !proto ? parsed : Object.setPrototypeOf(parsed, proto);
@@ -12,7 +13,8 @@ class LoStMan /* Local Storage Manager */ {
 	}
 }
 
-class QueStMan /* Query String Manager */ {
+/* Query String Manager */
+class QueStMan {
 	static get(key) {
 		return new URLSearchParams(window.location.search).get(key);
 	}
@@ -52,6 +54,7 @@ const Identity = o => o;
 class Utils {
 
 	static tween = (v, r1, r2, m1, m2) => m1 + (m2 - m1) * ((v - r1) / (r2 - r1));
+
 
 	static rpt({ a, b, c, d }) {
 		if (!a) return (b * c) / d;
@@ -275,13 +278,12 @@ class Dom {
 		if (e.id) node.id = e.id;
 		if (e.innerText !== undefined) node.textContent = e.innerText;
 		if (e.text !== undefined) node.textContent = e.text;
-		if (e.value != undefined) node.value = e.value;
+		if (e.value !== undefined) node.value = e.value;
 		if (e.type) node.type = e.type;
 		if (e.editable) node.contentEditable = e.editable;
 
 		if (e.class) {
-			const classList = Array.isArray(e.class) ? e.class.join(" ") : e.class;
-			node.className = classList.trim();
+			node.className = [].concat(e.class).filter(Boolean).join(" ").trim();
 		}
 		if (e.attribute) {
 			for (let k in e.attribute) {
@@ -296,13 +298,11 @@ class Dom {
 			}
 		}
 		if (e.children) {
-			const children = Array.isArray(e.children)
-				? e.children.filter(Boolean)
-				: (e.children ? [e.children] : []);
-
-			for (let i = 0, len = children.length; i < len; i++) {
-				node.appendChild(Dom.createElement(children[i], namespace));
+			const fragment = document.createDocumentFragment();
+			for (const child of [].concat(e.children).filter(Boolean)) {
+				fragment.appendChild(Dom.createElement(child, namespace));
 			}
+			node.appendChild(fragment);
 		}
 		if (e.style) {
 			for (let k in e.style) {

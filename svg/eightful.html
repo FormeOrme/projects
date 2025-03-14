@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="icon" type="image/x-icon" href="https://cdn.jsdelivr.net/gh/FormeOrme/projects@latest/favicon.ico">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css">
+
+    <script src="../util.js"></script>
+    <script src="../controlPanel.js"></script>
+    <script src="../svg.js"></script>
+    <meta charset="utf-8" />
+</head>
+
+<body>
+    <script>
+
+        const gliphMap = {
+            A: "45", B: "1357", C: "467",
+            D: "6247", E: "0246", F: "0235",
+            G: "3675", H: "2546", I: "25",
+            J: "2567", K: "0356", L: "67",
+            M: "3465", N: "465", O: "4567",
+            P: "5013", Q: "0124", R: "64",
+            S: "357", T: "345", U: "675",
+            V: "67", W: "2367", X: "2345",
+            Y: "234", Z: "246",
+        }
+
+        const sortObj = (obj) => Object.fromEntries(
+            Object.entries(obj).map(([k, w]) => [k, w.split("").map(Number).sort().join("")])
+        )
+
+        const controlPanel = new ControlPanel({ id: "params", callback: updateOutput })
+            .addRange({ value: 3, id: "IR", label: "Inner Radius", min: 1, max: 25 })
+            .addRange({ value: 6, id: "LL", label: "Line Length", min: 0, max: 25 })
+            .addRange({ value: 12, id: "MGR", label: "Max Glyphs in Row", min: 1, max: 15 })
+            .addRange({ value: 2, id: "ZOOM", label: "Zoom", min: 0, max: 5, step: .5 })
+            .addRange({ value: 10, id: "LSW", label: "Light Stroke Width", min: 0, max: 10 })
+            .addRange({ value: 6, id: "DSW", label: "Dark Stroke Width", min: 0, max: 10 })
+            .addRange({ value: 31, id: "HK", label: "Horizontal kerning" })
+            .addRange({ value: 55, id: "VK", label: "Vertical kerning" })
+            .addColorPicker({ value: "#CCC", id: "LC", label: "Light Color" })
+            .addColorPicker({ value: "#000", id: "DC", label: "Dark Color" })
+            .addRange({ value: 10, id: "PAD", label: "Padding", min: 0, max: 20 })
+
+        const input = Pre.with({
+            id: "input",
+            class: "form-control font-monospace mt-2",
+            editable: true,
+            style: {
+                "field-sizing": "content",
+                filter: "blur(2.9px)"
+            },
+            placeholder: "Text 1",
+            event: { input: updateOutput },
+            text: "SPHINX OF   BLACK QUARTZJUDGE MY VOW"
+        })
+
+        const namespace = "http://www.w3.org/2000/svg";
+
+        const output = Svg.with({
+            namespace,
+            attribute: {
+                xmlns: namespace,
+                version: "1.1",
+                width: 600,
+                height: 300
+            },
+            id: "output"
+        });
+
+        document.body.append(Section.with({
+            class: "container",
+            children: [
+                H1.with({ text: "Octopus" }),
+                Span.with({
+                    class: "card card-body mt-2",
+                    children: controlPanel.get()
+                }),
+                input,
+                Span.with({
+                    class: "card overflow-hidden mt-2",
+                    children: output
+                })
+            ]
+        }).create());
+
+        function updateOutput() {
+            const args = controlPanel.values;
+            const { MGR, PAD, HK, VK, ZOOM } = args;
+            const value = input.node.innerText;
+            output.node.innerHTML = "";
+            output.node.style.zoom = ZOOM;
+            const numberOfRows = Math.ceil(value.length / MGR);
+            output.node.setAttribute("width", (HK * MGR) + PAD * 2);
+            output.node.setAttribute("height", (VK * numberOfRows) + PAD * 2);
+            output.node.append(groupFrom(value, args).create({ namespace }));
+        }
+
+        function groupFrom(s, args) {
+            const { DSW, LSW, HK, VK, MGR, PAD, DC, LC } = args;
+
+            const background = G.with({ attribute: { stroke: LC, "stroke-width": LSW } });
+            const foreground = G.with({ attribute: { stroke: DC, "stroke-width": DSW } });
+
+            s.split("").map((v, i) => glyph({
+                args,
+                x: HK * (i % MGR) + PAD,
+                y: VK * Math.floor(i / MGR) + PAD,
+                v: v
+            })).forEach(([bg, fg]) => {
+                background.addChild(bg)
+                foreground.addChild(fg)
+            });
+
+            return G.with({
+                attribute: {
+                    "stroke-linecap": "round",
+                    "data-args": JSON.stringify(args)
+                },
+                children: [
+                    background,
+                    foreground
+                ]
+            })
+        }
+
+        function glyph({ args, x, y, v }) {
+            const { IR, LL, LSW, DSW, HK, VK } = args;
+
+            const glyph = gliphMap[v.toUpperCase()];
+            const P = 4; // precision
+
+            /*
+            the list of "leds" in the glyph
+            the figure to create is:
+            0 / \ 1  # #
+            2 \ / 3  # #
+            4 / \ 5  # #
+            6 \ / 7  # #
+            */
+
+            const p = (lx, ly, a) => ({ lx, ly, a });
+
+            const s = 1 * IR;
+            const l = 3 * IR;
+
+            const map = [
+                p(-s, -l, +1), p(+s, -l, -1),
+                p(-s, -s, -1), p(+s, -s, +1),
+                p(-s, +s, +1), p(+s, +s, -1),
+                p(-s, +l, -1), p(+s, +l, +1),
+            ]
+            const LH = 2; // led height
+            const LW = 2; // led width
+
+            const calcLine = (i) => {
+                const { lx, ly, a } = map[i];
+                const angle = a * Math.atan2(LH, LW);
+                return {
+                    i, angle,
+                    x: (HK / 2) + x + lx * LW,
+                    y: (VK / 2) + y + ly * LH,
+                }
+            }
+
+            const drawLine = (p, lineAngle = p.angle + Math.PI / 2) => Line.with({
+                attribute: {
+                    x1: (p.x + LL * Math.cos(lineAngle)).toPrecision(P),
+                    y1: (p.y + LL * Math.sin(lineAngle)).toPrecision(P),
+                    x2: (p.x + LL * Math.cos(lineAngle + Math.PI)).toPrecision(P),
+                    y2: (p.y + LL * Math.sin(lineAngle + Math.PI)).toPrecision(P),
+                }
+            })
+
+            return [
+                LSW !== 0 ? G.with({
+                    children: Array.from({ length: 8 },
+                        (_, i) => calcLine(i))
+                        .map(p => drawLine(p))
+                }) : null,
+                DSW !== 0 ? G.with({
+                    children: Array.from({ length: 8 },
+                        (_, i) => glyph?.includes(i) ? calcLine(i) : null)
+                        .filter(Boolean)
+                        .map(p => drawLine(p))
+                }) : null
+            ];
+        }
+
+        updateOutput();
+    </script>
+</body>
