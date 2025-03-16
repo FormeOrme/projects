@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vector.js Test</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mocha/10.2.0/mocha.css">
+</head>
+
+<body>
+    <div id="mocha"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mocha/10.2.0/mocha.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chai/4.3.7/chai.js"></script>
+    <script>
+        mocha.setup('bdd');
+        const { expect } = chai;
+    </script>
+    <script src="../vector.js"></script>
+    <script>
+        describe('Vector', () => {
+            it('should create a vector with given x and y', () => {
+                const v = new Vector(3, 4);
+                expect(v.x).to.equal(3);
+                expect(v.y).to.equal(4);
+            });
+
+            it('should create a vector from an object', () => {
+                const v = new Vector({ x: 3, y: 4 });
+                expect(v.x).to.equal(3);
+                expect(v.y).to.equal(4);
+            });
+
+            it('should copy a vector', () => {
+                const v = new Vector(3, 4);
+                const copy = v.copy();
+                expect(copy.x).to.equal(3);
+                expect(copy.y).to.equal(4);
+            });
+
+            it('should calculate the magnitude of a vector', () => {
+                const v = new Vector(3, 4);
+                expect(v.magnitude()).to.equal(5);
+            });
+
+            it('should normalize a vector', () => {
+                const v = new Vector(3, 4);
+                v.normalize();
+                expect(v.magnitude()).to.be.closeTo(1, 0.0001);
+            });
+
+            it('should add another vector', () => {
+                const v = new Vector(3, 4);
+                v.add({ x: 1, y: 2 });
+                expect(v.x).to.equal(4);
+                expect(v.y).to.equal(6);
+            });
+
+            it('should subtract another vector', () => {
+                const v = new Vector(3, 4);
+                v.sub({ x: 1, y: 2 });
+                expect(v.x).to.equal(2);
+                expect(v.y).to.equal(2);
+            });
+
+            it('should calculate the dot product', () => {
+                const v = new Vector(3, 4);
+                expect(v.dot({ x: 1, y: 2 })).to.equal(11);
+            });
+
+            it('should multiply by a scalar', () => {
+                const v = new Vector(3, 4);
+                v.mult(2);
+                expect(v.x).to.equal(6);
+                expect(v.y).to.equal(8);
+            });
+
+            it('should calculate the distance to another vector', () => {
+                const v = new Vector(3, 4);
+                expect(v.distance({ x: 6, y: 8 })).to.equal(5);
+            });
+
+            it('should rotate around a center point', () => {
+                const v = new Vector(1, 0);
+                const rotated = v.rotateAround({ x: 0, y: 0 }, 90);
+                expect(rotated.x).to.be.closeTo(0, 0.0001);
+                expect(rotated.y).to.be.closeTo(1, 0.0001);
+            });
+
+            it('should rotate by an angle', () => {
+                const v = new Vector(1, 0);
+                const rotated = v.rotate(Math.PI / 2);
+                expect(rotated.x).to.be.closeTo(0, 0.0001);
+                expect(rotated.y).to.be.closeTo(1, 0.0001);
+            });
+
+            it('should calculate the angle of the vector', () => {
+                const v = new Vector(1, 1);
+                expect(v.angle()).to.be.closeTo(Math.PI / 4, 0.0001);
+            });
+
+            it('should calculate the angle to another vector', () => {
+                const v = new Vector(1, 1);
+                expect(v.angleTo({ x: 2, y: 2 })).to.be.closeTo(Math.PI / 4, 0.0001);
+            });
+
+            it('should create a vector from an angle', () => {
+                const v = Vector.fromAngle(Math.PI / 4);
+                expect(v.x).to.be.closeTo(Math.sqrt(2) / 2, 0.0001);
+                expect(v.y).to.be.closeTo(Math.sqrt(2) / 2, 0.0001);
+            });
+
+            it('should return the string representation of the vector', () => {
+                const v = new Vector(3, 4);
+                expect(v.toString()).to.equal('(3, 4)');
+            });
+        });
+
+        mocha.run();
+    </script>
+</body>
+
+</html>

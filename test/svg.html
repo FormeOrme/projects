@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>svg.js Test</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mocha/10.2.0/mocha.css">
+</head>
+<body>
+    <div id="mocha"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mocha/10.2.0/mocha.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chai/4.3.7/chai.js"></script>
+    <script>
+        mocha.setup('bdd');
+        const { expect } = chai;
+    </script>
+    <script src="../vector.js"></script>
+    <script src="../svg.js"></script>
+    <script>
+        describe('PathBuilder', () => {
+            it('should initialize with moveTo', () => {
+                const path = PathBuilder.moveTo({ x: 10, y: 20 });
+                expect(path.d).to.equal('M 10 20 ');
+                expect(path.firstPoint.x).to.equal(10);
+                expect(path.firstPoint.y).to.equal(20);
+            });
+
+            it('should move to a new point', () => {
+                const path = new PathBuilder({ x: 10, y: 20 }).moveTo({ x: 30, y: 40 });
+                expect(path.d).to.equal('M 10 20 M 30 40 ');
+                expect(path.lastPoint.x).to.equal(30);
+                expect(path.lastPoint.y).to.equal(40);
+            });
+
+            it('should draw a line to a new point', () => {
+                const path = new PathBuilder({ x: 10, y: 20 }).lineTo({ x: 30, y: 40 });
+                expect(path.d).to.equal('M 10 20 L 30 40 ');
+                expect(path.lastPoint.x).to.equal(30);
+                expect(path.lastPoint.y).to.equal(40);
+            });
+
+            it('should draw a horizontal line to a new x coordinate', () => {
+                const path = new PathBuilder({ x: 10, y: 20 }).horizontalLineTo(50);
+                expect(path.d).to.equal('M 10 20 H 50 ');
+                expect(path.lastPoint.x).to.equal(50);
+                expect(path.lastPoint.y).to.equal(20);
+            });
+
+            it('should draw a vertical line to a new y coordinate', () => {
+                const path = new PathBuilder({ x: 10, y: 20 }).verticalLineTo(60);
+                expect(path.d).to.equal('M 10 20 V 60 ');
+                expect(path.lastPoint.x).to.equal(10);
+                expect(path.lastPoint.y).to.equal(60);
+            });
+
+            it('should draw a curve to a new point', () => {
+                const path = new PathBuilder({ x: 10, y: 20 }).curve({ x1: 15, y1: 25, x2: 20, y2: 30, x: 25, y: 35 });
+                expect(path.d).to.equal('M 10 20 C 15 25, 20 30, 25 35 ');
+                expect(path.lastPoint.x).to.equal(25);
+                expect(path.lastPoint.y).to.equal(35);
+            });
+        });
+
+        mocha.run();
+    </script>
+</body>
+</html>

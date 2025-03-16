@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>util.js Test</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mocha/10.2.0/mocha.css">
+</head>
+
+<body>
+    <div id="mocha"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mocha/10.2.0/mocha.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chai/4.3.7/chai.js"></script>
+    <script>
+        mocha.setup('bdd');
+        const { expect } = chai;
+    </script>
+    <script src="../util.js"></script>
+    <script>
+        describe('Utils', () => {
+            it('Utils.tween - should tween between two ranges', () => {
+                const result = Utils.tween(5, 0, 10, 0, 100);
+                expect(result).to.equal(50);
+            });
+
+            it('Utils.rpt - should return the first non-null value', () => {
+                const result = Utils.rpt({ a: null, b: 2, c: 3, d: 6 });
+                expect(result).to.equal(1);
+            });
+
+            it('Utils.normalize - should normalize a value between two ranges', () => {
+                const result = Utils.normalize(50, 100);
+                expect(result).to.equal(0.5);
+            });
+
+            it('Utils.prc - should return a percentage of a value', () => {
+                const result = Utils.prc(50, 100);
+                expect(result).to.equal(50);
+            });
+
+            it('Utils.kvMap - should map an array to an object using the first function as key and the second as value', () => {
+                const arr = [{ id: 1, value: 'a' }, { id: 2, value: 'b' }];
+                const result = Utils.kvMap(arr, o => o.id, o => o.value);
+                expect(result).to.deep.equal({ 1: 'a', 2: 'b' });
+            });
+
+            it('Utils.kvMap - should use Identity as default value function', () => {
+                const arr = [{ id: 1, value: 'a' }, { id: 2, value: 'b' }];
+                const result = Utils.kvMap(arr, o => o.value);
+                expect(result).to.deep.equal({ a: { id: 1, value: 'a' }, b: { id: 2, value: 'b' } });
+            });
+
+            it('Utils.vkMap - should map an array to an object using the first function as value and the second as key', () => {
+                const arr = [{ id: 1, value: 'a' }, { id: 2, value: 'b' }];
+                const result = Utils.vkMap(arr, o => o.value, o => o.id);
+                expect(result).to.deep.equal({ 1: 'a', 2: 'b' });
+            });
+
+            it('Utils.vkMap - should use "id" as default key function', () => {
+                const arr = [{ id: 1, value: 'a' }, { id: 2, value: 'b' }];
+                const result = Utils.vkMap(arr, o => o.value);
+                expect(result).to.deep.equal({ 1: 'a', 2: 'b' });
+            });
+
+            it('Utils.range - should create an array of n elements filled with the index', () => {
+                const result = Utils.range(5);
+                expect(result).to.have.lengthOf(5);
+                expect(result).to.deep.equal([0, 1, 2, 3, 4]);
+            });
+
+            it('Utils.deduplicate - should remove duplicate elements from an array', () => {
+                const result = Utils.deduplicate([1, 2, 3, 2, 1]);
+                expect(result).to.deep.equal([1, 2, 3]);
+            });
+
+            it('Utils.isPrimitiveOrFalsy - should return true for primitive values or falsy values', () => {
+                expect(Utils.isPrimitiveOrFalsy(0)).to.be.true;
+                expect(Utils.isPrimitiveOrFalsy('')).to.be.true;
+                expect(Utils.isPrimitiveOrFalsy(false)).to.be.true;
+                expect(Utils.isPrimitiveOrFalsy(null)).to.be.true;
+                expect(Utils.isPrimitiveOrFalsy(undefined)).to.be.true;
+                expect(Utils.isPrimitiveOrFalsy({})).to.be.false;
+                expect(Utils.isPrimitiveOrFalsy([])).to.be.false;
+            });
+        });
+
+        describe('Utils.deepMerge', () => {
+
+            it('should overwrite the property in the target', () => {
+                const target = { a: 1, b: 2 };
+                const source = { b: 3 };
+                const result = Utils.deepMerge(target, source);
+                expect(result).to.deep.equal({ a: 1, b: 3 });
+            });
+
+            it('should merge two objects', () => {
+                const target = { a: 1, b: { c: 2, d: 3 } };
+                const source = { b: { c: 4, e: 5 }, f: 6 };
+                const result = Utils.deepMerge(target, source);
+                expect(result).to.deep.equal({ a: 1, b: { c: 4, d: 3, e: 5 }, f: 6 });
+            });
+
+            it('should merge nested objects', () => {
+                const target = { a: 1, b: { c: { d: 2, e: 3 }, f: 4 } };
+                const source = { b: { c: { d: 5, g: 6 }, h: 7 }, i: 8 };
+                const result = Utils.deepMerge(target, source);
+                expect(result).to.deep.equal({ a: 1, b: { c: { d: 5, e: 3, g: 6 }, f: 4, h: 7 }, i: 8 });
+            });
+
+            it('should merge arrays', () => {
+                const target = { a: 1, b: [2, 3] };
+                const source = { b: [4, 5], c: 6 };
+                const result = Utils.deepMerge(target, source);
+                expect(result).to.deep.equal({ a: 1, b: [2, 3, 4, 5], c: 6 });
+            });
+
+            it('should merge nested arrays', () => {
+                const target = { a: 1, b: [[2, 3], [4, 5]] };
+                const source = { b: [[6, 7], [8, 9]], c: 10 };
+                const result = Utils.deepMerge(target, source);
+                expect(result).to.deep.equal({ a: 1, b: [[2, 3], [4, 5], [6, 7], [8, 9]], c: 10 });
+            });
+
+            it('should merge objects and arrays', () => {
+                const target = { a: 1, b: { c: [2, 3], d: 4 } };
+                const source = { b: { c: [5, 6], e: 7 }, f: 8 };
+                const result = Utils.deepMerge(target, source);
+                expect(result).to.deep.equal({ a: 1, b: { c: [2, 3, 5, 6], d: 4, e: 7 }, f: 8 });
+            });
+        });
+
+        describe('IdUtils', () => {
+
+            it('IdUtils.ID - should generate a unique ID', () => {
+                const id = IdUtils.ID;
+                expect(id).to.be.a('number');
+            });
+
+            it('IdUtils.HID - should generate a unique hexadecimal ID', () => {
+                const hid = IdUtils.HID;
+                expect(hid).to.be.a('string');
+                expect(parseInt(hid, 16)).to.be.a('number');
+            });
+
+            it('IdUtils.toX - should convert index to x coordinate', () => {
+                const x = IdUtils.toX(5, 3);
+                expect(x).to.equal(2);
+            });
+
+            it('IdUtils.toY - should convert index to y coordinate', () => {
+                const y = IdUtils.toY(5, 3);
+                expect(y).to.equal(1);
+            });
+
+            it('IdUtils.toXY - should convert index to x and y coordinates', () => {
+                const xy = IdUtils.toXY(5, 3);
+                expect(xy).to.deep.equal({ x: 2, y: 1 });
+            });
+
+            it('IdUtils.toID - should calculate the index from x and y coordinates', () => {
+                const id = IdUtils.toID(2, 1, 3);
+                expect(id).to.equal(5);
+            });
+
+            it('IdUtils.toID - should calculate the index from an object with x and y properties', () => {
+                const id = IdUtils.toID({ x: 2, y: 1 }, 3);
+                expect(id).to.equal(5);
+            });
+
+            it('IdUtils.toID - should calculate the index from an array with x and y coordinates', () => {
+                const id = IdUtils.toID([2, 1], 3);
+                expect(id).to.equal(5);
+            });
+        });
+
+        describe('SUtils', () => {
+            it('SUtils.trimAndFill - should trim and fill a string', () => {
+                const result = SUtils.trimAndFill('test', 10, '-');
+                expect(result).to.equal('test------');
+            });
+
+            it('SUtils.normalize - should normalize a string', () => {
+                const result = SUtils.normalize('café');
+                expect(result).to.equal('cafe');
+            });
+
+            it('SUtils.strip - should strip a string', () => {
+                const result = SUtils.strip('Café/With-Diacritics_123!');
+                expect(result).to.equal('cafe');
+            });
+
+            it('SUtils.tokenize - should tokenize a string', () => {
+                const result = SUtils.tokenize('sphìnx\nOf_blàckQuartz_jùdgé, My_vow');
+                expect(result).to.deep.equal(['sphinx', 'Of', 'black', 'Quartz', 'judge', 'My', 'vow']);
+            });
+
+            it('SUtils.snakeCase - should convert a string to snake case', () => {
+                const result = SUtils.snakeCase('sphìnx\nOf_blàckQuartz_jùdgé, My_vow');
+                expect(result).to.equal('sphinx_of_black_quartz_judge_my_vow');
+            });
+
+            it('SUtils.kebabCase - should convert a string to kebab case', () => {
+                const result = SUtils.kebabCase('sphìnx\nOf_blàckQuartz_jùdgé, My_vow');
+                expect(result).to.equal('sphinx-of-black-quartz-judge-my-vow');
+            });
+
+            it('SUtils.camelCase - should convert a string to camel case', () => {
+                const result = SUtils.camelCase('sphìnx\nOf_blàckQuartz_jùdgé, My_vow');
+                expect(result).to.equal('sphinxOfBlackQuartzJudgeMyVow');
+            });
+
+            it('SUtils.capitalize - should capitalize a string', () => {
+                const result = SUtils.capitalize('test string');
+                expect(result).to.equal('Test string');
+            });
+        });
+
+        describe('MUtils', () => {
+            it('MUtils.toRadians - should convert degrees to radians', () => {
+                const radians = MUtils.toRadians(180);
+                expect(radians).to.be.closeTo(Math.PI, 0.0001);
+            });
+
+            it('MUtils.toDegrees - should convert radians to degrees', () => {
+                const degrees = MUtils.toDegrees(Math.PI);
+                expect(degrees).to.be.closeTo(180, 0.0001);
+            });
+
+            it('MUtils.circleIntersectionPoints - should calculate the intersection points of two circles', () => {
+                const points = MUtils.circleIntersectionPoints({
+                    x1: 0, y1: 0, r1: 5,
+                    x2: 5, y2: 0, r2: 5,
+                    cx: 2.5, cy: 0
+                });
+                expect(points).to.have.lengthOf(2);
+                expect(points[0].x).to.be.closeTo(2.5, 0.0001);
+                expect(points[0].y).to.be.closeTo(4.330127018922193, 0.0001);
+                expect(points[1].x).to.be.closeTo(2.5, 0.0001);
+                expect(points[1].y).to.be.closeTo(-4.330127018922193, 0.0001);
+            });
+
+            it('MUtils.random - should generate a random number between 0 and n', () => {
+                const random = MUtils.random(10);
+                expect(random).to.be.at.least(0);
+                expect(random).to.be.below(10);
+            });
+        });
+
+        describe('Filter', () => {
+            it('Filter.first - should filter the first element', () => {
+                const result = [1, 2, 3].filter(Filter.first);
+                expect(result).to.deep.equal([1]);
+            });
+
+            it('Filter.last - should filter the last element', () => {
+                const result = [1, 2, 3].filter(Filter.last);
+                expect(result).to.deep.equal([3]);
+            });
+
+            it('Filter.isTruthyOrZero - should filter elements that are truthy or zero', () => {
+                const result = [0, 1, null, 2, undefined, 3].filter(Filter.isTruthyOrZero);
+                expect(result).to.deep.equal([0, 1, 2, 3]);
+            });
+
+            it('Filter.not - should filter elements that do not match the predicate', () => {
+                const result = [1, 2, 3, 4].filter(Filter.not(n => n % 2 === 0));
+                expect(result).to.deep.equal([1, 3]);
+            });
+        });
+
+        describe('Sort', () => {
+            it('Sort.alpha - should sort alphabetically', () => {
+                const result = ['banana', 'apple', 'cherry'].sort(Sort.alpha());
+                expect(result).to.deep.equal(['apple', 'banana', 'cherry']);
+            });
+
+            it('Sort.asc - should sort in ascending order', () => {
+                const result = [3, 1, 2].sort(Sort.asc());
+                expect(result).to.deep.equal([1, 2, 3]);
+            });
+
+            it('Sort.multiSort - should sort by multiple criteria', () => {
+                const result = [
+                    { name: 'banana', value: 2 },
+                    { name: 'apple', value: 3 },
+                    { name: 'apple', value: 1 }
+                ].sort(Sort.multiSort(Sort.alpha(o => o.name), Sort.asc(o => o.value)));
+                expect(result).to.deep.equal([
+                    { name: 'apple', value: 1 },
+                    { name: 'apple', value: 3 },
+                    { name: 'banana', value: 2 }
+                ]);
+            });
+        });
+
+        describe('Reduce', () => {
+            it('Reduce.with - should reduce with a custom function', () => {
+                const result = [1, 2, 3].reduce(Reduce.with((a, c) => a.push(c * 2)), [])
+                expect(result).to.deep.equal([2, 4, 6]);
+            });
+
+            it('Reduce.combine - should combine elements into pairs', () => {
+                const result = [1, 2, 3, 4].reduce(Reduce.combine, []);
+                expect(result).to.deep.equal([[1, 2], [1, 3], [1, 4], [2, 3], [2, 4], [3, 4]]);
+            });
+
+            it('Reduce.combineN - should combine elements into groups of n', () => {
+                const result = [1, 2, 3, 4].reduce(Reduce.combineN(3), []);
+                expect(result).to.deep.equal([[1, 2, 3], [1, 2, 4], [1, 3, 4], [2, 3, 4]]);
+            });
+
+            it('Reduce.fullCombine - should combine elements into all possible combinations', () => {
+                const result = [1, 2, 3].reduce(Reduce.fullCombine, []);
+                expect(result).to.deep.equal([[1], [2], [1, 2], [3], [1, 3], [2, 3], [1, 2, 3]]);
+            });
+
+            it('Reduce.permutations - should generate all permutations of an array', () => {
+                const result = [1, 2, 3].reduce(Reduce.permutations, []);
+                expect(result).to.have.lengthOf(6);
+                expect(result).to.have.deep.members([[1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]]);
+            });
+        });
+
+        mocha.run();
+    </script>
+</body>
+
+</html>

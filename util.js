@@ -44,9 +44,20 @@ class IdUtils {
 		x: IdUtils.toX(i, w),
 		y: IdUtils.toY(i, w)
 	});
-	static toID = (x, y, w) => Math.floor(y) * w + Math.floor(x);
-	static toID_O = ({ x, y }, w) => IdUtils.toID(x, y, w);
-	static toID_A = (xy, w) => IdUtils.toID(xy[0], xy[1], w);
+
+	static toID = function (coords, w) {
+		let x, y;
+		if (Array.isArray(coords)) {
+			[x, y] = coords;
+		} else if (typeof coords === 'object') {
+			({ x, y } = coords);
+		} else {
+			x = coords;
+			y = w;
+			w = arguments[2];
+		}
+		return Math.floor(y) * w + Math.floor(x);
+	};
 }
 
 const Identity = o => o;
@@ -54,7 +65,6 @@ const Identity = o => o;
 class Utils {
 
 	static tween = (v, r1, r2, m1, m2) => m1 + (m2 - m1) * ((v - r1) / (r2 - r1));
-
 
 	static rpt({ a, b, c, d }) {
 		if (!a) return (b * c) / d;
@@ -94,10 +104,28 @@ class Utils {
 
 	static get location() { return new URL(window.location.href) }
 
+	static isPrimitiveOrFalsy = (target) => typeof target !== 'object' || !Boolean(target);
+
 	static deepMerge(target, source) {
+		if (Utils.isPrimitiveOrFalsy(target) && Utils.isPrimitiveOrFalsy(source)) {
+			return target;
+		}
+
 		for (const key of Object.keys(source)) {
-			if (source[key] && typeof source[key] === 'object' && !Array.isArray(source[key])) {
-				target[key] = Utils.deepMerge(target[key] || {}, source[key]);
+			// throw TypeError if the source and the target are not undefined and have different types
+			if (target[key] && typeof target[key] !== typeof source[key]) {
+				throw new TypeError(`Cannot merge ${typeof target[key]} with ${typeof source[key]}`);
+			}
+
+			if (source[key] && typeof source[key] === 'object') {
+				if (Array.isArray(source[key])) {
+					if (!Array.isArray(target[key])) {
+						target[key] = [];
+					}
+					target[key] = target[key].concat(source[key]);
+				} else {
+					target[key] = Utils.deepMerge(target[key] || {}, source[key]);
+				}
 			} else {
 				target[key] = source[key];
 			}
@@ -109,12 +137,20 @@ class Utils {
 
 class SUtils {
 	static trimAndFill = (s, n, c) => s.length > n ? s.substring(0, n) : s.padEnd(n, c);
-	static sentenceCase = s => s.replaceAll('_', ' ').replace(/(?<![A-Z\s])(?<=.)([A-Z])/g, ' $1');
-	static snakeCase = s => SUtils.sentenceCase(s?.trim()).replaceAll(/\s+/g, '_').toUpperCase();
-	static camelCase = s => s.replace(/^(\w)/g, (_, c) => c.toLowerCase());
-	static capitalize = str => str.charAt(0).toUpperCase() + str.slice(1);
-	static strip = (s) => SUtils.normalize(s)?.split("/")[0]?.trim().replace(/\W+/g, "_").toLowerCase();
+
 	static normalize = (s) => s?.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+	static strip = (s) => SUtils.normalize(s)?.split("/")[0]?.trim().replace(/\W+/g, "_").toLowerCase();
+
+	static tokenize = (s) => SUtils.normalize(s)
+		?.split(/[\W_]+/)
+		.flatMap(w => w.split(/(?=[A-Z])/))
+		.filter(Boolean);
+
+	static snakeCase = (s) => SUtils.tokenize(s)?.join("_").toLowerCase();
+	static kebabCase = (s) => SUtils.tokenize(s)?.join("-").toLowerCase();
+	static camelCase = (s) => SUtils.tokenize(s)?.map((w, i) => i ? SUtils.capitalize(w) : w)?.join("");
+
+	static capitalize = str => str.charAt(0).toUpperCase() + str.slice(1);
 
 	static trim = (s) => s?.trim();
 }
@@ -123,6 +159,20 @@ class MUtils {
 	static toRadians = (degrees) => degrees * (Math.PI / 180);
 	static toDegrees = (radians) => radians * (180 / Math.PI);
 
+
+	/**
+	 * Calculate the intersection points of two circles.
+	 * @param {Object} params - The parameters for the circles.
+	 * @param {number} params.x1 - The x coordinate of the center of the first circle.
+	 * @param {number} params.y1 - The y coordinate of the center of the first circle.
+	 * @param {number} params.r1 - The radius of the first circle.
+	 * @param {number} params.x2 - The x coordinate of the center of the second circle.
+	 * @param {number} params.y2 - The y coordinate of the center of the second circle.
+	 * @param {number} params.r2 - The radius of the second circle.
+	 * @param {number} params.cx - The x coordinate of the center point for sorting.
+	 * @param {number} params.cy - The y coordinate of the center point for sorting.
+	 * @returns {Array<Object>} The intersection points sorted by distance to the center point.
+	 */
 	static circleIntersectionPoints({
 		x1, y1, r1,
 		x2, y2, r2,
@@ -169,13 +219,14 @@ class MUtils {
 			? [{ x: p1x, y: p1y }, { x: p2x, y: p2y }]
 			: [{ x: p2x, y: p2y }, { x: p1x, y: p1y }];
 	}
+
 	static random(l) { return Math.floor(Math.random() * l) }
 }
 
 class Filter {
 	static first = (o, i) => i === 0;
 	static last = (o, i, a) => i === a.length - 1;
-	static notNull = Boolean;
+	static isTruthyOrZero = (o) => Boolean(o) || o === 0;
 	static not = (f) => (...a) => !f(...a);
 }
 
