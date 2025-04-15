@@ -20,7 +20,7 @@ class TableBuilder {
     build() {
         return Span.with({
             id: "table",
-            class: "d-flex flex-column m-2 border rounded-3 shadow-sm",
+            class: "d-flex flex-column m-2 border border-2 rounded-3 shadow-sm overflow-hidden",
             children: [
                 Span.with({
                     id: "header",
@@ -31,7 +31,6 @@ class TableBuilder {
                         children: Object.keys(this.columns).map((key, x) => Span.with({
                             id: `header-${key}`,
                             class: [
-                                "p-2 col text-truncate",
                                 x !== 0 ? "border-start" : "",
                                 this.columns[key].class ?? ""
                             ],
@@ -50,7 +49,6 @@ class TableBuilder {
                             return Span.with({
                                 id: `cell-${y}-${key}`,
                                 class: [
-                                    "p-2 col text-truncate",
                                     x !== 0 ? "border-start" : "",
                                     column.class ?? ""
                                 ],
