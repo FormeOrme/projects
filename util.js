@@ -381,33 +381,30 @@ class Dom {
 		const parent = document.querySelector(parentSelector);
 		if (!parent) return;
 
-		const observer = new MutationObserver((mutationsList, observer) => {
+		const observer = new MutationObserver((mutationsList, observer) =>
 			mutationsList.forEach(mutation => {
-				if (mutation.type === 'childList') {
-					Array.from(mutation.addedNodes).forEach(node => {
-						if (node.nodeType === Node.ELEMENT_NODE) {
-							if (node.matches(targetSelector)) {
-								callback(node, observer);
-								return;
-							}
-							node.querySelectorAll(targetSelector).forEach(child => {
-								callback(child, observer);
-							});
-						}
-					});
-				}
-			});
-		})
+				if (mutation.type !== 'childList') return;
+				Array.from(mutation.addedNodes).forEach(node => {
+					if (node.nodeType !== Node.ELEMENT_NODE) return;
+					if (node.matches(targetSelector)) {
+						callback(node, observer);
+						return;
+					}
+					node.querySelectorAll(targetSelector)
+						.forEach(child => callback(child, observer));
+				});
+			}));
 		observer.observe(parent, { childList: true, subtree: true });
 		document.querySelectorAll(targetSelector)
 			.forEach(element => callback(element, observer));
 	}
 
 	static Elem = class {
-		get _type() { return this.constructor.name.replace('_', '').toLowerCase(); }
+
 		static with(obj) {
 			return Object.assign(new this(), obj);
 		}
+
 		and(obj) {
 			const updated = Object.create(Object.getPrototypeOf(this));
 			return Utils.deepMerge(Object.assign(updated, this), obj);
@@ -419,7 +416,7 @@ class Dom {
 			if (profile) { console.profileEnd(profile) };
 			return created;
 		}
-		toJSON() { return ({ _type: this._type, ...this }); }
+
 		wrapWith(element, options = {}) {
 			if (!options?.optional) {
 				return this;
@@ -428,6 +425,7 @@ class Dom {
 			element.children.splice(options?.position === undefined ? element.children.length : options.position, 0, this);
 			return element;
 		}
+
 		addChild(child) {
 			if (child) {
 				this.children = Array.isArray(this.children) ? this.children : (this.children ? [this.children] : []);
@@ -437,13 +435,7 @@ class Dom {
 		}
 	}
 
-	// 	static clazz = (name, cls) => eval(`class ${name} extends ${cls} {};`);
-	static clazz = (name, cls) => ({
-		[name]: class extends cls { }
-	})[name];
-	static evalNode = node => window[node] = Dom.clazz(node, Dom.Elem);
-
-	static evalNodes = nodes => nodes.forEach(Dom.evalNode);
+	static evalNodes = nodes => eval(`"use strict"; ${nodes.map(e => `class ${e} extends Dom.Elem {}; window.${e} = ${e};`).join("")}`);
 
 	static TextElements = "Div,Span,P,Small,Menu";
 	static HeadingElements = "H1,H2,H3,H4,H5,H6,HGroup";
