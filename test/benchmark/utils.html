@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SUtils Benchmark</title>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/benchmark/2.1.4/benchmark.min.js"></script>
+    <script src="../../util.js"></script>
+</head>
+
+<body>
+    <h1>SUtils Benchmark</h1>
+    <script>
+        const suite = new Benchmark.Suite();
+        const resultsContainer = document.createElement('div');
+        document.body.appendChild(resultsContainer);
+
+        const minSamples = 60;
+        const defer = true;
+
+        console.profile()
+        suite
+            .add("evalNodes", {
+                minSamples, defer,
+                fn: (deferred) => {
+                    Dom.evalNodes(Dom.AllElements);
+                    deferred.resolve();
+                }
+            })
+            .on('cycle', (event) => {
+                const result = document.createElement('p');
+                result.textContent = String(event.target);
+                resultsContainer.appendChild(result);
+            })
+            .on('complete', function () {
+                console.profileEnd()
+            })
+            .run({ async: true, 'minSamples': 60 });
+
+        /*
+                    .add('Math.sqrt', () => {
+                        for (let i = 0; i < 1000000; i++) {
+                            Math.sqrt(i);
+                        }
+                    })
+                    .add('** 0.5', () => {
+                        for (let i = 0; i < 1000000; i++) {
+                            i ** 0.5;
+                        }
+                    })
+                    .add('Math.pow 0.5', () => {
+                        for (let i = 0; i < 1000000; i++) {
+                            Math.pow(i, 0.5);
+                        }
+                    })
+                    .add('Math.pow 3', () => {
+                        for (let i = 0; i < 1000000; i++) {
+                            Math.pow(i, 3);
+                        }
+                    })
+                    .add('** 3', () => {
+                        for (let i = 0; i < 1000000; i++) {
+                            i ** 3;
+                        }
+                    })  
+        */
+
+    </script>
+</body>
+
+</html>

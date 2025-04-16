@@ -1,6 +1,6 @@
 const username = 'FormeOrme';
 const repoName = 'projects';
-const link = (path) => `https://formeorme.github.io/projects/${path}`;
+const link = (path) => `${window.location.origin}/${path}`;
 
 document.head.append(Link.with({
     attribute: {
@@ -19,7 +19,10 @@ Utils.fetchJson({
         class: "container mt-2",
         children: [
             H1.with({
-                innerText: title
+                children: [
+                    A.with({ text: "..", attribute: { href: "javascript:history.back()" } }),
+                    Span.with({ text: ` ${title}` })
+                ]
             }),
             Div.with({
                 class: "d-flex flex-wrap justify-content-between",

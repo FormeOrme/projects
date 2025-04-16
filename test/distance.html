@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Distance Tests</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mocha/10.2.0/mocha.css">
+</head>
+
+<body>
+    <div id="mocha"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mocha/10.2.0/mocha.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chai/4.3.7/chai.js"></script>
+    <script>
+        mocha.setup('bdd');
+        const { expect } = chai;
+    </script>
+    <script src="../distance.js"></script>
+    <script>
+        describe('Distance.hamming', function () {
+            it('should return 0 for identical strings', function () {
+                expect(Distance.hamming('10101', '10101')).to.equal(0);
+            });
+
+            it('should return the correct hamming distance for different strings', function () {
+                expect(Distance.hamming('karolin', 'kathrin')).to.equal(3);
+                expect(Distance.hamming('karolin', 'kerstin')).to.equal(3);
+                expect(Distance.hamming('kathrin', 'kerstin')).to.equal(4);
+                expect(Distance.hamming('0000', '1111')).to.equal(4);
+                expect(Distance.hamming('2173896', '2233796')).to.equal(3);
+            });
+
+            it('should throw an error for strings of different lengths', function () {
+                expect(() => Distance.hamming('10101', '101010')).to.throw();
+            });
+
+            it('should return 0 for identical arrays', function () {
+                expect(Distance.hamming(
+                    [1, 0, 1, 0, 1],
+                    [1, 0, 1, 0, 1]
+                )).to.equal(0);
+            });
+
+            it('should return the correct hamming distance for different arrays', function () {
+                expect(Distance.hamming(
+                    [1, 0, 1, 0, 1],
+                    [1, 0, 1, 1, 1]
+                )).to.equal(1);
+                expect(Distance.hamming(
+                    ["a", "b", "c", "d", "e"],
+                    ["a", "b", "d", "e", "f"]
+                )).to.equal(3);
+            });
+
+        });
+
+        describe('BagDistance', function () {
+            it('BagDistance.getRawScore - should return 0 for identical strings', function () {
+                expect(BagDistance.getRawScore('10101', '10101')).to.equal(0);
+            });
+
+            it('BagDistance.getRawScore - should return the correct score for different strings', function () {
+                expect(BagDistance.getRawScore('karolin', 'kathrin')).to.equal(2);
+                expect(BagDistance.getRawScore('karolin', 'kerstin')).to.equal(3);
+                expect(BagDistance.getRawScore('kathrin', 'kerstin')).to.equal(2);
+                expect(BagDistance.getRawScore('0000', '1111')).to.equal(4);
+                expect(BagDistance.getRawScore('2173896', '2233796')).to.equal(2);
+            });
+
+            it('BagDistance.getRawScore - should return 0 for identical Objects', function () {
+                expect(BagDistance.getRawScore({ a: 1, b: 2 }, { a: 1, b: 2 })).to.equal(0);
+            });
+
+            it('BagDistance.getRawScore - should return the correct score for different Objects', function () {
+                expect(BagDistance.getRawScore({ a: 1, b: 2 }, { a: 1, b: 3 })).to.equal(1);
+                expect(BagDistance.getRawScore({ a: 1, b: 2 }, { a: 1, b: 3, c: 4 })).to.equal(5);
+                expect(BagDistance.getRawScore({ a: 1, b: 2 }, { a: 1, c: 3 })).to.equal(3);
+            });
+
+            it('BagDistance.getSimScore - should return the correct score for different strings', function () {
+                expect(BagDistance.getSimScore('10101', '10101')).to.equal(1);
+                expect(BagDistance.getSimScore('cat', 'hat')).to.closeTo(2 / 3, 0.0001);
+                expect(BagDistance.getSimScore('reef', 'feed')).to.closeTo(3 / 4, 0.0001);
+            });
+        });
+
+        mocha.run();
+
+    </script>
+</body>
+
+</html>
