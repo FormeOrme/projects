@@ -401,6 +401,10 @@ class Dom {
 
 	static Elem = class {
 
+		get _type() {
+			return this.constructor.name.replace('_', '').toLowerCase();
+		}
+
 		static with(obj) {
 			return Object.assign(new this(), obj);
 		}
