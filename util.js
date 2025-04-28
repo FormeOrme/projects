@@ -62,6 +62,43 @@ class IdUtils {
 
 const Identity = o => o;
 
+class Map2D {
+	constructor() {
+		this.map = new Map();
+	}
+
+	has([k1, k2]) {
+		return this.map.has(k1) && this.map.get(k1).has(k2);
+	}
+
+	get([k1, k2]) {
+		return this.map.has(k1) ? this.map.get(k1).get(k2) : undefined;
+	}
+
+	set([k1, k2], value) {
+		if (!this.map.has(k1)) {
+			this.map.set(k1, new Map());
+		}
+		this.map.get(k1).set(k2, value);
+
+		if (!this.map.has(k2)) {
+			this.map.set(k2, new Map());
+		}
+		this.map.get(k2).set(k1, value);
+
+		return this;
+	}
+
+	fetch([k1, k2], func) {
+		if (this.has([k1, k2])) {
+			return this.get([k1, k2]);
+		}
+		const value = func(k1, k2);
+		this.set([k1, k2], value);
+		return value;
+	}
+}
+
 class Utils {
 
 	static tween = (v, r1, r2, m1, m2) => m1 + (m2 - m1) * ((v - r1) / (r2 - r1));
@@ -132,6 +169,13 @@ class Utils {
 		}
 		return target;
 	};
+
+	static profile = (name, func) => {
+		if (name) { console.profile(name); }
+		const result = func();
+		if (name) { console.profileEnd(name); }
+		return result;
+	}
 
 }
 
@@ -415,10 +459,7 @@ class Dom {
 		}
 
 		create({ profile, namespace } = {}) {
-			if (profile) { console.profile(profile) };
-			const created = Dom.createElement(this, namespace);
-			if (profile) { console.profileEnd(profile) };
-			return created;
+			return Utils.profile(profile, () => Dom.createElement(this, namespace));
 		}
 
 		wrapWith(element, options = {}) {

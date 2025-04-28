@@ -16,72 +16,170 @@
         mocha.setup('bdd');
         const { expect } = chai;
     </script>
+    <script src="../words.js"></script>
+    <script src="../util.js"></script>
     <script src="../distance.js"></script>
     <script>
-        describe('Distance.hamming', function () {
+        describe('Hamming', function () {
             it('should return 0 for identical strings', function () {
-                expect(Distance.hamming('10101', '10101')).to.equal(0);
+                expect(Hamming.arrays('10101', '10101')).to.equal(0);
             });
 
             it('should return the correct hamming distance for different strings', function () {
-                expect(Distance.hamming('karolin', 'kathrin')).to.equal(3);
-                expect(Distance.hamming('karolin', 'kerstin')).to.equal(3);
-                expect(Distance.hamming('kathrin', 'kerstin')).to.equal(4);
-                expect(Distance.hamming('0000', '1111')).to.equal(4);
-                expect(Distance.hamming('2173896', '2233796')).to.equal(3);
+                expect(Hamming.arrays('karolin', 'kathrin')).to.equal(3);
+                expect(Hamming.arrays('karolin', 'kerstin')).to.equal(3);
+                expect(Hamming.arrays('kathrin', 'kerstin')).to.equal(4);
+                expect(Hamming.arrays('0000', '1111')).to.equal(4);
+                expect(Hamming.arrays('123456', '123567')).to.equal(3);
             });
 
             it('should throw an error for strings of different lengths', function () {
-                expect(() => Distance.hamming('10101', '101010')).to.throw();
+                expect(() => Hamming.arrays('10101', '101010')).to.throw();
             });
 
             it('should return 0 for identical arrays', function () {
-                expect(Distance.hamming(
+                expect(Hamming.arrays(
                     [1, 0, 1, 0, 1],
                     [1, 0, 1, 0, 1]
                 )).to.equal(0);
             });
 
             it('should return the correct hamming distance for different arrays', function () {
-                expect(Distance.hamming(
+                expect(Hamming.arrays(
                     [1, 0, 1, 0, 1],
                     [1, 0, 1, 1, 1]
                 )).to.equal(1);
-                expect(Distance.hamming(
+                expect(Hamming.arrays(
                     ["a", "b", "c", "d", "e"],
                     ["a", "b", "d", "e", "f"]
                 )).to.equal(3);
             });
 
+            it('should throw an error for arrays of different lengths', function () {
+                expect(() => Hamming.arrays(
+                    [1, 0, 1, 0, 1],
+                    [1, 0, 1, 0]
+                )).to.throw();
+            });
+
+            it('should return 0 for identical objects', function () {
+                expect(Hamming.objects(
+                    { a: 1, b: 2 },
+                    { a: 1, b: 2 }
+                )).to.equal(0);
+            });
+
+            it('should return the correct hamming distance for different objects', function () {
+                expect(Hamming.objects(
+                    { a: 1, b: 2 },
+                    { a: 1, b: 3 }
+                )).to.equal(1);
+                expect(Hamming.objects(
+                    { a: 1, b: 2 },
+                    { a: 1, b: 3, c: 4 }
+                )).to.equal(2);
+                expect(Hamming.objects(
+                    { a: 1, b: 2 },
+                    { a: 1, c: 3 }
+                )).to.equal(2);
+            });
+
+        });
+
+        describe('Jaccard', function () {
+
+            it('should return 1 for empty sets', function () {
+                expect(Jaccard.sets(new Set(), new Set())).to.equal(1);
+            });
+
+            it('should return 1 for identical sets', function () {
+                expect(Jaccard.sets(
+                    new Set([1, 2, 3]),
+                    new Set([1, 2, 3])
+                )).to.equal(1);
+            });
+
+            it('should return 0 for completely disjoint sets', function () {
+                expect(Jaccard.sets(
+                    new Set([1, 2, 3]),
+                    new Set([4, 5, 6])
+                )).to.equal(0);
+            });
+
+            it('should return the correct Jaccard similarity for overlapping sets', function () {
+                expect(Jaccard.sets(
+                    new Set([1, 2, 3]),
+                    new Set([2, 3, 4])
+                )).to.closeTo(2 / 4, 0.0001);
+                expect(Jaccard.sets(
+                    new Set([1, 2, 3]),
+                    new Set([2, 3, 4, 5])
+                )).to.closeTo(2 / 5, 0.0001);
+            });
+
+            it('should return 1 for identical maps', function () {
+                expect(Jaccard.maps(
+                    new Map([['a', 1], ['b', 2]]),
+                    new Map([['a', 1], ['b', 2]])
+                )).to.equal(1);
+            });
+
+            it('should return 0 for completely disjoint maps', function () {
+                expect(Jaccard.maps(
+                    new Map([['a', 1], ['b', 2]]),
+                    new Map([['c', 3], ['d', 4]])
+                )).to.equal(0);
+            });
+
+            it('should return the correct Jaccard similarity for overlapping maps', function () {
+                expect(Jaccard.maps(
+                    new Map([['a', 1], ['b', 2], ['c', 1]]),
+                    new Map([['a', 1], ['b', 3]])
+                )).to.closeTo(3 / 5, 0.0001);
+            });
+
         });
 
         describe('BagDistance', function () {
-            it('BagDistance.getRawScore - should return 0 for identical strings', function () {
-                expect(BagDistance.getRawScore('10101', '10101')).to.equal(0);
+            it('BagDistance.getRawScoreStr - should return 0 for identical strings', function () {
+                expect(BagDistance.getRawScoreStr('10101', '10101')).to.equal(0);
             });
 
-            it('BagDistance.getRawScore - should return the correct score for different strings', function () {
-                expect(BagDistance.getRawScore('karolin', 'kathrin')).to.equal(2);
-                expect(BagDistance.getRawScore('karolin', 'kerstin')).to.equal(3);
-                expect(BagDistance.getRawScore('kathrin', 'kerstin')).to.equal(2);
-                expect(BagDistance.getRawScore('0000', '1111')).to.equal(4);
-                expect(BagDistance.getRawScore('2173896', '2233796')).to.equal(2);
+            it('BagDistance.getRawScoreStr - should return the correct score for different strings', function () {
+                expect(BagDistance.getRawScoreStr('karolin', 'kathrin')).to.equal(2);
+                expect(BagDistance.getRawScoreStr('karolin', 'kerstin')).to.equal(3);
+                expect(BagDistance.getRawScoreStr('kathrin', 'kerstin')).to.equal(2);
+                expect(BagDistance.getRawScoreStr('0000', '1111')).to.equal(4);
+                expect(BagDistance.getRawScoreStr('123456', '123567')).to.equal(1);
             });
 
-            it('BagDistance.getRawScore - should return 0 for identical Objects', function () {
-                expect(BagDistance.getRawScore({ a: 1, b: 2 }, { a: 1, b: 2 })).to.equal(0);
+            it('BagDistance.getRawScoreObj - should return 0 for identical Objects', function () {
+                expect(BagDistance.getRawScoreObj({ a: 1, b: 2 }, { a: 1, b: 2 })).to.equal(0);
             });
 
-            it('BagDistance.getRawScore - should return the correct score for different Objects', function () {
-                expect(BagDistance.getRawScore({ a: 1, b: 2 }, { a: 1, b: 3 })).to.equal(1);
-                expect(BagDistance.getRawScore({ a: 1, b: 2 }, { a: 1, b: 3, c: 4 })).to.equal(5);
-                expect(BagDistance.getRawScore({ a: 1, b: 2 }, { a: 1, c: 3 })).to.equal(3);
+            it('BagDistance.getRawScoreObj - should return the correct score for different Objects', function () {
+                expect(BagDistance.getRawScoreObj(
+                    { a: 1, b: 2 },
+                    { a: 1, b: 3 }
+                )).to.equal(1);
+                expect(BagDistance.getRawScoreObj(
+                    { a: 1, b: 2 },
+                    { a: 1, b: 3, c: 4 }
+                )).to.equal(5);
+                expect(BagDistance.getRawScoreObj(
+                    { a: 1, b: 2 },
+                    { a: 1, c: 3 }
+                )).to.equal(3);
             });
 
-            it('BagDistance.getSimScore - should return the correct score for different strings', function () {
-                expect(BagDistance.getSimScore('10101', '10101')).to.equal(1);
-                expect(BagDistance.getSimScore('cat', 'hat')).to.closeTo(2 / 3, 0.0001);
-                expect(BagDistance.getSimScore('reef', 'feed')).to.closeTo(3 / 4, 0.0001);
+            it('BagDistance.getSimScoreStr - should return the correct score for different strings', function () {
+                expect(BagDistance.getSimScoreStr('10101', '10101')).to.equal(1);
+                expect(BagDistance.getSimScoreStr('cat', 'hat')).to.closeTo(2 / 3, 0.0001);
+                expect(BagDistance.getSimScoreStr('reef', 'feed')).to.closeTo(3 / 4, 0.0001);
+                expect(BagDistance.getSimScoreStr('Niall', 'Neil')).to.closeTo(0.6, 0.0001);
+                expect(BagDistance.getSimScoreStr('aluminum', 'Catalan')).to.closeTo(0.375, 0.0001);
+                expect(BagDistance.getSimScoreStr('ATCG', 'TAGC')).to.equal(1);
+                expect(BagDistance.getSimScoreStr('abcde', 'xyz')).to.equal(0);
             });
         });
 
