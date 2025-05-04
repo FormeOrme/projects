@@ -29,6 +29,27 @@ class Helper {
     }
 }
 
+class Euclidean {
+
+    /**
+     * Calculate the Euclidean distance between two points.
+     * 
+     * @param {Array<number>} point1 - The first point.
+     * @param {Array<number>} point2 - The second point.
+     * @returns {number} The Euclidean distance between the two points.
+     * */
+    static distance(point1, point2) {
+        if (point1.length !== point2.length) {
+            throw new Error("Points must have the same dimension");
+        }
+        let sum = 0;
+        for (let i = 0; i < point1.length; i++) {
+            sum += (point1[i] - point2[i]) ** 2;
+        }
+        return sum ** 0.5;
+    }
+}
+
 /**
  * Class representing Hamming distance calculations.
  */
@@ -279,172 +300,100 @@ class DataContainer {
         }
         this.dataSet = dataSet;
         this.distanceFunction = distanceFunction;
-
-        this.distanceMap = new Map2D();
     }
 
+}
+
+/**
+ * Class representing Multidimensional Scaling (MDS) calculations.
+ * 
+ * MDS is a technique used for dimensionality reduction and visualization of high-dimensional data.
+ * It attempts to preserve the pairwise distances between points in a lower-dimensional space.
+ */
+class Mds {
+
     /**
-     * Multidimensional scaling (MDS) algorithm.
+     * Calculates the stress value for a given set of points and target distances.
      * 
-     * @param {number} maxIterations - Maximum number of iterations.
-     * @param {Array<Object>} cluster - The dataset to process.
-     * @param {Function} distanceFunction - The function to calculate the distance between objects.
-     * @returns {Array<Object>} The coordinates of the objects.
+     * Stress is a measure of how well the distances between points in the reduced space
+     * match the target distances.
+     * 
+     * @param {Array<Array<number>>} points - The coordinates of the points in the reduced space.
+     * @param {Array<Object>} targetDistances - An array of objects representing the target distances.
+     * Each object should have the format { i1: number, i2: number, distance: number }.
+     * @returns {number} The calculated stress value.
      */
-    mds(
-        maxIterations = 100,
-        cluster = this.dataSet,
-        distanceFunction = this.distanceFunction,
-    ) {
-        const n = cluster.length;
-        const coordinates = new Float64Array(n * 2); // Typed array for coordinates
+    static calculateStress(points, targetDistances) {
+        const distances = points
+            .map((_, i) => i)
+            .reduce(Reduce.combine, [])
+            .map(([i1, i2]) => Euclidean.distance(points[i1], points[i2]));
 
-        // Initialize coordinates with random values
-        for (let i = 0; i < n; i++) {
-            coordinates[i * 2] = Math.random(); // x
-            coordinates[i * 2 + 1] = Math.random(); // y
+        // calculate the stress
+        let stress = 0;
+        for (let i = 0; i < targetDistances.length; i++) {
+            const targetDistance = targetDistances[i].distance;
+            const currentDistance = distances[i];
+            stress += Math.pow(targetDistance - currentDistance, 2);
         }
-
-        for (let iter = 0; iter < maxIterations; iter++) {
-            for (let i = 0; i < n; i++) {
-                const ix = i * 2;
-                const iy = ix + 1;
-
-                for (let j = i + 1; j < n; j++) { // Avoid redundant calculations (j > i)
-                    const jx = j * 2;
-                    const jy = jx + 1;
-
-                    const dx = coordinates[ix] - coordinates[jx];
-                    const dy = coordinates[iy] - coordinates[jy];
-                    const distance = Math.sqrt(dx * dx + dy * dy) || Number.MIN_VALUE; // Avoid division by zero
-
-                    const o1 = cluster[i];
-                    const o2 = cluster[j];
-                    const matrixDistance = this.distanceMap.fetch([o1, o2], distanceFunction);
-                    const error = distance - matrixDistance;
-                    const scale = error / distance;
-
-                    const adjustmentX = 0.5 * scale * dx;
-                    const adjustmentY = 0.5 * scale * dy;
-
-                    coordinates[ix] -= adjustmentX;
-                    coordinates[iy] -= adjustmentY;
-                    coordinates[jx] += adjustmentX;
-                    coordinates[jy] += adjustmentY;
-                }
-            }
-        }
-
-        // Convert typed array back to object format
-        return Array.from({ length: n }, (_, i) => ({
-            x: coordinates[i * 2],
-            y: coordinates[i * 2 + 1],
-            o: cluster[i],
-        }));
+        return stress;
     }
+
     /**
-     * K-means clustering algorithm.
-     *
-     * @param {number} k - The number of clusters to form.
-     * @param {number} maxIterations - The maximum number of iterations to perform.
-     * @returns {Array<Array<Object>>} An array of clusters, where each cluster is an array of objects.
-     * @throws {TypeError} If k is not a positive integer.
+     * Updates the positions of points using gradient descent to minimize stress.
+     * 
+     * @param {Array<Array<number>>} points - The coordinates of the points in the reduced space.
+     * @param {Array<Object>} targetDistances - An array of objects representing the target distances.
+     * Each object should have the format { i1: number, i2: number, distance: number }.
+     * @param {number} [learningRate=0.01] - The learning rate for gradient descent.
      */
-    kMeans(k, maxIterations = 100) {
-        if (!Condition.isPositiveInteger(k)) {
-            throw new TypeError('k must be a positive integer');
-        }
-        if (!Condition.isPositiveInteger(maxIterations)) {
-            throw new TypeError('maxIterations must be a positive integer');
-        }
-        if (this.dataSet.length < k) {
-            throw new Error('Number of clusters cannot exceed number of data points');
-        }
+    static updatePoints(points, targetDistances, learningRate = 0.01) {
 
-        const data = this.dataSet;
-        const distanceFunction = this.distanceFunction;
-        const mds = this.mds.bind(this);
+        const findIJ = (i, j) => (d) => (d.i1 === i && d.i2 === j) || (d.i1 === j && d.i2 === i);
 
-        function calculateCentroid(cluster) {
-            const n = cluster.length;
-            if (n === 0) {
-                throw new Error("Cluster is empty");
+        const gradients = points.map((p1, i) => {
+            const gradient = [0, 0];
+            for (let j = 0; j < points.length; j++) {
+                if (i === j) continue;
+                const p2 = points[j];
+                const distance = Euclidean.distance(p1, p2);
+                const targetDistance = targetDistances.find(findIJ(i, j)).distance;
+                const diff = distance - targetDistance;
+                gradient[0] += (p1[0] - p2[0]) * diff / distance;
+                gradient[1] += (p1[1] - p2[1]) * diff / distance;
             }
-
-            // Step 2: Apply MDS to get coordinates
-            const coordinates = mds(cluster);
-
-            // Step 3: Calculate the centroid
-            let avg = { x: 0, y: 0 };
-            for (let coord of coordinates) {
-                avg.x += coord.x;
-                avg.y += coord.y;
-            }
-            avg.x /= n;
-            avg.y /= n;
-
-            let centroid;
-            let minDistance = Infinity;
-            for (let coord of coordinates) {
-                const dx = coord.x - avg.x;
-                const dy = coord.y - avg.y;
-                const distance = (dx * dx + dy * dy) ** 0.5;
-                if (distance < minDistance) {
-                    minDistance = distance;
-                    centroid = coord.o; // Use the original object
-                }
-            }
-
-            return centroid;
+            return gradient.map(g => g * learningRate);
+        });
+        for (let i = 0; i < points.length; i++) {
+            points[i][0] -= gradients[i][0];
+            points[i][1] -= gradients[i][1];
         }
+    }
 
-        // Initialize centroids randomly
-        const centroids = [];
-        for (let i = 0; i < k; i++) {
-            const randomIndex = Math.floor(Math.random() * data.length);
-            centroids.push(data[randomIndex]);
-        }
-
-        let clusters = [];
-        let iter = 0;
-
-        for (; iter < maxIterations; iter++) {
-            // Assign clusters
-            clusters = Array.from({ length: k }, () => []);
-            for (const point of data) {
-                let closestCentroidIndex = 0;
-                let minDistance = Infinity;
-                for (let i = 0; i < k; i++) {
-                    let distance = this.distanceMap.fetch([centroids[i], point], distanceFunction);
-                    if (distance < minDistance) {
-                        minDistance = distance;
-                        closestCentroidIndex = i;
-                    }
-                }
-                clusters[closestCentroidIndex].push(point);
-            }
-
-            // Update centroids
-            const newCentroids = clusters.map(calculateCentroid);
-
-            // Check for convergence
-            let hasConverged = true;
-            for (let i = 0; i < k; i++) {
-                if (centroids[i] !== newCentroids[i]) {
-                    hasConverged = false;
-                    break;
-                }
-            }
-
-            if (hasConverged) {
+    static findPoints({
+        targetDistances,
+        learningRate = 0.01,
+        maxIterations = 1000,
+        tolerance = 0.01,
+        localMinimumStressDeltaThreshold = 0.01,
+        localMinimumStressThreshold = 1,
+    }) {
+        let points = MUtils.randomPoints(targetDistances.length);
+        let stress = Mds.calculateStress(points, targetDistances);
+        let iterations = 0;
+        let previousStress = stress;
+        while (iterations < maxIterations && stress > tolerance) {
+            Mds.updatePoints(points, targetDistances, learningRate);
+            stress = Mds.calculateStress(points, targetDistances);
+            stressDelta = Math.abs(stress - previousStress);
+            if (stressDelta < localMinimumStressDeltaThreshold && stress > localMinimumStressThreshold) {
+                // if the stress delta is small and the stress is high, we are stuck in a local minimum
+                // so we need to randomize the points
+                points = MUtils.randomPoints(targetDistances.length);
                 break;
             }
-
-            centroids.splice(0, k, ...newCentroids);
+            iterations++;
         }
-
-        return { iter, clusters };
+        return points;
     }
-
-
 }

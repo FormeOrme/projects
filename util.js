@@ -13,15 +13,36 @@ class LoStMan {
 	}
 }
 
-/* Query String Manager */
+/**
+ * Query String Manager (QueStMan)
+ * 
+ * A utility class for managing query string parameters in the browser's URL.
+ */
 class QueStMan {
-	static get(key) {
-		return new URLSearchParams(window.location.search).get(key);
+
+	/**
+	 * Retrieves the value of a query string parameter.
+	 * 
+	 * @param {string} key - The name of the query string parameter to retrieve.
+	 * @param {string} [orElse] - The default value to return if the parameter is not found.
+	 * @returns {string|null} The value of the query string parameter, or the default value if not found.
+	 */
+	static get(key, orElse) {
+		return new URLSearchParams(window.location.search).get(key) ?? orElse;
 	}
+
+	/**
+	 * Updates or adds a query string parameter in the URL without reloading the page.
+	 * 
+	 * @param {string} key - The name of the query string parameter to set.
+	 * @param {string} value - The value to set for the query string parameter.
+	 */
 	static set(key, value) {
 		const url = new URL(window.location.href);
 		url.searchParams.set(key, value);
-		window.location.href !== url.href && window.history.replaceState({}, document.title, url.toString());
+		if (window.location.href !== url.href) {
+			window.history.replaceState({}, document.title, url.toString());
+		}
 	}
 }
 
@@ -61,43 +82,6 @@ class IdUtils {
 }
 
 const Identity = o => o;
-
-class Map2D {
-	constructor() {
-		this.map = new Map();
-	}
-
-	has([k1, k2]) {
-		return this.map.has(k1) && this.map.get(k1).has(k2);
-	}
-
-	get([k1, k2]) {
-		return this.map.has(k1) ? this.map.get(k1).get(k2) : undefined;
-	}
-
-	set([k1, k2], value) {
-		if (!this.map.has(k1)) {
-			this.map.set(k1, new Map());
-		}
-		this.map.get(k1).set(k2, value);
-
-		if (!this.map.has(k2)) {
-			this.map.set(k2, new Map());
-		}
-		this.map.get(k2).set(k1, value);
-
-		return this;
-	}
-
-	fetch([k1, k2], func) {
-		if (this.has([k1, k2])) {
-			return this.get([k1, k2]);
-		}
-		const value = func(k1, k2);
-		this.set([k1, k2], value);
-		return value;
-	}
-}
 
 class Utils {
 
@@ -203,6 +187,22 @@ class MUtils {
 	static toRadians = (degrees) => degrees * (Math.PI / 180);
 	static toDegrees = (radians) => radians * (180 / Math.PI);
 
+	static randomPoints(num) {
+		const points = Array.from({ length: num }, () =>
+			[Math.random() * 10 - 5, Math.random() * 10 - 5]
+		);
+		return points;
+	}
+
+	static circlePoints(num, radius = 1, wiggle = 0) {
+		const points = Array.from({ length: num }, (_, i) => {
+			const angle = (i / num) * Math.PI * 2;
+			const x = radius * Math.cos(angle) + (Math.random() - 0.5) * wiggle;
+			const y = radius * Math.sin(angle) + (Math.random() - 0.5) * wiggle;
+			return [x, y];
+		});
+		return points;
+	}
 
 	/**
 	 * Calculate the intersection points of two circles.
@@ -400,11 +400,13 @@ class Dom {
 			node.appendChild(fragment);
 		}
 		if (e.style) {
-			for (let k in e.style) {
-				const val = e.style[k];
-				const important = val.includes('!important') ? 'important' : '';
-				node.style.setProperty(k, val.replace('!important', '').trim(), important);
-			}
+			Object.entries(e.style)
+				.filter(([k, v]) => v !== undefined && typeof v === 'string')
+				.map(([k, v]) => [SUtils.kebabCase(k), v])
+				.forEach(([k, v]) => {
+					const important = v.includes('!important') ? 'important' : '';
+					node.style.setProperty(k, v.replace('!important', '').trim(), important);
+				});
 		}
 		if (e.function) {
 			for (let k in e.function) {
