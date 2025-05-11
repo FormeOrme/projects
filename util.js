@@ -101,7 +101,7 @@ class Utils {
 	static vkMap = (arr, v = Identity, k = o => o.id) =>
 		Object.fromEntries(arr.map(c => [k(c), v(c)]));
 
-	static fetchJson = (o) => fetch(o.url, o.options)
+	static fetchJson = ({ url, options }) => fetch(url, options)
 		.then(r => r.json())
 		.then(r => ({ ...o, json: r }));
 
@@ -181,6 +181,11 @@ class SUtils {
 	static capitalize = str => str.charAt(0).toUpperCase() + str.slice(1);
 
 	static trim = (s) => s?.trim();
+
+	static formatKeys = (obj, format = SUtils.kebabCase) =>
+		Object.entries(obj)
+			.filter(([_, v]) => Boolean(v) || v === 0)
+			.map(([k, v]) => [format(k), v])
 }
 
 class MUtils {
@@ -402,9 +407,10 @@ class Dom {
 
 	static createElement(e, namespace) {
 		namespace = namespace || e.namespace;
+		const type = e.constructor.name.replace('_', '').toLowerCase();
 		const node = namespace
-			? document.createElementNS(namespace, e._type)
-			: document.createElement(e._type);
+			? document.createElementNS(namespace, type)
+			: document.createElement(type);
 
 		e.node = node;
 		node.source = e;
@@ -419,17 +425,18 @@ class Dom {
 		if (e.class) {
 			node.className = [].concat(e.class).filter(Boolean).join(" ").trim();
 		}
-		if (e.attribute) {
-			for (let k in e.attribute) {
-				if (e.attribute[k] !== undefined) {
-					node.setAttribute(k, e.attribute[k]);
-				}
-			}
-		}
 		if (e.event) {
 			for (let k in e.event) {
 				node.addEventListener(k, e.event[k].bind(null, node), false);
 			}
+		}
+		if (e.attribute) {
+			SUtils.formatKeys(e.attribute).forEach(([k, v]) => node.setAttribute(k, v));
+		}
+		if (e.style) {
+			SUtils.formatKeys(e.style).forEach(([k, v]) =>
+				node.style.setProperty(k, ...(v.split ? v.split('!') : [v]))
+			);
 		}
 		if (e.children) {
 			const fragment = document.createDocumentFragment();
@@ -437,20 +444,6 @@ class Dom {
 				fragment.appendChild(Dom.createElement(child, namespace));
 			}
 			node.appendChild(fragment);
-		}
-		if (e.style) {
-			Object.entries(e.style)
-				.filter(([k, v]) => v !== undefined && typeof v === 'string')
-				.map(([k, v]) => [SUtils.kebabCase(k), v])
-				.forEach(([k, v]) => {
-					const important = v.includes('!important') ? 'important' : '';
-					node.style.setProperty(k, v.replace('!important', '').trim(), important);
-				});
-		}
-		if (e.function) {
-			for (let k in e.function) {
-				node[k] = e.function[k];
-			}
 		}
 		return node;
 	}
@@ -485,10 +478,6 @@ class Dom {
 	}
 
 	static Elem = class {
-
-		get _type() {
-			return this.constructor.name.replace('_', '').toLowerCase();
-		}
 
 		static with(obj) {
 			return Object.assign(new this(), obj);

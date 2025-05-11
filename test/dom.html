@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Util.js Dom Test</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mocha/10.2.0/mocha.css">
+</head>
+
+<body>
+    <div id="mocha"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mocha/10.2.0/mocha.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chai/4.3.7/chai.js"></script>
+    <script>
+        mocha.setup('bdd');
+        const { expect } = chai;
+    </script>
+    <script src="../util.js"></script>
+    <script>
+        describe('style', () => {
+            it('should render the correct style', () => {
+                expect(A.with({
+                    style: {
+                        border: "#000"
+                    }
+                }).create().outerHTML).to.equal(`<a style="border: rgb(0, 0, 0);"></a>`);
+
+                expect(A.with({
+                    style: {
+                        borderColor: "#000"
+                    }
+                }).create().outerHTML).to.equal(`<a style="border-color: rgb(0, 0, 0);"></a>`);
+
+                expect(A.with({
+                    style: {
+                        margin: "1px!important"
+                    }
+                }).create().outerHTML).to.equal(`<a style="margin: 1px !important;"></a>`);
+
+                expect(A.with({
+                    style: {
+                        margin: null,
+                        padding: undefined,
+                        zoom: 0,
+                        display: false
+                    }
+                }).create().outerHTML).to.equal(`<a style="zoom: 0;"></a>`);
+
+            });
+        });
+
+        describe('attribute', () => {
+            it('should render the correct attributes', () => {
+                expect(A.with({
+                    attribute: {
+                        href: "https://example.com"
+                    }
+                }).create().outerHTML).to.equal(`<a href="https://example.com"></a>`);
+
+                expect(A.with({
+                    attribute: {
+                        id: "test-id"
+                    }
+                }).create().outerHTML).to.equal(`<a id="test-id"></a>`);
+
+                expect(A.with({
+                    attribute: {
+                        "data-custom": "custom-value"
+                    }
+                }).create().outerHTML).to.equal(`<a data-custom="custom-value"></a>`);
+
+                expect(A.with({
+                    attribute: {
+                        disabled: true
+                    }
+                }).create().outerHTML).to.equal(`<a disabled="true"></a>`);
+            });
+        });
+
+        describe('class', () => {
+            it('should render the correct class', () => {
+                expect(A.with({
+                    class: "class1"
+                }).create().outerHTML).to.equal(`<a class="class1"></a>`);
+
+                expect(A.with({
+                    class: "class1 class2 class3"
+                }).create().outerHTML).to.equal(`<a class="class1 class2 class3"></a>`);
+                expect(A.with({
+                    class: ["class1", "class2", "class3"]
+                }).create().outerHTML).to.equal(`<a class="class1 class2 class3"></a>`);
+                expect(A.with({
+                    class: ["class1 class2", false, 0, null, undefined, "class3"]
+                }).create().outerHTML).to.equal(`<a class="class1 class2 class3"></a>`);
+            });
+        });
+
+        mocha.run();
+    </script>
+</body>
+
+</html>
