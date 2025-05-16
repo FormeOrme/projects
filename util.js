@@ -161,6 +161,8 @@ class Utils {
 		return result;
 	}
 
+	static compact = obj => [].concat(obj).filter(Boolean)
+
 }
 
 class SUtils {
@@ -423,7 +425,7 @@ class Dom {
 		if (e.editable) node.contentEditable = e.editable;
 
 		if (e.class) {
-			node.className = [].concat(e.class).filter(Boolean).join(" ").trim();
+			node.className = Utils.compact(e.class).join(" ").trim();
 		}
 		if (e.event) {
 			for (let k in e.event) {
@@ -438,9 +440,13 @@ class Dom {
 				node.style.setProperty(k, ...(v.split ? v.split('!') : [v]))
 			);
 		}
+		if (e.function) {
+			Object.entries(e.function)
+				.forEach(([k, v]) => node[k] = v);
+		}
 		if (e.children) {
 			const fragment = document.createDocumentFragment();
-			for (const child of [].concat(e.children).filter(Boolean)) {
+			for (const child of Utils.compact(e.children)) {
 				fragment.appendChild(Dom.createElement(child, namespace));
 			}
 			node.appendChild(fragment);

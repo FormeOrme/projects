@@ -47,7 +47,7 @@ class TableBuilder {
                             class: [
                                 this.classes?.headerCell,
                                 x !== 0 ? "border-start" : "",
-                                this.columns[key].class ?? ""
+                                ...Utils.compact(this.columns[key].class)
                             ],
                             children: this.buildCell(this.columns[key].label)
                         }))
@@ -72,7 +72,7 @@ class TableBuilder {
                                 class: [
                                     this.classes?.cell,
                                     x !== 0 ? "border-start" : "",
-                                    column.class ?? ""
+                                    ...Utils.compact(column.class)
                                 ],
                                 children: column.cellFn ? column.cellFn(row) : this.buildCell(row[key])
                             })
