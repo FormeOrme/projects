@@ -25,6 +25,12 @@
                         border: "#000"
                     }
                 }).create().outerHTML).to.equal(`<a style="border: rgb(0, 0, 0);"></a>`);
+                
+                expect(A.with({
+                    style: {
+                        "--custom-var": "10"
+                    }
+                }).create().outerHTML).to.equal(`<a style="--custom-var: 10;"></a>`);
 
                 expect(A.with({
                     style: {

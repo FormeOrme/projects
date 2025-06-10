@@ -2,14 +2,14 @@
 <html lang="en">
 
 <head>
+    <link rel="icon" type="image/x-icon" href="https://cdn.jsdelivr.net/gh/FormeOrme/projects@latest/favicon.ico">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/gh/FormeOrme/projects@latest/util.js"></script>
-    <link rel="icon" type="image/x-icon" href="https://cdn.jsdelivr.net/gh/FormeOrme/projects@latest/favicon.ico">
 </head>
 
-<body class=" bg-secondary-subtle">
+<body class=" bg-secondary text-dark">
     <script>
 
         function roundFive(x) { return Math.floor(x / 5) * 5 }
@@ -89,17 +89,42 @@
             const now = new Date();
             const hours = String(now.getHours() % 12)
             const minutes = String(roundFive(now.getMinutes()))
-            return Div.with({
-                class: "font-monospace fs-1 lh-1 m-3 text-break",
-                style: {
-                    width:"13ex"
-                },
-                children: WORDS.map((w, i) => Span.with({
-                    class: TIMES.HOURS[hours].includes(i) || TIMES.MINUTES[minutes].includes(i)
-                        ? "fw-bold"
-                        : "fw-light text-light",
-                    innerText: w
+
+            const letters = WORDS.flatMap((word, index) =>
+                word.split("").map(letter => ({
+                    letter,
+                    on: TIMES.HOURS[hours].includes(index)
+                        || TIMES.MINUTES[minutes].includes(index)
                 }))
+            );
+
+            const letterDivs = letters.map(({ letter, on }) => Div.with({
+                class: [
+                    "col-1", "text-center", "fs-1", "p-0","fw-bold", 
+                    "text-uppercase",
+                    ...(on ? [
+                        "text-light", 
+
+                    ] : ["text-muted"])
+                ],
+                style: {
+                    width: 100 / 11 + "%",
+                },
+                children: Span.with({ text: letter })
+            }));
+
+            return Section.with({
+                class: "container",
+                style: {
+                    height: "100vh",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center"
+                },
+                children: Div.with({
+                    class: "row",
+                    children: letterDivs
+                })
             })
         }
         document.body.append(getString().create())

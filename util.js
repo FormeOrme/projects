@@ -187,7 +187,7 @@ class SUtils {
 	static formatKeys = (obj, format = SUtils.kebabCase) =>
 		Object.entries(obj)
 			.filter(([_, v]) => Boolean(v) || v === 0)
-			.map(([k, v]) => [Dom.svgCamelCaseAttributes.includes(k) ? k : format(k), v])
+			.map(([k, v]) => [Dom.svgCamelCaseAttributes.includes(k) || k.includes("--") ? k : format(k), v])
 }
 
 class MUtils {

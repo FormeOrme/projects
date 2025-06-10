@@ -9,7 +9,7 @@ document.head.append(Link.with({
         href: favicon
     }
 }).create());
-
+ 
 document.head.append(Title.with({ innerText: title }).create());
 
 Utils.fetchJson({
