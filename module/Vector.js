@@ -2,7 +2,7 @@
  * Class representing a
   2D vector.
  */
-class Vector {
+export class Vector {
 
     /**
      * Create a vector.

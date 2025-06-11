@@ -13,7 +13,7 @@ class Nodes extends Array {
     }
 }
 
-class Dom {
+export class Dom {
 
     static formatKeys = (obj, format = SUtils.kebabCase) =>
         Object.entries(obj)
@@ -135,41 +135,6 @@ class Dom {
         }
     }
 
-    static Elements = {};
-    static evalNodes = nodes => eval(`"use strict"; ${nodes.map(e => `class ${e} extends Dom.Elem {}; Dom.Elements.${e} = ${e};`).join("")}`);
-
-    static TextElements = "Div,Span,P,Small,Menu";
-    static HeadingElements = "H1,H2,H3,H4,H5,H6,HGroup";
-    static InlineTextElements = "I,Strong,Em,Mark,Abbr,Code,Pre,Kbd,Samp";
-    static SectionElements = "Header,Footer,Article,Aside,Section";
-    static ListElements = "UL,OL,LI,Nav";
-    static FormElements = "Form,Input,Output,TextArea,Button,Label,Select,Option_";
-    static MediaElements = "Img,Audio_,Video";
-    static TableElements = "Table,TR,TD,TH,TBody,TFoot,THead,ColGroup,Col,Caption";
-    static InteractiveElements = "Button,A";
-    static EmbeddedElements = "IFrame,Canvas";
-    static MiscElements = "HR,BR,Style,Blockquote,Cite,Sup,Sub";
-    static SvgBaseElements = "Svg,Defs,G,Path,Line,Rect,Circle,Ellipse,Polygon,Polyline";
-    static SvgDefElements = "LinearGradient,Stop";
-    static HeadElements = "Link,Title,Meta";
-
-    static AllElements = Utils.deduplicate([
-        Dom.TextElements,
-        Dom.HeadingElements,
-        Dom.InlineTextElements,
-        Dom.SectionElements,
-        Dom.ListElements,
-        Dom.FormElements,
-        Dom.MediaElements,
-        Dom.TableElements,
-        Dom.InteractiveElements,
-        Dom.EmbeddedElements,
-        Dom.MiscElements,
-        Dom.SvgBaseElements,
-        Dom.SvgDefElements,
-        Dom.HeadElements,
-    ].join().split(","));
-
     static svgCamelCaseAttributes = [
         "allowReorder", "attributeName", "attributeType", "autoReverse", "baseFrequency",
         "baseProfile", "calcMode", "clipPathUnits", "contentScriptType", "contentStyleType",
@@ -186,9 +151,78 @@ class Dom {
         "xChannelSelector", "yChannelSelector", "zoomAndPan"];
 }
 
-Dom.evalNodes(Dom.AllElements);
-
-export default {
-    Dom,
-    ...Dom.Elements
-};
+/* TextElements */
+export class Div extends Dom.Elem { };
+export class Span extends Dom.Elem { };
+export class P extends Dom.Elem { };
+export class Small extends Dom.Elem { };
+export class Menu extends Dom.Elem { };
+export class A extends Dom.Elem { };
+/* HeadingElements */
+export class H1 extends Dom.Elem { };
+export class H2 extends Dom.Elem { };
+export class H3 extends Dom.Elem { };
+export class H4 extends Dom.Elem { };
+export class H5 extends Dom.Elem { };
+export class H6 extends Dom.Elem { };
+export class HGroup extends Dom.Elem { };
+/* InlineTextElements */
+export class I extends Dom.Elem { };
+export class Strong extends Dom.Elem { };
+export class Em extends Dom.Elem { };
+export class Mark extends Dom.Elem { };
+export class Abbr extends Dom.Elem { };
+export class Code extends Dom.Elem { };
+export class Pre extends Dom.Elem { };
+export class Kbd extends Dom.Elem { };
+export class Samp extends Dom.Elem { };
+/* SectionElements */
+export class Header extends Dom.Elem { };
+export class Footer extends Dom.Elem { };
+export class Article extends Dom.Elem { };
+export class Aside extends Dom.Elem { };
+export class Section extends Dom.Elem { };
+/* ListElements */
+export class UL extends Dom.Elem { };
+export class OL extends Dom.Elem { };
+export class LI extends Dom.Elem { };
+export class Nav extends Dom.Elem { };
+/* FormElements */
+export class Form extends Dom.Elem { };
+export class Input extends Dom.Elem { };
+export class Output extends Dom.Elem { };
+export class TextArea extends Dom.Elem { };
+export class Button extends Dom.Elem { };
+export class Label extends Dom.Elem { };
+export class Select extends Dom.Elem { };
+export class Option_ extends Dom.Elem { };
+/* MediaElements */
+export class Img extends Dom.Elem { };
+export class Audio_ extends Dom.Elem { };
+export class Video extends Dom.Elem { };
+/* TableElements */
+export class Table extends Dom.Elem { };
+export class TR extends Dom.Elem { };
+export class TD extends Dom.Elem { };
+export class TH extends Dom.Elem { };
+export class TBody extends Dom.Elem { };
+export class TFoot extends Dom.Elem { };
+export class THead extends Dom.Elem { };
+export class ColGroup extends Dom.Elem { };
+export class Col extends Dom.Elem { };
+export class Caption extends Dom.Elem { };
+/* EmbeddedElements */
+export class IFrame extends Dom.Elem { };
+export class Canvas extends Dom.Elem { };
+/* MiscElements */
+export class HR extends Dom.Elem { };
+export class BR extends Dom.Elem { };
+export class Style extends Dom.Elem { };
+export class Blockquote extends Dom.Elem { };
+export class Cite extends Dom.Elem { };
+export class Sup extends Dom.Elem { };
+export class Sub extends Dom.Elem { };
+/* HeadElements */
+export class Link extends Dom.Elem { };
+export class Title extends Dom.Elem { };
+export class Meta extends Dom.Elem { };
