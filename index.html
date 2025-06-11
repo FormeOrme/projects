@@ -6,12 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css">
-    <script src="https://cdn.jsdelivr.net/gh/FormeOrme/projects@latest/util.js"></script>
 </head>
 
 <body>
     <script type="module">
         import { Octokit, App } from "https://esm.sh/octokit";
+        import DJS from "./module/Dom.js";
+        const { A, UL, LI, Span, Section, IFrame, H1 } = DJS;
+        import { Sort } from "./module/Sort.js";
+        import { SUtils } from "./module/SUtils.js";
 
         const octokit = new Octokit({
             userAgent: "my-app/v1.2.3",

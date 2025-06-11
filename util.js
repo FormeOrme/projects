@@ -183,11 +183,6 @@ class SUtils {
 	static capitalize = str => str.charAt(0).toUpperCase() + str.slice(1);
 
 	static trim = (s) => s?.trim();
-
-	static formatKeys = (obj, format = SUtils.kebabCase) =>
-		Object.entries(obj)
-			.filter(([_, v]) => Boolean(v) || v === 0)
-			.map(([k, v]) => [Dom.svgCamelCaseAttributes.includes(k) || k.includes("--") ? k : format(k), v])
 }
 
 class MUtils {
@@ -382,12 +377,6 @@ class Reduce {
 	};
 }
 
-class CacheMap extends Map {
-	fetch(key, func) {
-		return this.get(key) || this.set(key, func()).get(key);
-	}
-}
-
 class Nodes extends Array {
 	querySelector(query) {
 		return document.querySelector(query);
@@ -401,6 +390,12 @@ class Nodes extends Array {
 }
 
 class Dom {
+
+	static formatKeys = (obj, format = SUtils.kebabCase) =>
+		Object.entries(obj)
+			.filter(([_, v]) => Boolean(v) || v === 0)
+			.map(([k, v]) => [Dom.svgCamelCaseAttributes.includes(k) || k.includes("--") ? k : format(k), v])
+
 	static nodes = new Proxy(new Nodes(), {
 		get(target, key) {
 			return target[key] ?? target.getElementById(key);
@@ -433,10 +428,10 @@ class Dom {
 			}
 		}
 		if (e.attribute) {
-			SUtils.formatKeys(e.attribute).forEach(([k, v]) => node.setAttribute(k, v));
+			Dom.formatKeys(e.attribute).forEach(([k, v]) => node.setAttribute(k, v));
 		}
 		if (e.style) {
-			SUtils.formatKeys(e.style).forEach(([k, v]) =>
+			Dom.formatKeys(e.style).forEach(([k, v]) =>
 				node.style.setProperty(k, ...(v.split ? v.split('!') : [v]))
 			);
 		}
