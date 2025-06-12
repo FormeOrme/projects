@@ -1,3 +1,5 @@
+import { Identity } from './Utils.js';
+
 /**
  * A utility class for sorting operations.
  * Provides methods for alphabetical sorting, ascending numerical sorting, reversing sort orders, 

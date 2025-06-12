@@ -1,3 +1,5 @@
+export const Identity = o => o;
+
 export class Utils {
 
     static tween = (v, r1, r2, m1, m2) => m1 + (m2 - m1) * ((v - r1) / (r2 - r1));
