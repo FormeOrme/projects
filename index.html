@@ -67,7 +67,7 @@
                     owner: this.owner,
                     repo: this.repo,
                 });
-                return response.data[0].commit.tree.sha;
+                return response.data[0]?.sha;
             }
 
             async getRepoContents(repo, path = '') {
