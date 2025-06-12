@@ -1,4 +1,4 @@
-class TableBuilder {
+export class TableBuilder {
 
     setColumns(columns) {
         this.columns = columns;
