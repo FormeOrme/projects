@@ -1,4 +1,5 @@
 import { Div, Input, Label, Span } from "./Dom.js";
+import { Utils } from "./Utils.js";
 
 export class ControlPanel {
     constructor(args) {
@@ -8,9 +9,18 @@ export class ControlPanel {
         });
         this.callback = args?.callback;
         this.values = {};
+        this.classes = {
+            input: "col-3 mb-1"
+        };
+    }
+
+    setClass({ target, classes }) {
+        this.classes[target] = classes;
+        return this;
     }
 
     get() {
+        console.log(this.classes);
         return this.container;
     }
 
@@ -21,40 +31,43 @@ export class ControlPanel {
 
         function updateValue(e) {
             const value = Number(e.value);
-            text.node.value = value;
-            slider.node.value = value;
+            number.node.value = value;
+            range.node.value = value;
             controlPanel.values[id] = value;
             controlPanel.callback?.();
         }
 
-        const text = Input.with({
-            id,
+        const title = `${label} (min: ${min}, max: ${max})`;
+
+        const number = Input.with({
+            id: `${id}-number`,
+            attribute: { title },
             value,
             type: "number",
             class: "col-4 input-group-text",
             event: { input: updateValue }
         })
-        const slider = Input.with({
-            id,
+        const range = Input.with({
+            id: `${id}-range`,
             value,
             type: "range",
             class: "form-control form-range",
-            attribute: { min, max, step },
+            attribute: { min, max, step, title },
             style: { height: "auto" },
             event: { input: updateValue }
         })
 
         this.container.addChild(Div.with({
-            class: "col-3 mb-1",
+            class: this.classes.input,
             children: [
                 Label.with({
                     class: "form-label mb-0",
-                    attribute: { for: id },
+                    attribute: { for: `${id}-number` },
                     text: label
                 }),
                 Span.with({
                     class: "input-group input-group-sm",
-                    children: [text, slider]
+                    children: [number, range]
                 }),
             ]
         }))
@@ -85,7 +98,7 @@ export class ControlPanel {
         });
 
         this.container.addChild(Div.with({
-            class: "col-3 mb-1",
+            class: this.classes.input,
             children: [
                 Label.with({
                     class: "form-label mb-0",

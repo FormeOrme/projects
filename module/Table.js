@@ -45,15 +45,19 @@ export class TableBuilder {
                             "d-flex flex-row",
                             this.classes?.headerRow
                         ],
-                        children: Object.keys(this.columns).map((key, x) => Span.with({
-                            id: `header-${key}`,
-                            class: [
-                                this.classes?.headerCell,
-                                x !== 0 ? "border-start" : "",
-                                ...Utils.compact(this.columns[key].class)
-                            ],
-                            children: this.buildCell(this.columns[key].label)
-                        }))
+                        children: Object.entries(this.columns)
+                            .map(([key, column], x) => Span.with({
+                                id: `header-${key}`,
+                                attribute: {
+                                    dataKey: key
+                                },
+                                class: [
+                                    this.classes?.headerCell,
+                                    x !== 0 ? "border-start" : "",
+                                    ...Utils.compact(column.class)
+                                ],
+                                children: this.buildCell(column.label)
+                            }))
                     })
                 }),
                 Span.with({
@@ -68,18 +72,19 @@ export class TableBuilder {
                             "d-flex flex-row",
                             this.classes?.row,
                         ],
-                        children: Object.keys(this.columns).map((key, x) => {
-                            const column = this.columns[key];
-                            return Span.with({
+                        children: Object.entries(this.columns)
+                            .map(([key, column], x) => Span.with({
                                 id: `cell-${y}-${key}`,
+                                attribute: {
+                                    dataKey: key
+                                },
                                 class: [
                                     this.classes?.cell,
                                     x !== 0 ? "border-start" : "",
                                     ...Utils.compact(column.class)
                                 ],
                                 children: column.cellFn ? column.cellFn(row) : this.buildCell(row[key])
-                            })
-                        })
+                            }))
                     }))
                 }),
             ]
