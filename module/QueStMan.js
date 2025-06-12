@@ -3,7 +3,7 @@
  * 
  * A utility class for managing query string parameters in the browser's URL.
  */
-export class QueStMan {
+export default class QueStMan {
 
     /**
      * Retrieves the value of a query string parameter.

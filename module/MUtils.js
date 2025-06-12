@@ -1,4 +1,4 @@
-class MUtils {
+export default class MUtils {
     static toRadians = (degrees) => degrees * (Math.PI / 180);
     static toDegrees = (radians) => radians * (180 / Math.PI);
 
@@ -81,5 +81,3 @@ class MUtils {
 
     static random(l) { return Math.floor(Math.random() * l) }
 }
-
-export { MUtils };

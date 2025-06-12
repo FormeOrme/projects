@@ -1,5 +1,5 @@
 import { Utils } from "./Utils.js";
-import { SUtils } from "./SUtils.js";
+import SUtils from "./SUtils.js";
 
 class Nodes extends Array {
     querySelector(query) {

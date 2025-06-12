@@ -1,5 +1,5 @@
 /* Local Storage Manager */
-export class LoStMan {
+export default class LoStMan {
     static getObj(id, proto) {
         const parsed = JSON.parse(localStorage.getItem(id));
         return !proto ? parsed : Object.setPrototypeOf(parsed, proto);

@@ -5,7 +5,7 @@ import { Identity } from './Utils.js';
  * Provides methods for alphabetical sorting, ascending numerical sorting, reversing sort orders, 
  * and multi-level sorting using custom comparator functions.
  */
-export class Sort {
+export default class Sort {
 
     /**
      * Creates a comparator function for alphabetical sorting.

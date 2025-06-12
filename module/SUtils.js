@@ -1,4 +1,4 @@
-export class SUtils {
+export default class SUtils {
     static trimAndFill = (s, n, c) => s.length > n ? s.substring(0, n) : s.padEnd(n, c);
 
     static normalize = (s) => s?.normalize('NFD').replace(/[\u0300-\u036f]/g, '');

@@ -12,8 +12,8 @@
     <script type="module">
         import { Octokit, App } from "https://esm.sh/octokit";
         import { A, UL, LI, Span, Section, IFrame, H1 }  from "./module/Dom.js";
-        import { Sort } from "./module/Sort.js";
-        import { SUtils } from "./module/SUtils.js";
+        import Sort from "./module/Sort.js";
+        import SUtils from "./module/SUtils.js";
 
         const octokit = new Octokit({
             userAgent: "my-app/v1.2.3",
@@ -130,7 +130,7 @@
                                 const fileLeaves = document.querySelectorAll(".file-leaf");
                                 fileLeaves.forEach((leaf) => leaf.toggleActive(false));
 
-                                const url = `${this.baseUrl}/${this.repo}/${value.path}`;
+                                const url = `./${value.path}`;
                                 const iframe = document.getElementById("iframe");
                                 iframe.src = url;
 

@@ -1,7 +1,7 @@
 import { Span } from "./Dom.js";
 import { Utils } from "./Utils.js";
 
-export class TableBuilder {
+export default class TableBuilder {
 
     setColumns(columns) {
         this.columns = columns;

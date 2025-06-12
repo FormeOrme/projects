@@ -1,5 +1,5 @@
 import { Dom } from "./Dom.js";
-import { Vector } from "./Vector.js";
+import Vector from "./Vector.js";
 
 /* SvgBaseElements */
 export class Svg extends Dom.Elem { };

@@ -1,7 +1,6 @@
 import { Div, Input, Label, Span } from "./Dom.js";
-import { Utils } from "./Utils.js";
 
-export class ControlPanel {
+export default class ControlPanel {
     constructor(args) {
         this.container = Div.with({
             ...args,
@@ -20,7 +19,6 @@ export class ControlPanel {
     }
 
     get() {
-        console.log(this.classes);
         return this.container;
     }
 
