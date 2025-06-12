@@ -1,3 +1,5 @@
+import { Span } from "./Dom.js";
+
 export class TableBuilder {
 
     setColumns(columns) {
