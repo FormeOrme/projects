@@ -11,7 +11,7 @@
 <body>
     <script type="module">
         import { Octokit, App } from "https://esm.sh/octokit";
-        import { A, UL, LI, Span, Section, IFrame, H1 }  from "./module/Dom.js";
+        import { A, UL, LI, Span, Section, IFrame, H1 } from "./module/Dom.js";
         import Sort from "./module/Sort.js";
         import SUtils from "./module/SUtils.js";
 
@@ -60,6 +60,14 @@
                 this.baseUrl = baseUrl;
                 this.repo = repo;
                 this.owner = "FormeOrme";
+            }
+
+            async mostRecentCommit() {
+                const response = await octokit.request('GET /repos/{owner}/{repo}/commits', {
+                    owner: this.owner,
+                    repo: this.repo,
+                });
+                return response.data[0].commit.tree.sha;
             }
 
             async getRepoContents(repo, path = '') {
@@ -232,7 +240,7 @@
                 children: [
                     H1.with({
                         class: "text-center",
-                        text: "Projects"
+                        text: `Projects : ${await treeRenderer.mostRecentCommit()}`,
                     }),
                     Section.with({
                         class: "row",
