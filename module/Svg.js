@@ -2,22 +2,22 @@ import { Dom } from "./Dom.js";
 import Vector from "./Vector.js";
 
 /* SvgBaseElements */
-export class Svg extends Dom.Elem { };
-export class Defs extends Dom.Elem { };
-export class G extends Dom.Elem { };
-export class Path extends Dom.Elem { };
-export class Line extends Dom.Elem { };
-export class Rect extends Dom.Elem { };
-export class Circle extends Dom.Elem { };
-export class Ellipse extends Dom.Elem { };
-export class Polygon extends Dom.Elem { };
-export class Polyline extends Dom.Elem { };
+export class Svg extends Dom.Elem {}
+export class Defs extends Dom.Elem {}
+export class G extends Dom.Elem {}
+export class Path extends Dom.Elem {}
+export class Line extends Dom.Elem {}
+export class Rect extends Dom.Elem {}
+export class Circle extends Dom.Elem {}
+export class Ellipse extends Dom.Elem {}
+export class Polygon extends Dom.Elem {}
+export class Polyline extends Dom.Elem {}
 /* SvgDefElements */
-export class LinearGradient extends Dom.Elem { };
-export class Stop extends Dom.Elem { };
+export class LinearGradient extends Dom.Elem {}
+export class Stop extends Dom.Elem {}
 
 export function group(children) {
-    return G.with({ children })
+    return G.with({ children });
 }
 
 export class PathBuilder {
@@ -73,9 +73,7 @@ export class PathBuilder {
     }
 
     squareCurve({ x1, y1, x, y, angleRadius }) {
-        return this
-            .lineTo({ x: x1, y: y1 })
-            .lineTo({ x, y });
+        return this.lineTo({ x: x1, y: y1 }).lineTo({ x, y });
     }
 
     smoothQuadraticCurve({ x, y }) {
@@ -97,13 +95,13 @@ export class PathBuilder {
 
     build(attribute = {}) {
         if (this.d.includes("undefined")) {
-            throw new Error('Error building path');
+            throw new Error("Error building path");
         }
         return Path.with({
             attribute: {
                 d: this.d.trim(),
-                ...attribute
-            }
+                ...attribute,
+            },
         });
     }
 }

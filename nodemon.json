@@ -1,5 +1,0 @@
-{
-    "watch": ["*", "module", "tools"],
-    "ext": "js,json",
-    "exec": "http-server"
-}

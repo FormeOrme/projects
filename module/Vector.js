@@ -3,7 +3,6 @@
   2D vector.
  */
 export default class Vector {
-
     /**
      * Create a vector.
      * @param {number|Object} x - The x coordinate or an object with x and y properties.
@@ -129,7 +128,7 @@ export default class Vector {
      * @returns {number} The squared distance between the two vectors.
      */
     distance2({ x, y }) {
-        return ((this.x - x) ** 2 + (this.y - y) ** 2);
+        return (this.x - x) ** 2 + (this.y - y) ** 2;
     }
 
     /**

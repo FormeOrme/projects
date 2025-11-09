@@ -1,104 +1,147 @@
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Beautify</title>
+        <!-- Bootstrap CSS -->
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+        />
+        <!-- js-beautify libraries -->
+        <script src="https://cdn.rawgit.com/beautify-web/js-beautify/v1.13.6/js/lib/beautify.js"></script>
+        <script src="https://cdn.rawgit.com/beautify-web/js-beautify/v1.13.6/js/lib/beautify-html.js"></script>
+        <!-- Prism.js for syntax highlighting -->
+        <link
+            href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.min.css"
+            rel="stylesheet"
+        />
+        <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-json.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-markup.min.js"></script>
+        <script type="module">
+            import SUtils from "../module/SUtils.js";
+            import { Div, H1, Label, TextArea, Pre } from "../module/Dom.js";
 
-<head>
-    <script src="https://cdn.rawgit.com/beautify-web/js-beautify/v1.13.6/js/lib/beautify.js"></script>
-    <script src="https://cdn.rawgit.com/beautify-web/js-beautify/v1.13.6/js/lib/beautify-html.js"></script>
-    <script src="../util.js"></script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beautify</title>
-    <style>
-        body,
-        input,
-        pre {
-            margin: 0px;
-            background: #ddd;
-            font-family: "Consolas", monospace;
-            font-size: 13px;
-        }
+            const BEAUTIFY_OPTIONS = {
+                indent_size: 4,
+                indent_char: " ",
+                max_preserve_newlines: 5,
+                preserve_newlines: true,
+                keep_array_indentation: false,
+                break_chained_methods: false,
+                indent_scripts: "normal",
+                brace_style: "collapse",
+                space_before_conditional: true,
+                unescape_strings: false,
+                jslint_happy: false,
+                end_with_newline: false,
+                wrap_line_length: 0,
+                indent_inner_html: false,
+                comma_first: false,
+                e4x: false,
+                indent_empty_lines: false,
+            };
 
-        input:focus {
-            background: #ccc;
-        }
+            document.addEventListener("DOMContentLoaded", () => {
+                // Build UI using Dom.js classes
+                const inputId = "input";
+                const outputId = "output";
 
-        #input {
-            border: 0px;
-            border-bottom: 1px solid;
-            width: 100%;
-            margin: 0px;
-            display: block;
-            resize: none;
-            padding: 10px 0;
-            position: sticky;
-            top: 0px;
-        }
+                const app = Div.with({
+                    class: ["container", "py-5"],
+                    children: [
+                        H1.with({ class: "mb-4", innerText: "Beautify JSON / XML" }),
+                        Div.with({
+                            class: "mb-3",
+                            children: [
+                                Label.with({
+                                    for: inputId,
+                                    class: "form-label",
+                                    innerText: "Paste JSON or XML here:",
+                                }),
+                                TextArea.with({
+                                    id: inputId,
+                                    class: ["form-control", "font-monospace"],
+                                    rows: 5,
+                                    spellcheck: false,
+                                }),
+                            ],
+                        }),
+                        Div.with({
+                            children: [
+                                Label.with({
+                                    for: outputId,
+                                    class: "form-label",
+                                    innerText: "Beautified Output:",
+                                }),
+                                Pre.with({
+                                    id: outputId,
+                                    class: ["form-control", "language-json"],
+                                    readonly: true,
+                                }),
+                            ],
+                        }),
+                    ],
+                }).create();
 
-        #output {
-            padding: 10px 0;
-        }
-    </style>
-    <script>
-        const BEAUTIFY_OPTIONS = {
-            "indent_size": "4",
-            "indent_char": " ",
-            "max_preserve_newlines": "5",
-            "preserve_newlines": true,
-            "keep_array_indentation": false,
-            "break_chained_methods": false,
-            "indent_scripts": "normal",
-            "brace_style": "collapse",
-            "space_before_conditional": true,
-            "unescape_strings": false,
-            "jslint_happy": false,
-            "end_with_newline": false,
-            "wrap_line_length": "0",
-            "indent_inner_html": false,
-            "comma_first": false,
-            "e4x": false,
-            "indent_empty_lines": false
-        }
+                document.body.innerHTML = "";
+                document.body.appendChild(app);
 
-        function parseStringType(inputString) {
-            try {
-                // Try parsing as JSON
-                JSON.parse(inputString);
-                return "json";
-            } catch (jsonError) {
-                try {
-                    // Try parsing as XML
-                    let parser = new DOMParser();
-                    parser.parseFromString(inputString, "text/xml");
-                    return "xml";
-                } catch (xmlError) {
-                    // Return empty string for any other cases
-                    return "";
-                }
-            }
-        }
+                const input = document.getElementById(inputId);
+                const output = document.getElementById(outputId);
 
-        document.addEventListener("DOMContentLoaded", function (event) {
-            window.addEventListener("focus", () => { input.focus(); input.select(); })
-            input.addEventListener("input", (e) => {
-                const iValue = input.value.trim();
-                switch (parseStringType(iValue)) {
-                    case "json":
-                        output.innerText = js_beautify(iValue, BEAUTIFY_OPTIONS);
-                        break;
-                    case "xml":
-                        output.innerText = html_beautify(iValue, BEAUTIFY_OPTIONS);
-                        break;
-                }
-            })
-            input.focus();
-        });
+                window.addEventListener("focus", () => {
+                    input.focus();
+                    input.select();
+                });
 
-    </script>
-</head>
+                input.addEventListener("input", () => {
+                    const iValue = input.value.trim();
+                    let lang = "";
+                    let pretty = "";
+                    let errorMsg = "";
+                    let className = "form-control";
 
-<body>
-    <input id="input" spellcheck="false" />
-    <pre id="output"></pre>
-</body>
+                    const format = SUtils.detectDataFormat(iValue);
+                    if (format === "json") {
+                        lang = "json";
+                        try {
+                            pretty = window.js_beautify(iValue, BEAUTIFY_OPTIONS);
+                        } catch {
+                            errorMsg = "Invalid JSON";
+                        }
+                    } else if (format === "xml") {
+                        lang = "markup";
+                        try {
+                            pretty = window.html_beautify(iValue, BEAUTIFY_OPTIONS);
+                        } catch {
+                            errorMsg = "Invalid XML/HTML";
+                        }
+                    } else if (iValue) {
+                        errorMsg = "Unsupported format. Please paste valid JSON or XML.";
+                    }
 
+                    if (errorMsg) {
+                        output.textContent = errorMsg;
+                        output.className = `${className} language-${lang || "plain"} border-danger`;
+                        Prism.highlightElement(output);
+                        return;
+                    }
+                    if (pretty) {
+                        output.textContent = pretty;
+                        output.className = `${className} language-${lang}`;
+                        Prism.highlightElement(output);
+                    } else {
+                        output.textContent = "";
+                        output.className = className;
+                    }
+                });
+                input.focus();
+            });
+        </script>
+    </head>
+
+    <body></body>
 </html>

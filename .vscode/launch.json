@@ -1,0 +1,17 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch HTTP Server",
+            "type": "node-terminal",
+            "request": "launch",
+            "command": "npx http-server . -p 8080 -o",
+            "cwd": "${workspaceFolder}",
+            "presentation": {
+                "hidden": false,
+                "group": "servers",
+                "panel": "dedicated"
+            }
+        }
+    ]
+}

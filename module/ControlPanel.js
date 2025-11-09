@@ -4,12 +4,12 @@ export default class ControlPanel {
     constructor(args) {
         this.container = Div.with({
             ...args,
-            class: "row"
+            class: "row",
         });
         this.callback = args?.callback;
         this.values = {};
         this.classes = {
-            input: "col-3 mb-1"
+            input: "col-3 mb-1",
         };
     }
 
@@ -43,8 +43,8 @@ export default class ControlPanel {
             value,
             type: "number",
             class: "col-4 input-group-text",
-            event: { input: updateValue }
-        })
+            event: { input: updateValue },
+        });
         const range = Input.with({
             id: `${id}-range`,
             value,
@@ -52,33 +52,34 @@ export default class ControlPanel {
             class: "form-control form-range",
             attribute: { min, max, step, title },
             style: { height: "auto" },
-            event: { input: updateValue }
-        })
+            event: { input: updateValue },
+        });
 
-        this.container.addChild(Div.with({
-            class: this.classes.input,
-            children: [
-                Label.with({
-                    class: "form-label mb-0",
-                    attribute: { for: `${id}-number` },
-                    text: label
-                }),
-                Span.with({
-                    class: "input-group input-group-sm",
-                    children: [number, range]
-                }),
-            ]
-        }))
+        this.container.addChild(
+            Div.with({
+                class: this.classes.input,
+                children: [
+                    Label.with({
+                        class: "form-label mb-0",
+                        attribute: { for: `${id}-number` },
+                        text: label,
+                    }),
+                    Span.with({
+                        class: "input-group input-group-sm",
+                        children: [number, range],
+                    }),
+                ],
+            }),
+        );
         return this;
     }
 
     addColorPicker({ id, value, label }) {
         this.values[id] = value;
 
-
         const display = Div.with({
             class: "col-2 input-group-text",
-            style: { background: value }
+            style: { background: value },
         });
 
         const colorPicker = Input.with({
@@ -91,26 +92,27 @@ export default class ControlPanel {
                     this.values[id] = e.value;
                     display.node.style.background = e.value;
                     this.callback?.();
-                }
-            }
+                },
+            },
         });
 
-        this.container.addChild(Div.with({
-            class: this.classes.input,
-            children: [
-                Label.with({
-                    class: "form-label mb-0",
-                    attribute: { for: id },
-                    text: label
-                }),
-                Span.with({
-                    class: "input-group input-group-sm",
-                    children: [colorPicker, display]
-                }),
-            ]
-        }))
+        this.container.addChild(
+            Div.with({
+                class: this.classes.input,
+                children: [
+                    Label.with({
+                        class: "form-label mb-0",
+                        attribute: { for: id },
+                        text: label,
+                    }),
+                    Span.with({
+                        class: "input-group input-group-sm",
+                        children: [colorPicker, display],
+                    }),
+                ],
+            }),
+        );
 
         return this;
     }
-
 }

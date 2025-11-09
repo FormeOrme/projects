@@ -3,9 +3,10 @@ export default class MUtils {
     static toDegrees = (radians) => radians * (180 / Math.PI);
 
     static randomPoints(num) {
-        const points = Array.from({ length: num }, () =>
-            [Math.random() * 10 - 5, Math.random() * 10 - 5]
-        );
+        const points = Array.from({ length: num }, () => [
+            Math.random() * 10 - 5,
+            Math.random() * 10 - 5,
+        ]);
         return points;
     }
 
@@ -32,11 +33,7 @@ export default class MUtils {
      * @param {number} params.cy - The y coordinate of the center point for sorting.
      * @returns {Array<Object>} The intersection points sorted by distance to the center point.
      */
-    static circleIntersectionPoints({
-        x1, y1, r1,
-        x2, y2, r2,
-        cx, cy }) {
-
+    static circleIntersectionPoints({ x1, y1, r1, x2, y2, r2, cx, cy }) {
         // Calculate the distance between the centers
         const dx = x2 - x1;
         const dy = y2 - y1;
@@ -66,8 +63,10 @@ export default class MUtils {
         const ry = (dx * h) / d;
 
         // Intersection points
-        const p1x = xm + rx, p1y = ym + ry;
-        const p2x = xm - rx, p2y = ym - ry;
+        const p1x = xm + rx,
+            p1y = ym + ry;
+        const p2x = xm - rx,
+            p2y = ym - ry;
 
         // Precompute squared distances to the center (cx, cy) for sorting
         const d1Sq = (p1x - cx) ** 2 + (p1y - cy) ** 2;
@@ -75,9 +74,17 @@ export default class MUtils {
 
         // Return points sorted by squared distance to avoid square root computation
         return d1Sq <= d2Sq
-            ? [{ x: p1x, y: p1y }, { x: p2x, y: p2y }]
-            : [{ x: p2x, y: p2y }, { x: p1x, y: p1y }];
+            ? [
+                  { x: p1x, y: p1y },
+                  { x: p2x, y: p2y },
+              ]
+            : [
+                  { x: p2x, y: p2y },
+                  { x: p1x, y: p1y },
+              ];
     }
 
-    static random(l) { return Math.floor(Math.random() * l) }
+    static random(l) {
+        return Math.floor(Math.random() * l);
+    }
 }

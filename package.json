@@ -1,0 +1,17 @@
+{
+    "name": "@formeorme/ffutils",
+    "version": "1.0.0",
+    "description": "A utility module collection for Node.js and browser environments.",
+    "type": "module",
+    "exports": {
+        "./module/*": "./module/*"
+    },
+    "files": [
+        "module"
+    ],
+    "scripts": {
+        "release": "npm version patch && npm publish --access public"
+    },
+    "author": "Federico Formenti",
+    "license": "MIT"
+}

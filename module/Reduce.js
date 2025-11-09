@@ -2,24 +2,27 @@ export default class Reduce {
     static with = (func) => (a, c, i, f) => {
         func(a, c, i, f);
         return a;
-    }
+    };
 
-    static combineN = (N) => Reduce.with((acc, _, index, full) => {
-        let v = []
-        const fn = (i) => {
-            v.push(full[i])
-            if (v.length == N) {
-                acc.push([...v]);
-            } else {
-                for (let j = i + 1; j < full.length; j++) {
-                    fn(j)
+    static combineN = (N) =>
+        Reduce.with((acc, _, index, full) => {
+            let v = [];
+            const fn = (i) => {
+                v.push(full[i]);
+                if (v.length == N) {
+                    acc.push([...v]);
+                } else {
+                    for (let j = i + 1; j < full.length; j++) {
+                        fn(j);
+                    }
                 }
-            }
-            v.pop();
-        }
-        fn(index)
-    })
-    static combine = Reduce.combineN(2)
+                v.pop();
+            };
+            fn(index);
+        });
+
+    static combine = Reduce.combineN(2);
+
     static fullCombine = Reduce.with((a, _, i, f) => {
         const rl = a.length;
         for (let j = 0; j < Math.pow(2, i); j++) {
@@ -31,7 +34,7 @@ export default class Reduce {
             }
             a.push(c);
         }
-    })
+    });
 
     static permutations = (acc, current) => {
         if (acc.length === 0) {

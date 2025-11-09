@@ -48,7 +48,7 @@ export class Dom {
         }
         if (e.event) {
             for (let k in e.event) {
-                node.addEventListener(k, e.event[k].bind(null, node), false);
+                node.addEventListener(k, e.event[k].bind(node, node), false);
             }
         }
         if (e.attribute) {
