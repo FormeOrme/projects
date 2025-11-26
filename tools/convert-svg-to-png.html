@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>SVG to PNG Converter</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                max-width: 800px;
+                margin: 50px auto;
+                padding: 20px;
+            }
+            .preview {
+                display: flex;
+                gap: 20px;
+                margin: 20px 0;
+                align-items: flex-start;
+            }
+            .preview-item {
+                text-align: center;
+            }
+            canvas {
+                border: 1px solid #ccc;
+                display: block;
+                margin: 10px auto;
+            }
+            button {
+                padding: 10px 20px;
+                margin: 5px;
+                cursor: pointer;
+                background-color: #4caf50;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                font-size: 14px;
+            }
+            button:hover {
+                background-color: #45a049;
+            }
+            .instructions {
+                background-color: #f5f5f5;
+                padding: 15px;
+                border-radius: 4px;
+                margin-bottom: 20px;
+            }
+            .input-group {
+                margin-bottom: 20px;
+                display: flex;
+                align-items: center;
+                gap: 20px;
+            }
+            .input-group label {
+                font-weight: bold;
+                margin-right: 5px;
+            }
+            .input-group input {
+                padding: 8px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                font-size: 14px;
+            }
+            .input-group input[type="number"] {
+                width: 80px;
+            }
+            .input-group input[type="text"] {
+                width: 80px;
+                font-size: 20px;
+            }
+            .input-group input[type="range"] {
+                width: 150px;
+            }
+            .input-field {
+                display: flex;
+                align-items: center;
+                gap: 5px;
+            }
+            pre {
+                width: 100%;
+                background: #f5f5f5;
+                padding: 15px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                font-family: monospace;
+                font-size: 12px;
+                box-sizing: border-box;
+                overflow-x: auto;
+                white-space: pre-wrap;
+                word-wrap: break-word;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>SVG to PNG Icon Converter</h1>
+
+        <div class="input-group">
+            <div class="input-field">
+                <label for="emojiInput">Emoji:</label>
+                <input type="text" id="emojiInput" value="🟩" maxlength="4" />
+            </div>
+
+            <div class="input-field">
+                <label for="fontSizeInput">Font Size:</label>
+                <input type="number" id="fontSizeInput" value="100" min="8" max="128" />
+            </div>
+
+            <div class="input-field">
+                <label for="viewBoxZoomInput">ViewBox Zoom:</label>
+                <input
+                    type="range"
+                    id="viewBoxZoomInput"
+                    value="0.89"
+                    min="0.5"
+                    max="1"
+                    step="0.01"
+                />
+                <input
+                    type="number"
+                    id="viewBoxZoomNumber"
+                    value="0.89"
+                    min="0.5"
+                    max="1"
+                    step="0.01"
+                    readonly
+                    style="width: 60px; padding: 4px"
+                />
+            </div>
+        </div>
+
+        <div style="margin-bottom: 30px">
+            <h3>Generated SVG:</h3>
+            <pre id="svgOutput"></pre>
+        </div>
+
+        <div class="preview" id="previewContainer"></div>
+
+        <button id="downloadAll" style="background-color: #2196f3">Download All Icons</button>
+
+        <script type="module">
+            /**
+             * SVG to PNG Converter Module
+             */
+
+            const sizes = [16, 48, 64, 128];
+
+            function initializePreview() {
+                const container = document.getElementById("previewContainer");
+                container.innerHTML = "";
+
+                sizes.forEach((size) => {
+                    const previewItem = document.createElement("div");
+                    previewItem.className = "preview-item";
+
+                    const title = document.createElement("h3");
+                    title.textContent = `${size}×${size}`;
+
+                    const canvas = document.createElement("canvas");
+                    canvas.id = `canvas${size}`;
+                    canvas.width = size;
+                    canvas.height = size;
+
+                    const button = document.createElement("button");
+                    button.id = `download${size}`;
+                    button.textContent = `Download ${size}×${size}`;
+                    button.addEventListener("click", () => downloadIcon(size));
+
+                    previewItem.appendChild(title);
+                    previewItem.appendChild(canvas);
+                    previewItem.appendChild(button);
+                    container.appendChild(previewItem);
+                });
+            }
+
+            function calculateTextYPosition(canvasSize, fontSize, k = 0.35) {
+                return canvasSize / 2 + k * fontSize;
+            }
+
+            function generateSvg(fontSize, emoji, viewBoxZoom) {
+                const viewBoxSize = fontSize / viewBoxZoom;
+                const offset = (fontSize - viewBoxSize) / 2;
+
+                const decimalPlaces = 0;
+                const fixedBoxSize = viewBoxSize.toFixed(decimalPlaces);
+                const fixedOffset = offset.toFixed(decimalPlaces);
+
+                return `<svg xmlns='http://www.w3.org/2000/svg' viewBox='${fixedOffset} ${fixedOffset} ${fixedBoxSize} ${fixedBoxSize}'>
+    <text x='${fontSize / 2}' y='${calculateTextYPosition(
+                    fontSize,
+                    fontSize,
+                )}' font-size='${fontSize}' text-anchor='middle'>${emoji}</text>
+</svg>`;
+            }
+
+            function getSvgContent() {
+                const emoji = document.getElementById("emojiInput").value || "🟩";
+                const fontSize = parseInt(document.getElementById("fontSizeInput").value) || 32;
+                const viewBoxZoom =
+                    parseFloat(document.getElementById("viewBoxZoomInput").value) || 1;
+                return generateSvg(fontSize, emoji, viewBoxZoom);
+            }
+
+            function updateSvgOutput() {
+                document.getElementById("svgOutput").textContent = getSvgContent();
+            }
+
+            function drawIcon(size) {
+                const canvas = document.getElementById(`canvas${size}`);
+                const ctx = canvas.getContext("2d");
+
+                const img = new Image();
+                const svg = new Blob([getSvgContent()], { type: "image/svg+xml" });
+                const url = URL.createObjectURL(svg);
+
+                return new Promise((resolve) => {
+                    img.onload = function () {
+                        ctx.clearRect(0, 0, size, size);
+                        ctx.drawImage(img, 0, 0, size, size);
+                        URL.revokeObjectURL(url);
+                        resolve();
+                    };
+                    img.src = url;
+                });
+            }
+
+            function downloadIcon(size) {
+                const canvas = document.getElementById(`canvas${size}`);
+                canvas.toBlob((blob) => {
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement("a");
+                    a.href = url;
+                    a.download = `icon${size}.png`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                });
+            }
+
+            async function downloadAll() {
+                for (const size of sizes) {
+                    await new Promise((resolve) => setTimeout(resolve, 300));
+                    downloadIcon(size);
+                }
+            }
+
+            async function regenerateIcons() {
+                for (const size of sizes) {
+                    await drawIcon(size);
+                }
+            }
+
+            // Auto-update icons when inputs change
+            document.getElementById("emojiInput").addEventListener("input", () => {
+                updateSvgOutput();
+                regenerateIcons();
+            });
+
+            document.getElementById("fontSizeInput").addEventListener("input", () => {
+                updateSvgOutput();
+                regenerateIcons();
+            });
+
+            document.getElementById("viewBoxZoomInput").addEventListener("input", (e) => {
+                document.getElementById("viewBoxZoomNumber").value = e.target.value;
+                updateSvgOutput();
+                regenerateIcons();
+            });
+
+            // Draw all icons on page load
+            window.addEventListener("load", async () => {
+                initializePreview();
+                updateSvgOutput();
+                for (const size of sizes) {
+                    await drawIcon(size);
+                }
+            });
+
+            // Set up download all button
+            document.getElementById("downloadAll").addEventListener("click", downloadAll);
+        </script>
+    </body>
+</html>
