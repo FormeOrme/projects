@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Elastic Easing Test</title>
+        <style>
+            body {
+                font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+                margin: 20px;
+                background: #f5f5f5;
+            }
+            .container {
+                max-width: 1200px;
+                margin: 0 auto;
+                background: white;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            }
+            h1 {
+                text-align: center;
+                color: #333;
+                margin-bottom: 30px;
+            }
+            .content {
+                display: flex;
+                gap: 30px;
+                align-items: flex-start;
+            }
+            canvas {
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                flex-shrink: 0;
+            }
+            .controls {
+                flex: 1;
+                min-width: 300px;
+            }
+            .control-group {
+                margin-bottom: 25px;
+            }
+            .control-group label {
+                display: block;
+                font-size: 14px;
+                font-weight: 600;
+                color: #333;
+                margin-bottom: 8px;
+            }
+            .slider-container {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+            }
+            input[type="range"] {
+                flex: 1;
+                height: 6px;
+                border-radius: 3px;
+                background: #ddd;
+                outline: none;
+                -webkit-appearance: none;
+            }
+            input[type="range"]::-webkit-slider-thumb {
+                -webkit-appearance: none;
+                appearance: none;
+                width: 18px;
+                height: 18px;
+                border-radius: 50%;
+                background: #9b59b6;
+                cursor: pointer;
+                transition: background 0.2s;
+            }
+            input[type="range"]::-webkit-slider-thumb:hover {
+                background: #8e44ad;
+            }
+            input[type="range"]::-moz-range-thumb {
+                width: 18px;
+                height: 18px;
+                border-radius: 50%;
+                background: #9b59b6;
+                cursor: pointer;
+                border: none;
+                transition: background 0.2s;
+            }
+            input[type="range"]::-moz-range-thumb:hover {
+                background: #8e44ad;
+            }
+            .value-display {
+                min-width: 70px;
+                text-align: right;
+                font-family: "Consolas", "Courier New", monospace;
+                font-size: 14px;
+                color: #666;
+                font-weight: 600;
+            }
+            .animation-demo {
+                margin-top: 30px;
+                padding-top: 30px;
+                border-top: 1px solid #eee;
+            }
+            .animation-demo h3 {
+                font-size: 16px;
+                color: #333;
+                margin-bottom: 15px;
+            }
+            .elastic-track {
+                position: relative;
+                width: 80px;
+                height: 300px;
+                background: #f9f9f9;
+                border-radius: 4px;
+                margin: 0 auto 15px;
+                overflow: hidden;
+            }
+            .elastic-ball {
+                position: absolute;
+                width: 40px;
+                height: 40px;
+                background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+                border-radius: 50%;
+                top: 10px;
+                left: 20px;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+                transition: none;
+            }
+            .play-button {
+                padding: 10px 24px;
+                background: #9b59b6;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                font-size: 14px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: background 0.2s;
+            }
+            .play-button:hover {
+                background: #8e44ad;
+            }
+            .play-button:active {
+                transform: scale(0.98);
+            }
+            .info {
+                margin-top: 20px;
+                padding: 15px;
+                background: #f9f0ff;
+                border-left: 4px solid #9b59b6;
+                border-radius: 4px;
+                font-size: 13px;
+                line-height: 1.6;
+                color: #555;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Elastic Easing Interactive Test</h1>
+            <div class="content">
+                <canvas id="elasticChart" width="600" height="600"></canvas>
+                <div class="controls">
+                    <div class="control-group">
+                        <label for="amplitude">Amplitude</label>
+                        <div class="slider-container">
+                            <input
+                                type="range"
+                                id="amplitude"
+                                min="0.1"
+                                max="3"
+                                step="0.1"
+                                value="1"
+                            />
+                            <span class="value-display" id="amplitudeValue">1.0</span>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label for="period">Period</label>
+                        <div class="slider-container">
+                            <input
+                                type="range"
+                                id="period"
+                                min="0.1"
+                                max="1"
+                                step="0.01"
+                                value="0.3"
+                            />
+                            <span class="value-display" id="periodValue">0.30</span>
+                        </div>
+                    </div>
+
+                    <div class="animation-demo">
+                        <h3>Animation Demo</h3>
+                        <div class="elastic-track">
+                            <div class="elastic-ball" id="elasticBall"></div>
+                        </div>
+                        <button class="play-button" id="playButton">Play Animation</button>
+                    </div>
+
+                    <div class="info">
+                        <strong>About Elastic Easing:</strong><br />
+                        • <strong>Amplitude</strong> controls the elastic overshoot strength (higher
+                        = more overshoot)<br />
+                        • <strong>Period</strong> controls the oscillation frequency (lower = faster
+                        oscillations)<br />
+                        • The chart shows EaseIn, EaseOut, and EaseInOut variants
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script type="module">
+            import Easing from "../module/Easing.js";
+
+            const canvas = document.getElementById("elasticChart");
+            const ctx = canvas.getContext("2d");
+            const amplitudeSlider = document.getElementById("amplitude");
+            const periodSlider = document.getElementById("period");
+            const amplitudeValue = document.getElementById("amplitudeValue");
+            const periodValue = document.getElementById("periodValue");
+            const playButton = document.getElementById("playButton");
+            const elasticBall = document.getElementById("elasticBall");
+
+            let amplitude = 1;
+            let period = 0.3;
+
+            // Colors for the three variants
+            const colors = {
+                in: "#e74c3c",
+                out: "#3498db",
+                inOut: "#2ecc71",
+            };
+
+            function drawChart() {
+                const width = canvas.width;
+                const height = canvas.height;
+                const padding = 60;
+                const chartWidth = width - 2 * padding;
+                const chartHeight = height - 2 * padding;
+
+                // Clear canvas
+                ctx.fillStyle = "#ffffff";
+                ctx.fillRect(0, 0, width, height);
+
+                // Draw grid
+                ctx.strokeStyle = "#e0e0e0";
+                ctx.lineWidth = 1;
+                for (let i = 0; i <= 10; i++) {
+                    const x = padding + (i / 10) * chartWidth;
+                    const y = padding + (i / 10) * chartHeight;
+
+                    ctx.beginPath();
+                    ctx.moveTo(x, padding);
+                    ctx.lineTo(x, padding + chartHeight);
+                    ctx.stroke();
+
+                    ctx.beginPath();
+                    ctx.moveTo(padding, y);
+                    ctx.lineTo(padding + chartWidth, y);
+                    ctx.stroke();
+                }
+
+                // Draw axes
+                ctx.strokeStyle = "#333";
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(padding, padding);
+                ctx.lineTo(padding, padding + chartHeight);
+                ctx.lineTo(padding + chartWidth, padding + chartHeight);
+                ctx.stroke();
+
+                // Draw axis labels
+                ctx.fillStyle = "#333";
+                ctx.font = "14px 'Segoe UI'";
+                ctx.textAlign = "center";
+                ctx.fillText("Time", width / 2, height - 20);
+
+                ctx.save();
+                ctx.translate(20, height / 2);
+                ctx.rotate(-Math.PI / 2);
+                ctx.fillText("Value", 0, 0);
+                ctx.restore();
+
+                // Draw diagonal reference line
+                ctx.strokeStyle = "#ccc";
+                ctx.lineWidth = 1;
+                ctx.setLineDash([5, 5]);
+                ctx.beginPath();
+                ctx.moveTo(padding, padding + chartHeight);
+                ctx.lineTo(padding + chartWidth, padding);
+                ctx.stroke();
+                ctx.setLineDash([]);
+
+                // Create custom elastic functions
+                const elasticIn = (v) => Easing.easeInElastic(v, amplitude, period);
+                const elasticOut = (v) => Easing.easeOutElastic(v, amplitude, period);
+                const elasticInOut = (v) => Easing.easeInOutElastic(v, amplitude, period);
+
+                // Draw easing curves
+                const drawCurve = (easingFunc, color, label) => {
+                    ctx.strokeStyle = color;
+                    ctx.lineWidth = 3;
+                    ctx.beginPath();
+
+                    for (let i = 0; i <= chartWidth; i++) {
+                        const t = i / chartWidth;
+                        const value = easingFunc(t);
+                        const x = padding + i;
+                        // Clamp value for display (elastic can go outside 0-1)
+                        const clampedValue = Math.max(-0.5, Math.min(1.5, value));
+                        const y = padding + chartHeight - clampedValue * chartHeight;
+
+                        if (i === 0) {
+                            ctx.moveTo(x, y);
+                        } else {
+                            ctx.lineTo(x, y);
+                        }
+                    }
+
+                    ctx.stroke();
+                };
+
+                drawCurve(elasticIn, colors.in, "Ease In");
+                drawCurve(elasticOut, colors.out, "Ease Out");
+                drawCurve(elasticInOut, colors.inOut, "Ease In-Out");
+
+                // Draw legend
+                const legendX = width - 150;
+                const legendY = 80;
+                const legends = [
+                    { color: colors.in, label: "Ease In" },
+                    { color: colors.out, label: "Ease Out" },
+                    { color: colors.inOut, label: "Ease In-Out" },
+                ];
+
+                ctx.font = "13px 'Segoe UI'";
+                ctx.textAlign = "left";
+
+                legends.forEach((legend, i) => {
+                    const y = legendY + i * 25;
+
+                    ctx.strokeStyle = legend.color;
+                    ctx.lineWidth = 3;
+                    ctx.beginPath();
+                    ctx.moveTo(legendX, y);
+                    ctx.lineTo(legendX + 30, y);
+                    ctx.stroke();
+
+                    ctx.fillStyle = "#333";
+                    ctx.fillText(legend.label, legendX + 40, y + 5);
+                });
+            }
+
+            function updateValues() {
+                amplitude = parseFloat(amplitudeSlider.value);
+                period = parseFloat(periodSlider.value);
+
+                amplitudeValue.textContent = amplitude.toFixed(1);
+                periodValue.textContent = period.toFixed(2);
+
+                drawChart();
+            }
+
+            function playAnimation() {
+                const duration = 2000; // 2 seconds
+                const startTime = performance.now();
+                const trackHeight = elasticBall.parentElement.clientHeight - 50; // 50 = ball height + padding
+
+                playButton.disabled = true;
+
+                function animate(currentTime) {
+                    const elapsed = currentTime - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+
+                    // Use easeOutElastic for the animation
+                    const easedProgress = Easing.easeOutElastic(progress, amplitude, period);
+                    const position = easedProgress * trackHeight;
+
+                    elasticBall.style.transform = `translateY(${position}px)`;
+
+                    if (progress < 1) {
+                        requestAnimationFrame(animate);
+                    } else {
+                        playButton.disabled = false;
+                        // Reset after a short delay
+                        setTimeout(() => {
+                            elasticBall.style.transition = "transform 0.3s ease-out";
+                            elasticBall.style.transform = "translateY(0)";
+                            setTimeout(() => {
+                                elasticBall.style.transition = "none";
+                            }, 300);
+                        }, 500);
+                    }
+                }
+
+                requestAnimationFrame(animate);
+            }
+
+            // Event listeners
+            amplitudeSlider.addEventListener("input", updateValues);
+            periodSlider.addEventListener("input", updateValues);
+            playButton.addEventListener("click", playAnimation);
+
+            // Initial draw
+            drawChart();
+        </script>
+    </body>
+</html>

@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Easing Functions Test</title>
+        <style>
+            body {
+                font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+                margin: 20px;
+                background: #f5f5f5;
+            }
+            .container {
+                max-width: 1600px;
+                margin: 0 auto;
+                background: white;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            }
+            h1 {
+                text-align: center;
+                color: #333;
+            }
+            .content {
+                display: flex;
+                gap: 20px;
+                align-items: flex-start;
+            }
+            canvas {
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                flex-shrink: 0;
+            }
+            .legend {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+                min-width: 200px;
+            }
+            .toggle-buttons {
+                display: flex;
+                gap: 8px;
+                margin-bottom: 12px;
+                padding-bottom: 12px;
+                border-bottom: 1px solid #ddd;
+            }
+            .toggle-btn {
+                padding: 6px 12px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                background: white;
+                cursor: pointer;
+                font-size: 13px;
+                transition: all 0.2s;
+                user-select: none;
+            }
+            .toggle-btn:hover {
+                background: #f0f0f0;
+                border-color: #999;
+            }
+            .toggle-btn:active {
+                transform: scale(0.95);
+            }
+            .legend-item {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                font-size: 14px;
+                cursor: pointer;
+                padding: 6px 8px;
+                border-radius: 4px;
+                transition: background-color 0.2s;
+                user-select: none;
+            }
+            .legend-item:hover {
+                background-color: #f0f0f0;
+            }
+            .legend-item.disabled {
+                opacity: 0.4;
+            }
+            .legend-color {
+                width: 20px;
+                height: 3px;
+                border-radius: 2px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Easing Functions Visualization</h1>
+            <div class="content">
+                <canvas id="easingChart"></canvas>
+                <div id="legend" class="legend"></div>
+            </div>
+        </div>
+
+        <script type="module">
+            import Easing from "../module/Easing.js";
+
+            window.Easing = Easing; // Expose for debugging if needed
+
+            const canvas = document.getElementById("easingChart");
+            const ctx = canvas.getContext("2d");
+            const legendDiv = document.getElementById("legend");
+
+            // Set canvas size
+            canvas.width = 1200;
+            canvas.height = 800;
+
+            // Chart dimensions
+            const padding = 60;
+            const chartWidth = canvas.width - padding * 2;
+            const chartHeight = canvas.height - padding * 2;
+
+            // Colors for different easing functions
+            const colors = [
+                "#e74c3c",
+                "#3498db",
+                "#2ecc71",
+                "#f39c12",
+                "#9b59b6",
+                "#1abc9c",
+                "#e67e22",
+                "#34495e",
+                "#c0392b",
+                "#2980b9",
+                "#27ae60",
+                "#f1c40f",
+                "#8e44ad",
+                "#16a085",
+                "#d35400",
+                "#2c3e50",
+                "#e84393",
+                "#00b894",
+                "#0984e3",
+                "#fdcb6e",
+                "#6c5ce7",
+                "#fd79a8",
+            ];
+
+            // Get all easing functions
+            const easingFunctions = Object.entries(Easing);
+
+            // Track enabled/disabled state for each function
+            const enabledStates = new Map(easingFunctions.map(([name]) => [name, true]));
+
+            // Draw grid and axes
+            function drawGrid() {
+                ctx.strokeStyle = "#e0e0e0";
+                ctx.lineWidth = 1;
+
+                // Vertical grid lines
+                for (let i = 0; i <= 10; i++) {
+                    const x = padding + (chartWidth / 10) * i;
+                    ctx.beginPath();
+                    ctx.moveTo(x, padding);
+                    ctx.lineTo(x, canvas.height - padding);
+                    ctx.stroke();
+                }
+
+                // Horizontal grid lines
+                for (let i = 0; i <= 10; i++) {
+                    const y = padding + (chartHeight / 10) * i;
+                    ctx.beginPath();
+                    ctx.moveTo(padding, y);
+                    ctx.lineTo(canvas.width - padding, y);
+                    ctx.stroke();
+                }
+
+                // Axes
+                ctx.strokeStyle = "#333";
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(padding, padding);
+                ctx.lineTo(padding, canvas.height - padding);
+                ctx.lineTo(canvas.width - padding, canvas.height - padding);
+                ctx.stroke();
+
+                // Labels
+                ctx.fillStyle = "#333";
+                ctx.font = "14px sans-serif";
+                ctx.textAlign = "center";
+
+                // X-axis label
+                ctx.fillText("Time (0 → 1)", canvas.width / 2, canvas.height - 20);
+
+                // Y-axis label
+                ctx.save();
+                ctx.translate(20, canvas.height / 2);
+                ctx.rotate(-Math.PI / 2);
+                ctx.fillText("Value (0 → 1)", 0, 0);
+                ctx.restore();
+
+                // Axis tick labels
+                ctx.font = "12px sans-serif";
+                for (let i = 0; i <= 10; i++) {
+                    const x = padding + (chartWidth / 10) * i;
+                    ctx.fillText((i / 10).toFixed(1), x, canvas.height - padding + 20);
+                }
+
+                ctx.textAlign = "right";
+                for (let i = 0; i <= 10; i++) {
+                    const y = canvas.height - padding - (chartHeight / 10) * i;
+                    ctx.fillText((i / 10).toFixed(1), padding - 10, y + 5);
+                }
+            }
+
+            // Draw easing function curves
+            function drawEasingCurve(easingFn, color, steps = 600) {
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+
+                for (let i = 0; i <= steps; i++) {
+                    const t = i / steps;
+                    const value = easingFn(t);
+
+                    const x = padding + t * chartWidth;
+                    const y = canvas.height - padding - value * chartHeight;
+
+                    if (i === 0) {
+                        ctx.moveTo(x, y);
+                    } else {
+                        ctx.lineTo(x, y);
+                    }
+                }
+
+                ctx.stroke();
+            }
+
+            // Create legend
+            function createLegend() {
+                // Add toggle buttons
+                const toggleContainer = document.createElement("div");
+                toggleContainer.className = "toggle-buttons";
+
+                const categories = [
+                    { name: "In", pattern: /^easeIn(?!Out)/ },
+                    { name: "Out", pattern: /^easeOut/ },
+                    { name: "InOut", pattern: /^easeInOut/ },
+                ];
+
+                categories.forEach(({ name, pattern }) => {
+                    const btn = document.createElement("button");
+                    btn.className = "toggle-btn";
+                    btn.textContent = `Toggle ${name}`;
+                    btn.addEventListener("click", () => {
+                        toggleCategory(pattern);
+                    });
+                    toggleContainer.appendChild(btn);
+                });
+
+                legendDiv.appendChild(toggleContainer);
+
+                easingFunctions.forEach(([name], index) => {
+                    const item = document.createElement("div");
+                    item.className = "legend-item";
+                    item.dataset.name = name;
+
+                    const colorBox = document.createElement("div");
+                    colorBox.className = "legend-color";
+                    colorBox.style.backgroundColor = colors[index % colors.length];
+
+                    const label = document.createElement("span");
+                    label.textContent = name;
+
+                    item.appendChild(colorBox);
+                    item.appendChild(label);
+
+                    // Add click handler to toggle visibility
+                    item.addEventListener("click", () => {
+                        const currentState = enabledStates.get(name);
+                        enabledStates.set(name, !currentState);
+                        item.classList.toggle("disabled", !enabledStates.get(name));
+                        draw();
+                    });
+
+                    legendDiv.appendChild(item);
+                });
+            }
+
+            // Toggle category of easing functions
+            function toggleCategory(pattern) {
+                // Check if any matching functions are enabled
+                const matchingFunctions = easingFunctions.filter(([name]) => pattern.test(name));
+                const anyEnabled = matchingFunctions.some(([name]) => enabledStates.get(name));
+
+                // Toggle all matching functions to opposite state
+                matchingFunctions.forEach(([name]) => {
+                    enabledStates.set(name, !anyEnabled);
+                    const item = legendDiv.querySelector(`[data-name="${name}"]`);
+                    if (item) {
+                        item.classList.toggle("disabled", anyEnabled);
+                    }
+                });
+
+                draw();
+            }
+
+            // Draw everything
+            function draw() {
+                // Clear canvas
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                // Draw grid and axes
+                drawGrid();
+
+                // Draw only enabled easing curves
+                easingFunctions.forEach(([name, fn], index) => {
+                    if (enabledStates.get(name)) {
+                        const color = colors[index % colors.length];
+                        drawEasingCurve(fn, color);
+                    }
+                });
+            }
+
+            // Initialize
+            createLegend();
+            draw();
+
+            // Redraw on window resize (if needed)
+            window.addEventListener("resize", () => {
+                // Could make canvas responsive here
+            });
+        </script>
+    </body>
+</html>
