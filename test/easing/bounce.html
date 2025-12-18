@@ -159,32 +159,26 @@
                 <canvas id="bounceChart" width="600" height="600"></canvas>
                 <div class="controls">
                     <div class="control-group">
-                        <label for="acceleration">Acceleration</label>
+                        <label for="p1">P1 (Power)</label>
                         <div class="slider-container">
-                            <input
-                                type="range"
-                                id="acceleration"
-                                min="1"
-                                max="15"
-                                step="0.1"
-                                value="7.5625"
-                            />
-                            <span class="value-display" id="accelerationValue">7.5625</span>
+                            <input type="range" id="p1" min="0.5" max="3" step="0.1" value="1.6" />
+                            <span class="value-display" id="p1Value">1.6</span>
                         </div>
                     </div>
 
                     <div class="control-group">
-                        <label for="divisor">Divisor</label>
+                        <label for="t2">T2 (Time Scale)</label>
                         <div class="slider-container">
-                            <input
-                                type="range"
-                                id="divisor"
-                                min="1"
-                                max="5"
-                                step="0.05"
-                                value="2.75"
-                            />
-                            <span class="value-display" id="divisorValue">2.75</span>
+                            <input type="range" id="t2" min="1" max="6" step="0.1" value="3.5" />
+                            <span class="value-display" id="t2Value">3.5</span>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label for="p2">P2 (Decay Power)</label>
+                        <div class="slider-container">
+                            <input type="range" id="p2" min="0.5" max="4" step="0.1" value="2" />
+                            <span class="value-display" id="p2Value">2</span>
                         </div>
                     </div>
 
@@ -198,36 +192,38 @@
 
                     <div class="info">
                         <strong>About Bounce Easing:</strong><br />
-                        • <strong>Acceleration</strong> controls the bounce strength (higher =
-                        bouncier)<br />
-                        • <strong>Divisor</strong> controls the bounce intervals (lower = more
-                        bounces)<br />
-                        • The chart shows EaseIn, EaseOut, and EaseInOut variants
+                        • <strong>P1</strong> controls the initial power curve<br />
+                        • <strong>T2</strong> controls the frequency/time scaling<br />
+                        • <strong>P2</strong> controls the decay power<br />
+                        • Red/Blue: New Bounce | Green: Classic Bounce
                     </div>
                 </div>
             </div>
         </div>
 
         <script type="module">
-            import Easing from "../module/Easing.js";
+            import Easing from "../../module/Easing.js";
 
             const canvas = document.getElementById("bounceChart");
             const ctx = canvas.getContext("2d");
-            const accelerationSlider = document.getElementById("acceleration");
-            const divisorSlider = document.getElementById("divisor");
-            const accelerationValue = document.getElementById("accelerationValue");
-            const divisorValue = document.getElementById("divisorValue");
+            const p1Slider = document.getElementById("p1");
+            const t2Slider = document.getElementById("t2");
+            const p2Slider = document.getElementById("p2");
+            const p1Value = document.getElementById("p1Value");
+            const t2Value = document.getElementById("t2Value");
+            const p2Value = document.getElementById("p2Value");
             const playButton = document.getElementById("playButton");
             const bounceBall = document.getElementById("bounceBall");
 
-            let acceleration = 7.5625;
-            let divisor = 2.75;
+            let p1 = 1.6;
+            let t2 = 3.5;
+            let p2 = 2;
 
-            // Colors for the three variants
+            // Colors for the three curves
             const colors = {
                 in: "#e74c3c",
                 out: "#3498db",
-                inOut: "#2ecc71",
+                classic: "#2ecc71",
             };
 
             function drawChart() {
@@ -291,9 +287,8 @@
                 ctx.setLineDash([]);
 
                 // Create custom bounce functions
-                const bounceIn = (v) => Easing.easeInBounce(v, acceleration, divisor);
-                const bounceOut = (v) => Easing.easeOutBounce(v, acceleration, divisor);
-                const bounceInOut = (v) => Easing.easeInOutBounce(v, acceleration, divisor);
+                const bounceIn = (v) => Easing.easeInBounce(v, p1, t2, p2);
+                const bounceClassic = (v) => Easing.easeInBounceClassic(v);
 
                 // Draw easing curves
                 const drawCurve = (easingFunc, color, label) => {
@@ -318,16 +313,14 @@
                 };
 
                 drawCurve(bounceIn, colors.in, "Ease In");
-                drawCurve(bounceOut, colors.out, "Ease Out");
-                drawCurve(bounceInOut, colors.inOut, "Ease In-Out");
+                drawCurve(bounceClassic, colors.classic, "Classic");
 
                 // Draw legend
                 const legendX = width - 150;
                 const legendY = 80;
                 const legends = [
-                    { color: colors.in, label: "Ease In" },
-                    { color: colors.out, label: "Ease Out" },
-                    { color: colors.inOut, label: "Ease In-Out" },
+                    { color: colors.in, label: "Bounce In" },
+                    { color: colors.classic, label: "Classic Bounce" },
                 ];
 
                 ctx.font = "13px 'Segoe UI'";
@@ -349,11 +342,13 @@
             }
 
             function updateValues() {
-                acceleration = parseFloat(accelerationSlider.value);
-                divisor = parseFloat(divisorSlider.value);
+                p1 = parseFloat(p1Slider.value);
+                t2 = parseFloat(t2Slider.value);
+                p2 = parseFloat(p2Slider.value);
 
-                accelerationValue.textContent = acceleration.toFixed(4);
-                divisorValue.textContent = divisor.toFixed(2);
+                p1Value.textContent = p1.toFixed(1);
+                t2Value.textContent = t2.toFixed(1);
+                p2Value.textContent = p2.toFixed(1);
 
                 drawChart();
             }
@@ -370,7 +365,7 @@
                     const progress = Math.min(elapsed / duration, 1);
 
                     // Use easeOutBounce for the animation
-                    const easedProgress = Easing.easeOutBounce(progress, acceleration, divisor);
+                    const easedProgress = Easing.easeOutBounce(progress, p1, t2, p2);
                     const position = easedProgress * trackHeight;
 
                     bounceBall.style.transform = `translateY(${position}px)`;
@@ -394,8 +389,9 @@
             }
 
             // Event listeners
-            accelerationSlider.addEventListener("input", updateValues);
-            divisorSlider.addEventListener("input", updateValues);
+            p1Slider.addEventListener("input", updateValues);
+            t2Slider.addEventListener("input", updateValues);
+            p2Slider.addEventListener("input", updateValues);
             playButton.addEventListener("click", playAnimation);
 
             // Initial draw
