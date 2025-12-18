@@ -6,25 +6,17 @@ body {
 }
 
 .container {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
+    display: flex;
     justify-content: center;
-    max-width: 900px;
-    margin: 0 auto;
+    align-items: center;
+    gap: 10px;
 }
 
-.canvas-wrapper {
+.input-canvas-wrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-
-canvas {
-    border: 2px solid #333;
-    background: white;
-    cursor: crosshair;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    gap: 10px;
 }
 
 .grid-overlay {
@@ -107,8 +99,13 @@ input[type="range"] {
     font-style: italic;
 }
 
+canvas {
+    background: white;
+    border-radius: 8px;
+    cursor: crosshair;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
 #canvas3d {
     cursor: move;
-    border: 2px solid #333;
-    background: #1a1a1a;
 }

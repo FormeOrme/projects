@@ -1,5 +1,13 @@
 const { PI } = Math;
 
+class TileData {
+    constructor(tilePos, rotation, flip) {
+        this.tilePos = tilePos;
+        this.rotation = rotation;
+        this.flip = flip;
+    }
+}
+
 // 3D Canvas Viewer using WebGL
 class Canvas3DViewer {
     constructor(canvasId, sourceCanvasIds) {
@@ -103,49 +111,28 @@ class Canvas3DViewer {
     setupGeometry() {
         const gl = this.gl;
 
-        // Create 4 planes in a 2x2 tile layout with no gaps
+        // Create 12 planes total: 4 tiles for each of the 3 orientations
         this.planes = [];
 
-        // Each plane is 1.0 unit wide (from -0.5 to 0.5)
-        // Positions for 2x2 grid with no gaps: [x, z]
-        const positions = [
-            [-0.5, -0.5], // Top-left (centered at -0.5, -0.5, spans from -1 to 0 in both axes)
-            [0.5, -0.5], // Top-right (centered at 0.5, -0.5, spans from 0 to 1 in x, -1 to 0 in z)
-            [-0.5, 0.5], // Bottom-left (centered at -0.5, 0.5, spans from -1 to 0 in x, 0 to 1 in z)
-            [0.5, 0.5], // Bottom-right (centered at 0.5, 0.5, spans from 0 to 1 in both axes)
+        const indices = new Uint16Array([0, 1, 2, 0, 2, 3]);
+
+        const tiles = [
+            new TileData([-0.5, -0.5], PI, true), // Top-left
+            new TileData([0.5, -0.5], PI, false), // Top-right
+            new TileData([-0.5, 0.5], 0, false), // Bottom-left
+            new TileData([0.5, 0.5], 0, true), // Bottom-right
         ];
 
-        const rotations = [PI, PI, 0, 0];
-        const flip = [true, false, false, true];
+        // Create XZ plane tiles (for canvas1) - horizontal plane
+        for (const tileData of tiles) {
+            const vertices2 = [
+                ...[-0.5, 0.0, -0.5, tileData.flip ? 1 : 0, 1], // Bottom-left
+                ...[+0.5, 0.0, -0.5, tileData.flip ? 0 : 1, 1], // Bottom-right
+                ...[+0.5, 0.0, +0.5, tileData.flip ? 0 : 1, 0], // Top-right
+                ...[-0.5, 0.0, +0.5, tileData.flip ? 1 : 0, 0], // Top-left
+            ];
 
-        positions.forEach((position, index) => {
-            const vertices = new Float32Array([
-                -0.5,
-                0.0,
-                -0.5,
-                flip[index] ? 1.0 : 0.0,
-                1.0, // Bottom-left on XZ plane
-
-                0.5,
-                0.0,
-                -0.5,
-                flip[index] ? 0.0 : 1.0,
-                1.0, // Bottom-right on XZ plane
-
-                0.5,
-                0.0,
-                0.5,
-                flip[index] ? 0.0 : 1.0,
-                0.0, // Top-right on XZ plane
-
-                -0.5,
-                0.0,
-                0.5,
-                flip[index] ? 1.0 : 0.0,
-                0.0, // Top-left on XZ plane
-            ]);
-
-            const indices = new Uint16Array([0, 1, 2, 0, 2, 3]);
+            const vertices = new Float32Array(vertices2);
 
             const vertexBuffer = gl.createBuffer();
             gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
@@ -159,28 +146,88 @@ class Canvas3DViewer {
                 vertexBuffer,
                 indexBuffer,
                 indexCount: indices.length,
-                position: position, // Store position for this tile
-                rotation: rotations[index], // Store rotation for this tile
+                textureIndex: 0, // canvas1
+                tilePosition: tileData.tilePos,
+                rotation: tileData.rotation,
+                planeType: "xz",
             });
-        });
+        }
+
+        // Create XY plane tiles (for canvas2) - vertical plane facing front
+        for (const tileData of tiles) {
+            const vertices = new Float32Array([
+                [-0.5, -0.5, 0.0, tileData.flip ? 1 : 0, 1], // Bottom-left
+                [+0.5, -0.5, 0.0, tileData.flip ? 0 : 1, 1], // Bottom-right
+                [+0.5, +0.5, 0.0, tileData.flip ? 0 : 1, 0], // Top-right
+                [-0.5, +0.5, 0.0, tileData.flip ? 1 : 0, 0], // Top-left
+            ]);
+
+            const vertexBuffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+            gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+
+            const indexBuffer = gl.createBuffer();
+            gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
+            gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indices, gl.STATIC_DRAW);
+
+            this.planes.push({
+                vertexBuffer,
+                indexBuffer,
+                indexCount: indices.length,
+                textureIndex: 1, // canvas2
+                tilePosition: tileData.tilePos,
+                rotation: tileData.rotation,
+                planeType: "xy",
+            });
+        }
+
+        // Create YZ plane tiles (for canvas3) - vertical plane facing side
+        for (const tileData of tiles) {
+            const vertices = new Float32Array([
+                [0.0, -0.5, -0.5, tileData.flip ? 1 : 0, 1], // Bottom-left
+                [0.0, -0.5, +0.5, tileData.flip ? 0 : 1, 1], // Bottom-right
+                [0.0, +0.5, +0.5, tileData.flip ? 0 : 1, 0], // Top-right
+                [0.0, +0.5, -0.5, tileData.flip ? 1 : 0, 0], // Top-left
+            ]);
+
+            const vertexBuffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+            gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+
+            const indexBuffer = gl.createBuffer();
+            gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
+            gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indices, gl.STATIC_DRAW);
+
+            this.planes.push({
+                vertexBuffer,
+                indexBuffer,
+                indexCount: indices.length,
+                textureIndex: 2, // canvas3
+                tilePosition: tileData.tilePos,
+                rotation: tileData.rotation,
+                planeType: "yz",
+            });
+        }
     }
 
     setupTextures() {
         const gl = this.gl;
 
-        // Only use the first canvas
-        const canvasId = this.sourceCanvasIds[0];
-        const texture = gl.createTexture();
-        gl.bindTexture(gl.TEXTURE_2D, texture);
+        // Create textures for all three canvases
+        this.textures = [];
 
-        // Set texture parameters
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+        this.sourceCanvasIds.forEach((canvasId) => {
+            const texture = gl.createTexture();
+            gl.bindTexture(gl.TEXTURE_2D, texture);
 
-        this.texture = texture;
-        this.canvasId = canvasId;
+            // Set texture parameters
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+
+            this.textures.push({ texture, canvasId });
+        });
     }
 
     setupEventListeners() {
@@ -222,9 +269,12 @@ class Canvas3DViewer {
 
     updateTextures() {
         const gl = this.gl;
-        const sourceCanvas = document.getElementById(this.canvasId);
-        gl.bindTexture(gl.TEXTURE_2D, this.texture);
-        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, sourceCanvas);
+
+        this.textures.forEach(({ texture, canvasId }) => {
+            const sourceCanvas = document.getElementById(canvasId);
+            gl.bindTexture(gl.TEXTURE_2D, texture);
+            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, sourceCanvas);
+        });
     }
 
     createMatrix4() {
@@ -447,13 +497,13 @@ class Canvas3DViewer {
             projectionMatrix,
         );
 
-        // Bind the single texture (first canvas)
-        gl.activeTexture(gl.TEXTURE0);
-        gl.bindTexture(gl.TEXTURE_2D, this.texture);
-        gl.uniform1i(this.programInfo.uniformLocations.sampler, 0);
-
-        // Render each plane at different positions (tiled layout)
+        // Render each plane with its corresponding texture
         this.planes.forEach((plane) => {
+            // Bind the texture for this plane
+            gl.activeTexture(gl.TEXTURE0);
+            gl.bindTexture(gl.TEXTURE_2D, this.textures[plane.textureIndex].texture);
+            gl.uniform1i(this.programInfo.uniformLocations.sampler, 0);
+
             const modelViewMatrix = this.createMatrix4();
             this.identity(modelViewMatrix);
 
@@ -464,12 +514,29 @@ class Canvas3DViewer {
             this.rotateX(modelViewMatrix, modelViewMatrix, this.rotation.x);
             this.rotateY(modelViewMatrix, modelViewMatrix, this.rotation.y);
 
-            // Position each plane at its tile location
-            this.translate(modelViewMatrix, modelViewMatrix, [
-                plane.position[0],
-                0,
-                plane.position[1],
-            ]);
+            // Position each tile based on plane type
+            if (plane.planeType === "xz") {
+                // XZ plane: translate in X and Z
+                this.translate(modelViewMatrix, modelViewMatrix, [
+                    plane.tilePosition[0],
+                    0,
+                    plane.tilePosition[1],
+                ]);
+            } else if (plane.planeType === "xy") {
+                // XY plane: translate in X and Y
+                this.translate(modelViewMatrix, modelViewMatrix, [
+                    plane.tilePosition[0],
+                    plane.tilePosition[1],
+                    0,
+                ]);
+            } else if (plane.planeType === "yz") {
+                // YZ plane: translate in Y and Z
+                this.translate(modelViewMatrix, modelViewMatrix, [
+                    0,
+                    plane.tilePosition[1],
+                    plane.tilePosition[0],
+                ]);
+            }
 
             // Apply individual plane rotation around Y axis
             this.rotateY(modelViewMatrix, modelViewMatrix, plane.rotation);
