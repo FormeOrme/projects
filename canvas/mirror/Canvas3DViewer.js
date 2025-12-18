@@ -480,6 +480,7 @@ class Canvas3DViewer {
         gl.clearDepth(1.0);
         gl.enable(gl.DEPTH_TEST);
         gl.depthFunc(gl.LEQUAL);
+        gl.depthMask(false); // Disable depth writes for proper transparency
 
         // Enable blending for transparency
         gl.enable(gl.BLEND);
