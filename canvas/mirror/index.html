@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Three Drawing Areas</title>
+        <link rel="stylesheet" href="style.css" />
+    </head>
+    <body>
+        <div class="controls">
+            <label>Color: <input type="color" id="colorPicker" value="#000000" /></label>
+            <label
+                >Line Width: <input type="range" id="lineWidth" min="1" max="50" value="20"
+            /></label>
+            <span id="widthValue">2</span>px
+            <button id="clearAll">Clear All</button>
+        </div>
+
+        <div class="container">
+            <div class="canvas-wrapper">
+                <h2>Area 1</h2>
+                <canvas id="canvas1" width="400" height="400"></canvas>
+                <button class="clear-btn" data-canvas="canvas1">Clear</button>
+            </div>
+
+            <div class="canvas-wrapper">
+                <h2>3D View</h2>
+                <canvas id="canvas3d" width="400" height="400"></canvas>
+            </div>
+
+            <div class="canvas-wrapper">
+                <h2>Area 2</h2>
+                <canvas id="canvas2" width="400" height="400"></canvas>
+                <button class="clear-btn" data-canvas="canvas2">Clear</button>
+            </div>
+
+            <div class="canvas-wrapper">
+                <h2>Area 3</h2>
+                <canvas id="canvas3" width="400" height="400"></canvas>
+                <button class="clear-btn" data-canvas="canvas3">Clear</button>
+            </div>
+        </div>
+
+        <script type="module">
+            import DrawingApp from "./DrawingApp.js";
+            import Canvas3DViewer from "./Canvas3DViewer.js";
+
+            // Initialize the drawing application
+            const app = new DrawingApp(["canvas1", "canvas2", "canvas3"]);
+
+            // Initialize 3D viewer
+            const viewer3d = new Canvas3DViewer("canvas3d", ["canvas1", "canvas2", "canvas3"]);
+
+            // Setup individual clear buttons
+            document.querySelectorAll(".clear-btn").forEach((btn) => {
+                btn.addEventListener("click", () => {
+                    const canvasId = btn.dataset.canvas;
+                    app.clearCanvas(canvasId);
+                });
+            });
+        </script>
+    </body>
+</html>

@@ -1,0 +1,114 @@
+body {
+    margin: 0;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    background: #f0f0f0;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    justify-content: center;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.canvas-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+canvas {
+    border: 2px solid #333;
+    background: white;
+    cursor: crosshair;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.grid-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    border: 2px solid #333;
+    z-index: 1;
+    background: white;
+}
+
+.canvas-wrapper canvas:not(.grid-overlay) {
+    position: relative;
+    z-index: 2;
+    background: transparent;
+}
+
+h2 {
+    margin: 0 0 10px 0;
+    color: #333;
+}
+
+.controls {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.controls label {
+    display: flex;
+    align-items: center;
+}
+
+button {
+    padding: 10px 20px;
+    margin: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    background: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+}
+
+button:hover {
+    background: #45a049;
+}
+
+input[type="color"] {
+    width: 50px;
+    height: 40px;
+    border: none;
+    cursor: pointer;
+}
+
+input[type="range"] {
+    width: 150px;
+    vertical-align: middle;
+}
+
+.viewer-3d-container {
+    margin-top: 40px;
+    text-align: center;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.viewer-3d-container h2 {
+    margin-bottom: 5px;
+}
+
+.viewer-3d-container .hint {
+    color: #666;
+    font-size: 14px;
+    margin: 0 0 15px 0;
+    font-style: italic;
+}
+
+#canvas3d {
+    cursor: move;
+    border: 2px solid #333;
+    background: #1a1a1a;
+}
