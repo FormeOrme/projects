@@ -155,12 +155,14 @@ class Canvas3DViewer {
 
         // Create XY plane tiles (for canvas2) - vertical plane facing front
         for (const tileData of tiles) {
-            const vertices = new Float32Array([
-                [-0.5, -0.5, 0.0, tileData.flip ? 1 : 0, 1], // Bottom-left
-                [+0.5, -0.5, 0.0, tileData.flip ? 0 : 1, 1], // Bottom-right
-                [+0.5, +0.5, 0.0, tileData.flip ? 0 : 1, 0], // Top-right
-                [-0.5, +0.5, 0.0, tileData.flip ? 1 : 0, 0], // Top-left
-            ]);
+            const vertices2 = [
+                ...[-0.5, -0.5, 0.0, tileData.flip ? 1 : 0, 1], // Bottom-left
+                ...[+0.5, -0.5, 0.0, tileData.flip ? 0 : 1, 1], // Bottom-right
+                ...[+0.5, +0.5, 0.0, tileData.flip ? 0 : 1, 0], // Top-right
+                ...[-0.5, +0.5, 0.0, tileData.flip ? 1 : 0, 0], // Top-left
+            ];
+
+            const vertices = new Float32Array(vertices2);
 
             const vertexBuffer = gl.createBuffer();
             gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
@@ -183,12 +185,14 @@ class Canvas3DViewer {
 
         // Create YZ plane tiles (for canvas3) - vertical plane facing side
         for (const tileData of tiles) {
-            const vertices = new Float32Array([
-                [0.0, -0.5, -0.5, tileData.flip ? 1 : 0, 1], // Bottom-left
-                [0.0, -0.5, +0.5, tileData.flip ? 0 : 1, 1], // Bottom-right
-                [0.0, +0.5, +0.5, tileData.flip ? 0 : 1, 0], // Top-right
-                [0.0, +0.5, -0.5, tileData.flip ? 1 : 0, 0], // Top-left
-            ]);
+            const vertices2 = [
+                ...[0.0, -0.5, -0.5, tileData.flip ? 1 : 0, 1], // Bottom-left
+                ...[0.0, -0.5, +0.5, tileData.flip ? 0 : 1, 1], // Bottom-right
+                ...[0.0, +0.5, +0.5, tileData.flip ? 0 : 1, 0], // Top-right
+                ...[0.0, +0.5, -0.5, tileData.flip ? 1 : 0, 0], // Top-left
+            ];
+
+            const vertices = new Float32Array(vertices2);
 
             const vertexBuffer = gl.createBuffer();
             gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
