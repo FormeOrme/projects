@@ -1,3 +1,5 @@
+const { random, floor, min, PI } = Math;
+
 // CanvasManager - manages a single canvas
 class CanvasManager {
     constructor(canvasId) {
@@ -69,17 +71,16 @@ class CanvasManager {
         const centerY = this.canvas.height;
 
         // Draw 5-10 random arcs
-        const numArcs = Math.floor(Math.random() * 6) + 10;
+        const numArcs = floor(random() * 6) + 10;
 
         for (let i = 0; i < numArcs; i++) {
-            const radius =
-                Math.random() * Math.min(this.canvas.width, this.canvas.height) * 0.8 + 50;
-            const startAngle = Math.random() * Math.PI * 2;
-            const endAngle = startAngle + (Math.random() * Math.PI * 1.5 + Math.PI * 0.5);
-            const lineWidth = Math.random() * 15 + 5;
+            const radius = random() * min(this.canvas.width, this.canvas.height) * 0.8 + 50;
+            const startAngle = random() * PI * 2;
+            const endAngle = startAngle + (random() * PI * 1.5 + PI * 0.5);
+            const lineWidth = random() * 15 + 5;
 
             // Random color
-            const hue = Math.random() * 360;
+            const hue = random() * 360;
             const saturation = 100;
             const lightness = 70;
 

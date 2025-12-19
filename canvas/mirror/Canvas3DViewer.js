@@ -1,4 +1,4 @@
-const { PI } = Math;
+const { PI, max, min, tan, sin, cos } = Math;
 
 class TileData {
     constructor(tilePos, rotation, flip) {
@@ -283,7 +283,7 @@ class Canvas3DViewer {
         const delta = e.deltaY * 0.01;
         this.zoom += delta;
         // Clamp zoom between 2 and 20
-        this.zoom = Math.max(2, Math.min(20, this.zoom));
+        this.zoom = max(2, min(20, this.zoom));
     }
 
     updateTextures() {
@@ -301,7 +301,7 @@ class Canvas3DViewer {
     }
 
     perspective(out, fovy, aspect, near, far) {
-        const f = 1.0 / Math.tan(fovy / 2);
+        const f = 1.0 / tan(fovy / 2);
         out[0] = f / aspect;
         out[1] = 0;
         out[2] = 0;
@@ -354,8 +354,8 @@ class Canvas3DViewer {
     }
 
     rotateX(out, a, rad) {
-        const s = Math.sin(rad),
-            c = Math.cos(rad);
+        const s = sin(rad),
+            c = cos(rad);
         const a10 = a[4],
             a11 = a[5],
             a12 = a[6],
@@ -380,8 +380,8 @@ class Canvas3DViewer {
     }
 
     rotateY(out, a, rad) {
-        const s = Math.sin(rad),
-            c = Math.cos(rad);
+        const s = sin(rad),
+            c = cos(rad);
         const a00 = a[0],
             a01 = a[1],
             a02 = a[2],
@@ -406,8 +406,8 @@ class Canvas3DViewer {
     }
 
     rotateZ(out, a, rad) {
-        const s = Math.sin(rad),
-            c = Math.cos(rad);
+        const s = sin(rad),
+            c = cos(rad);
         const a00 = a[0],
             a01 = a[1],
             a02 = a[2],
@@ -509,7 +509,7 @@ class Canvas3DViewer {
         // Set up projection matrix
         const projectionMatrix = this.createMatrix4();
         const aspect = this.canvas.width / this.canvas.height;
-        this.perspective(projectionMatrix, Math.PI / 4, aspect, 0.1, 100.0);
+        this.perspective(projectionMatrix, PI / 4, aspect, 0.1, 100.0);
 
         gl.uniformMatrix4fv(
             this.programInfo.uniformLocations.projectionMatrix,
