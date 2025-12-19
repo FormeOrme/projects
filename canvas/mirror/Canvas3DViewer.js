@@ -116,7 +116,7 @@ class Canvas3DViewer {
 
         const indices = new Uint16Array([0, 1, 2, 0, 2, 3]);
 
-        const tiles = [
+        const tilesXZ = [
             new TileData([-0.5, -0.5], PI, true), // Top-left
             new TileData([0.5, -0.5], PI, false), // Top-right
             new TileData([-0.5, 0.5], 0, false), // Bottom-left
@@ -124,7 +124,7 @@ class Canvas3DViewer {
         ];
 
         // Create XZ plane tiles (for canvas1) - horizontal plane
-        for (const tileData of tiles) {
+        for (const tileData of tilesXZ) {
             const vertices2 = [
                 ...[-0.5, 0.0, -0.5, tileData.flip ? 1 : 0, 1], // Bottom-left
                 ...[+0.5, 0.0, -0.5, tileData.flip ? 0 : 1, 1], // Bottom-right
@@ -153,13 +153,20 @@ class Canvas3DViewer {
             });
         }
 
+        const tilesXY = [
+            new TileData([-0.5, -0.5], 0, true), // Bottom-left
+            new TileData([-0.5, 0.5], 0, false), // Top-left
+            new TileData([0.5, 0.5], PI, false), // Top-right
+            new TileData([0.5, -0.5], PI, true), // Bottom-right
+        ];
+
         // Create XY plane tiles (for canvas2) - vertical plane facing front
-        for (const tileData of tiles) {
+        for (const tileData of tilesXY) {
             const vertices2 = [
-                ...[-0.5, -0.5, 0.0, tileData.flip ? 1 : 0, 1], // Bottom-left
-                ...[+0.5, -0.5, 0.0, tileData.flip ? 0 : 1, 1], // Bottom-right
-                ...[+0.5, +0.5, 0.0, tileData.flip ? 0 : 1, 0], // Top-right
-                ...[-0.5, +0.5, 0.0, tileData.flip ? 1 : 0, 0], // Top-left
+                ...[-0.5, -0.5, 0.0, 0, tileData.flip ? 0 : 1], // Bottom-left
+                ...[+0.5, -0.5, 0.0, 1, tileData.flip ? 0 : 1], // Bottom-right
+                ...[+0.5, +0.5, 0.0, 1, tileData.flip ? 1 : 0], // Top-right
+                ...[-0.5, +0.5, 0.0, 0, tileData.flip ? 1 : 0], // Top-left
             ];
 
             const vertices = new Float32Array(vertices2);
@@ -183,13 +190,20 @@ class Canvas3DViewer {
             });
         }
 
+        const tilesYZ = [
+            new TileData([-0.5, -0.5], 0, true), // Bottom-left
+            new TileData([-0.5, 0.5], 0, false), // Top-left
+            new TileData([0.5, 0.5], PI, false), // Top-right
+            new TileData([0.5, -0.5], PI, true), // Bottom-right
+        ];
+
         // Create YZ plane tiles (for canvas3) - vertical plane facing side
-        for (const tileData of tiles) {
+        for (const tileData of tilesYZ) {
             const vertices2 = [
-                ...[0.0, -0.5, -0.5, tileData.flip ? 1 : 0, 1], // Bottom-left
-                ...[0.0, -0.5, +0.5, tileData.flip ? 0 : 1, 1], // Bottom-right
-                ...[0.0, +0.5, +0.5, tileData.flip ? 0 : 1, 0], // Top-right
-                ...[0.0, +0.5, -0.5, tileData.flip ? 1 : 0, 0], // Top-left
+                ...[0.0, -0.5, -0.5, 0, tileData.flip ? 0 : 1], // Bottom-left
+                ...[0.0, -0.5, +0.5, 1, tileData.flip ? 0 : 1], // Bottom-right
+                ...[0.0, +0.5, +0.5, 1, tileData.flip ? 1 : 0], // Top-right
+                ...[0.0, +0.5, -0.5, 0, tileData.flip ? 1 : 0], // Top-left
             ];
 
             const vertices = new Float32Array(vertices2);

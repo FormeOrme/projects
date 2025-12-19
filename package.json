@@ -13,5 +13,8 @@
         "release": "npm version patch && npm publish --access public"
     },
     "author": "Federico Formenti",
-    "license": "MIT"
+    "license": "MIT",
+    "devDependencies": {
+        "prettier": "^3.7.4"
+    }
 }
