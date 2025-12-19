@@ -1,4 +1,6 @@
-const { PI, max, min, tan, sin, cos } = Math;
+import { WebGLUtils, Mat4 } from "./WebGLUtils.js";
+
+const { PI, max, min } = Math;
 
 class TileData {
     constructor(tilePos, rotation, flip) {
@@ -66,18 +68,7 @@ class Canvas3DViewer {
             }
         `;
 
-        const vertexShader = this.compileShader(gl.VERTEX_SHADER, vsSource);
-        const fragmentShader = this.compileShader(gl.FRAGMENT_SHADER, fsSource);
-
-        this.program = gl.createProgram();
-        gl.attachShader(this.program, vertexShader);
-        gl.attachShader(this.program, fragmentShader);
-        gl.linkProgram(this.program);
-
-        if (!gl.getProgramParameter(this.program, gl.LINK_STATUS)) {
-            console.error("Program link error:", gl.getProgramInfoLog(this.program));
-        }
-
+        this.program = WebGLUtils.createProgram(gl, vsSource, fsSource);
         gl.useProgram(this.program);
 
         // Get attribute and uniform locations
@@ -92,21 +83,6 @@ class Canvas3DViewer {
                 sampler: gl.getUniformLocation(this.program, "uSampler"),
             },
         };
-    }
-
-    compileShader(type, source) {
-        const gl = this.gl;
-        const shader = gl.createShader(type);
-        gl.shaderSource(shader, source);
-        gl.compileShader(shader);
-
-        if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-            console.error("Shader compile error:", gl.getShaderInfoLog(shader));
-            gl.deleteShader(shader);
-            return null;
-        }
-
-        return shader;
     }
 
     setupGeometry() {
@@ -230,23 +206,9 @@ class Canvas3DViewer {
     }
 
     setupTextures() {
-        const gl = this.gl;
-
-        // Create textures for all three canvases
-        this.textures = [];
-
-        this.sourceCanvasIds.forEach((canvasId) => {
-            const texture = gl.createTexture();
-            gl.bindTexture(gl.TEXTURE_2D, texture);
-
-            // Set texture parameters
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-
-            this.textures.push({ texture, canvasId });
-        });
+        this.textures = this.sourceCanvasIds.map((canvasId) =>
+            WebGLUtils.createTexture(this.gl, canvasId),
+        );
     }
 
     setupEventListeners() {
@@ -287,203 +249,9 @@ class Canvas3DViewer {
     }
 
     updateTextures() {
-        const gl = this.gl;
-
         this.textures.forEach(({ texture, canvasId }) => {
-            const sourceCanvas = document.getElementById(canvasId);
-            gl.bindTexture(gl.TEXTURE_2D, texture);
-            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, sourceCanvas);
+            WebGLUtils.updateTexture(this.gl, texture, canvasId);
         });
-    }
-
-    createMatrix4() {
-        return new Float32Array(16);
-    }
-
-    perspective(out, fovy, aspect, near, far) {
-        const f = 1.0 / tan(fovy / 2);
-        out[0] = f / aspect;
-        out[1] = 0;
-        out[2] = 0;
-        out[3] = 0;
-        out[4] = 0;
-        out[5] = f;
-        out[6] = 0;
-        out[7] = 0;
-        out[8] = 0;
-        out[9] = 0;
-        out[10] = (far + near) / (near - far);
-        out[11] = -1;
-        out[12] = 0;
-        out[13] = 0;
-        out[14] = (2 * far * near) / (near - far);
-        out[15] = 0;
-        return out;
-    }
-
-    identity(out) {
-        out[0] = 1;
-        out[1] = 0;
-        out[2] = 0;
-        out[3] = 0;
-        out[4] = 0;
-        out[5] = 1;
-        out[6] = 0;
-        out[7] = 0;
-        out[8] = 0;
-        out[9] = 0;
-        out[10] = 1;
-        out[11] = 0;
-        out[12] = 0;
-        out[13] = 0;
-        out[14] = 0;
-        out[15] = 1;
-        return out;
-    }
-
-    translate(out, a, v) {
-        const x = v[0],
-            y = v[1],
-            z = v[2];
-        out[12] = a[0] * x + a[4] * y + a[8] * z + a[12];
-        out[13] = a[1] * x + a[5] * y + a[9] * z + a[13];
-        out[14] = a[2] * x + a[6] * y + a[10] * z + a[14];
-        out[15] = a[3] * x + a[7] * y + a[11] * z + a[15];
-        for (let i = 0; i < 12; i++) out[i] = a[i];
-        return out;
-    }
-
-    rotateX(out, a, rad) {
-        const s = sin(rad),
-            c = cos(rad);
-        const a10 = a[4],
-            a11 = a[5],
-            a12 = a[6],
-            a13 = a[7];
-        const a20 = a[8],
-            a21 = a[9],
-            a22 = a[10],
-            a23 = a[11];
-
-        for (let i = 0; i < 4; i++) out[i] = a[i];
-        for (let i = 12; i < 16; i++) out[i] = a[i];
-
-        out[4] = a10 * c + a20 * s;
-        out[5] = a11 * c + a21 * s;
-        out[6] = a12 * c + a22 * s;
-        out[7] = a13 * c + a23 * s;
-        out[8] = a20 * c - a10 * s;
-        out[9] = a21 * c - a11 * s;
-        out[10] = a22 * c - a12 * s;
-        out[11] = a23 * c - a13 * s;
-        return out;
-    }
-
-    rotateY(out, a, rad) {
-        const s = sin(rad),
-            c = cos(rad);
-        const a00 = a[0],
-            a01 = a[1],
-            a02 = a[2],
-            a03 = a[3];
-        const a20 = a[8],
-            a21 = a[9],
-            a22 = a[10],
-            a23 = a[11];
-
-        for (let i = 4; i < 8; i++) out[i] = a[i];
-        for (let i = 12; i < 16; i++) out[i] = a[i];
-
-        out[0] = a00 * c - a20 * s;
-        out[1] = a01 * c - a21 * s;
-        out[2] = a02 * c - a22 * s;
-        out[3] = a03 * c - a23 * s;
-        out[8] = a00 * s + a20 * c;
-        out[9] = a01 * s + a21 * c;
-        out[10] = a02 * s + a22 * c;
-        out[11] = a03 * s + a23 * c;
-        return out;
-    }
-
-    rotateZ(out, a, rad) {
-        const s = sin(rad),
-            c = cos(rad);
-        const a00 = a[0],
-            a01 = a[1],
-            a02 = a[2],
-            a03 = a[3];
-        const a10 = a[4],
-            a11 = a[5],
-            a12 = a[6],
-            a13 = a[7];
-
-        for (let i = 8; i < 16; i++) out[i] = a[i];
-
-        out[0] = a00 * c + a10 * s;
-        out[1] = a01 * c + a11 * s;
-        out[2] = a02 * c + a12 * s;
-        out[3] = a03 * c + a13 * s;
-        out[4] = a10 * c - a00 * s;
-        out[5] = a11 * c - a01 * s;
-        out[6] = a12 * c - a02 * s;
-        out[7] = a13 * c - a03 * s;
-        return out;
-    }
-
-    multiply(out, a, b) {
-        const a00 = a[0],
-            a01 = a[1],
-            a02 = a[2],
-            a03 = a[3];
-        const a10 = a[4],
-            a11 = a[5],
-            a12 = a[6],
-            a13 = a[7];
-        const a20 = a[8],
-            a21 = a[9],
-            a22 = a[10],
-            a23 = a[11];
-        const a30 = a[12],
-            a31 = a[13],
-            a32 = a[14],
-            a33 = a[15];
-
-        let b0 = b[0],
-            b1 = b[1],
-            b2 = b[2],
-            b3 = b[3];
-        out[0] = b0 * a00 + b1 * a10 + b2 * a20 + b3 * a30;
-        out[1] = b0 * a01 + b1 * a11 + b2 * a21 + b3 * a31;
-        out[2] = b0 * a02 + b1 * a12 + b2 * a22 + b3 * a32;
-        out[3] = b0 * a03 + b1 * a13 + b2 * a23 + b3 * a33;
-
-        b0 = b[4];
-        b1 = b[5];
-        b2 = b[6];
-        b3 = b[7];
-        out[4] = b0 * a00 + b1 * a10 + b2 * a20 + b3 * a30;
-        out[5] = b0 * a01 + b1 * a11 + b2 * a21 + b3 * a31;
-        out[6] = b0 * a02 + b1 * a12 + b2 * a22 + b3 * a32;
-        out[7] = b0 * a03 + b1 * a13 + b2 * a23 + b3 * a33;
-
-        b0 = b[8];
-        b1 = b[9];
-        b2 = b[10];
-        b3 = b[11];
-        out[8] = b0 * a00 + b1 * a10 + b2 * a20 + b3 * a30;
-        out[9] = b0 * a01 + b1 * a11 + b2 * a21 + b3 * a31;
-        out[10] = b0 * a02 + b1 * a12 + b2 * a22 + b3 * a32;
-        out[11] = b0 * a03 + b1 * a13 + b2 * a23 + b3 * a33;
-
-        b0 = b[12];
-        b1 = b[13];
-        b2 = b[14];
-        b3 = b[15];
-        out[12] = b0 * a00 + b1 * a10 + b2 * a20 + b3 * a30;
-        out[13] = b0 * a01 + b1 * a11 + b2 * a21 + b3 * a31;
-        out[14] = b0 * a02 + b1 * a12 + b2 * a22 + b3 * a32;
-        out[15] = b0 * a03 + b1 * a13 + b2 * a23 + b3 * a33;
-        return out;
     }
 
     render() {
@@ -507,9 +275,9 @@ class Canvas3DViewer {
         this.updateTextures();
 
         // Set up projection matrix
-        const projectionMatrix = this.createMatrix4();
+        const projectionMatrix = Mat4.create();
         const aspect = this.canvas.width / this.canvas.height;
-        this.perspective(projectionMatrix, PI / 4, aspect, 0.1, 100.0);
+        Mat4.perspective(projectionMatrix, PI / 4, aspect, 0.1, 100.0);
 
         gl.uniformMatrix4fv(
             this.programInfo.uniformLocations.projectionMatrix,
@@ -524,34 +292,34 @@ class Canvas3DViewer {
             gl.bindTexture(gl.TEXTURE_2D, this.textures[plane.textureIndex].texture);
             gl.uniform1i(this.programInfo.uniformLocations.sampler, 0);
 
-            const modelViewMatrix = this.createMatrix4();
-            this.identity(modelViewMatrix);
+            const modelViewMatrix = Mat4.create();
+            Mat4.identity(modelViewMatrix);
 
             // Move camera back to see the planes
-            this.translate(modelViewMatrix, modelViewMatrix, [0, 0, -this.zoom]);
+            Mat4.translate(modelViewMatrix, modelViewMatrix, [0, 0, -this.zoom]);
 
             // Apply global rotation
-            this.rotateX(modelViewMatrix, modelViewMatrix, this.rotation.x);
-            this.rotateY(modelViewMatrix, modelViewMatrix, this.rotation.y);
+            Mat4.rotateX(modelViewMatrix, modelViewMatrix, this.rotation.x);
+            Mat4.rotateY(modelViewMatrix, modelViewMatrix, this.rotation.y);
 
             // Position each tile based on plane type
             if (plane.planeType === "xz") {
                 // XZ plane: translate in X and Z
-                this.translate(modelViewMatrix, modelViewMatrix, [
+                Mat4.translate(modelViewMatrix, modelViewMatrix, [
                     plane.tilePosition[0],
                     0,
                     plane.tilePosition[1],
                 ]);
             } else if (plane.planeType === "xy") {
                 // XY plane: translate in X and Y
-                this.translate(modelViewMatrix, modelViewMatrix, [
+                Mat4.translate(modelViewMatrix, modelViewMatrix, [
                     plane.tilePosition[0],
                     plane.tilePosition[1],
                     0,
                 ]);
             } else if (plane.planeType === "yz") {
                 // YZ plane: translate in Y and Z
-                this.translate(modelViewMatrix, modelViewMatrix, [
+                Mat4.translate(modelViewMatrix, modelViewMatrix, [
                     0,
                     plane.tilePosition[1],
                     plane.tilePosition[0],
@@ -559,7 +327,7 @@ class Canvas3DViewer {
             }
 
             // Apply individual plane rotation around Y axis
-            this.rotateY(modelViewMatrix, modelViewMatrix, plane.rotation);
+            Mat4.rotateY(modelViewMatrix, modelViewMatrix, plane.rotation);
 
             gl.uniformMatrix4fv(
                 this.programInfo.uniformLocations.modelViewMatrix,
