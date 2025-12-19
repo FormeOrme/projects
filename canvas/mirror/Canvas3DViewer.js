@@ -21,6 +21,7 @@ class Canvas3DViewer {
         }
 
         this.rotation = { x: 0.3, y: 0.3 };
+        this.autoRotateSpeed = { x: 0.001, y: 0 };
         this.isDragging = false;
         this.lastMouse = { x: 0, y: 0 };
         this.zoom = 5.0; // Camera distance
@@ -597,6 +598,10 @@ class Canvas3DViewer {
     }
 
     animate() {
+        if (!this.isDragging) {
+            this.rotation.x += this.autoRotateSpeed.x;
+            this.rotation.y += this.autoRotateSpeed.y;
+        }
         this.render();
         requestAnimationFrame(() => this.animate());
     }

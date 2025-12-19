@@ -1,129 +1,46 @@
-// Drawing application module
-class DrawingApp {
-    constructor(canvasIds) {
-        this.canvasIds = canvasIds;
-        this.contexts = {};
+// CanvasManager - manages a single canvas
+class CanvasManager {
+    constructor(canvasId) {
+        this.canvasId = canvasId;
+        this.canvas = document.getElementById(canvasId);
+        this.ctx = this.canvas.getContext("2d");
         this.isDrawing = false;
-        this.currentColor = "#000000";
-        this.currentLineWidth = 20;
 
-        this.init();
+        this.setupEventListeners();
+        this.drawInitialArcs();
     }
 
-    init() {
-        this.setupCanvases();
-        this.setupControls();
-    }
+    setupEventListeners() {
+        this.canvas.addEventListener("mousedown", (e) => this.startDrawing(e));
+        this.canvas.addEventListener("mousemove", (e) => this.draw(e));
+        this.canvas.addEventListener("mouseup", () => this.stopDrawing());
+        this.canvas.addEventListener("mouseout", () => this.stopDrawing());
 
-    setupCanvases() {
-        this.canvasIds.forEach((id) => {
-            const canvas = document.getElementById(id);
-            this.contexts[id] = canvas.getContext("2d");
-
-            canvas.addEventListener("mousedown", (e) => this.startDrawing(e));
-            canvas.addEventListener("mousemove", (e) => this.draw(e));
-            canvas.addEventListener("mouseup", () => this.stopDrawing());
-            canvas.addEventListener("mouseout", () => this.stopDrawing());
-
-            // Touch support
-            canvas.addEventListener("touchstart", (e) => this.handleTouch(e));
-            canvas.addEventListener("touchmove", (e) => this.handleTouch(e));
-            canvas.addEventListener("touchend", () => this.stopDrawing());
-
-            // Create grid overlay
-            // this.createGridOverlay(canvas);
-        });
-    }
-
-    createGridOverlay(canvas) {
-        const overlay = document.createElement("canvas");
-        overlay.width = canvas.width;
-        overlay.height = canvas.height;
-        overlay.className = "grid-overlay";
-
-        const ctx = overlay.getContext("2d");
-        const gridSize = 20;
-
-        ctx.strokeStyle = "rgba(200, 200, 200, 0.3)";
-        ctx.lineWidth = 1;
-
-        // Draw vertical lines
-        for (let x = 0; x <= canvas.width; x += gridSize) {
-            ctx.beginPath();
-            ctx.moveTo(x, 0);
-            ctx.lineTo(x, canvas.height);
-            ctx.stroke();
-        }
-
-        // Draw horizontal lines
-        for (let y = 0; y <= canvas.height; y += gridSize) {
-            ctx.beginPath();
-            ctx.moveTo(0, y);
-            ctx.lineTo(canvas.width, y);
-            ctx.stroke();
-        }
-
-        // Insert overlay before the canvas so it appears below
-        canvas.parentElement.style.position = "relative";
-        canvas.parentElement.insertBefore(overlay, canvas);
-    }
-
-    setupControls() {
-        // Color picker
-        const colorPicker = document.getElementById("colorPicker");
-        if (colorPicker) {
-            colorPicker.addEventListener("change", (e) => {
-                this.currentColor = e.target.value;
-            });
-        }
-
-        // Line width
-        const lineWidthInput = document.getElementById("lineWidth");
-        const widthValue = document.getElementById("widthValue");
-        if (lineWidthInput && widthValue) {
-            lineWidthInput.addEventListener("input", (e) => {
-                this.currentLineWidth = e.target.value;
-                widthValue.textContent = this.currentLineWidth;
-            });
-        }
-
-        // Clear all button
-        const clearAllBtn = document.getElementById("clearAll");
-        if (clearAllBtn) {
-            clearAllBtn.addEventListener("click", () => {
-                this.clearAll();
-            });
-        }
+        // Touch support
+        this.canvas.addEventListener("touchstart", (e) => this.handleTouch(e));
+        this.canvas.addEventListener("touchmove", (e) => this.handleTouch(e));
+        this.canvas.addEventListener("touchend", () => this.stopDrawing());
     }
 
     startDrawing(e) {
         this.isDrawing = true;
-        const canvas = e.target;
-        const ctx = this.contexts[canvas.id];
-        const rect = canvas.getBoundingClientRect();
+        const rect = this.canvas.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
 
-        ctx.beginPath();
-        ctx.moveTo(x, y);
+        this.ctx.beginPath();
+        this.ctx.moveTo(x, y);
     }
 
     draw(e) {
         if (!this.isDrawing) return;
 
-        const canvas = e.target;
-        const ctx = this.contexts[canvas.id];
-        const rect = canvas.getBoundingClientRect();
+        const rect = this.canvas.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
 
-        ctx.strokeStyle = this.currentColor;
-        ctx.lineWidth = this.currentLineWidth;
-        ctx.lineCap = "round";
-        ctx.lineJoin = "round";
-
-        ctx.lineTo(x, y);
-        ctx.stroke();
+        this.ctx.lineTo(x, y);
+        this.ctx.stroke();
     }
 
     stopDrawing() {
@@ -137,17 +54,143 @@ class DrawingApp {
             clientX: touch.clientX,
             clientY: touch.clientY,
         });
-        e.target.dispatchEvent(mouseEvent);
+        this.canvas.dispatchEvent(mouseEvent);
     }
 
-    clearCanvas(canvasId) {
-        const canvas = document.getElementById(canvasId);
-        const ctx = this.contexts[canvasId];
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    setDrawingStyle(color, lineWidth) {
+        this.ctx.strokeStyle = color;
+        this.ctx.lineWidth = lineWidth;
+        this.ctx.lineCap = "round";
+        this.ctx.lineJoin = "round";
+    }
+
+    drawInitialArcs() {
+        const centerX = this.canvas.width;
+        const centerY = this.canvas.height;
+
+        // Draw 5-10 random arcs
+        const numArcs = Math.floor(Math.random() * 6) + 10;
+
+        for (let i = 0; i < numArcs; i++) {
+            const radius =
+                Math.random() * Math.min(this.canvas.width, this.canvas.height) * 0.8 + 50;
+            const startAngle = Math.random() * Math.PI * 2;
+            const endAngle = startAngle + (Math.random() * Math.PI * 1.5 + Math.PI * 0.5);
+            const lineWidth = Math.random() * 15 + 5;
+
+            // Random color
+            const hue = Math.random() * 360;
+            const saturation = 100;
+            const lightness = 70;
+
+            this.ctx.beginPath();
+            this.ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+            this.ctx.strokeStyle = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+            this.ctx.lineWidth = lineWidth;
+            this.ctx.lineCap = "round";
+            this.ctx.stroke();
+        }
+    }
+
+    clear() {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    }
+
+    createGridOverlay() {
+        const overlay = document.createElement("canvas");
+        overlay.width = this.canvas.width;
+        overlay.height = this.canvas.height;
+        overlay.className = "grid-overlay";
+
+        const ctx = overlay.getContext("2d");
+        const gridSize = 20;
+
+        ctx.strokeStyle = "rgba(200, 200, 200, 0.3)";
+        ctx.lineWidth = 1;
+
+        // Draw vertical lines
+        for (let x = 0; x <= this.canvas.width; x += gridSize) {
+            ctx.beginPath();
+            ctx.moveTo(x, 0);
+            ctx.lineTo(x, this.canvas.height);
+            ctx.stroke();
+        }
+
+        // Draw horizontal lines
+        for (let y = 0; y <= this.canvas.height; y += gridSize) {
+            ctx.beginPath();
+            ctx.moveTo(0, y);
+            ctx.lineTo(this.canvas.width, y);
+            ctx.stroke();
+        }
+
+        // Insert overlay before the canvas so it appears below
+        this.canvas.parentElement.style.position = "relative";
+        this.canvas.parentElement.insertBefore(overlay, this.canvas);
+    }
+}
+
+// Drawing application module
+class DrawingApp {
+    constructor(canvasIds) {
+        this.canvasManagers = [];
+        this.currentColor = "#000000";
+        this.currentLineWidth = 20;
+
+        this.init(canvasIds);
+    }
+
+    init(canvasIds) {
+        this.setupCanvases(canvasIds);
+        this.setupControls();
+    }
+
+    setupCanvases(canvasIds) {
+        canvasIds.forEach((id) => {
+            const manager = new CanvasManager(id);
+            manager.setDrawingStyle(this.currentColor, this.currentLineWidth);
+            this.canvasManagers.push(manager);
+        });
+    }
+
+    setupControls() {
+        // Color picker
+        const colorPicker = document.getElementById("colorPicker");
+        if (colorPicker) {
+            colorPicker.addEventListener("change", (e) => {
+                this.currentColor = e.target.value;
+                this.updateAllCanvasStyles();
+            });
+        }
+
+        // Line width
+        const lineWidthInput = document.getElementById("lineWidth");
+        const widthValue = document.getElementById("widthValue");
+        if (lineWidthInput && widthValue) {
+            lineWidthInput.addEventListener("input", (e) => {
+                this.currentLineWidth = e.target.value;
+                widthValue.textContent = this.currentLineWidth;
+                this.updateAllCanvasStyles();
+            });
+        }
+
+        // Clear all button
+        const clearAllBtn = document.getElementById("clearAll");
+        if (clearAllBtn) {
+            clearAllBtn.addEventListener("click", () => {
+                this.clearAll();
+            });
+        }
+    }
+
+    updateAllCanvasStyles() {
+        this.canvasManagers.forEach((manager) => {
+            manager.setDrawingStyle(this.currentColor, this.currentLineWidth);
+        });
     }
 
     clearAll() {
-        this.canvasIds.forEach((id) => this.clearCanvas(id));
+        this.canvasManagers.forEach((manager) => manager.clear());
     }
 }
 
