@@ -48,11 +48,16 @@ class Canvas3DViewer {
             attribute vec2 aTexCoord;
             uniform mat4 uModelViewMatrix;
             uniform mat4 uProjectionMatrix;
+            uniform float uCameraDistance;
             varying vec2 vTexCoord;
+            varying float vDepth;
             
             void main() {
-                gl_Position = uProjectionMatrix * uModelViewMatrix * vec4(aPosition, 1.0);
+                vec4 mvPosition = uModelViewMatrix * vec4(aPosition, 1.0);
+                gl_Position = uProjectionMatrix * mvPosition;
                 vTexCoord = aTexCoord;
+                // Calculate depth relative to scene origin, not camera
+                vDepth = abs(mvPosition.z) - uCameraDistance;
             }
         `;
 
@@ -60,10 +65,16 @@ class Canvas3DViewer {
         const fsSource = `
             precision mediump float;
             varying vec2 vTexCoord;
+            varying float vDepth;
             uniform sampler2D uSampler;
             
             void main() {
                 vec4 texColor = texture2D(uSampler, vTexCoord);
+                
+                // Apply depth-based darkening relative to scene center
+                float depthFactor = clamp(1.0 - (vDepth / 3.0), 0.4, 1.0);
+                texColor.rgb *= depthFactor;
+                
                 gl_FragColor = texColor;
             }
         `;
@@ -81,6 +92,7 @@ class Canvas3DViewer {
                 projectionMatrix: gl.getUniformLocation(this.program, "uProjectionMatrix"),
                 modelViewMatrix: gl.getUniformLocation(this.program, "uModelViewMatrix"),
                 sampler: gl.getUniformLocation(this.program, "uSampler"),
+                cameraDistance: gl.getUniformLocation(this.program, "uCameraDistance"),
             },
         };
     }
@@ -284,6 +296,9 @@ class Canvas3DViewer {
             false,
             projectionMatrix,
         );
+
+        // Pass camera distance to shader
+        gl.uniform1f(this.programInfo.uniformLocations.cameraDistance, this.zoom);
 
         // Render each plane with its corresponding texture
         this.planes.forEach((plane) => {
