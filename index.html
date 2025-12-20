@@ -1,268 +1,280 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Projects</title>
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+        />
+    </head>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Projects</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css">
-</head>
+    <body>
+        <script type="module">
+            import { Octokit, App } from "https://esm.sh/octokit";
+            import { A, UL, LI, Span, Section, IFrame, H1 } from "./module/Dom.js";
+            import Sort from "./module/Sort.js";
+            import { strip } from "./module/SUtils.js";
 
-<body>
-    <script type="module">
-        import { Octokit, App } from "https://esm.sh/octokit";
-        import { A, UL, LI, Span, Section, IFrame, H1 } from "./module/Dom.js";
-        import Sort from "./module/Sort.js";
-        import SUtils from "./module/SUtils.js";
+            const octokit = new Octokit({});
 
-        const octokit = new Octokit({ });
+            const repo = "projects";
 
-        const repo = "projects";
-
-        class TreeNode {
-            constructor(value) {
-                this.value = value;
-                this.children = [];
-            }
-
-            addChildren(children) {
-                this.children = children.map(child => new TreeNode(child));
-                return this;
-            }
-        }
-
-        class Content {
-            constructor({ name, path, html_url, type }) {
-                this.name = name;
-                this.path = path;
-                this.html_url = html_url;
-                this.type = type;
-            }
-
-            get isFolder() {
-                return this.type === 'dir';
-            }
-
-            get icon() {
-                return this.isFolder ? '📁' : '📄';
-            }
-
-            get url() {
-                return new URL(this.html_url);
-            }
-        }
-
-        class TreeRenderer {
-            constructor({ repo }) {
-                this.repo = repo;
-                this.owner = "FormeOrme";
-            }
-
-            async mostRecentCommit() {
-                const response = await octokit.request('GET /repos/{owner}/{repo}/commits', {
-                    owner: this.owner,
-                    repo: this.repo,
-                });
-                return response.data[0]?.sha;
-            }
-
-            async getRepoContents(repo, path = '') {
-                let get = 'GET /repos/{owner}/{repo}/contents';
-                if (path) {
-                    get = 'GET /repos/{owner}/{repo}/contents/{path}';
+            class TreeNode {
+                constructor(value) {
+                    this.value = value;
+                    this.children = [];
                 }
-                const owner = this.owner;
-                const response = await octokit.request(get, {
-                    owner, repo, path
-                }).then(response => (new TreeNode()).addChildren(response.data.map(item => new Content(item))));
-                return response;
-            }
 
-            async renderBranch(path) {
-                const { children, value } = await this.getRepoContents(this.repo, path);
-                const list = UL.with({
-                    class: [
-                        "list-group",
-                        path ? "m-1" : ""
-                    ],
-                    children: await Promise.all(children
-                        .sort(Sort.multiSort(
-                            Sort.alpha(({ value }) => value.type),
-                            Sort.alpha(({ value }) => value.name)
-                        ))
-                        .map((leaf) => this.renderLeaf(leaf)))
-                });
-                return list;
-            }
-
-
-            async renderLeaf({ value }) {
-                switch (value.type) {
-                    case "dir":
-                        return await this.renderFolder({ value });
-                    case "file":
-                        return this.renderFile({ value });
-                    default:
-                        return LI.with({
-                            class: "list-group-item",
-                            text: value.name
-                        });
+                addChildren(children) {
+                    this.children = children.map((child) => new TreeNode(child));
+                    return this;
                 }
             }
 
-            renderFile({ value }) {
-                return LI.with({
-                    class: "file-leaf list-group-item p-0 overflow-hidden",
-                    children: Span.with({
-                        class: "btn btn-outline-primary w-100 text-start border-0 rounded-0",
-                        children: [
-                            Span.with({
-                                text: value.icon
-                            }),
-                            Span.with({
-                                // attribute: { href: `${this.baseUrl}/${this.repo}/${value.path}` },
-                                text: value.name
-                            })
-                        ],
-                    }),
-                    event: {
-                        click: (node, event) => {
-                            event.stopPropagation();
-                            const isActive = node.isActive();
+            class Content {
+                constructor({ name, path, html_url, type }) {
+                    this.name = name;
+                    this.path = path;
+                    this.html_url = html_url;
+                    this.type = type;
+                }
 
-                            if (!isActive) {
-                                const fileLeaves = document.querySelectorAll(".file-leaf");
-                                fileLeaves.forEach((leaf) => leaf.toggleActive(false));
+                get isFolder() {
+                    return this.type === "dir";
+                }
 
-                                const url = `./${value.path}`;
-                                const iframe = document.getElementById("iframe");
-                                iframe.src = url;
+                get icon() {
+                    return this.isFolder ? "📁" : "📄";
+                }
 
-                                const title = document.getElementById("title");
-                                title.innerText = "";
-                                title.append(A.with({
-                                    class: "text-truncate",
-                                    text: url,
-                                    attribute: {
-                                        href: url,
-                                        target: "_blank"
-                                    }
-                                }).create());
+                get url() {
+                    return new URL(this.html_url);
+                }
+            }
 
-                                node.toggleActive(true);
-                            }
+            class TreeRenderer {
+                constructor({ repo }) {
+                    this.repo = repo;
+                    this.owner = "FormeOrme";
+                }
 
-                        }
-                    },
-                    function: {
-                        isActive: function () { return this.classList.contains("open") },
-                        toggleActive: function (active) {
-                            this.classList.toggle("open", active);
-                        }
+                async mostRecentCommit() {
+                    const response = await octokit.request("GET /repos/{owner}/{repo}/commits", {
+                        owner: this.owner,
+                        repo: this.repo,
+                    });
+                    return response.data[0]?.sha;
+                }
+
+                async getRepoContents(repo, path = "") {
+                    let get = "GET /repos/{owner}/{repo}/contents";
+                    if (path) {
+                        get = "GET /repos/{owner}/{repo}/contents/{path}";
                     }
-                });
-            }
+                    const owner = this.owner;
+                    const response = await octokit
+                        .request(get, {
+                            owner,
+                            repo,
+                            path,
+                        })
+                        .then((response) =>
+                            new TreeNode().addChildren(
+                                response.data.map((item) => new Content(item)),
+                            ),
+                        );
+                    return response;
+                }
 
-            async renderFolder({ value }) {
-                // const list = await this.renderBranch(value.path);
+                async renderBranch(path) {
+                    const { children, value } = await this.getRepoContents(this.repo, path);
+                    const list = UL.with({
+                        class: ["list-group", path ? "m-1" : ""],
+                        children: await Promise.all(
+                            children
+                                .sort(
+                                    Sort.multiSort(
+                                        Sort.alpha(({ value }) => value.type),
+                                        Sort.alpha(({ value }) => value.name),
+                                    ),
+                                )
+                                .map((leaf) => this.renderLeaf(leaf)),
+                        ),
+                    });
+                    return list;
+                }
 
-                const childrenContainer = Span.with({
-                    class: "d-none",
-                });
+                async renderLeaf({ value }) {
+                    switch (value.type) {
+                        case "dir":
+                            return await this.renderFolder({ value });
+                        case "file":
+                            return this.renderFile({ value });
+                        default:
+                            return LI.with({
+                                class: "list-group-item",
+                                text: value.name,
+                            });
+                    }
+                }
 
-                const liElement = LI.with({
-                    id: SUtils.strip(value.name),
-                    class: "list-group-item p-0 overflow-hidden",
-                    children: [
-                        Span.with({
+                renderFile({ value }) {
+                    return LI.with({
+                        class: "file-leaf list-group-item p-0 overflow-hidden",
+                        children: Span.with({
                             class: "btn btn-outline-primary w-100 text-start border-0 rounded-0",
                             children: [
                                 Span.with({
-                                    text: value.icon
+                                    text: value.icon,
                                 }),
                                 Span.with({
-                                    class: "cursor-pointer",
+                                    // attribute: { href: `${this.baseUrl}/${this.repo}/${value.path}` },
                                     text: value.name,
-
                                 }),
-                            ]
+                            ],
                         }),
-                        childrenContainer
-                    ],
-                    event: {
-                        click: async (node, event) => {
-                            event.stopPropagation();
+                        event: {
+                            click: (node, event) => {
+                                event.stopPropagation();
+                                const isActive = node.isActive();
 
-                            const isActive = node.isActive();
+                                if (!isActive) {
+                                    const fileLeaves = document.querySelectorAll(".file-leaf");
+                                    fileLeaves.forEach((leaf) => leaf.toggleActive(false));
 
-                            const container = childrenContainer.node;
+                                    const url = `./${value.path}`;
+                                    const iframe = document.getElementById("iframe");
+                                    iframe.src = url;
 
-                            if (isActive) {
-                                container.classList.toggle("d-none", true);
-                                node.toggleActive(false);
-                            } else {
-                                const list = await this.renderBranch(value.path);
-                                container.innerHTML = "";
-                                container.appendChild(list.create());
-                                container.classList.toggle("d-none", false);
-                                node.toggleActive(true);
-                            }
-                        }
-                    },
-                    function: {
-                        isActive: function () { return this.classList.contains("open") },
-                        toggleActive: function (active) {
-                            this.classList.toggle("open", active);
-                        }
-                    }
-                });
+                                    const title = document.getElementById("title");
+                                    title.innerText = "";
+                                    title.append(
+                                        A.with({
+                                            class: "text-truncate",
+                                            text: url,
+                                            attribute: {
+                                                href: url,
+                                                target: "_blank",
+                                            },
+                                        }).create(),
+                                    );
 
-                return liElement;
-            }
+                                    node.toggleActive(true);
+                                }
+                            },
+                        },
+                        function: {
+                            isActive: function () {
+                                return this.classList.contains("open");
+                            },
+                            toggleActive: function (active) {
+                                this.classList.toggle("open", active);
+                            },
+                        },
+                    });
+                }
 
-        }
+                async renderFolder({ value }) {
+                    // const list = await this.renderBranch(value.path);
 
-        (async () => {
+                    const childrenContainer = Span.with({
+                        class: "d-none",
+                    });
 
-            const treeRenderer = new TreeRenderer({ repo });
-
-            const leafList = await treeRenderer.renderBranch();
-            document.body.appendChild(Section.with({
-                class: "container",
-                id: "projects",
-                children: [
-                    H1.with({
-                        class: "text-center",
-                        text: `Projects : ${await treeRenderer.mostRecentCommit()}`,
-                    }),
-                    Section.with({
-                        class: "row",
+                    const liElement = LI.with({
+                        id: strip(value.name),
+                        class: "list-group-item p-0 overflow-hidden",
                         children: [
-                            Section.with({
-                                id: "tree",
-                                class: "col-3",
-                                children: leafList
-                            }),
-                            Section.with({
-                                id: "iframe-container",
-                                class: "col-9 sticky-top",
+                            Span.with({
+                                class: "btn btn-outline-primary w-100 text-start border-0 rounded-0",
                                 children: [
                                     Span.with({
-                                        id: 'title'
+                                        text: value.icon,
                                     }),
-                                    IFrame.with({
-                                        id: "iframe",
-                                        class: "w-100 h-100 border rounded",
-                                    })
-                                ]
-                            })
-                        ]
-                    })
-                ]
-            }).create())
-        })();
+                                    Span.with({
+                                        class: "cursor-pointer",
+                                        text: value.name,
+                                    }),
+                                ],
+                            }),
+                            childrenContainer,
+                        ],
+                        event: {
+                            click: async (node, event) => {
+                                event.stopPropagation();
 
-    </script>
-</body>
+                                const isActive = node.isActive();
 
+                                const container = childrenContainer.node;
+
+                                if (isActive) {
+                                    container.classList.toggle("d-none", true);
+                                    node.toggleActive(false);
+                                } else {
+                                    const list = await this.renderBranch(value.path);
+                                    container.innerHTML = "";
+                                    container.appendChild(list.create());
+                                    container.classList.toggle("d-none", false);
+                                    node.toggleActive(true);
+                                }
+                            },
+                        },
+                        function: {
+                            isActive: function () {
+                                return this.classList.contains("open");
+                            },
+                            toggleActive: function (active) {
+                                this.classList.toggle("open", active);
+                            },
+                        },
+                    });
+
+                    return liElement;
+                }
+            }
+
+            (async () => {
+                const treeRenderer = new TreeRenderer({ repo });
+
+                const leafList = await treeRenderer.renderBranch();
+                document.body.appendChild(
+                    Section.with({
+                        class: "container",
+                        id: "projects",
+                        children: [
+                            H1.with({
+                                class: "text-center",
+                                text: `Projects : ${await treeRenderer.mostRecentCommit()}`,
+                            }),
+                            Section.with({
+                                class: "row",
+                                children: [
+                                    Section.with({
+                                        id: "tree",
+                                        class: "col-3",
+                                        children: leafList,
+                                    }),
+                                    Section.with({
+                                        id: "iframe-container",
+                                        class: "col-9 sticky-top",
+                                        children: [
+                                            Span.with({
+                                                id: "title",
+                                            }),
+                                            IFrame.with({
+                                                id: "iframe",
+                                                class: "w-100 h-100 border rounded",
+                                            }),
+                                        ],
+                                    }),
+                                ],
+                            }),
+                        ],
+                    }).create(),
+                );
+            })();
+        </script>
+    </body>
 </html>
