@@ -1,93 +1,139 @@
 import SUtils from "./SUtils.js";
 
-export const Identity = (o) => o;
+const { floor, random } = Math;
 
-export class Utils {
-    static tween = (v, r1, r2, m1, m2) => m1 + (m2 - m1) * ((v - r1) / (r2 - r1));
+export function Identity(o) {
+    return o;
+}
 
-    static rpt({ a, b, c, d }) {
-        if (!a) return (b * c) / d;
-        if (!b) return (a * d) / c;
-        if (!c) return (a * d) / b;
-        if (!d) return (b * c) / a;
+export function tween(v, r1, r2, m1, m2) {
+    return m1 + (m2 - m1) * ((v - r1) / (r2 - r1));
+}
+
+/**
+ * Rule of three: solves a/b = c/d for the missing value.
+ * Pass exactly 3 values and null/undefined for the missing one.
+ * @param {Object} params - Object with a, b, c, d properties
+ * @returns {number} The calculated missing value
+ */
+export function rpt({ a, b, c, d }) {
+    if (a == null) return (b * c) / d;
+    if (b == null) return (a * d) / c;
+    if (c == null) return (a * d) / b;
+    if (d == null) return (b * c) / a;
+    throw new Error("rpt: exactly one parameter must be null or undefined");
+}
+
+export function normalize(current, max) {
+    return current / max;
+}
+
+export function prc(current, max) {
+    return normalize(current, max) * 100;
+}
+
+export function kvMap(arr, keyFunction, valueFunction) {
+    return vkMap(arr, valueFunction, keyFunction);
+}
+
+export function vkMap(arr, valueFunction = Identity, keyFunction = ({ id }) => id) {
+    return Object.fromEntries(arr.map((c) => [keyFunction(c), valueFunction(c)]));
+}
+
+export async function fetchJson({ url, options }) {
+    const response = await fetch(url, options);
+    const json = await response.json();
+    return { url, options, json };
+}
+
+export async function fetchAll(objects) {
+    const c = await Promise.all(objects.map(fetchJson));
+    return vkMap(c, ({ json }) => json);
+}
+
+export function clone(o) {
+    return Object.setPrototypeOf(structuredClone(o), o.constructor.prototype);
+}
+
+export function range(
+    n,
+    fn = function (_, i) {
+        return i;
+    },
+) {
+    return Array.from({ length: n }, fn);
+}
+
+export function deduplicate(a) {
+    return [...new Set(a)];
+}
+
+export function shuffle(array) {
+    for (var i = array.length - 1; i > 0; i--) {
+        var rand = floor(random() * (i + 1));
+        [array[i], array[rand]] = [array[rand], array[i]];
     }
+    return array;
+}
 
-    static normalize = (current, max) => current / max;
-    static prc = (current, max) => Utils.normalize(current, max) * 100;
+export function shuffleNew(arr) {
+    return shuffle([...arr]);
+}
 
-    static kvMap = (arr, k, v) => Utils.vkMap(arr, v, k);
-    static vkMap = (arr, v = Identity, k = (o) => o.id) =>
-        Object.fromEntries(arr.map((c) => [k(c), v(c)]));
+export function randomElement(arr) {
+    return arr[(random() * arr.length) | 0];
+}
 
-    static fetchJson = ({ url, options }) =>
-        fetch(url, options)
-            .then((r) => r.json())
-            .then((r) => ({ ...o, json: r }));
+export function chance(c) {
+    return random() * 100 < c;
+}
 
-    static fetchAll = (o) =>
-        Promise.all(o.map(Utils.fetchJson)).then((c) => Utils.vkMap(c, (o) => o.json));
+export function getLocation() {
+    return new URL(window.location.href);
+}
 
-    static clone = (o) =>
-        Object.setPrototypeOf(JSON.parse(JSON.stringify(o)), o.constructor.prototype);
+export function isPrimitiveOrFalsy(target) {
+    return typeof target !== "object" || !Boolean(target);
+}
 
-    static range = (n, fn = (_, i) => i) => Array.from({ length: n }, fn);
-    static deduplicate = (a) => [...new Set(a)];
-    static shuffle = (array) => {
-        for (var i = array.length - 1; i > 0; i--) {
-            var rand = Math.floor(Math.random() * (i + 1));
-            [array[i], array[rand]] = [array[rand], array[i]];
-        }
-        return array;
-    };
-    static shuffleNew = (arr) => this.shuffle([...arr]);
-    static randomElement = (arr) => arr[(Math.random() * arr.length) | 0];
-    static chance = (c) => Math.random() * 100 < c;
-
-    static get location() {
-        return new URL(window.location.href);
-    }
-
-    static isPrimitiveOrFalsy = (target) => typeof target !== "object" || !Boolean(target);
-
-    static deepMerge(target, source) {
-        if (Utils.isPrimitiveOrFalsy(target) && Utils.isPrimitiveOrFalsy(source)) {
-            return target;
-        }
-
-        for (const key of Object.keys(source)) {
-            // throw TypeError if the source and the target are not undefined and have different types
-            if (target[key] && typeof target[key] !== typeof source[key]) {
-                throw new TypeError(
-                    `Cannot merge ${typeof target[key]} with ${typeof source[key]}`,
-                );
-            }
-
-            if (source[key] && typeof source[key] === "object") {
-                if (Array.isArray(source[key])) {
-                    if (!Array.isArray(target[key])) {
-                        target[key] = [];
-                    }
-                    target[key] = target[key].concat(source[key]);
-                } else {
-                    target[key] = Utils.deepMerge(target[key] || {}, source[key]);
-                }
-            } else {
-                target[key] = source[key];
-            }
-        }
+export function deepMerge(target, source) {
+    if (isPrimitiveOrFalsy(target) && isPrimitiveOrFalsy(source)) {
         return target;
     }
 
-    static profile = (name, func) => {
-        if (name) {
-            console.profile(name);
+    for (const key of Object.keys(source)) {
+        // throw TypeError if the source and the target are not undefined and have different types
+        if (target[key] && typeof target[key] !== typeof source[key]) {
+            throw new TypeError(`Cannot merge ${typeof target[key]} with ${typeof source[key]}`);
         }
-        const result = func();
-        if (name) {
-            console.profileEnd(name);
-        }
-        return result;
-    };
 
-    static compact = (obj) => [].concat(obj).filter(Boolean).map(SUtils.trim);
+        if (source[key] && typeof source[key] === "object") {
+            if (Array.isArray(source[key])) {
+                if (!Array.isArray(target[key])) {
+                    target[key] = [];
+                }
+                target[key] = target[key].concat(source[key]);
+            } else {
+                target[key] = deepMerge(target[key] || {}, source[key]);
+            }
+        } else {
+            target[key] = source[key];
+        }
+    }
+    return target;
+}
+
+export function profile(name, func) {
+    if (name) {
+        console.profile(name);
+    }
+    const result = func();
+    if (name) {
+        console.profileEnd(name);
+    }
+    return result;
+}
+
+export function compact(obj) {
+    return [].concat(obj).filter(Boolean).map(SUtils.trim);
 }
