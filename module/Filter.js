@@ -1,9 +1,17 @@
-export default class Filter {
-    static first = (o, i) => i === 0;
-    static last = (o, i, a) => i === a.length - 1;
-    static isTruthyOrZero = (o) => o != null && o !== false && o !== "";
-    static not =
-        (f) =>
-        (...a) =>
-            !f(...a);
+export function first(o, i) {
+    return i === 0;
+}
+
+export function last(o, i, a) {
+    return i === a.length - 1;
+}
+
+export function isTruthyOrZero(o) {
+    return o != null && o !== false && o !== "";
+}
+
+export function not(f) {
+    return function (...a) {
+        return !f(...a);
+    };
 }

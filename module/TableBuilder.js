@@ -1,5 +1,5 @@
 import { Span } from "./Dom.js";
-import { Utils } from "./Utils.js";
+import { compact } from "./Utils.js";
 
 export default class TableBuilder {
     setColumns(columns) {
@@ -62,7 +62,7 @@ export default class TableBuilder {
                                 class: [
                                     this.manageClass(this.classes?.headerCell, column, x),
                                     x !== 0 ? "border-start" : "",
-                                    ...Utils.compact(column.class),
+                                    ...compact(column.class),
                                 ],
                                 children: this.buildCell(column.label),
                             }),
@@ -85,7 +85,7 @@ export default class TableBuilder {
                                     class: [
                                         this.manageClass(this.classes?.cell, column, x),
                                         x !== 0 ? "border-start" : "",
-                                        ...Utils.compact(column.class),
+                                        ...compact(column.class),
                                     ],
                                     children: column.cellFn
                                         ? column.cellFn(row)

@@ -1,4 +1,4 @@
-import SUtils from "./SUtils.js";
+import { trim } from "./SUtils.js";
 
 const { floor, random } = Math;
 
@@ -135,5 +135,5 @@ export function profile(name, func) {
 }
 
 export function compact(obj) {
-    return [].concat(obj).filter(Boolean).map(SUtils.trim);
+    return [].concat(obj).filter(Boolean).map(trim);
 }
