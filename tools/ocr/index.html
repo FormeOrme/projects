@@ -20,49 +20,48 @@
             import { createWorker } from "https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.esm.min.js";
             import { Dom, Div, H1, Input, Pre } from "../../module/Dom.js";
 
-            document.querySelector("body").append(
-                Div.with({
-                    class: "container",
-                    children: [
-                        H1.with({
-                            innerText: "OCR",
-                        }),
-                        Input.with({
-                            class: "form-control form-control-sm mb-1",
-                            attribute: {
-                                type: "file",
-                                title: "input",
+            const container = Div.with({
+                class: "container",
+                children: [
+                    H1.with({
+                        innerText: "OCR",
+                    }),
+                    Input.with({
+                        class: "form-control form-control-sm mb-1",
+                        attribute: {
+                            type: "file",
+                            title: "input",
+                        },
+                        event: {
+                            input: (e, node) => {
+                                parse(node.files[0]);
                             },
-                            event: {
-                                input: (e, node) => {
-                                    parse(node.files[0]);
-                                },
-                            },
-                        }),
-                        Div.with({
-                            id: "progressContainer",
-                            class: "progress mb-1 position-relative",
-                            attribute: {
-                                style: "height: 30px",
-                            },
-                            children: [
-                                Div.with({
-                                    id: "progressPercent",
-                                    class: "progress-bar",
-                                }),
-                                Div.with({
-                                    id: "progressSpinner",
-                                    class: "spinner-grow text-primary position-absolute top-50 start-50 translate-middle",
-                                }),
-                            ],
-                        }),
-                        Pre.with({
-                            class: "form-control form-control-sm",
-                            id: "output",
-                        }),
-                    ],
-                }).create(),
-            );
+                        },
+                    }),
+                    Div.with({
+                        id: "progressContainer",
+                        class: "progress mb-1 position-relative",
+                        attribute: {
+                            style: "height: 30px",
+                        },
+                        children: [
+                            Div.with({
+                                id: "progressPercent",
+                                class: "progress-bar",
+                            }),
+                            Div.with({
+                                id: "progressSpinner",
+                                class: "spinner-grow text-primary position-absolute top-50 start-50 translate-middle",
+                            }),
+                        ],
+                    }),
+                    Pre.with({
+                        class: "form-control form-control-sm",
+                        id: "output",
+                    }),
+                ],
+            }).create();
+            document.querySelector("body").append(container);
 
             const progressSpinner = Dom.nodes.querySelector("#progressSpinner");
             const progressPercent = Dom.nodes.querySelector("#progressPercent");
