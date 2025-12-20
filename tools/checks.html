@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
     <head>
         <link
@@ -35,7 +35,7 @@
         <script type="module">
             import Tesseract from "https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.esm.min.js";
             import LoStMan from "../module/LoStMan.js";
-            import IdUtils from "../module/IdUtils.js";
+            import { getHID } from "../module/IdUtils.js";
             import SUtils from "../module/SUtils.js";
             import Reduce from "../module/Reduce.js";
             import Relation from "../module/Relation.js";
@@ -147,7 +147,7 @@
                 }
 
                 buildHeader(p, index) {
-                    const id = IdUtils.HID;
+                    const id = getHID();
                     this.payerIds.splice(index, 0, id);
                     return Div.with({
                         class: [BUTTON_CLASSES, "me-1"],
@@ -165,7 +165,7 @@
                 }
 
                 buildRow(p, index, rowData) {
-                    const id = IdUtils.HID;
+                    const id = getHID();
                     return Div.with({
                         class: [BUTTON_CLASSES, "me-1"],
                         children: [
@@ -294,7 +294,7 @@
 
             function getRow(rowData, i) {
                 return Div.with({
-                    id: IdUtils.HID,
+                    id: getHID(),
                     class: "d-flex flex-row mb-1 item",
                     children: [
                         columns.action.row(),
