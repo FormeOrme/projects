@@ -261,9 +261,9 @@ class Canvas3DViewer {
     }
 
     updateTextures() {
-        this.textures.forEach(({ texture, canvasId }) => {
+        for (const { texture, canvasId } of this.textures) {
             WebGLUtils.updateTexture(this.gl, texture, canvasId);
-        });
+        }
     }
 
     render() {
@@ -300,8 +300,53 @@ class Canvas3DViewer {
         // Pass camera distance to shader
         gl.uniform1f(this.programInfo.uniformLocations.cameraDistance, this.zoom);
 
+        // Calculate depth for each plane and sort back-to-front
+        const planesWithDepth = this.planes.map((plane) => {
+            const modelViewMatrix = Mat4.create();
+            Mat4.identity(modelViewMatrix);
+
+            // Move camera back to see the planes
+            Mat4.translate(modelViewMatrix, modelViewMatrix, [0, 0, -this.zoom]);
+
+            // Apply global rotation
+            Mat4.rotateX(modelViewMatrix, modelViewMatrix, this.rotation.x);
+            Mat4.rotateY(modelViewMatrix, modelViewMatrix, this.rotation.y);
+
+            // Get position based on plane type
+            let pos = [0, 0, 0];
+            if (plane.planeType === "xz") {
+                pos = [plane.tilePosition[0], 0, plane.tilePosition[1]];
+            } else if (plane.planeType === "xy") {
+                pos = [plane.tilePosition[0], plane.tilePosition[1], 0];
+            } else if (plane.planeType === "yz") {
+                pos = [0, plane.tilePosition[1], plane.tilePosition[0]];
+            }
+
+            // Calculate depth in view space
+            const viewPos = [
+                modelViewMatrix[0] * pos[0] +
+                    modelViewMatrix[4] * pos[1] +
+                    modelViewMatrix[8] * pos[2] +
+                    modelViewMatrix[12],
+                modelViewMatrix[1] * pos[0] +
+                    modelViewMatrix[5] * pos[1] +
+                    modelViewMatrix[9] * pos[2] +
+                    modelViewMatrix[13],
+                modelViewMatrix[2] * pos[0] +
+                    modelViewMatrix[6] * pos[1] +
+                    modelViewMatrix[10] * pos[2] +
+                    modelViewMatrix[14],
+            ];
+            const depth = -viewPos[2];
+
+            return { plane, depth };
+        });
+
+        // Sort back-to-front (furthest first) for proper alpha blending
+        planesWithDepth.sort((a, b) => b.depth - a.depth);
+
         // Render each plane with its corresponding texture
-        this.planes.forEach((plane) => {
+        for (const { plane } of planesWithDepth) {
             // Bind the texture for this plane
             gl.activeTexture(gl.TEXTURE0);
             gl.bindTexture(gl.TEXTURE_2D, this.textures[plane.textureIndex].texture);
@@ -377,7 +422,7 @@ class Canvas3DViewer {
             // Draw
             gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, plane.indexBuffer);
             gl.drawElements(gl.TRIANGLES, plane.indexCount, gl.UNSIGNED_SHORT, 0);
-        });
+        }
     }
 
     animate() {

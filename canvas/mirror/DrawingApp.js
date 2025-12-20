@@ -71,10 +71,10 @@ class CanvasManager {
         const centerY = this.canvas.height;
 
         // Draw 5-10 random arcs
-        const numArcs = floor(random() * 6) + 10;
+        const numArcs = floor(random() * 2) + 3;
 
         for (let i = 0; i < numArcs; i++) {
-            const radius = random() * min(this.canvas.width, this.canvas.height) * 0.8 + 50;
+            const radius = floor(random() * min(this.canvas.width, this.canvas.height) * 0.8);
             const startAngle = random() * PI * 2;
             const endAngle = startAngle + (random() * PI * 1.5 + PI * 0.5);
             const lineWidth = random() * 15 + 5;
