@@ -1,4 +1,0 @@
-.justify-content-between::after {
-    content: "";
-    flex: auto;
-}

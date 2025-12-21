@@ -13,7 +13,8 @@
     <body>
         <script type="module">
             import { Octokit, App } from "https://esm.sh/octokit";
-            import { A, UL, LI, Span, Section, IFrame, H1 } from "./module/Dom.js";
+            import { FN } from "./module/Dom.js";
+            const { A, UL, LI, Span, Section, IFrame, H1 } = FN;
             import { alpha, multiSort } from "./module/Sort.js";
             import { strip } from "./module/SUtils.js";
 
@@ -90,7 +91,7 @@
 
                 async renderBranch(path) {
                     const { children, value } = await this.getRepoContents(this.repo, path);
-                    const list = UL.with({
+                    const list = UL({
                         class: ["list-group", path ? "m-1" : ""],
                         children: await Promise.all(
                             children
@@ -113,7 +114,7 @@
                         case "file":
                             return this.renderFile({ value });
                         default:
-                            return LI.with({
+                            return LI({
                                 class: "list-group-item",
                                 text: value.name,
                             });
@@ -121,18 +122,16 @@
                 }
 
                 renderFile({ value }) {
-                    return LI.with({
+                    return LI({
                         class: "file-leaf list-group-item p-0 overflow-hidden",
-                        children: Span.with({
+                        children: Span({
                             class: "btn btn-outline-primary w-100 text-start border-0 rounded-0",
                             children: [
-                                Span.with({
+                                Span({
                                     text: value.icon,
+                                    class: "p-1",
                                 }),
-                                Span.with({
-                                    // attribute: { href: `${this.baseUrl}/${this.repo}/${value.path}` },
-                                    text: value.name,
-                                }),
+                                Span(value.name),
                             ],
                         }),
                         event: {
@@ -151,7 +150,7 @@
                                     const title = document.getElementById("title");
                                     title.innerText = "";
                                     title.append(
-                                        A.with({
+                                        A({
                                             class: "text-truncate",
                                             text: url,
                                             attribute: {
@@ -179,21 +178,22 @@
                 async renderFolder({ value }) {
                     // const list = await this.renderBranch(value.path);
 
-                    const childrenContainer = Span.with({
+                    const childrenContainer = Span({
                         class: "d-none",
                     });
 
-                    const liElement = LI.with({
+                    const liElement = LI({
                         id: strip(value.name),
                         class: "list-group-item p-0 overflow-hidden",
                         children: [
-                            Span.with({
+                            Span({
                                 class: "btn btn-outline-primary w-100 text-start border-0 rounded-0",
                                 children: [
-                                    Span.with({
+                                    Span({
                                         text: value.icon,
+                                        class: "p-1",
                                     }),
-                                    Span.with({
+                                    Span({
                                         class: "cursor-pointer",
                                         text: value.name,
                                     }),
@@ -240,30 +240,30 @@
 
                 const leafList = await treeRenderer.renderBranch();
                 document.body.appendChild(
-                    Section.with({
+                    Section({
                         class: "container",
                         id: "projects",
                         children: [
-                            H1.with({
+                            H1({
                                 class: "text-center",
                                 text: `Projects : ${await treeRenderer.mostRecentCommit()}`,
                             }),
-                            Section.with({
+                            Section({
                                 class: "row",
                                 children: [
-                                    Section.with({
+                                    Section({
                                         id: "tree",
                                         class: "col-3",
                                         children: leafList,
                                     }),
-                                    Section.with({
+                                    Section({
                                         id: "iframe-container",
                                         class: "col-9 sticky-top",
                                         children: [
-                                            Span.with({
+                                            Span({
                                                 id: "title",
                                             }),
-                                            IFrame.with({
+                                            IFrame({
                                                 id: "iframe",
                                                 class: "w-100 h-100 border rounded",
                                             }),

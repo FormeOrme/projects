@@ -66,7 +66,7 @@ class Elem {
         if (obj instanceof Elem || obj instanceof Array) {
             this.children = obj;
         } else if (typeof obj === "string" || typeof obj === "number") {
-            this.innerText = obj;
+            this.text = obj;
         } else {
             Object.assign(this, obj);
         }
