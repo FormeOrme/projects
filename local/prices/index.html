@@ -42,7 +42,8 @@
     <body>
         <script type="module">
             import { asc } from "../../module/Sort.js";
-            import { Dom, Div, Table, TH, TD, TR, Span, A } from "../../module/Dom.js";
+            import { Dom, FN } from "../../module/Dom.js";
+            const { Table, TR, TH, TD, A, Span } = FN;
             /*
                                 // data is an object with appids as keys and obejcts with price info as values:
                         "data": {
@@ -134,48 +135,34 @@
                 .map((id) => new GameInfo(data[id]))
                 .sort(asc((pi) => pi.prices.currentKeyshops));
 
-            const table = Table.with({
-                children: [
-                    TR.with({
-                        children: [
-                            TH.with({ innerText: "Game" }),
-                            TH.with({ innerText: "Current Price" }),
-                            TH.with({ innerText: "Historical Low" }),
-                            TH.with({ innerText: "Difference" }),
-                        ],
-                    }),
-                    ...priceInfos.map((pi) =>
-                        TR.with({
-                            children: [
-                                TD.with({
-                                    children: Span.with({
-                                        children: A.with({
-                                            innerText: pi.title,
-                                            attribute: {
-                                                href: pi.url,
-                                                target: "_blank",
-                                            },
-                                        }),
-                                    }),
+            const table = Table([
+                TR([
+                    TH({ innerText: "Game" }),
+                    TH({ innerText: "Current Price" }),
+                    TH({ innerText: "Historical Low" }),
+                    TH({ innerText: "Difference" }),
+                ]),
+                ...priceInfos.map((pi) =>
+                    TR([
+                        TD(
+                            Span(
+                                A({
+                                    innerText: pi.title,
+                                    attribute: {
+                                        href: pi.url,
+                                        target: "_blank",
+                                    },
                                 }),
-                                TD.with({
-                                    innerText: pi.prices.getMinCurrentLabel(),
-                                }),
-                                TD.with({
-                                    innerText: pi.prices.getMinHistoricalLabel(),
-                                }),
-                                TD.with({
-                                    innerText: pi.prices.getDifferenceLabel(),
-                                }),
-                            ],
-                        }),
-                    ),
-                ],
-            });
+                            ),
+                        ),
+                        TD(pi.prices.getMinCurrentLabel()),
+                        TD(pi.prices.getMinHistoricalLabel()),
+                        TD(pi.prices.getDifferenceLabel()),
+                    ]),
+                ),
+            ]);
 
             console.log(table);
-
-            console.log(new Table(new TR([new TH("Hello"), new TH("World")])).create());
 
             document.body.appendChild(table.create());
         </script>
