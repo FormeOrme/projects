@@ -1,0 +1,951 @@
+{
+    "success": true,
+    "data": {
+        "903630": {
+            "title": "The Last Cube",
+            "url": "https://gg.deals/game/the-last-cube/",
+            "prices": {
+                "currentRetail": "7.99",
+                "currentKeyshops": null,
+                "historicalRetail": "7.99",
+                "historicalKeyshops": "2.75",
+                "currency": "USD"
+            }
+        },
+        "1297210": {
+            "title": "Tandis",
+            "url": "https://gg.deals/game/tandis/",
+            "prices": {
+                "currentRetail": "7.49",
+                "currentKeyshops": null,
+                "historicalRetail": "7.49",
+                "historicalKeyshops": "4.17",
+                "currency": "USD"
+            }
+        },
+        "1101370": {
+            "title": "Wind Runners",
+            "url": "https://gg.deals/game/wind-runners/",
+            "prices": {
+                "currentRetail": null,
+                "currentKeyshops": null,
+                "historicalRetail": null,
+                "historicalKeyshops": null,
+                "currency": "USD"
+            }
+        },
+        "1349230": {
+            "title": "5D Chess With Multiverse Time Travel",
+            "url": "https://gg.deals/game/5d-chess-with-multiverse-time-travel/",
+            "prices": {
+                "currentRetail": "5.87",
+                "currentKeyshops": "6.44",
+                "historicalRetail": "5.87",
+                "historicalKeyshops": "3.41",
+                "currency": "USD"
+            }
+        },
+        "1727420": {
+            "title": "Midinous",
+            "url": "https://gg.deals/application/midinous/",
+            "prices": {
+                "currentRetail": "17.49",
+                "currentKeyshops": null,
+                "historicalRetail": "9.99",
+                "historicalKeyshops": null,
+                "currency": "USD"
+            }
+        },
+        "1898290": {
+            "title": "LEGO Bricktales",
+            "url": "https://gg.deals/game/lego-bricktales/",
+            "prices": {
+                "currentRetail": "3.85",
+                "currentKeyshops": "3.59",
+                "historicalRetail": "2.99",
+                "historicalKeyshops": "3.52",
+                "currency": "USD"
+            }
+        },
+        "1260520": {
+            "title": "Patrick's Parabox",
+            "url": "https://gg.deals/game/patricks-parabox/",
+            "prices": {
+                "currentRetail": "9.99",
+                "currentKeyshops": "10.18",
+                "historicalRetail": "9.99",
+                "historicalKeyshops": "3.09",
+                "currency": "USD"
+            }
+        },
+        "1683370": {
+            "title": "Blocky Dungeon",
+            "url": "https://gg.deals/game/blocky-dungeon/",
+            "prices": {
+                "currentRetail": "9.99",
+                "currentKeyshops": null,
+                "historicalRetail": "5.49",
+                "historicalKeyshops": null,
+                "currency": "USD"
+            }
+        },
+        "1592170": {
+            "title": "Spirit Swap: Lofi Beats to Match-3 To",
+            "url": "https://gg.deals/game/spirit-swap-lofi-beats-to-match-3-to/",
+            "prices": {
+                "currentRetail": "14.99",
+                "currentKeyshops": null,
+                "historicalRetail": "14.99",
+                "historicalKeyshops": null,
+                "currency": "USD"
+            }
+        },
+        "1972450": {
+            "title": "Earth of Oryn",
+            "url": "https://gg.deals/game/earth-of-oryn/",
+            "prices": {
+                "currentRetail": null,
+                "currentKeyshops": null,
+                "historicalRetail": null,
+                "historicalKeyshops": null,
+                "currency": "USD"
+            }
+        },
+        "2094910": {
+            "title": "Pile Up!",
+            "url": "https://gg.deals/game/pile-up-1/",
+            "prices": {
+                "currentRetail": "5.99",
+                "currentKeyshops": "8.10",
+                "historicalRetail": "4.95",
+                "historicalKeyshops": "4.01",
+                "currency": "USD"
+            }
+        },
+        "1602560": {
+            "title": "The Many Pieces of Mr. Coo",
+            "url": "https://gg.deals/game/the-many-pieces-of-mr-coo/",
+            "prices": {
+                "currentRetail": "3.74",
+                "currentKeyshops": "15.58",
+                "historicalRetail": "2.99",
+                "historicalKeyshops": "8.84",
+                "currency": "USD"
+            }
+        },
+        "835960": {
+            "title": "The Talos Principle 2",
+            "url": "https://gg.deals/game/the-talos-principle-2/",
+            "prices": {
+                "currentRetail": "8.01",
+                "currentKeyshops": "7.32",
+                "historicalRetail": "7.56",
+                "historicalKeyshops": "6.60",
+                "currency": "USD"
+            }
+        },
+        "2239150": {
+            "title": "Thronefall",
+            "url": "https://gg.deals/game/thronefall/",
+            "prices": {
+                "currentRetail": "8.44",
+                "currentKeyshops": "8.37",
+                "historicalRetail": "5.24",
+                "historicalKeyshops": "7.23",
+                "currency": "USD"
+            }
+        },
+        "1931770": {
+            "title": "Chants of Sennaar",
+            "url": "https://gg.deals/game/chants-of-sennaar/",
+            "prices": {
+                "currentRetail": "11.04",
+                "currentKeyshops": "9.70",
+                "historicalRetail": "9.99",
+                "historicalKeyshops": "9.57",
+                "currency": "USD"
+            }
+        },
+        "2246640": {
+            "title": "Tiny Atolls",
+            "url": "https://gg.deals/game/tiny-atolls/",
+            "prices": {
+                "currentRetail": "9.99",
+                "currentKeyshops": null,
+                "historicalRetail": "8.49",
+                "historicalKeyshops": null,
+                "currency": "USD"
+            }
+        },
+        "2736590": {
+            "title": "Hexplorando",
+            "url": "https://gg.deals/game/hexplorando/",
+            "prices": {
+                "currentRetail": null,
+                "currentKeyshops": null,
+                "historicalRetail": null,
+                "historicalKeyshops": null,
+                "currency": "USD"
+            }
+        },
+        "1371980": {
+            "title": "No Rest for the Wicked",
+            "url": "https://gg.deals/game/no-rest-for-the-wicked-1/",
+            "prices": {
+                "currentRetail": "27.99",
+                "currentKeyshops": "30.70",
+                "historicalRetail": "26.89",
+                "historicalKeyshops": "23.11",
+                "currency": "USD"
+            }
+        },
+        "1364490": {
+            "title": "Constellations: Beyond the edges",
+            "url": "https://gg.deals/game/all-about-lines-constellations/",
+            "prices": {
+                "currentRetail": null,
+                "currentKeyshops": null,
+                "historicalRetail": null,
+                "historicalKeyshops": null,
+                "currency": "USD"
+            }
+        },
+        "1814170": {
+            "title": "Lingo",
+            "url": "https://gg.deals/game/lingo/",
+            "prices": {
+                "currentRetail": "6.99",
+                "currentKeyshops": null,
+                "historicalRetail": "4.99",
+                "historicalKeyshops": "8.25",
+                "currency": "USD"
+            }
+        },
+        "2071500": {
+            "title": "Islands of Insight",
+            "url": "https://gg.deals/game/islands-of-insight/",
+            "prices": {
+                "currentRetail": "11.99",
+                "currentKeyshops": "14.85",
+                "historicalRetail": "0.00",
+                "historicalKeyshops": "12.36",
+                "currency": "USD"
+            }
+        },
+        "3337850": {
+            "title": "KYORA",
+            "url": "https://gg.deals/game/kyora/",
+            "prices": {
+                "currentRetail": null,
+                "currentKeyshops": null,
+                "historicalRetail": null,
+                "historicalKeyshops": null,
+                "currency": "USD"
+            }
+        },
+        "2785810": {
+            "title": "Road Engineer",
+            "url": "https://gg.deals/game/road-engineer/",
+            "prices": {
+                "currentRetail": "4.49",
+                "currentKeyshops": null,
+                "historicalRetail": "4.49",
+                "historicalKeyshops": null,
+                "currency": "USD"
+            }
+        },
+        "3093400": {
+            "title": "Knightica",
+            "url": "https://gg.deals/game/knightica/",
+            "prices": {
+                "currentRetail": "7.79",
+                "currentKeyshops": "10.12",
+                "historicalRetail": "7.79",
+                "historicalKeyshops": "8.37",
+                "currency": "USD"
+            }
+        },
+        "2574970": {
+            "title": "Crystalfall",
+            "url": "https://gg.deals/game/crystalfall/",
+            "prices": {
+                "currentRetail": null,
+                "currentKeyshops": null,
+                "historicalRetail": null,
+                "historicalKeyshops": null,
+                "currency": "USD"
+            }
+        },
+        "2806640": {
+            "title": "The Talos Principle: Reawakened",
+            "url": "https://gg.deals/game/the-talos-principle-reawakened/",
+            "prices": {
+                "currentRetail": "17.80",
+                "currentKeyshops": "16.29",
+                "historicalRetail": "16.80",
+                "historicalKeyshops": "16.09",
+                "currency": "USD"
+            }
+        },
+        "2273430": {
+            "title": "BlazBlue Entropy Effect",
+            "url": "https://gg.deals/game/cang-yi-hun-dun-xiao-ying-blazblue-entropy-effect/",
+            "prices": {
+                "currentRetail": "12.79",
+                "currentKeyshops": "12.18",
+                "historicalRetail": "10.67",
+                "historicalKeyshops": "8.73",
+                "currency": "USD"
+            }
+        },
+        "1809540": {
+            "title": "Nine Sols",
+            "url": "https://gg.deals/game/nine-sols/",
+            "prices": {
+                "currentRetail": "14.99",
+                "currentKeyshops": "6.78",
+                "historicalRetail": "14.99",
+                "historicalKeyshops": "6.23",
+                "currency": "USD"
+            }
+        },
+        "1086940": {
+            "title": "Baldur's Gate 3",
+            "url": "https://gg.deals/game/baldurs-gate-3/",
+            "prices": {
+                "currentRetail": "44.99",
+                "currentKeyshops": "47.07",
+                "historicalRetail": "44.99",
+                "historicalKeyshops": "44.69",
+                "currency": "USD"
+            }
+        },
+        "1903340": {
+            "title": "Clair Obscur: Expedition 33",
+            "url": "https://gg.deals/game/clair-obscur-expedition-33/",
+            "prices": {
+                "currentRetail": "31.39",
+                "currentKeyshops": "26.17",
+                "historicalRetail": "30.79",
+                "historicalKeyshops": "25.27",
+                "currency": "USD"
+            }
+        },
+        "2193540": {
+            "title": "Wizard of Legend 2",
+            "url": "https://gg.deals/game/wizard-of-legend-2/",
+            "prices": {
+                "currentRetail": "17.49",
+                "currentKeyshops": "19.46",
+                "historicalRetail": "17.49",
+                "historicalKeyshops": "15.47",
+                "currency": "USD"
+            }
+        },
+        "2870430": {
+            "title": "Godslayer Arena",
+            "url": "https://gg.deals/game/godslayer-arena/",
+            "prices": {
+                "currentRetail": "11.99",
+                "currentKeyshops": null,
+                "historicalRetail": "11.99",
+                "historicalKeyshops": null,
+                "currency": "USD"
+            }
+        },
+        "1619520": {
+            "title": "Cross Blitz",
+            "url": "https://gg.deals/game/cross-blitz/",
+            "prices": {
+                "currentRetail": "14.04",
+                "currentKeyshops": "20.80",
+                "historicalRetail": "12.99",
+                "historicalKeyshops": "13.41",
+                "currency": "USD"
+            }
+        },
+        "2140020": {
+            "title": "Stronghold: Definitive Edition",
+            "url": "https://gg.deals/game/stronghold-definitive-edition/",
+            "prices": {
+                "currentRetail": "4.49",
+                "currentKeyshops": "5.69",
+                "historicalRetail": "4.49",
+                "historicalKeyshops": "4.72",
+                "currency": "USD"
+            }
+        },
+        "2186680": {
+            "title": "Warhammer 40,000: Rogue Trader",
+            "url": "https://gg.deals/game/warhammer-40000-rogue-trader/",
+            "prices": {
+                "currentRetail": "15.20",
+                "currentKeyshops": "8.56",
+                "historicalRetail": "11.99",
+                "historicalKeyshops": "7.29",
+                "currency": "USD"
+            }
+        },
+        "1206560": {
+            "title": "WorldBox - God Simulator",
+            "url": "https://gg.deals/game/worldbox-god-simulator/",
+            "prices": {
+                "currentRetail": "19.99",
+                "currentKeyshops": "22.75",
+                "historicalRetail": "19.99",
+                "historicalKeyshops": "15.60",
+                "currency": "USD"
+            }
+        },
+        "1313290": {
+            "title": "Let Them Trade",
+            "url": "https://gg.deals/game/let-them-trade/",
+            "prices": {
+                "currentRetail": "10.75",
+                "currentKeyshops": "14.69",
+                "historicalRetail": "10.75",
+                "historicalKeyshops": "11.69",
+                "currency": "USD"
+            }
+        },
+        "3401490": {
+            "title": "Replicube",
+            "url": "https://gg.deals/game/replicube/",
+            "prices": {
+                "currentRetail": "7.49",
+                "currentKeyshops": null,
+                "historicalRetail": "6.99",
+                "historicalKeyshops": null,
+                "currency": "USD"
+            }
+        },
+        "2198150": {
+            "title": "Tiny Glade",
+            "url": "https://gg.deals/game/tiny-glade/",
+            "prices": {
+                "currentRetail": "11.24",
+                "currentKeyshops": "12.89",
+                "historicalRetail": "11.24",
+                "historicalKeyshops": "12.89",
+                "currency": "USD"
+            }
+        },
+        "2273850": {
+            "title": "Beacon Patrol",
+            "url": "https://gg.deals/game/beacon-patrol/",
+            "prices": {
+                "currentRetail": "8.99",
+                "currentKeyshops": "5.48",
+                "historicalRetail": "8.99",
+                "historicalKeyshops": "5.28",
+                "currency": "USD"
+            }
+        },
+        "1296610": {
+            "title": "Peglin",
+            "url": "https://gg.deals/game/peglin/",
+            "prices": {
+                "currentRetail": "12.99",
+                "currentKeyshops": "14.71",
+                "historicalRetail": "12.99",
+                "historicalKeyshops": "13.63",
+                "currency": "USD"
+            }
+        },
+        "3784030": {
+            "title": "RACCOIN: Coin Pusher Roguelike",
+            "url": "https://gg.deals/game/raccoin-coin-pusher-roguelike/",
+            "prices": {
+                "currentRetail": null,
+                "currentKeyshops": null,
+                "historicalRetail": null,
+                "historicalKeyshops": null,
+                "currency": "USD"
+            }
+        },
+        "3024040": {
+            "title": "Stronghold Crusader: Definitive Edition",
+            "url": "https://gg.deals/game/stronghold-crusader-definitive-edition/",
+            "prices": {
+                "currentRetail": "14.99",
+                "currentKeyshops": "13.05",
+                "historicalRetail": "14.39",
+                "historicalKeyshops": "11.16",
+                "currency": "USD"
+            }
+        },
+        "2719750": {
+            "title": "Star Birds",
+            "url": "https://gg.deals/game/star-birds/",
+            "prices": {
+                "currentRetail": "15.99",
+                "currentKeyshops": "15.68",
+                "historicalRetail": "15.99",
+                "historicalKeyshops": "13.40",
+                "currency": "USD"
+            }
+        },
+        "2444750": {
+            "title": "Shape of Dreams",
+            "url": "https://gg.deals/game/shape-of-dream/",
+            "prices": {
+                "currentRetail": "14.69",
+                "currentKeyshops": "7.54",
+                "historicalRetail": "13.38",
+                "historicalKeyshops": "7.51",
+                "currency": "USD"
+            }
+        },
+        "2090580": {
+            "title": "Matcha",
+            "url": "https://gg.deals/game/matcha/",
+            "prices": {
+                "currentRetail": "2.99",
+                "currentKeyshops": null,
+                "historicalRetail": "2.99",
+                "historicalKeyshops": null,
+                "currency": "USD"
+            }
+        },
+        "2797650": {
+            "title": "Pip My Dice",
+            "url": "https://gg.deals/game/pimp-my-dice/",
+            "prices": {
+                "currentRetail": "8.79",
+                "currentKeyshops": null,
+                "historicalRetail": "8.79",
+                "historicalKeyshops": null,
+                "currency": "USD"
+            }
+        },
+        "2288470": {
+            "title": "Aethermancer",
+            "url": "https://gg.deals/game/aethermancer/",
+            "prices": {
+                "currentRetail": "17.59",
+                "currentKeyshops": "20.24",
+                "historicalRetail": "17.59",
+                "historicalKeyshops": "17.81",
+                "currency": "USD"
+            }
+        },
+        "1782460": {
+            "title": "Hell Clock",
+            "url": "https://gg.deals/game/hell-clock/",
+            "prices": {
+                "currentRetail": "13.99",
+                "currentKeyshops": "17.15",
+                "historicalRetail": "13.99",
+                "historicalKeyshops": "15.69",
+                "currency": "USD"
+            }
+        },
+        "2213300": {
+            "title": "Might & Magic: Clash of Heroes - Definitive Edition",
+            "url": "https://gg.deals/pack/might-magic-clash-of-heroes-definitive-edition/",
+            "prices": {
+                "currentRetail": "8.99",
+                "currentKeyshops": "11.50",
+                "historicalRetail": "8.99",
+                "historicalKeyshops": "9.55",
+                "currency": "USD"
+            }
+        },
+        "1564220": {
+            "title": "Q.U.B.E. 10th Anniversary",
+            "url": "https://gg.deals/game/qube-10th-anniversary/",
+            "prices": {
+                "currentRetail": "4.99",
+                "currentKeyshops": null,
+                "historicalRetail": "0.00",
+                "historicalKeyshops": "3.96",
+                "currency": "USD"
+            }
+        },
+        "851670": {
+            "title": "LUMINES REMASTERED",
+            "url": "https://gg.deals/game/lumines-remastered/",
+            "prices": {
+                "currentRetail": "4.49",
+                "currentKeyshops": "4.61",
+                "historicalRetail": "4.49",
+                "historicalKeyshops": "3.43",
+                "currency": "USD"
+            }
+        },
+        "1581480": {
+            "title": "HUMANITY",
+            "url": "https://gg.deals/game/humanity-1/",
+            "prices": {
+                "currentRetail": "14.99",
+                "currentKeyshops": "25.54",
+                "historicalRetail": "14.99",
+                "historicalKeyshops": "12.82",
+                "currency": "USD"
+            }
+        },
+        "12500": {
+            "title": "PuzzleQuest: Challenge of the Warlords",
+            "url": "https://gg.deals/game/puzzlequest-challenge-of-the-warlords/",
+            "prices": {
+                "currentRetail": "9.99",
+                "currentKeyshops": null,
+                "historicalRetail": "0.99",
+                "historicalKeyshops": null,
+                "currency": "USD"
+            }
+        },
+        "3226530": {
+            "title": "Tower Dominion",
+            "url": "https://gg.deals/game/tower-dominion/",
+            "prices": {
+                "currentRetail": "9.20",
+                "currentKeyshops": "10.51",
+                "historicalRetail": "9.15",
+                "historicalKeyshops": "10.49",
+                "currency": "USD"
+            }
+        },
+        "3073990": {
+            "title": "Runeborn",
+            "url": "https://gg.deals/game/runeborn/",
+            "prices": {
+                "currentRetail": "8.95",
+                "currentKeyshops": null,
+                "historicalRetail": "7.30",
+                "historicalKeyshops": null,
+                "currency": "USD"
+            }
+        },
+        "3606690": {
+            "title": "KUUKIYOMI: Consider It World - Thailand Ver.",
+            "url": "https://gg.deals/game/kuukiyomi-consider-it-world-thailand-ver/",
+            "prices": {
+                "currentRetail": null,
+                "currentKeyshops": null,
+                "historicalRetail": null,
+                "historicalKeyshops": null,
+                "currency": "USD"
+            }
+        },
+        "2820820": {
+            "title": "Jotunnslayer: Hordes of Hel",
+            "url": "https://gg.deals/game/jotunnslayer-hordes-of-hel/",
+            "prices": {
+                "currentRetail": "11.19",
+                "currentKeyshops": "11.33",
+                "historicalRetail": "0.00",
+                "historicalKeyshops": "5.32",
+                "currency": "USD"
+            }
+        },
+        "2893350": {
+            "title": "Liftlands",
+            "url": "https://gg.deals/game/liftlands/",
+            "prices": {
+                "currentRetail": null,
+                "currentKeyshops": null,
+                "historicalRetail": null,
+                "historicalKeyshops": null,
+                "currency": "USD"
+            }
+        },
+        "1617400": {
+            "title": "The Bazaar",
+            "url": "https://gg.deals/game/the-bazaar/",
+            "prices": {
+                "currentRetail": "9.99",
+                "currentKeyshops": "10.62",
+                "historicalRetail": "9.99",
+                "historicalKeyshops": "10.62",
+                "currency": "USD"
+            }
+        },
+        "3256040": {
+            "title": "Shardbreakers",
+            "url": "https://gg.deals/game/shardbreakers/",
+            "prices": {
+                "currentRetail": null,
+                "currentKeyshops": null,
+                "historicalRetail": null,
+                "historicalKeyshops": null,
+                "currency": "USD"
+            }
+        },
+        "3219180": {
+            "title": "Cursemark",
+            "url": "https://gg.deals/game/cursemark/",
+            "prices": {
+                "currentRetail": null,
+                "currentKeyshops": "13.55",
+                "historicalRetail": null,
+                "historicalKeyshops": "13.55",
+                "currency": "USD"
+            }
+        },
+        "2459560": {
+            "title": "Paris Transylvania",
+            "url": "https://gg.deals/game/paris-transylvania/",
+            "prices": {
+                "currentRetail": null,
+                "currentKeyshops": "26.11",
+                "historicalRetail": null,
+                "historicalKeyshops": "24.98",
+                "currency": "USD"
+            }
+        },
+        "2001120": {
+            "title": "Split Fiction",
+            "url": "https://gg.deals/game/split-fiction/",
+            "prices": {
+                "currentRetail": "37.49",
+                "currentKeyshops": "39.34",
+                "historicalRetail": "37.49",
+                "historicalKeyshops": "38.88",
+                "currency": "USD"
+            }
+        },
+        "1426210": {
+            "title": "It Takes Two",
+            "url": "https://gg.deals/game/it-takes-two/",
+            "prices": {
+                "currentRetail": "7.99",
+                "currentKeyshops": "8.65",
+                "historicalRetail": "7.99",
+                "historicalKeyshops": "8.65",
+                "currency": "USD"
+            }
+        },
+        "1392860": {
+            "title": "Little Nightmares III",
+            "url": "https://gg.deals/game/little-nightmares-iii/",
+            "prices": {
+                "currentRetail": "23.93",
+                "currentKeyshops": "23.36",
+                "historicalRetail": "23.21",
+                "historicalKeyshops": "23.36",
+                "currency": "USD"
+            }
+        },
+        "1206430": {
+            "title": "The Unfinished Swan",
+            "url": "https://gg.deals/game/the-unfinished-swan/",
+            "prices": {
+                "currentRetail": "3.65",
+                "currentKeyshops": "3.69",
+                "historicalRetail": "3.29",
+                "historicalKeyshops": "3.12",
+                "currency": "USD"
+            }
+        },
+        "1435790": {
+            "title": "Escape Simulator",
+            "url": "https://gg.deals/game/escape-simulator/",
+            "prices": {
+                "currentRetail": "11.99",
+                "currentKeyshops": "10.84",
+                "historicalRetail": "7.99",
+                "historicalKeyshops": "8.11",
+                "currency": "USD"
+            }
+        },
+        "2879840": {
+            "title": "Escape Simulator 2",
+            "url": "https://gg.deals/game/escape-simulator-2/",
+            "prices": {
+                "currentRetail": "15.99",
+                "currentKeyshops": "16.73",
+                "historicalRetail": "15.99",
+                "historicalKeyshops": "15.74",
+                "currency": "USD"
+            }
+        },
+        "1701330": {
+            "title": "Sokobond Express",
+            "url": "https://gg.deals/game/sokobond-express/",
+            "prices": {
+                "currentRetail": "7.49",
+                "currentKeyshops": "3.09",
+                "historicalRetail": "7.49",
+                "historicalKeyshops": "2.89",
+                "currency": "USD"
+            }
+        },
+        "2596420": {
+            "title": "Arranger: A Role-Puzzling Adventure",
+            "url": "https://gg.deals/game/arranger-a-role-puzzling-adventure/",
+            "prices": {
+                "currentRetail": "7.99",
+                "currentKeyshops": "4.93",
+                "historicalRetail": "7.99",
+                "historicalKeyshops": "3.34",
+                "currency": "USD"
+            }
+        },
+        "1172450": {
+            "title": "Carto",
+            "url": "https://gg.deals/game/carto/",
+            "prices": {
+                "currentRetail": "5.99",
+                "currentKeyshops": "1.91",
+                "historicalRetail": "4.41",
+                "historicalKeyshops": "0.84",
+                "currency": "USD"
+            }
+        },
+        "2716690": {
+            "title": "Liquidum",
+            "url": "https://gg.deals/game/liquidum/",
+            "prices": {
+                "currentRetail": "3.49",
+                "currentKeyshops": null,
+                "historicalRetail": "3.49",
+                "historicalKeyshops": null,
+                "currency": "USD"
+            }
+        },
+        "1052990": {
+            "title": "A Monster's Expedition",
+            "url": "https://gg.deals/game/a-monsters-expedition/",
+            "prices": {
+                "currentRetail": "6.99",
+                "currentKeyshops": "4.69",
+                "historicalRetail": "5.99",
+                "historicalKeyshops": "4.17",
+                "currency": "USD"
+            }
+        },
+        "753640": {
+            "title": "Outer Wilds",
+            "url": "https://gg.deals/game/outer-wilds/",
+            "prices": {
+                "currentRetail": "11.07",
+                "currentKeyshops": "9.84",
+                "historicalRetail": "4.99",
+                "historicalKeyshops": "7.83",
+                "currency": "USD"
+            }
+        },
+        "557600": {
+            "title": "Gorogoa",
+            "url": "https://gg.deals/game/gorogoa/",
+            "prices": {
+                "currentRetail": "2.87",
+                "currentKeyshops": "3.16",
+                "historicalRetail": "1.49",
+                "historicalKeyshops": "2.46",
+                "currency": "USD"
+            }
+        },
+        "1255560": {
+            "title": "Myst",
+            "url": "https://gg.deals/game/myst/",
+            "prices": {
+                "currentRetail": "20.99",
+                "currentKeyshops": "17.95",
+                "historicalRetail": "13.99",
+                "historicalKeyshops": "12.86",
+                "currency": "USD"
+            }
+        },
+        "1994000": {
+            "title": "Rogue Soulstone",
+            "url": "https://gg.deals/game/rogue-soulstone/",
+            "prices": {
+                "currentRetail": null,
+                "currentKeyshops": null,
+                "historicalRetail": "100.00",
+                "historicalKeyshops": null,
+                "currency": "USD"
+            }
+        },
+        "3011360": {
+            "title": "Primordialis",
+            "url": "https://gg.deals/game/primordialis/",
+            "prices": {
+                "currentRetail": "12.99",
+                "currentKeyshops": "14.73",
+                "historicalRetail": "12.99",
+                "historicalKeyshops": "14.73",
+                "currency": "USD"
+            }
+        },
+        "3808690": {
+            "title": "Pathogenic",
+            "url": "https://gg.deals/game/pathogenic/",
+            "prices": {
+                "currentRetail": null,
+                "currentKeyshops": null,
+                "historicalRetail": null,
+                "historicalKeyshops": null,
+                "currency": "USD"
+            }
+        },
+        "3631290": {
+            "title": "Slots & Daggers",
+            "url": "https://gg.deals/game/slots-daggers/",
+            "prices": {
+                "currentRetail": "5.59",
+                "currentKeyshops": null,
+                "historicalRetail": "5.59",
+                "historicalKeyshops": "5.99",
+                "currency": "USD"
+            }
+        },
+        "3282420": {
+            "title": "Zoominoes",
+            "url": "https://gg.deals/game/zoominoes/",
+            "prices": {
+                "currentRetail": null,
+                "currentKeyshops": null,
+                "historicalRetail": null,
+                "historicalKeyshops": null,
+                "currency": "USD"
+            }
+        },
+        "3908810": {
+            "title": "Stackflow",
+            "url": "https://gg.deals/game/stackflow/",
+            "prices": {
+                "currentRetail": "4.89",
+                "currentKeyshops": null,
+                "historicalRetail": "4.89",
+                "historicalKeyshops": "6.56",
+                "currency": "USD"
+            }
+        },
+        "499170": {
+            "title": "Order of the Sinking Star",
+            "url": "https://gg.deals/game/order-of-the-sinking-star/",
+            "prices": {
+                "currentRetail": null,
+                "currentKeyshops": null,
+                "historicalRetail": null,
+                "historicalKeyshops": null,
+                "currency": "USD"
+            }
+        },
+        "2784470": {
+            "title": "9 Kings",
+            "url": "https://gg.deals/game/9-kings/",
+            "prices": {
+                "currentRetail": "7.49",
+                "currentKeyshops": "6.26",
+                "historicalRetail": "6.51",
+                "historicalKeyshops": "4.09",
+                "currency": "USD"
+            }
+        },
+        "4239080": {
+            "title": "Veil of the Soulstones",
+            "url": "https://gg.deals/game/veil-of-the-soulstones/",
+            "prices": {
+                "currentRetail": null,
+                "currentKeyshops": null,
+                "historicalRetail": null,
+                "historicalKeyshops": null,
+                "currency": "USD"
+            }
+        }
+    }
+}

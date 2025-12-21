@@ -14,7 +14,7 @@
         <script type="module">
             import { Octokit, App } from "https://esm.sh/octokit";
             import { A, UL, LI, Span, Section, IFrame, H1 } from "./module/Dom.js";
-            import Sort from "./module/Sort.js";
+            import { alpha, multiSort } from "./module/Sort.js";
             import { strip } from "./module/SUtils.js";
 
             const octokit = new Octokit({});
@@ -95,9 +95,9 @@
                         children: await Promise.all(
                             children
                                 .sort(
-                                    Sort.multiSort(
-                                        Sort.alpha(({ value }) => value.type),
-                                        Sort.alpha(({ value }) => value.name),
+                                    multiSort(
+                                        alpha(({ value }) => value.type),
+                                        alpha(({ value }) => value.name),
                                     ),
                                 )
                                 .map((leaf) => this.renderLeaf(leaf)),
