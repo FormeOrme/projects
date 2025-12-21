@@ -40,10 +40,19 @@ class Quadtree {
         const halfWidth = width / 2;
         const halfHeight = height / 2;
 
-        this.northeast = new Quadtree(new Rectangle(x + halfWidth, y, halfWidth, halfHeight), this.capacity);
+        this.northeast = new Quadtree(
+            new Rectangle(x + halfWidth, y, halfWidth, halfHeight),
+            this.capacity,
+        );
         this.northwest = new Quadtree(new Rectangle(x, y, halfWidth, halfHeight), this.capacity);
-        this.southeast = new Quadtree(new Rectangle(x + halfWidth, y + halfHeight, halfWidth, halfHeight), this.capacity);
-        this.southwest = new Quadtree(new Rectangle(x, y + halfHeight, halfWidth, halfHeight), this.capacity);
+        this.southeast = new Quadtree(
+            new Rectangle(x + halfWidth, y + halfHeight, halfWidth, halfHeight),
+            this.capacity,
+        );
+        this.southwest = new Quadtree(
+            new Rectangle(x, y + halfHeight, halfWidth, halfHeight),
+            this.capacity,
+        );
 
         this.divided = true;
     }
@@ -102,8 +111,10 @@ class Quadtree {
 
             // Define the range for querying nearby points
             const range = new Rectangle(
-                vector.x - searchRadius, vector.y - searchRadius,
-                searchRadius * 2, searchRadius * 2
+                vector.x - searchRadius,
+                vector.y - searchRadius,
+                searchRadius * 2,
+                searchRadius * 2,
             );
 
             // Get nearby vectors from the quadtree
@@ -133,3 +144,5 @@ class Quadtree {
         return connections;
     }
 }
+
+export { Rectangle, Quadtree };

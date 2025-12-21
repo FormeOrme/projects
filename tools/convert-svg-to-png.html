@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
@@ -132,6 +132,11 @@
             <pre id="svgOutput"></pre>
         </div>
 
+        <div style="margin-bottom: 30px">
+            <h3>Icon link:</h3>
+            <pre id="iconLinkOutput"></pre>
+        </div>
+
         <div class="preview" id="previewContainer"></div>
 
         <button id="downloadAll" style="background-color: #2196f3">Download All Icons</button>
@@ -185,9 +190,9 @@
 
                 return `<svg xmlns='http://www.w3.org/2000/svg' viewBox='${fixedOffset} ${fixedOffset} ${fixedBoxSize} ${fixedBoxSize}'>
     <text x='${fontSize / 2}' y='${calculateTextYPosition(
-                    fontSize,
-                    fontSize,
-                )}' font-size='${fontSize}' text-anchor='middle'>${emoji}</text>
+        fontSize,
+        fontSize,
+    )}' font-size='${fontSize}' text-anchor='middle'>${emoji}</text>
 </svg>`;
             }
 
@@ -199,8 +204,14 @@
                 return generateSvg(fontSize, emoji, viewBoxZoom);
             }
 
-            function updateSvgOutput() {
-                document.getElementById("svgOutput").textContent = getSvgContent();
+            function updateSvgOutput(svgContent) {
+                document.getElementById("svgOutput").textContent = svgContent;
+            }
+
+            function updateIconLinkOutput(svgContent) {
+                const dataUrl = `data:image/svg+xml,${svgContent}`;
+                const linkElement = `<link rel="icon" type="image/svg+xml" href="${dataUrl}">`;
+                document.getElementById("iconLinkOutput").textContent = linkElement;
             }
 
             function drawIcon(size) {
@@ -251,25 +262,33 @@
 
             // Auto-update icons when inputs change
             document.getElementById("emojiInput").addEventListener("input", () => {
-                updateSvgOutput();
+                const svgContent = getSvgContent();
+                updateSvgOutput(svgContent);
+                updateIconLinkOutput(svgContent);
                 regenerateIcons();
             });
 
             document.getElementById("fontSizeInput").addEventListener("input", () => {
-                updateSvgOutput();
+                const svgContent = getSvgContent();
+                updateSvgOutput(svgContent);
+                updateIconLinkOutput(svgContent);
                 regenerateIcons();
             });
 
             document.getElementById("viewBoxZoomInput").addEventListener("input", (e) => {
                 document.getElementById("viewBoxZoomNumber").value = e.target.value;
-                updateSvgOutput();
+                const svgContent = getSvgContent();
+                updateSvgOutput(svgContent);
+                updateIconLinkOutput(svgContent);
                 regenerateIcons();
             });
 
             // Draw all icons on page load
             window.addEventListener("load", async () => {
                 initializePreview();
-                updateSvgOutput();
+                const svgContent = getSvgContent();
+                updateSvgOutput(svgContent);
+                updateIconLinkOutput(svgContent);
                 for (const size of sizes) {
                     await drawIcon(size);
                 }

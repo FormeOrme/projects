@@ -5,7 +5,7 @@
             "name": "Launch HTTP Server",
             "type": "node-terminal",
             "request": "launch",
-            "command": "npx http-server . -p 8080 -o",
+            "command": "npx http-server . -p 3030 -o",
             "cwd": "${workspaceFolder}",
             "presentation": {
                 "hidden": false,

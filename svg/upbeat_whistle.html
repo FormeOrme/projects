@@ -1,132 +1,131 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-    <script src="../util.js"></script>
-    <script src="vector.js"></script>
-    <script src="svg.js"></script>
-
-    <meta charset="utf-8" />
-    <style>
-        html,
-        body {
-            margin: 0;
-            padding: 0;
-        }
-    </style>
-</head>
-
-<body>
-    <script>
-
-        function parse(source) {
-            const svg = (new DOMParser()).parseFromString(source, `image/svg+xml`);
-            console.log(parseNode(svg.firstChild));
-            console.log(svg.firstChild.childNodes);
-        }
-
-        function parseNode(node) {
-            const tag = SUtils.capitalize(node.tagName);
-            const attribute = `attribute:{${[...node.attributes].map(att => `"${att.nodeName}":"${att.value}"`)}}`;
-            const children = `children:[${[...node.childNodes].filter(t => !(t instanceof Text)).map(child => parseNode(child))}]`
-            return `${tag}.with({${[attribute, children].join(",")}})`;
-        }
-
-        class Tile {
-
-            static tileSize = 300;
-            static tileAttributes = {
-                width: Tile.tileSize,
-                height: Tile.tileSize,
-                fill: "none",
-                stroke: "#000",
-            };
-            draw() {
-
-                const tRow = [];
-                const bRow = [];
-                const lRow = [];
-                const rRow = [];
-
-                const createCircle = (fill, cx, cy, r) => Circle.with({
-                    attribute: { fill, cx, cy, r }
-                });
-
-                const N = 7;
-                const padding = 50;
-                const step = (Tile.tileSize - padding * 2) / N;
-                const tileSize = Tile.tileSize;
-                const xTile = this.x * tileSize;
-                const yTile = this.y * tileSize;
-
-                for (let i = 0; i < N; i++) {
-                    const fill = `hsl(${Math.floor(this.x * this.y * 360 / 25)},100%,50%)`;
-                    const xStep = step / 2 + xTile + step * i;
-                    const yStep = step / 2 + yTile + step * i;
-
-                    tRow.push(createCircle(fill, padding + xStep, yTile, 3));
-                    bRow.push(createCircle(fill, padding + xStep, yTile + tileSize, 5));
-                    lRow.push(createCircle(fill, xTile, padding + yStep, 3));
-                    rRow.push(createCircle(fill, xTile + tileSize, padding + yStep, 5));
-                }
-
-                const links = [];
-                // const varr = Utils.shuffleNew(Utils.chance(50) ? topRow : bottomRow);
-                // const harr = Utils.shuffleNew(Utils.chance(50) ? leftRow : rightRow);
-                const varr = Utils.shuffleNew([...tRow, ...bRow]);
-                const harr = Utils.shuffleNew([...rRow, ...lRow]);
-                for (let i = 0; i < varr.length; i++) {
-                    links[i] = [varr[i], harr[i]];
-                }
-
-                this.links = links;
-
-                const paths = links.map(([e1, e2]) => new PathBuilder({ x: e1.attribute.cx, y: e1.attribute.cy })
-                    .squareCurve({
-                        x: e2.attribute.cx, y: e2.attribute.cy, angleRadius: step
-                    })
-                )
-                this.paths = paths;
-
-                const w = 1;
-
-                const p1 = paths.flatMap(p => [
-                    // p.build({ fill: "transparent", stroke: "#0001", "stroke-width": w * 3 }),
-                    // p.build({ fill: "transparent", stroke: "#FFF", "stroke-width": w * 2 }),
-                    p.build({ fill: "transparent", stroke: "#AAA", "stroke-width": w })
-                ])
-
-                return [
-                    // Rect.with({ attribute: { ...Tile.tileAttributes, x: this.x * Tile.tileSize, y: this.y * Tile.tileSize, } }),
-                    // ...topRow, ...rightRow, ...bottomRow, ...leftRow,
-                    ...p1]
+    <head>
+        <meta charset="utf-8" />
+        <style>
+            html,
+            body {
+                margin: 0;
+                padding: 0;
             }
-        }
+        </style>
+    </head>
 
-        const width = 900, height = 900;
-        const nx = Math.floor(width / Tile.tileSize);
-        const ny = Math.floor(height / Tile.tileSize);
+    <body>
+        <script type="module">
+            import { Svg, Circle } from "../module/Svg.js";
+            import { shuffleNew } from "../module/Utils.js";
+            import { capitalize } from "../module/SUtils.js";
 
-        const tiles = [];
-        for (let y = 0; y < ny; y++) {
-            for (let x = 0; x < nx; x++) {
-                tiles.push(Object.setPrototypeOf({ x, y }, Tile.prototype));
+            function parse(source) {
+                const svg = new DOMParser().parseFromString(source, `image/svg+xml`);
+                console.log(parseNode(svg.firstChild));
+                console.log(svg.firstChild.childNodes);
             }
-        }
 
-        const svg = Svg.with({
-            attribute: {
-                xmlns: "http://www.w3.org/2000/svg",
-                version: "1.1",
-                width,
-                height
-            },
-            children: tiles.flatMap(t => t.draw())
-        });
+            function parseNode(node) {
+                const tag = capitalize(node.tagName);
+                const attribute = `attribute:{${[...node.attributes].map((att) => `"${att.nodeName}":"${att.value}"`)}}`;
+                const children = `children:[${[...node.childNodes].filter((t) => !(t instanceof Text)).map((child) => parseNode(child))}]`;
+                return `${tag}.with({${[attribute, children].join(",")}})`;
+            }
 
-        document.body.append(svg.create({ namespace: "http://www.w3.org/2000/svg" }))
-    </script>
+            class Tile {
+                static tileSize = 300;
+                static tileAttributes = {
+                    width: Tile.tileSize,
+                    height: Tile.tileSize,
+                    fill: "none",
+                    stroke: "#000",
+                };
+                draw() {
+                    const tRow = [];
+                    const bRow = [];
+                    const lRow = [];
+                    const rRow = [];
 
-</body>
+                    const createCircle = (fill, cx, cy, r) =>
+                        Circle.with({
+                            attribute: { fill, cx, cy, r },
+                        });
 
+                    const N = 7;
+                    const padding = 50;
+                    const step = (Tile.tileSize - padding * 2) / N;
+                    const tileSize = Tile.tileSize;
+                    const xTile = this.x * tileSize;
+                    const yTile = this.y * tileSize;
+
+                    for (let i = 0; i < N; i++) {
+                        const fill = `hsl(${Math.floor((this.x * this.y * 360) / 25)},100%,50%)`;
+                        const xStep = step / 2 + xTile + step * i;
+                        const yStep = step / 2 + yTile + step * i;
+
+                        tRow.push(createCircle(fill, padding + xStep, yTile, 3));
+                        bRow.push(createCircle(fill, padding + xStep, yTile + tileSize, 5));
+                        lRow.push(createCircle(fill, xTile, padding + yStep, 3));
+                        rRow.push(createCircle(fill, xTile + tileSize, padding + yStep, 5));
+                    }
+
+                    const links = [];
+                    // const varr = shuffleNew(chance(50) ? topRow : bottomRow);
+                    // const harr = shuffleNew(chance(50) ? leftRow : rightRow);
+                    const varr = shuffleNew([...tRow, ...bRow]);
+                    const harr = shuffleNew([...rRow, ...lRow]);
+                    for (let i = 0; i < varr.length; i++) {
+                        links[i] = [varr[i], harr[i]];
+                    }
+
+                    this.links = links;
+
+                    const paths = links.map(([e1, e2]) =>
+                        new PathBuilder({ x: e1.attribute.cx, y: e1.attribute.cy }).squareCurve({
+                            x: e2.attribute.cx,
+                            y: e2.attribute.cy,
+                            angleRadius: step,
+                        }),
+                    );
+                    this.paths = paths;
+
+                    const w = 1;
+
+                    const p1 = paths.flatMap((p) => [
+                        // p.build({ fill: "transparent", stroke: "#0001", "stroke-width": w * 3 }),
+                        // p.build({ fill: "transparent", stroke: "#FFF", "stroke-width": w * 2 }),
+                        p.build({ fill: "transparent", stroke: "#AAA", "stroke-width": w }),
+                    ]);
+
+                    return [
+                        // Rect.with({ attribute: { ...Tile.tileAttributes, x: this.x * Tile.tileSize, y: this.y * Tile.tileSize, } }),
+                        // ...topRow, ...rightRow, ...bottomRow, ...leftRow,
+                        ...p1,
+                    ];
+                }
+            }
+
+            const width = 900,
+                height = 900;
+            const nx = Math.floor(width / Tile.tileSize);
+            const ny = Math.floor(height / Tile.tileSize);
+
+            const tiles = [];
+            for (let y = 0; y < ny; y++) {
+                for (let x = 0; x < nx; x++) {
+                    tiles.push(Object.setPrototypeOf({ x, y }, Tile.prototype));
+                }
+            }
+
+            const svg = Svg.with({
+                attribute: {
+                    xmlns: "http://www.w3.org/2000/svg",
+                    version: "1.1",
+                    width,
+                    height,
+                },
+                children: tiles.flatMap((t) => t.draw()),
+            });
+
+            document.body.append(svg.create({ namespace: "http://www.w3.org/2000/svg" }));
+        </script>
+    </body>
 </html>

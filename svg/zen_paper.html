@@ -1,223 +1,332 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-    <script src="../util.js"></script>
-    <script src="vector.js"></script>
-    <script src="svg.js"></script>
-    <meta charset="utf-8" />
-    <style>
-        html,
-        body {
-            margin: 0;
-            padding: 0;
-        }
-    </style>
-</head>
-
-<body>
-    <script>
-
-        class Tile {
-            constructor({ x = 0, y = 0, sides = 3, r = 10, rotation = 0, n = 3, padding = 0 } = {}) {
-                if (sides < 3) throw new Error("A polygon must have at least 3 sides.");
-                if (r <= 0) throw new Error("Radius must be a positive number.");
-                if (n <= 0) throw new Error("Number of interpolation points (n) must be positive.");
-                Object.assign(this, { x, y, sides, r, rotation, n, padding });
+    <head>
+        <meta charset="utf-8" />
+        <style>
+            html,
+            body {
+                margin: 0;
+                padding: 0;
             }
+        </style>
+    </head>
 
-            draw() {
-                this.vertices = this.calculateVertices();
-                this.points = this.interpolateEdges(this.vertices);
-                this.lines = this.calculateLines(this.vertices, this.points);
+    <body>
+        <script type="module">
+            import Vector from "../module/Vector.js";
+            import { PathBuilder, Svg, group, Ellipse, Rect, Line } from "../module/Svg.js";
 
-                return group([
-                    group(this.lines),
-                    // ...debugRect(this),
-                    // this.drawVertices(this.vertices),
-                    // this.drawPoints(this.points),
-                ]).and({
-                    attribute: {
-                        "data-type": "tile"
-                    }
-                });
-            }
-
-            drawVertices(vertices) {
-                return group(vertices.map(({ x, y }) => Ellipse.with({
-                    attribute: {
-                        cx: x, cy: y, rx: 2, ry: 2,
-                        fill: "#000", stroke: "none"
-                    },
-                }))).and({
-                    attribute: {
-                        "data-type": "vertices"
-                    }
-                });
-            }
-
-            drawPoints(points) {
-                return group(points.map(({ x, y, index }) => Ellipse.with({
-                    attribute: {
-                        "data-vertex-index": index,
-                        cx: x, cy: y, rx: 1, ry: 1,
-                        fill: "#F00", stroke: "none",
-                    },
-                }))).and({
-                    attribute: {
-                        "data-type": "points"
-                    }
-                });
-            }
-
-            calculateVertices() {
-                const vertices = [];
-                const angleStep = (2 * Math.PI) / this.sides;
-                const startAngle = (this.rotation * Math.PI) / 180; // Convert degrees to radians
-
-                for (let i = 0; i < this.sides; i++) {
-                    const angle = Math.PI + startAngle + angleStep * i;
-                    vertices.push(new Vector({
-                        x: this.x + Math.sin(angle) * this.r,
-                        y: this.y + Math.cos(angle) * this.r
-                    }));
+            class Tile {
+                constructor({
+                    x = 0,
+                    y = 0,
+                    sides = 3,
+                    r = 10,
+                    rotation = 0,
+                    n = 3,
+                    padding = 0,
+                } = {}) {
+                    if (sides < 3) throw new Error("A polygon must have at least 3 sides.");
+                    if (r <= 0) throw new Error("Radius must be a positive number.");
+                    if (n <= 0)
+                        throw new Error("Number of interpolation points (n) must be positive.");
+                    Object.assign(this, { x, y, sides, r, rotation, n, padding });
                 }
-                return vertices;
-            }
 
-            interpolateEdges(vertices) {
-                const points = [];
-                vertices.forEach((v1, index) => {
-                    const v2 = vertices[(index + 1) % vertices.length];
-                    const x1 = v1.x;
-                    const y1 = v1.y;
-                    const x2 = v2.x;
-                    const y2 = v2.y;
+                draw() {
+                    this.vertices = this.calculateVertices();
+                    this.points = this.interpolateEdges(this.vertices);
+                    this.lines = this.calculateLines(this.vertices, this.points);
 
-                    // Total edge length
-                    const dx = x2 - x1;
-                    const dy = y2 - y1;
-                    const length = (dx ** 2 + dy ** 2) ** (1 / 2);
+                    return group([
+                        group(this.lines),
+                        // ...debugRect(this),
+                        // this.drawVertices(this.vertices),
+                        // this.drawPoints(this.points),
+                    ]).and({
+                        attribute: {
+                            "data-type": "tile",
+                        },
+                    });
+                }
 
-                    // Skip edge if padding exceeds half the edge length
-                    if (this.padding * 2 >= length) return;
+                drawVertices(vertices) {
+                    return group(
+                        vertices.map(({ x, y }) =>
+                            Ellipse.with({
+                                attribute: {
+                                    cx: x,
+                                    cy: y,
+                                    rx: 2,
+                                    ry: 2,
+                                    fill: "#000",
+                                    stroke: "none",
+                                },
+                            }),
+                        ),
+                    ).and({
+                        attribute: {
+                            "data-type": "vertices",
+                        },
+                    });
+                }
 
-                    // Effective edge length after padding
-                    const effectiveLength = length - this.padding * 2;
+                drawPoints(points) {
+                    return group(
+                        points.map(({ x, y, index }) =>
+                            Ellipse.with({
+                                attribute: {
+                                    "data-vertex-index": index,
+                                    cx: x,
+                                    cy: y,
+                                    rx: 1,
+                                    ry: 1,
+                                    fill: "#F00",
+                                    stroke: "none",
+                                },
+                            }),
+                        ),
+                    ).and({
+                        attribute: {
+                            "data-type": "points",
+                        },
+                    });
+                }
 
-                    // Normalized direction vector
-                    const unitX = dx / length;
-                    const unitY = dy / length;
+                calculateVertices() {
+                    const vertices = [];
+                    const angleStep = (2 * Math.PI) / this.sides;
+                    const startAngle = (this.rotation * Math.PI) / 180; // Convert degrees to radians
 
-                    // Start point after padding
-                    const startX = x1 + unitX * this.padding;
-                    const startY = y1 + unitY * this.padding;
-
-                    // Step size
-                    const stepCount = this.n;
-                    const stepSize = effectiveLength / (stepCount + 1);
-
-                    // Generate interpolated points
-                    for (let i = 1; i <= stepCount; i++) {
-                        points.push(new Vector({
-                            index,
-                            x: startX + unitX * stepSize * i,
-                            y: startY + unitY * stepSize * i,
-                        }));
+                    for (let i = 0; i < this.sides; i++) {
+                        const angle = Math.PI + startAngle + angleStep * i;
+                        vertices.push(
+                            new Vector({
+                                x: this.x + Math.sin(angle) * this.r,
+                                y: this.y + Math.cos(angle) * this.r,
+                            }),
+                        );
                     }
-                });
-                return points;
-            }
+                    return vertices;
+                }
 
-            calculateLines(vertices, points) {
-                const pnts = [];
-                for (let j = 0; j < this.n; j++)
-                    for (let i = 0; i < vertices.length; i++) {
-                        const p1 = points[((i + 0) * this.n + j) % points.length];  // Starting point
-                        const p2 = points[((i + 1) * this.n + j) % points.length]; // Next point (wraps around using modulo)
-                        const v = vertices[p2.index]
+                interpolateEdges(vertices) {
+                    const points = [];
+                    vertices.forEach((v1, index) => {
+                        const v2 = vertices[(index + 1) % vertices.length];
+                        const x1 = v1.x;
+                        const y1 = v1.y;
+                        const x2 = v2.x;
+                        const y2 = v2.y;
 
-                        const dx = v.x - p1.x;
-                        const dy = v.y - p1.y;
+                        // Total edge length
+                        const dx = x2 - x1;
+                        const dy = y2 - y1;
+                        const length = (dx ** 2 + dy ** 2) ** (1 / 2);
 
-                        const p3 = new Vector({ x: p2.x - dx, y: p2.y - dy })
+                        // Skip edge if padding exceeds half the edge length
+                        if (this.padding * 2 >= length) return;
 
-                        const closestp1 = p1.distance2(p3) < p2.distance2(p3);
-                        const px = closestp1 ? p1 : p2
-                        const sign = closestp1 ? -1 : 1;
-                        const p4 = px.rotate(p3, sign * ((this.sides - 2) * 180) / this.sides);
-                        const pb = new PathBuilder(p1)
-                        if (closestp1) {
-                            pb.quadraticCurve({ x1: p3.x, y1: p3.y, x: p4.x, y: p4.y })
-                                .lineTo(p2)
-                        } else {
-                            pb.lineTo(p4)
-                                .quadraticCurve({ x1: p3.x, y1: p3.y, x: p2.x, y: p2.y })
-                        }
-                        pnts.push(pb.build({ fill: "none", stroke: "#FFFF", "stroke-width": 6, "stroke-linecap": "round" }));
-                        pnts.push(pb.build({ fill: "none", stroke: "#000F", "stroke-width": 2, "stroke-linecap": "round" }));
+                        // Effective edge length after padding
+                        const effectiveLength = length - this.padding * 2;
 
-                        if (false) {
-                            pnts.push(
-                                Line.with({ attribute: { x1: p1.x, y1: p1.y, x2: p3.x, y2: p3.y, stroke: "#0005" } }),
-                                Line.with({ attribute: { x1: p2.x, y1: p2.y, x2: p3.x, y2: p3.y, stroke: "#0005" } }),
-                                Ellipse.with({ attribute: { cx: p1.x, cy: p1.y, rx: 2, ry: 2, fill: "#F005", stroke: "none", }, }),
-                                Ellipse.with({ attribute: { cx: p2.x, cy: p2.y, rx: 2, ry: 2, fill: "#00F5", stroke: "none", }, }),
-                                Ellipse.with({ attribute: { cx: p3.x, cy: p3.y, rx: 2, ry: 2, fill: "#5F5", stroke: "none", }, }),
-                                Ellipse.with({ attribute: { cx: p4.x, cy: p4.y, rx: 2, ry: 2, fill: "#F0F", stroke: "none", }, }),
+                        // Normalized direction vector
+                        const unitX = dx / length;
+                        const unitY = dy / length;
+
+                        // Start point after padding
+                        const startX = x1 + unitX * this.padding;
+                        const startY = y1 + unitY * this.padding;
+
+                        // Step size
+                        const stepCount = this.n;
+                        const stepSize = effectiveLength / (stepCount + 1);
+
+                        // Generate interpolated points
+                        for (let i = 1; i <= stepCount; i++) {
+                            points.push(
+                                new Vector({
+                                    index,
+                                    x: startX + unitX * stepSize * i,
+                                    y: startY + unitY * stepSize * i,
+                                }),
                             );
                         }
-
-                    }
-                return pnts;
-            }
-        }
-
-        const debugRect = ({ x, y, r }) => [
-            Rect.with({
-                attribute: {
-                    fill: "none", stroke: "#0001",
-                    width: tileSize, height: tileSize,
-                    x: x - tileSize / 2,
-                    y: y - tileSize / 2
+                    });
+                    return points;
                 }
-            }),
-            Ellipse.with({ attribute: { rx: 1, ry: 1, fill: "#000", stroke: "none", cx: x, cy: y } }),
-            Ellipse.with({ attribute: { rx: r, ry: r, fill: "none", stroke: "#0005", cx: x, cy: y } })]
 
-        const tileSize = 150;
+                calculateLines(vertices, points) {
+                    const pnts = [];
+                    for (let j = 0; j < this.n; j++)
+                        for (let i = 0; i < vertices.length; i++) {
+                            const p1 = points[((i + 0) * this.n + j) % points.length]; // Starting point
+                            const p2 = points[((i + 1) * this.n + j) % points.length]; // Next point (wraps around using modulo)
+                            const v = vertices[p2.index];
 
-        const width = 1800, height = 900;
-        const nx = Math.floor(width / tileSize);
-        const ny = Math.floor(height / tileSize);
+                            const dx = v.x - p1.x;
+                            const dy = v.y - p1.y;
 
-        const tiles = [];
-        for (let y = 0; y < ny; y++) {
-            for (let x = 0; x < nx; x++) {
-                tiles.push(new Tile({
-                    r: 70,
-                    x: tileSize / 2 + x * tileSize,
-                    y: tileSize / 2 + y * tileSize,
-                    rotation: 0,
-                    sides: 4 + y,
-                    n: 1 + x, padding: 0
-                }));
+                            const p3 = new Vector({ x: p2.x - dx, y: p2.y - dy });
+
+                            const closestp1 = p1.distance2(p3) < p2.distance2(p3);
+                            const px = closestp1 ? p1 : p2;
+                            const sign = closestp1 ? -1 : 1;
+                            const p4 = px.rotate(
+                                p3,
+                                (sign * ((this.sides - 2) * 180)) / this.sides,
+                            );
+                            const pb = new PathBuilder(p1);
+                            if (closestp1) {
+                                pb.quadraticCurve({ x1: p3.x, y1: p3.y, x: p4.x, y: p4.y }).lineTo(
+                                    p2,
+                                );
+                            } else {
+                                pb.lineTo(p4).quadraticCurve({
+                                    x1: p3.x,
+                                    y1: p3.y,
+                                    x: p2.x,
+                                    y: p2.y,
+                                });
+                            }
+                            pnts.push(
+                                pb.build({
+                                    fill: "none",
+                                    stroke: "#FFFF",
+                                    "stroke-width": 6,
+                                    "stroke-linecap": "round",
+                                }),
+                            );
+                            pnts.push(
+                                pb.build({
+                                    fill: "none",
+                                    stroke: "#000F",
+                                    "stroke-width": 2,
+                                    "stroke-linecap": "round",
+                                }),
+                            );
+
+                            if (false) {
+                                pnts.push(
+                                    Line.with({
+                                        attribute: {
+                                            x1: p1.x,
+                                            y1: p1.y,
+                                            x2: p3.x,
+                                            y2: p3.y,
+                                            stroke: "#0005",
+                                        },
+                                    }),
+                                    Line.with({
+                                        attribute: {
+                                            x1: p2.x,
+                                            y1: p2.y,
+                                            x2: p3.x,
+                                            y2: p3.y,
+                                            stroke: "#0005",
+                                        },
+                                    }),
+                                    Ellipse.with({
+                                        attribute: {
+                                            cx: p1.x,
+                                            cy: p1.y,
+                                            rx: 2,
+                                            ry: 2,
+                                            fill: "#F005",
+                                            stroke: "none",
+                                        },
+                                    }),
+                                    Ellipse.with({
+                                        attribute: {
+                                            cx: p2.x,
+                                            cy: p2.y,
+                                            rx: 2,
+                                            ry: 2,
+                                            fill: "#00F5",
+                                            stroke: "none",
+                                        },
+                                    }),
+                                    Ellipse.with({
+                                        attribute: {
+                                            cx: p3.x,
+                                            cy: p3.y,
+                                            rx: 2,
+                                            ry: 2,
+                                            fill: "#5F5",
+                                            stroke: "none",
+                                        },
+                                    }),
+                                    Ellipse.with({
+                                        attribute: {
+                                            cx: p4.x,
+                                            cy: p4.y,
+                                            rx: 2,
+                                            ry: 2,
+                                            fill: "#F0F",
+                                            stroke: "none",
+                                        },
+                                    }),
+                                );
+                            }
+                        }
+                    return pnts;
+                }
             }
-        }
 
-        const svg = Svg.with({
-            attribute: {
-                xmlns: "http://www.w3.org/2000/svg",
-                version: "1.1",
-                width,
-                height
-            },
-            children: tiles.flatMap(t => t.draw())
-        });
+            const debugRect = ({ x, y, r }) => [
+                Rect.with({
+                    attribute: {
+                        fill: "none",
+                        stroke: "#0001",
+                        width: tileSize,
+                        height: tileSize,
+                        x: x - tileSize / 2,
+                        y: y - tileSize / 2,
+                    },
+                }),
+                Ellipse.with({
+                    attribute: { rx: 1, ry: 1, fill: "#000", stroke: "none", cx: x, cy: y },
+                }),
+                Ellipse.with({
+                    attribute: { rx: r, ry: r, fill: "none", stroke: "#0005", cx: x, cy: y },
+                }),
+            ];
 
-        document.body.append(svg.create({ namespace: "http://www.w3.org/2000/svg" }))
-    </script>
+            const tileSize = 150;
 
-</body>
+            const width = 1800,
+                height = 900;
+            const nx = Math.floor(width / tileSize);
+            const ny = Math.floor(height / tileSize);
 
+            const tiles = [];
+            for (let y = 0; y < ny; y++) {
+                for (let x = 0; x < nx; x++) {
+                    tiles.push(
+                        new Tile({
+                            r: 70,
+                            x: tileSize / 2 + x * tileSize,
+                            y: tileSize / 2 + y * tileSize,
+                            rotation: 0,
+                            sides: 4 + y,
+                            n: 1 + x,
+                            padding: 0,
+                        }),
+                    );
+                }
+            }
+
+            const svg = Svg.with({
+                attribute: {
+                    xmlns: "http://www.w3.org/2000/svg",
+                    version: "1.1",
+                    width,
+                    height,
+                },
+                children: tiles.flatMap((t) => t.draw()),
+            });
+
+            document.body.append(svg.create({ namespace: "http://www.w3.org/2000/svg" }));
+        </script>
+    </body>
 </html>
