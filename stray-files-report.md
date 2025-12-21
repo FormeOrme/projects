@@ -1,22 +1,17 @@
 # Stray JavaScript Files Report
 
-**Generated:** December 20, 2025
+**Generated:** December 21, 2025
 
 This document lists all JavaScript files in the workspace that are not referenced by any HTML files or imported by other JavaScript files.
 
 ## Summary
 
-Total JavaScript files analyzed: **74**  
-Stray files found: **3**
+Total JavaScript files analyzed: **67**  
+Stray files found: **0**
 
-## Stray Files
+## Status
 
-### Root Directory
-
-1. **`table.js`**
-   - Location: `d:\GitHub\projects\table.js`
-   - Status: Not referenced by any HTML file or imported by any JS file
-   - Note: While there is a `table.html` in the tools directory, it does not reference this file
+All JavaScript files in the workspace are properly referenced or imported. No stray files detected.
 
 ## Files That ARE Used
 
@@ -115,34 +110,105 @@ The following files are actively used in the workspace:
 
 The following files are referenced in HTML files but do not exist in the workspace:
 
-1. **`main.js`** - Referenced by:
-   - `svg/index.html`
+### Root-Level Utility Files (Previously Existed)
+
+1. **`util.js`** - Referenced by **27 HTML files**:
+   - `canvas/base.html`
+   - `canvas/distance.html`
+   - `canvas/index.html`
+   - `canvas/keen_wagon.html`
+   - `canvas/mds.html`
+   - `canvas/sincere_tent.html`
+   - `canvas/vibrant_pillow.html`
+   - `canvas/warmhearted_instrument.html`
+   - `canvas/webworker/index.html` (via CDN)
+   - `game/hex.html`
+   - `game/slotmachine.html`
+   - `model/table.html`
+   - `test/benchmark/utils.html`
+   - `test/distance.html`
+   - `test/dom.html`
+   - `test/utils.html`
+   - `tools/compare.html`
+   - `tools/gcompare.html` (via CDN)
+   - `tools/hypergeometric.html`
+   - `tools/pwdgen/index.html`
+   - `tools/rpt.html`
+   - `tools/table.html`
+   - `tools/textAreafunc.html` (via CDN)
+   - `visual/_blank/index.html`
+   - `visual/word_clock.html` (via CDN)
+
+2. **`svg.js`** - Referenced by **1 HTML file**:
+   - `test/svg.html`
+   - Note: `module/Svg.js` exists and is used via ES6 imports in several files
+
+3. **`words.js`** - Referenced by **1 HTML file**:
+   - `test/distance.html`
+   - Note: `visual/crypt_lang/words.js` exists separately
+
+4. **`distance.js`** - Referenced by **4 HTML files**:
+   - `canvas/distance.html`
+   - `canvas/mds.html`
+   - `model/table.html`
+   - `test/distance.html`
+
+5. **`controlPanel.js`** - Referenced by **1 HTML file**:
+   - `tools/hypergeometric.html`
+   - Note: `module/ControlPanel.js` exists and is used via ES6 imports
+
+6. **`vector.js`** - Referenced by **3 HTML files** (using script tags):
+   - `canvas/vibrant_pillow.html`
+   - `test/svg.html`
+   - `test/vector.html`
+   - Note: `module/Vector.js` exists and is used via ES6 imports in 4 other files
+
+### Other Missing Files
+
+7. **`main.js`** - Referenced by **1 HTML file**:
    - `canvas/index.html`
 
-2. **`common.js`** - Referenced by:
-   - `tools/splitter.html`
+8. **`common.js`** - Referenced by **2 HTML files**:
    - `tools/mtg_collection/index.html`
+   - `tools/splitter.html`
 
-3. **`vector.js`** - Referenced by:
-   - `test/vector.html`
-   - `test/svg.html`
-   - `svg/upbeat_whistle.html`
-   - `svg/zen_paper.html`
-   - `svg/quadtree.html`
-   - `svg/helpful_car.html`
-   - `svg/arc.html`
-   - `canvas/vibrant_pillow.html`
+9. **`tools/ocr/script.js`** - Expected but not found
+   - Directory `tools/ocr/` exists with only `index.html`
 
 ## Analysis Notes
 
 1. The workspace has a modular structure with ES6 modules in the `module/` directory
 2. Most visual projects follow a pattern: each has its own `index.html` that references a local `script.js`, `program.js`, or similar
-3. Utility files like `util.js`, `svg.js`, `distance.js`, and `words.js` are shared across multiple projects
-4. There are several missing files that are referenced but don't exist (main.js, common.js, vector.js in root)
-5. The only confirmed stray file is `table.js` which has no references anywhere in the codebase
+3. **CRITICAL**: Several core utility files that were previously in the root directory have been deleted:
+   - `util.js` (referenced by 30+ HTML files)
+   - `svg.js`, `words.js`, `distance.js`, `controlPanel.js`, `vector.js`
+   - These deletions have broken many HTML files across the workspace
+4. All currently existing JavaScript files are properly referenced or imported
+5. There are no stray JavaScript files in the workspace
 
 ## Recommendations
 
-1. **Review `table.js`**: Determine if this file should be deleted or if references to it need to be added
-2. **Fix missing references**: Create or restore missing files (main.js, common.js, vector.js) or update HTML files to remove broken references
-3. **Consider consolidation**: Some files like `visual/crypt_lang/words.js` might be duplicates that could reference the root `words.js` instead
+1. **URGENT - Restore Missing Root Files**: The following files need to be restored or recreated as they are critical dependencies:
+   - `util.js` - **CRITICAL** - Core utility library used by 27 HTML files
+   - `distance.js` - Used by 4 HTML files for distance calculations
+   - `vector.js` - Used by 3 HTML files (note: `module/Vector.js` exists for ES6 imports)
+   - `svg.js` - Used by 1 HTML file (note: `module/Svg.js` exists for ES6 imports)
+   - `words.js` - Used by 1 HTML file (note: local copy exists in `visual/crypt_lang/`)
+   - `controlPanel.js` - Used by 1 HTML file (note: `module/ControlPanel.js` exists for ES6 imports)
+
+2. **Fix Other Missing References**: 
+   - Create or restore `main.js` for canvas index page (1 file affected)
+   - Create or restore `common.js` for tools (2 files affected)
+   - Add `tools/ocr/script.js` if OCR functionality is needed
+
+3. **Consider Alternative Solutions**:
+   - If files were intentionally removed, update all HTML files to remove broken references
+   - Consider using CDN-hosted versions of utility libraries (already in use for some files)
+   - The workspace uses `https://cdn.jsdelivr.net/gh/FormeOrme/projects@latest/util.js` in 4 files
+   - Consider migrating remaining files to use ES6 module imports from `module/` directory
+
+4. **Impact Summary**:
+   - **Total broken HTML files: 38**
+   - Most critical: `util.js` (27 files broken)
+   - Medium priority: `distance.js` (4 files), `vector.js` (3 files)
+   - Low priority: Other missing files (1-2 files each)

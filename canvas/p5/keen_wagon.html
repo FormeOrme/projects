@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.0/p5.js"></script>
+        <script src="../../util.js"></script>
+        <link rel="stylesheet" href="../common.css" />
+        <meta charset="utf-8" />
+    </head>
+
+    <body>
+        <script>
+            let cells = [];
+            const W = 666;
+            const H = 777;
+            const padding = 50;
+
+            function setup() {
+                noStroke();
+                createCanvas(W, H);
+
+                const N = 666;
+                for (let i = 0; i < N; i++) {
+                    cells.push(
+                        new Cell({
+                            meta: (white = Utils.chance(55)),
+                            color: "red",
+                            colorF: white ? 255 : 10,
+                            colorFA: white ? 10 : 20,
+                            forwardAngle: random(360),
+                            radarAngle: 22,
+                            radarRange: 7,
+                            feroSize: white ? 10 : 3,
+                        }),
+                    );
+                }
+
+                noStroke();
+                fill(0);
+                rect(0, 0, W, H);
+
+                fill(255);
+                ellipse(W / 2, H / 2, W);
+
+                //textSize(500);
+                //text('&', 200, 600);
+
+                /**
+            f.loadPixels();
+            for (let i = 0; i < W * H * 4; i += 4) {
+                const c = 250//random(250, 254);
+                f.pixels[i] = c;
+                f.pixels[i + 1] = c;
+                f.pixels[i + 2] = c;
+                f.pixels[i + 3] = 255;
+            }
+            f.updatePixels();
+
+            f.noStroke();
+            f.fill(0);
+            f.rect(0, 0, width, padding)
+            f.rect(0, height - padding, width, padding)
+            f.rect(0, 0, padding, height)
+            f.rect(width - padding, 0, padding, height)
+            */
+            }
+            function draw() {
+                cells.forEach((cell) => {
+                    cell.update();
+                    cell.display();
+                });
+                //drawDebug();
+            }
+
+            function drawDebug() {
+                translate(W, 0);
+                fill(100);
+                rect(0, 0, W, H);
+                cells.forEach((cell) => {
+                    cell.displayDebug();
+                });
+            }
+        </script>
+        <script>
+            const startRangeX = 10; //W / 2 - padding;
+            const startRangeY = 10; //H / 2 - padding;
+
+            function getRandomPointInCircle(center, radius) {
+                // Generate random polar coordinates
+                const r = Math.sqrt(Math.random()) * radius; // Random distance from center
+                const theta = Math.random() * 2 * Math.PI; // Random angle in radians
+
+                // Convert polar coordinates to Cartesian coordinates
+                const x = center.x + r * Math.cos(theta);
+                const y = center.y + r * Math.sin(theta);
+
+                return [x, y];
+            }
+
+            class Cell {
+                constructor({
+                    color,
+                    colorF,
+                    colorFA = 4,
+                    forwardAngle = 0,
+                    radarAngle,
+                    radarRange,
+                    feroSize,
+                }) {
+                    this.feroSize = feroSize;
+
+                    this.color = color;
+                    this.colorF = colorF;
+                    this.colorFA = colorFA;
+                    this.position = createVector(
+                        ...getRandomPointInCircle({ x: W / 2, y: H / 2 }, (W - 100) / 2),
+                    );
+                    this.radius = 2;
+
+                    const radFA = radians(forwardAngle);
+                    this.direction = createVector(cos(radFA), sin(radFA)).normalize();
+
+                    this.radarAngle = radarAngle;
+                    this.radarRange = radarRange;
+                    this.updateRadar();
+                }
+
+                updateRadar() {
+                    // this.radarRange = 10;
+                    // this.radarAngle = 30;//Utils.tween(this.position.dist(createVector(width / 2, height / 2)), 0, height / 2, 22, 44)
+
+                    // this.radarRange = Utils.tween(this.position.x, 0, width, 6, 22);
+                    // this.radarAngle = Utils.tween(this.position.y, 0, height, 6, 45);
+
+                    this.radarF = this.direction.copy();
+                    this.radarL = p5.Vector.rotate(this.direction, radians(this.radarAngle));
+                    this.radarR = p5.Vector.rotate(this.direction, radians(-this.radarAngle));
+                }
+
+                update() {
+                    const radar = [this.radarF, this.radarL, this.radarR].reduce(
+                        Reduce.with((a, c) => {
+                            const pos2 = p5.Vector.add(
+                                this.position,
+                                p5.Vector.mult(c, this.radarRange),
+                            );
+                            const val = get(pos2.x, pos2.y)[0];
+                            a.vals.set(pos2, val);
+                            if (val > a.min) {
+                                a.goTo = c;
+                                a.min = val;
+                            }
+                        }),
+                        { min: 0, vals: new Map() },
+                    );
+
+                    if (Utils.chance(5)) {
+                        radar.goTo = Utils.randomElement([this.radarF, this.radarL, this.radarR]);
+                    }
+                    if (radar.goTo) {
+                        // Calculate the angle between the current direction and radar.goTo
+                        const angle = p5.Vector.angleBetween(this.direction, radar.goTo);
+
+                        // Maximum allowed angle in radians (20 degrees)
+                        const maxAngle = radians(10);
+
+                        if (abs(angle) > maxAngle) {
+                            // Interpolate to limit the turn angle0
+                            radar.goTo = p5.Vector.lerp(
+                                this.direction,
+                                radar.goTo,
+                                (maxAngle * Math.sign(angle)) / angle,
+                            );
+                        }
+
+                        // Update position and direction
+                        this.position.add(radar.goTo /* .mult(2) */);
+                        this.direction = radar.goTo.copy().normalize();
+                    } else {
+                        // this.direction.mult(-1)
+                        this.position = createVector(
+                            W / 2 + random(-startRangeX, startRangeX),
+                            H / 2 + random(-startRangeY, startRangeY),
+                        );
+                    }
+
+                    this.updateRadar();
+                }
+
+                display() {
+                    noStroke();
+                    fill(this.colorF, this.colorF, this.colorF, this.colorFA);
+                    ellipse(this.position.x, this.position.y, this.feroSize);
+                }
+
+                displayDebug() {
+                    noStroke();
+                    fill(0);
+                    ellipse(this.position.x, this.position.y, this.radius);
+                    noFill();
+                    stroke(this.color);
+
+                    line(
+                        this.position.x,
+                        this.position.y,
+                        this.position.x + this.radarF.x * this.radarRange,
+                        this.position.y + this.radarF.y * this.radarRange,
+                    );
+
+                    line(
+                        this.position.x,
+                        this.position.y,
+                        this.position.x + this.radarL.x * this.radarRange,
+                        this.position.y + this.radarL.y * this.radarRange,
+                    );
+
+                    line(
+                        this.position.x,
+                        this.position.y,
+                        this.position.x + this.radarR.x * this.radarRange,
+                        this.position.y + this.radarR.y * this.radarRange,
+                    );
+                }
+            }
+        </script>
+    </body>
+</html>
