@@ -231,83 +231,89 @@ export class Dom {
     ];
 }
 
-/* TextElements */
-export class Div extends Elem {}
-export class Span extends Elem {}
-export class P extends Elem {}
-export class Small extends Elem {}
-export class Menu extends Elem {}
-export class A extends Elem {}
-/* HeadingElements */
-export class H1 extends Elem {}
-export class H2 extends Elem {}
-export class H3 extends Elem {}
-export class H4 extends Elem {}
-export class H5 extends Elem {}
-export class H6 extends Elem {}
-export class HGroup extends Elem {}
-/* InlineTextElements */
-export class I extends Elem {}
-export class Strong extends Elem {}
-export class Em extends Elem {}
-export class Mark extends Elem {}
-export class Abbr extends Elem {}
-export class Code extends Elem {}
-export class Pre extends Elem {}
-export class Kbd extends Elem {}
-export class Samp extends Elem {}
-/* SectionElements */
-export class Header extends Elem {}
-export class Footer extends Elem {}
-export class Article extends Elem {}
-export class Aside extends Elem {}
-export class Section extends Elem {}
-/* ListElements */
-export class UL extends Elem {}
-export class OL extends Elem {}
-export class LI extends Elem {}
-export class Nav extends Elem {}
-/* FormElements */
-export class Form extends Elem {}
-export class Input extends Elem {}
-export class Output extends Elem {}
-export class TextArea extends Elem {}
-export class Button extends Elem {}
-export class Label extends Elem {}
-export class Select extends Elem {}
-export class Option_ extends Elem {}
-/* MediaElements */
-export class Img extends Elem {}
-export class Audio_ extends Elem {}
-export class Video extends Elem {}
-/* TableElements */
-export class Table extends Elem {}
-export class TR extends Elem {}
-export class TD extends Elem {}
-export class TH extends Elem {}
-export class TBody extends Elem {}
-export class TFoot extends Elem {}
-export class THead extends Elem {}
-export class ColGroup extends Elem {}
-export class Col extends Elem {}
-export class Caption extends Elem {}
-/* EmbeddedElements */
-export class IFrame extends Elem {}
-export class Canvas extends Elem {}
-/* MiscElements */
-export class HR extends Elem {}
-export class BR extends Elem {}
-export class Style extends Elem {}
-export class Blockquote extends Elem {}
-export class Cite extends Elem {}
-export class Sup extends Elem {}
-export class Sub extends Elem {}
-/* HeadElements */
-export class Link extends Elem {}
-export class Title extends Elem {}
-export class Meta extends Elem {}
-
 const elementClasses = [
+    /* TextElements */
+    class Div extends Elem {},
+    class Span extends Elem {},
+    class P extends Elem {},
+    class Small extends Elem {},
+    class Menu extends Elem {},
+    class A extends Elem {},
+    /* HeadingElements */
+    class H1 extends Elem {},
+    class H2 extends Elem {},
+    class H3 extends Elem {},
+    class H4 extends Elem {},
+    class H5 extends Elem {},
+    class H6 extends Elem {},
+    class HGroup extends Elem {},
+    /* InlineTextElements */
+    class I extends Elem {},
+    class Strong extends Elem {},
+    class Em extends Elem {},
+    class Mark extends Elem {},
+    class Abbr extends Elem {},
+    class Code extends Elem {},
+    class Pre extends Elem {},
+    class Kbd extends Elem {},
+    class Samp extends Elem {},
+    /* SectionElements */
+    class Header extends Elem {},
+    class Footer extends Elem {},
+    class Article extends Elem {},
+    class Aside extends Elem {},
+    class Section extends Elem {},
+    /* ListElements */
+    class UL extends Elem {},
+    class OL extends Elem {},
+    class LI extends Elem {},
+    class Nav extends Elem {},
+    /* FormElements */
+    class Form extends Elem {},
+    class Input extends Elem {},
+    class Output extends Elem {},
+    class TextArea extends Elem {},
+    class Button extends Elem {},
+    class Label extends Elem {},
+    class Select extends Elem {},
+    class Option_ extends Elem {},
+    /* MediaElements */
+    class Img extends Elem {},
+    class Audio_ extends Elem {},
+    class Video extends Elem {},
+    /* TableElements */
+    class Table extends Elem {},
+    class TR extends Elem {},
+    class TD extends Elem {},
+    class TH extends Elem {},
+    class TBody extends Elem {},
+    class TFoot extends Elem {},
+    class THead extends Elem {},
+    class ColGroup extends Elem {},
+    class Col extends Elem {},
+    class Caption extends Elem {},
+    /* EmbeddedElements */
+    class IFrame extends Elem {},
+    class Canvas extends Elem {},
+    /* MiscElements */
+    class HR extends Elem {},
+    class BR extends Elem {},
+    class Style extends Elem {},
+    class Blockquote extends Elem {},
+    class Cite extends Elem {},
+    class Sup extends Elem {},
+    class Sub extends Elem {},
+    /* HeadElements */
+    class Link extends Elem {},
+    class Title extends Elem {},
+    class Meta extends Elem {},
+];
+
+export function asFunctions(elementClasses) {
+    return Object.fromEntries(elementClasses.map((cls) => [cls.name, (o) => new cls(o)]));
+}
+
+export const {
     Div,
     Span,
     P,
@@ -372,5 +378,4 @@ const elementClasses = [
     Link,
     Title,
     Meta,
-];
-export const FN = Object.fromEntries(elementClasses.map((cls) => [cls.name, (o) => new cls(o)]));
+} = asFunctions(elementClasses);

@@ -1,20 +1,37 @@
-import { Elem } from "./Dom.js";
+import { Elem, asFunctions } from "./Dom.js";
 import Vector from "./Vector.js";
 
-/* SvgBaseElements */
-export class Svg extends Elem {}
-export class Defs extends Elem {}
-export class G extends Elem {}
-export class Path extends Elem {}
-export class Line extends Elem {}
-export class Rect extends Elem {}
-export class Circle extends Elem {}
-export class Ellipse extends Elem {}
-export class Polygon extends Elem {}
-export class Polyline extends Elem {}
-/* SvgDefElements */
-export class LinearGradient extends Elem {}
-export class Stop extends Elem {}
+const elementClasses = [
+    /* SvgBaseElements */
+    class Svg extends Elem {},
+    class Defs extends Elem {},
+    class G extends Elem {},
+    class Path extends Elem {},
+    class Line extends Elem {},
+    class Rect extends Elem {},
+    class Circle extends Elem {},
+    class Ellipse extends Elem {},
+    class Polygon extends Elem {},
+    class Polyline extends Elem {},
+    /* SvgDefElements */
+    class LinearGradient extends Elem {},
+    class Stop extends Elem {},
+];
+
+export const {
+    Svg,
+    Defs,
+    G,
+    Path,
+    Line,
+    Rect,
+    Circle,
+    Ellipse,
+    Polygon,
+    Polyline,
+    LinearGradient,
+    Stop,
+} = asFunctions(elementClasses);
 
 export function group(children) {
     return G.with({ children });
