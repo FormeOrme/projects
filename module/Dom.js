@@ -59,7 +59,7 @@ function createElement(e, namespace) {
     return node;
 }
 
-class Elem {
+export class Elem {
     constructor(obj) {
         if (!obj) return;
 

@@ -1,20 +1,20 @@
-import { Dom } from "./Dom.js";
+import { Elem } from "./Dom.js";
 import Vector from "./Vector.js";
 
 /* SvgBaseElements */
-export class Svg extends Dom.Elem {}
-export class Defs extends Dom.Elem {}
-export class G extends Dom.Elem {}
-export class Path extends Dom.Elem {}
-export class Line extends Dom.Elem {}
-export class Rect extends Dom.Elem {}
-export class Circle extends Dom.Elem {}
-export class Ellipse extends Dom.Elem {}
-export class Polygon extends Dom.Elem {}
-export class Polyline extends Dom.Elem {}
+export class Svg extends Elem {}
+export class Defs extends Elem {}
+export class G extends Elem {}
+export class Path extends Elem {}
+export class Line extends Elem {}
+export class Rect extends Elem {}
+export class Circle extends Elem {}
+export class Ellipse extends Elem {}
+export class Polygon extends Elem {}
+export class Polyline extends Elem {}
 /* SvgDefElements */
-export class LinearGradient extends Dom.Elem {}
-export class Stop extends Dom.Elem {}
+export class LinearGradient extends Elem {}
+export class Stop extends Elem {}
 
 export function group(children) {
     return G.with({ children });
