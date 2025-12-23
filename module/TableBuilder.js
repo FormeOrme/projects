@@ -27,7 +27,7 @@ export default class TableBuilder {
     }
 
     buildCell(text, clazz = "") {
-        return Span.with({
+        return Span({
             text,
             class: clazz,
         });
@@ -43,18 +43,18 @@ export default class TableBuilder {
     }
 
     build() {
-        return Span.with({
+        return Span({
             id: "table",
             class: ["d-flex flex-column", this.classes?.table],
             children: [
-                Span.with({
+                Span({
                     id: "header",
                     class: ["d-flex flex-column", this.classes?.header],
-                    children: Span.with({
+                    children: Span({
                         id: "header-row",
                         class: ["d-flex flex-row", this.classes?.headerRow],
                         children: Object.entries(this.columns).map(([key, column], x) =>
-                            Span.with({
+                            Span({
                                 id: `header-${key}`,
                                 attribute: {
                                     dataKey: key,
@@ -69,15 +69,15 @@ export default class TableBuilder {
                         ),
                     }),
                 }),
-                Span.with({
+                Span({
                     id: "body",
                     class: ["d-flex flex-column", this.classes?.body],
                     children: this.data.map((row, y) =>
-                        Span.with({
+                        Span({
                             id: `row-${y}`,
                             class: ["d-flex flex-row", this.classes?.row],
                             children: Object.entries(this.columns).map(([key, column], x) =>
-                                Span.with({
+                                Span({
                                     id: `cell-${y}-${key}`,
                                     attribute: {
                                         dataKey: key,
