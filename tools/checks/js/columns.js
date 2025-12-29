@@ -199,20 +199,102 @@ export function createActionColumn(saveState, updateTotals, getRow) {
     };
 }
 
-export function createAddPayerColumn() {
+export function createAddPayerColumn(onAddPayer) {
     return {
         header: Div({
             class: [BUTTON_CLASSES, "me-1"],
             children: Input({
-                class: "payer form-control form-control-sm",
+                class: "form-control form-control-sm",
+                attribute: {
+                    placeholder: "+",
+                },
                 event: {
                     change: function () {
                         const newPayer = this.value.trim();
-                        // This would need to be connected to a handler
+                        if (newPayer && onAddPayer) {
+                            onAddPayer(newPayer);
+                        }
                         this.value = "";
                     },
                 },
             }),
         }),
+        footer: Div({
+            class: [BUTTON_CLASSES, "me-1"],
+        }),
     };
+}
+
+export function createPayerHeaderCell(payerId, displayName, saveState) {
+    return Div({
+        class: [BUTTON_CLASSES, "me-1", "payer-col"],
+        attribute: {
+            "data-payer-id": payerId,
+        },
+        children: Input({
+            class: "payer form-control form-control-sm",
+            value: displayName,
+            attribute: {
+                dataPayer: payerId,
+            },
+            event: {
+                change: () => saveState(true),
+            },
+        }),
+    });
+}
+
+export function createPayerRowCell(payerId, updateTotals) {
+    const id = getHID();
+    return Div({
+        class: [BUTTON_CLASSES, "me-1", "payer-col"],
+        attribute: {
+            "data-payer-id": payerId,
+        },
+        children: [
+            Input({
+                id,
+                class: "btn-check check",
+                attribute: {
+                    type: "checkbox",
+                    dataPayer: payerId,
+                },
+                event: {
+                    input: (node) => {
+                        const row = node.closest(".item");
+                        const checked = row.querySelectorAll("input:checked").length > 0;
+                        [...row.querySelectorAll("input[type='checkbox']+.btn")].forEach((btn) => {
+                            btn.classList.toggle("btn-outline-primary", checked);
+                            btn.classList.toggle("btn-outline-danger", !checked);
+                        });
+                        updateTotals();
+                    },
+                },
+            }),
+            Label({
+                class: ["btn btn-sm col-12", "btn-outline-danger"],
+                attribute: {
+                    for: id,
+                },
+                children: I({ class: "bi bi-check-lg" }),
+            }),
+        ],
+    });
+}
+
+export function createPayerFooterCell(payerId) {
+    return Div({
+        class: [BUTTON_CLASSES, "me-1", "payer-col"],
+        attribute: {
+            "data-payer-id": payerId,
+        },
+        children: Input({
+            id: `split_${payerId}`,
+            class: "form-control form-control-sm px-1 split-amount",
+            attribute: {
+                readonly: "",
+                "data-payer": payerId,
+            },
+        }),
+    });
 }

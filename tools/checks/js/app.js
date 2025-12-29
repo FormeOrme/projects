@@ -6,18 +6,29 @@ import {
     PayerColumnManager,
     createActionColumn,
     createAddPayerColumn,
+    createPayerHeaderCell,
+    createPayerRowCell,
+    createPayerFooterCell,
 } from "./columns.js";
 import { createRow, buildTable } from "./tableBuilder.js";
 import { parseWithTesseract, parseClipboard, readClipboardItem } from "./ocrParser.js";
-import { saveState, loadPayerNames, loadTableContent, resetState } from "./stateManager.js";
+import {
+    saveState,
+    loadPayerNames,
+    loadTableContent,
+    resetState,
+    loadPayerList,
+    savePayerList,
+} from "./stateManager.js";
 import { updateTotals as updateTotalsBase } from "./totalsCalculator.js";
 
 // Initialize state
 const payerNamesInit = loadPayerNames();
 const tableContentInit = loadTableContent();
 
-// Payers configuration
-const payers = ["F", "M", "D", "T"];
+// Payers configuration - load from storage or use default
+const DEFAULT_PAYERS = ["F", "M", "D", "T"];
+const payers = loadPayerList() ?? [...DEFAULT_PAYERS];
 
 // Item-Payer relationship tracker
 const itemPayerEdge = new Relation({
@@ -27,6 +38,55 @@ const itemPayerEdge = new Relation({
 // Create update totals function bound to payers
 function updateTotals() {
     updateTotalsBase(payers);
+}
+
+// Handler to add a new payer column dynamically
+function handleAddPayer(newPayerId) {
+    // Check if payer already exists
+    if (payers.includes(newPayerId)) {
+        return;
+    }
+
+    // Add to payers array
+    payers.push(newPayerId);
+    savePayerList(payers);
+
+    // Find the addPayer column in header to insert before it
+    const headerRow = Dom.nodes.header.querySelector(".flex-row");
+    const addPayerHeaderCell = headerRow.lastElementChild;
+    const newHeaderCell = createPayerHeaderCell(newPayerId, newPayerId, saveState).create();
+    headerRow.insertBefore(newHeaderCell, addPayerHeaderCell);
+
+    // Add checkbox cell to each existing row
+    const rows = [...Dom.nodes.mainBody.querySelectorAll(".item")];
+    rows.forEach((row) => {
+        const newRowCell = createPayerRowCell(newPayerId, updateTotals).create();
+        row.appendChild(newRowCell);
+    });
+
+    // Add footer cell before the addPayer footer
+    const footerRow = Dom.nodes.footer.querySelector(".flex-row");
+    const addPayerFooterCell = footerRow.lastElementChild;
+    const newFooterCell = createPayerFooterCell(newPayerId).create();
+    footerRow.insertBefore(newFooterCell, addPayerFooterCell);
+
+    // Update the payerList in columns for new rows
+    columns.payerList.header.push(createPayerHeaderCell(newPayerId, newPayerId, saveState));
+    columns.payerList.footer.push(createPayerFooterCell(newPayerId));
+
+    // Update the row generator
+    const originalRowFn = columns.payerList.row;
+    columns.payerList.row = (rowData) => {
+        const existingCells = originalRowFn(rowData);
+        // Check if the new payer should be checked
+        if (rowData?.checks?.includes(newPayerId)) {
+            // The cell is already created with the check state from PayerColumnManager
+        }
+        return existingCells;
+    };
+
+    updateTotals();
+    saveState();
 }
 
 // Create columns
@@ -39,7 +99,7 @@ const payerList = new PayerColumnManager(
     itemPayerEdge,
 ).build();
 const action = createActionColumn(saveState, updateTotals, getRow);
-const addPayer = createAddPayerColumn();
+const addPayer = createAddPayerColumn(handleAddPayer);
 
 const columns = { action, description, amount, payerList, addPayer };
 

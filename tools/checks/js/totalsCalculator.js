@@ -9,9 +9,7 @@ export function updateTotals(payers) {
     });
     total.value = (+total.value).toFixed(2);
 
-    const ids = payers.slice(0, -1);
-
-    ids.forEach((p) => {
+    payers.forEach((p) => {
         const totalEl = Dom.nodes[`split_${p}`];
         totalEl.value = 0;
         [...document.querySelectorAll("#mainBody .flex-row")].forEach((tr) => {

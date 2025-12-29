@@ -46,6 +46,7 @@ export function createTable(columns, tableContent, getRow, mainBodyRef) {
                         columns.description.footer,
                         columns.amount.footer,
                         ...columns.payerList.footer,
+                        columns.addPayer.footer,
                     ],
                 }),
             }),

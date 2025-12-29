@@ -4,6 +4,7 @@ import { Dom } from "../../../module/Dom.js";
 
 const PAYER_NAMES_KEY = "PAYER_NAMES";
 const TABLE_CONTENT_KEY = "TABLE_CONTENT";
+const PAYER_LIST_KEY = "PAYER_LIST";
 
 export function getPayers() {
     const payerInputs = [...Dom.nodes.header.querySelectorAll(".payer")];
@@ -38,8 +39,17 @@ export function loadTableContent() {
     return getObj(TABLE_CONTENT_KEY) ?? [];
 }
 
+export function loadPayerList() {
+    return getObj(PAYER_LIST_KEY) ?? null;
+}
+
+export function savePayerList(payers) {
+    setObj(PAYER_LIST_KEY, payers);
+}
+
 export function resetState() {
     remove(PAYER_NAMES_KEY);
     remove(TABLE_CONTENT_KEY);
+    remove(PAYER_LIST_KEY);
     location.reload();
 }
