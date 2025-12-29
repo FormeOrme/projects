@@ -84,13 +84,13 @@ export class PayerColumnManager {
         return Div({
             class: [BUTTON_CLASSES, "me-1", "payer-col"],
             attribute: {
-                "data-payer-id": p,
+                dataPayerId: p,
             },
             children: Input({
                 class: "payer form-control form-control-sm text-center",
                 value: this.payerNamesInit[p] ?? p,
                 attribute: {
-                    "data-payer": p,
+                    dataPayer: p,
                 },
                 event: {
                     change: function () {
@@ -109,7 +109,7 @@ export class PayerColumnManager {
         return Div({
             class: [BUTTON_CLASSES, "me-1", "payer-col"],
             attribute: {
-                "data-payer-id": p,
+                dataPayerId: p,
             },
             children: [
                 Input({
@@ -156,14 +156,14 @@ export class PayerColumnManager {
         return Div({
             class: [BUTTON_CLASSES, "me-1", "payer-col"],
             attribute: {
-                "data-payer-id": p,
+                dataPayerId: p,
             },
             children: Input({
                 id: `split_${p}`,
                 class: "form-control form-control-sm px-1 split-amount",
                 attribute: {
                     readonly: "",
-                    "data-payer": p,
+                    dataPayer: p,
                 },
             }),
         });
@@ -245,13 +245,13 @@ export function createPayerHeaderCell(payerId, displayName, onPayerChange) {
     return Div({
         class: [BUTTON_CLASSES, "me-1", "payer-col"],
         attribute: {
-            "data-payer-id": payerId,
+            dataPayerId: payerId,
         },
         children: Input({
             class: "payer form-control form-control-sm text-center",
             value: displayName,
             attribute: {
-                "data-payer": payerId,
+                dataPayer: payerId,
             },
             event: {
                 change: function () {
@@ -269,7 +269,7 @@ export function createPayerRowCell(payerId, updateTotals) {
     return Div({
         class: [BUTTON_CLASSES, "me-1", "payer-col"],
         attribute: {
-            "data-payer-id": payerId,
+            dataPayerId: payerId,
         },
         children: [
             Input({
@@ -277,7 +277,7 @@ export function createPayerRowCell(payerId, updateTotals) {
                 class: "btn-check check",
                 attribute: {
                     type: "checkbox",
-                    "data-payer": payerId,
+                    dataPayer: payerId,
                 },
                 event: {
                     input: (node) => {
@@ -306,14 +306,14 @@ export function createPayerFooterCell(payerId) {
     return Div({
         class: [BUTTON_CLASSES, "me-1", "payer-col"],
         attribute: {
-            "data-payer-id": payerId,
+            dataPayerId: payerId,
         },
         children: Input({
             id: `split_${payerId}`,
             class: "form-control form-control-sm px-1 split-amount",
             attribute: {
                 readonly: "",
-                "data-payer": payerId,
+                dataPayer: payerId,
             },
         }),
     });
