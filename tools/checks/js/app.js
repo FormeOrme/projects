@@ -40,6 +40,27 @@ function updateTotals() {
     updateTotalsBase(payers);
 }
 
+// Handler to rename or remove a payer column
+function handlePayerChange(oldPayerId, newName) {
+    const payerIndex = payers.indexOf(oldPayerId);
+    if (payerIndex === -1) return;
+
+    if (newName === "") {
+        // Remove the payer
+        payers.splice(payerIndex, 1);
+        savePayerList(payers);
+
+        // Remove all DOM elements with this payer-id
+        document.querySelectorAll(`[data-payer-id="${oldPayerId}"]`).forEach((el) => el.remove());
+
+        updateTotals();
+        saveState();
+    } else {
+        // Just save the new display name (payer ID stays the same)
+        saveState(true);
+    }
+}
+
 // Handler to add a new payer column dynamically
 function handleAddPayer(newPayerId) {
     // Check if payer already exists
@@ -54,7 +75,7 @@ function handleAddPayer(newPayerId) {
     // Find the addPayer column in header to insert before it
     const headerRow = Dom.nodes.header.querySelector(".flex-row");
     const addPayerHeaderCell = headerRow.lastElementChild;
-    const newHeaderCell = createPayerHeaderCell(newPayerId, newPayerId, saveState).create();
+    const newHeaderCell = createPayerHeaderCell(newPayerId, newPayerId, handlePayerChange).create();
     headerRow.insertBefore(newHeaderCell, addPayerHeaderCell);
 
     // Add checkbox cell to each existing row
@@ -71,7 +92,7 @@ function handleAddPayer(newPayerId) {
     footerRow.insertBefore(newFooterCell, addPayerFooterCell);
 
     // Update the payerList in columns for new rows
-    columns.payerList.header.push(createPayerHeaderCell(newPayerId, newPayerId, saveState));
+    columns.payerList.header.push(createPayerHeaderCell(newPayerId, newPayerId, handlePayerChange));
     columns.payerList.footer.push(createPayerFooterCell(newPayerId));
 
     // Update the row generator
@@ -97,6 +118,7 @@ const payerList = new PayerColumnManager(
     payerNamesInit,
     updateTotals,
     itemPayerEdge,
+    handlePayerChange,
 ).build();
 const action = createActionColumn(saveState, updateTotals, getRow);
 const addPayer = createAddPayerColumn(handleAddPayer);

@@ -13,6 +13,16 @@ class Nodes extends Array {
     }
 }
 
+const BOOLEAN_PROPS = new Set([
+    "checked",
+    "disabled",
+    "selected",
+    "readonly",
+    "required",
+    "multiple",
+    "autofocus",
+]);
+
 function createElement(e, namespace) {
     namespace = namespace || e.namespace;
     const type = e.constructor.name.replace("_", "").toLowerCase();
@@ -39,7 +49,13 @@ function createElement(e, namespace) {
         }
     }
     if (e.attribute) {
-        Dom.formatKeys(e.attribute).forEach(([k, v]) => node.setAttribute(k, v));
+        Dom.formatKeys(e.attribute).forEach(([k, v]) => {
+            if (BOOLEAN_PROPS.has(k)) {
+                node[k] = Boolean(v);
+            } else {
+                node.setAttribute(k, v);
+            }
+        });
     }
     if (e.style) {
         Dom.formatKeys(e.style).forEach(([k, v]) =>

@@ -1,5 +1,6 @@
 import { getHID } from "../../../module/IdUtils.js";
 import { Div, Input, Button, I, Label, Span } from "../../../module/Dom.js";
+import { chance } from "../../../module/Utils.js";
 
 const BUTTON_CLASSES = "col-05 col-md-1 col-lg-1 ";
 
@@ -64,12 +65,13 @@ export function createAmountColumn(updateTotals) {
 }
 
 export class PayerColumnManager {
-    constructor(payers, payerNamesInit, updateTotals, itemPayerEdge) {
+    constructor(payers, payerNamesInit, updateTotals, itemPayerEdge, onPayerChange) {
         this.payerIds = [];
         this.payers = payers;
         this.payerNamesInit = payerNamesInit;
         this.updateTotals = updateTotals;
         this.itemPayerEdge = itemPayerEdge;
+        this.onPayerChange = onPayerChange;
         this.header = [];
         this.row = [];
         this.footer = [];
@@ -77,17 +79,25 @@ export class PayerColumnManager {
 
     buildHeader(p, index) {
         const id = getHID();
+        const self = this;
         this.payerIds.splice(index, 0, id);
         return Div({
-            class: [BUTTON_CLASSES, "me-1"],
+            class: [BUTTON_CLASSES, "me-1", "payer-col"],
+            attribute: {
+                "data-payer-id": p,
+            },
             children: Input({
                 class: "payer form-control form-control-sm text-center",
                 value: this.payerNamesInit[p] ?? p,
                 attribute: {
-                    dataPayer: p,
+                    "data-payer": p,
                 },
                 event: {
-                    change: () => {},
+                    change: function () {
+                        if (self.onPayerChange) {
+                            self.onPayerChange(p, this.value.trim());
+                        }
+                    },
                 },
             }),
         });
@@ -97,7 +107,10 @@ export class PayerColumnManager {
         const id = getHID();
         const self = this;
         return Div({
-            class: [BUTTON_CLASSES, "me-1"],
+            class: [BUTTON_CLASSES, "me-1", "payer-col"],
+            attribute: {
+                "data-payer-id": p,
+            },
             children: [
                 Input({
                     id,
@@ -105,7 +118,7 @@ export class PayerColumnManager {
                     attribute: {
                         type: "checkbox",
                         dataPayer: p,
-                        ...(rowData?.checks?.includes(p) ? { checked: "" } : {}),
+                        checked: rowData?.checks?.includes(p),
                     },
                     event: {
                         input: (node) => {
@@ -141,7 +154,10 @@ export class PayerColumnManager {
 
     buildFooter(p) {
         return Div({
-            class: BUTTON_CLASSES + "me-1",
+            class: [BUTTON_CLASSES, "me-1", "payer-col"],
+            attribute: {
+                "data-payer-id": p,
+            },
             children: Input({
                 id: `split_${p}`,
                 class: "form-control form-control-sm px-1 split-amount",
@@ -204,9 +220,9 @@ export function createAddPayerColumn(onAddPayer) {
         header: Div({
             class: [BUTTON_CLASSES, "me-1"],
             children: Input({
-                class: "form-control form-control-sm text-center",
+                class: "form-control form-control-sm text-center btn-outline-success",
                 attribute: {
-                    placeholder: "+",
+                    placeholder: "➕",
                 },
                 event: {
                     change: function () {
@@ -225,7 +241,7 @@ export function createAddPayerColumn(onAddPayer) {
     };
 }
 
-export function createPayerHeaderCell(payerId, displayName, saveState) {
+export function createPayerHeaderCell(payerId, displayName, onPayerChange) {
     return Div({
         class: [BUTTON_CLASSES, "me-1", "payer-col"],
         attribute: {
@@ -235,10 +251,14 @@ export function createPayerHeaderCell(payerId, displayName, saveState) {
             class: "payer form-control form-control-sm text-center",
             value: displayName,
             attribute: {
-                dataPayer: payerId,
+                "data-payer": payerId,
             },
             event: {
-                change: () => saveState(true),
+                change: function () {
+                    if (onPayerChange) {
+                        onPayerChange(payerId, this.value.trim());
+                    }
+                },
             },
         }),
     });
@@ -257,7 +277,7 @@ export function createPayerRowCell(payerId, updateTotals) {
                 class: "btn-check check",
                 attribute: {
                     type: "checkbox",
-                    dataPayer: payerId,
+                    "data-payer": payerId,
                 },
                 event: {
                     input: (node) => {
