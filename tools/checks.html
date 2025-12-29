@@ -3,8 +3,10 @@
     <head>
         <link
             rel="icon"
-            type="image/x-icon"
-            href="https://cdn.jsdelivr.net/gh/FormeOrme/projects@latest/favicon.ico"
+            type="image/svg+xml"
+            href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-6 -6 112 112'>
+    <text x='50' y='85' font-size='100' text-anchor='middle'>🧾</text>
+</svg>"
         />
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -34,10 +36,10 @@
     <body>
         <script type="module">
             import Tesseract from "https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.esm.min.js";
-            import LoStMan from "../module/LoStMan.js";
+            import { setObj, getObj, remove } from "../module/LoStMan.js";
             import { getHID } from "../module/IdUtils.js";
-            import SUtils from "../module/SUtils.js";
-            import Reduce from "../module/Reduce.js";
+            import { trim } from "../module/SUtils.js";
+            import { with_ as reduceWith } from "../module/Reduce.js";
             import Relation from "../module/Relation.js";
             import { Dom, Div, Input, Button, I, Label, Span } from "../module/Dom.js";
 
@@ -53,7 +55,7 @@
             function getPayers() {
                 const payerInputs = [...Dom.nodes.header.querySelectorAll(".payer")];
                 return payerInputs.reduce(
-                    Reduce.with((a, c) => (a[c.dataset.payer] = c.value)),
+                    reduceWith((a, c) => (a[c.dataset.payer] = c.value)),
                     {},
                 );
             }
@@ -69,25 +71,23 @@
 
             function saveState(savePayers = false) {
                 if (savePayers) {
-                    LoStMan.setObj(payerNames, getPayers());
+                    setObj(payerNames, getPayers());
                 }
-                LoStMan.setObj(lostKeyTableContent, getTableContent());
+                setObj(lostKeyTableContent, getTableContent());
             }
 
-            const payerNamesInit = LoStMan.getObj(payerNames) ?? {};
-            const tableContentInit = LoStMan.getObj(lostKeyTableContent) ?? [];
+            const payerNamesInit = getObj(payerNames) ?? {};
+            const tableContentInit = getObj(lostKeyTableContent) ?? [];
 
             const description = {
-                header: Div.with({
+                header: Div({
                     class: "col-4 me-1",
-                    children: Span.with({
-                        innerText: "Description",
-                    }),
+                    children: Span("Description"),
                 }),
                 row: (rowData) =>
-                    Div.with({
+                    Div({
                         class: "col-4 me-1",
-                        children: Input.with({
+                        children: Input({
                             class: "form-control form-control-sm description",
                             value: rowData?.desc ?? "",
                             event: {
@@ -95,22 +95,20 @@
                             },
                         }),
                     }),
-                footer: Div.with({
+                footer: Div({
                     class: "col-4 me-1",
                 }),
             };
 
             const amount = {
-                header: Div.with({
+                header: Div({
                     class: "col-1 me-1",
-                    children: Span.with({
-                        innerText: "Amount",
-                    }),
+                    children: Span("Amount"),
                 }),
                 row: (rowData) =>
-                    Div.with({
+                    Div({
                         class: "col-1 me-1",
-                        children: Input.with({
+                        children: Input({
                             class: "form-control form-control-sm px-1 price",
                             value: rowData?.price ? Number(rowData.price).toFixed(2) : "",
                             attribute: {
@@ -125,9 +123,9 @@
                             },
                         }),
                     }),
-                footer: Div.with({
+                footer: Div({
                     class: "col-1 me-1",
-                    children: Input.with({
+                    children: Input({
                         id: "total",
                         class: "form-control form-control-sm px-1 total-amount",
                         attribute: {
@@ -149,9 +147,9 @@
                 buildHeader(p, index) {
                     const id = getHID();
                     this.payerIds.splice(index, 0, id);
-                    return Div.with({
+                    return Div({
                         class: [BUTTON_CLASSES, "me-1"],
-                        children: Input.with({
+                        children: Input({
                             class: "payer form-control form-control-sm",
                             value: payerNamesInit[p] ?? p,
                             attribute: {
@@ -166,10 +164,10 @@
 
                 buildRow(p, index, rowData) {
                     const id = getHID();
-                    return Div.with({
+                    return Div({
                         class: [BUTTON_CLASSES, "me-1"],
                         children: [
-                            Input.with({
+                            Input({
                                 id,
                                 class: "btn-check check",
                                 attribute: {
@@ -196,7 +194,7 @@
                                     },
                                 },
                             }),
-                            Label.with({
+                            Label({
                                 class: [
                                     "btn btn-sm col-12",
                                     rowData?.checks?.length != 0
@@ -206,16 +204,16 @@
                                 attribute: {
                                     for: id,
                                 },
-                                children: I.with({ class: "bi bi-check-lg" }),
+                                children: I({ class: "bi bi-check-lg" }),
                             }),
                         ],
                     });
                 }
 
                 buildFooter(p) {
-                    return Div.with({
+                    return Div({
                         class: BUTTON_CLASSES + "me-1",
-                        children: Input.with({
+                        children: Input({
                             id: `split_${p}`,
                             class: "form-control form-control-sm px-1 split-amount",
                             attribute: {
@@ -238,19 +236,19 @@
                 }
             }
 
-            const payers = ["F"];
+            const payers = ["F", "M", "D", "T"];
             const payerList = new PayerColumnManager(payers).build();
 
             const action = {
-                header: Div.with({
+                header: Div({
                     class: [BUTTON_CLASSES, "me-1"],
                 }),
                 row: () =>
-                    Div.with({
+                    Div({
                         class: [BUTTON_CLASSES, "me-1"],
-                        children: Button.with({
+                        children: Button({
                             class: "btn btn-sm btn-outline-danger col-12",
-                            children: I.with({ class: "bi bi-trash-fill" }),
+                            children: I({ class: "bi bi-trash-fill" }),
                             type: "button",
                             event: {
                                 click: (node, e) => {
@@ -261,11 +259,11 @@
                             },
                         }),
                     }),
-                footer: Div.with({
+                footer: Div({
                     class: [BUTTON_CLASSES, "me-1"],
-                    children: Button.with({
+                    children: Button({
                         class: "btn btn-sm btn-success col-12",
-                        children: I.with({ class: "bi bi-plus-lg" }),
+                        children: I({ class: "bi bi-plus-lg" }),
                         type: "button",
                         event: {
                             click: () => Dom.nodes.mainBody.append(getRow().create()),
@@ -275,9 +273,9 @@
             };
 
             const addPayer = {
-                header: Div.with({
+                header: Div({
                     class: [BUTTON_CLASSES, "me-1"],
-                    children: Input.with({
+                    children: Input({
                         class: "payer form-control form-control-sm",
                         event: {
                             change: function () {
@@ -293,7 +291,7 @@
             const columns = { action, description, amount, payerList, addPayer };
 
             function getRow(rowData, i) {
-                return Div.with({
+                return Div({
                     id: getHID(),
                     class: "d-flex flex-row mb-1 item",
                     children: [
@@ -306,14 +304,14 @@
             }
 
             function getTable(tableContent) {
-                return Div.with({
+                return Div({
                     attributes: {
                         spellcheck: "false",
                     },
                     children: [
-                        Div.with({
+                        Div({
                             id: "header",
-                            children: Div.with({
+                            children: Div({
                                 class: "d-flex flex-row mb-1",
                                 children: [
                                     columns.action.header,
@@ -324,13 +322,13 @@
                                 ],
                             }),
                         }),
-                        Div.with({
+                        Div({
                             id: "mainBody",
                             children: tableContent.map(getRow),
                         }),
-                        Div.with({
+                        Div({
                             id: "footer",
-                            children: Div.with({
+                            children: Div({
                                 class: "d-flex flex-row mb-1",
                                 children: [
                                     columns.action.footer,
@@ -349,7 +347,7 @@
             function tableDataFromText(text) {
                 return text
                     .split("\n")
-                    .map(SUtils.trim)
+                    .map(trim)
                     .map((line) => {
                         const res = line.match(regex);
                         const price = res?.[2]?.trim().replace(/[,. ]+/, `.`);
@@ -407,13 +405,13 @@
             }
 
             document.querySelector("body").append(
-                Div.with({
+                Div({
                     class: ["container", "mt-1"],
                     children: [
-                        Div.with({
+                        Div({
                             class: "mb-1 input-group",
                             children: [
-                                Input.with({
+                                Input({
                                     class: "form-control form-control-sm me-2",
                                     attribute: {
                                         type: "file",
@@ -428,15 +426,15 @@
                                         },
                                     },
                                 }),
-                                Div.with({
+                                Div({
                                     class: "input-group-append",
-                                    children: Div.with({
+                                    children: Div({
                                         class: "btn-group",
                                         children: [
-                                            Button.with({
+                                            Button({
                                                 class: "btn btn-outline-success btn-sm",
                                                 attribute: { title: "paste and parse" },
-                                                children: I.with({ class: "bi bi-clipboard-plus" }),
+                                                children: I({ class: "bi bi-clipboard-plus" }),
                                                 event: {
                                                     click: () =>
                                                         navigator.clipboard
@@ -444,16 +442,16 @@
                                                             .then(readClipboardItem),
                                                 },
                                             }),
-                                            Button.with({
+                                            Button({
                                                 class: "btn btn-outline-warning btn-sm",
                                                 attribute: { title: "reset" },
-                                                children: I.with({
+                                                children: I({
                                                     class: "bi bi-arrow-counterclockwise",
                                                 }),
                                                 event: {
                                                     click: () => {
-                                                        LoStMan.remove(payerNames);
-                                                        LoStMan.remove(lostKeyTableContent);
+                                                        remove(payerNames);
+                                                        remove(lostKeyTableContent);
                                                         location.reload();
                                                     },
                                                 },
@@ -463,7 +461,7 @@
                                 }),
                             ],
                         }),
-                        Div.with({
+                        Div({
                             id: "progressContainer",
                             class: "progress mb-1",
                             style: {
@@ -477,12 +475,12 @@
                                     this.classList.add("d-none");
                                 },
                             },
-                            children: Div.with({
+                            children: Div({
                                 id: "progressPercent",
                                 class: "progress-bar",
                             }),
                         }),
-                        Div.with({
+                        Div({
                             id: "TableContainer",
                         }),
                     ],
