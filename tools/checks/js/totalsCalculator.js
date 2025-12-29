@@ -13,7 +13,7 @@ export function updateTotals(payers) {
         const totalEl = Dom.nodes[`split_${p}`];
         totalEl.value = 0;
         [...document.querySelectorAll("#mainBody .flex-row")].forEach((tr) => {
-            const amount = +tr.querySelector(".price")?.value ?? 0;
+            const amount = Number(tr.querySelector(".price")?.value ?? 0);
             const checked = [...tr.querySelectorAll("input[type='checkbox']:checked")];
             const payr = tr.querySelector(`[data-payer="${p}"]`);
             if (payr.checked) {

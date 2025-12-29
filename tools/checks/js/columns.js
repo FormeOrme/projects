@@ -1,6 +1,5 @@
 import { getHID } from "../../../module/IdUtils.js";
 import { Div, Input, Button, I, Label, Span } from "../../../module/Dom.js";
-import { chance } from "../../../module/Utils.js";
 
 const BUTTON_CLASSES = "col-05 col-md-1 col-lg-1 ";
 

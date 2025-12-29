@@ -16,17 +16,18 @@ export function tableDataFromText(text) {
         .filter((o) => o.desc);
 }
 
-export function parseWithTesseract(file, progressContainer, progressPercent, onComplete) {
+export async function parseWithTesseract(file, progressContainer, progressPercent, onComplete) {
     progressContainer.show();
-    Tesseract.recognize(file, "eng", {
+    const {
+        data: { text },
+    } = await Tesseract.recognize(file, "eng", {
         logger: (l) => {
             const progress = !l.jobId ? 0 : l.progress;
             progressPercent.style = `width: ${(progress * 100).toFixed(0)}%`;
         },
-    }).then(({ data: { text } }) => {
-        progressContainer.hide();
-        onComplete(tableDataFromText(text));
     });
+    progressContainer.hide();
+    onComplete(tableDataFromText(text));
 }
 
 export function parseClipboard(clipboardData, parseCallback) {

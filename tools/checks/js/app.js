@@ -95,17 +95,6 @@ function handleAddPayer(newPayerId) {
     columns.payerList.header.push(createPayerHeaderCell(newPayerId, newPayerId, handlePayerChange));
     columns.payerList.footer.push(createPayerFooterCell(newPayerId));
 
-    // Update the row generator
-    const originalRowFn = columns.payerList.row;
-    columns.payerList.row = (rowData) => {
-        const existingCells = originalRowFn(rowData);
-        // Check if the new payer should be checked
-        if (rowData?.checks?.includes(newPayerId)) {
-            // The cell is already created with the check state from PayerColumnManager
-        }
-        return existingCells;
-    };
-
     updateTotals();
     saveState();
 }
@@ -138,8 +127,8 @@ function handleBuildTable(tableData) {
     buildTable(tableContainer, tableData, columns, getRow, updateTotals, getMainBodyRef);
 }
 
-function handleParseWithTesseract(file) {
-    parseWithTesseract(
+async function handleParseWithTesseract(file) {
+    await parseWithTesseract(
         file,
         Dom.nodes.progressContainer,
         Dom.nodes.progressPercent,
