@@ -81,7 +81,7 @@ export class PayerColumnManager {
         return Div({
             class: [BUTTON_CLASSES, "me-1"],
             children: Input({
-                class: "payer form-control form-control-sm",
+                class: "payer form-control form-control-sm text-center",
                 value: this.payerNamesInit[p] ?? p,
                 attribute: {
                     dataPayer: p,
@@ -204,7 +204,7 @@ export function createAddPayerColumn(onAddPayer) {
         header: Div({
             class: [BUTTON_CLASSES, "me-1"],
             children: Input({
-                class: "form-control form-control-sm",
+                class: "form-control form-control-sm text-center",
                 attribute: {
                     placeholder: "+",
                 },
@@ -232,7 +232,7 @@ export function createPayerHeaderCell(payerId, displayName, saveState) {
             "data-payer-id": payerId,
         },
         children: Input({
-            class: "payer form-control form-control-sm",
+            class: "payer form-control form-control-sm text-center",
             value: displayName,
             attribute: {
                 dataPayer: payerId,
