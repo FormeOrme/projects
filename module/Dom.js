@@ -76,16 +76,20 @@ function createElement(e, namespace) {
 }
 
 export class Elem {
-    constructor(obj) {
-        if (!obj) return;
+    constructor(args) {
+        if (!args) return;
 
-        if (obj instanceof Elem || obj instanceof Array) {
-            this.children = obj;
-        } else if (typeof obj === "string" || typeof obj === "number") {
-            this.text = obj;
+        if (args instanceof Elem || args instanceof Array) {
+            this.children = args;
+        } else if (typeof args === "string" || typeof args === "number") {
+            this.text = args;
         } else {
-            Object.assign(this, obj);
+            this.manageArgs(args);
         }
+    }
+
+    manageArgs(args) {
+        Object.assign(this, args);
     }
 
     static with(obj = {}) {
@@ -95,6 +99,10 @@ export class Elem {
     and(obj) {
         const updated = Object.create(Object.getPrototypeOf(this));
         return deepMerge(Object.assign(updated, this), obj);
+    }
+
+    createSvg({ profile: profileName } = {}) {
+        return this.create({ profile: profileName, namespace: "http://www.w3.org/2000/svg" });
     }
 
     create({ profile: profileName, namespace } = {}) {

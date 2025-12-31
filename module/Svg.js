@@ -1,21 +1,35 @@
 import { Elem, asFunctions } from "./Dom.js";
 import Vector from "./Vector.js";
 
+class SvgElement extends Elem {
+    manageArgs(args) {
+        if (args && !args.attribute) {
+            const { children, ...attribute } = args;
+            super.manageArgs({
+                attribute,
+                children,
+            });
+        } else {
+            super.manageArgs(args);
+        }
+    }
+}
+
 const elementClasses = [
     /* SvgBaseElements */
-    class Svg extends Elem {},
-    class Defs extends Elem {},
-    class G extends Elem {},
-    class Path extends Elem {},
-    class Line extends Elem {},
-    class Rect extends Elem {},
-    class Circle extends Elem {},
-    class Ellipse extends Elem {},
-    class Polygon extends Elem {},
-    class Polyline extends Elem {},
+    class Svg extends SvgElement {},
+    class Defs extends SvgElement {},
+    class G extends SvgElement {},
+    class Path extends SvgElement {},
+    class Line extends SvgElement {},
+    class Rect extends SvgElement {},
+    class Circle extends SvgElement {},
+    class Ellipse extends SvgElement {},
+    class Polygon extends SvgElement {},
+    class Polyline extends SvgElement {},
     /* SvgDefElements */
-    class LinearGradient extends Elem {},
-    class Stop extends Elem {},
+    class LinearGradient extends SvgElement {},
+    class Stop extends SvgElement {},
 ];
 
 export const {
@@ -32,10 +46,6 @@ export const {
     LinearGradient,
     Stop,
 } = asFunctions(elementClasses);
-
-export function group(children) {
-    return G.with({ children });
-}
 
 export class PathBuilder {
     constructor({ x, y }) {
@@ -114,11 +124,9 @@ export class PathBuilder {
         if (this.d.includes("undefined")) {
             throw new Error("Error building path");
         }
-        return Path.with({
-            attribute: {
-                d: this.d.trim(),
-                ...attribute,
-            },
+        return Path({
+            d: this.d.trim(),
+            ...attribute,
         });
     }
 }
