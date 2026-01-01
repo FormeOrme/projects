@@ -86,7 +86,7 @@
             </div>
         </div>
         <script type="module">
-            import { Svg, G, Rect, PathBuilder, Line } from "../module/Svg.js";
+            import { Svg, G, Rect, Line, PathBuilder } from "../module/Svg.js";
 
             // Retrieve the three input values
             const widthInput = document.getElementById("widthInput");
@@ -97,17 +97,29 @@
             const depthValue = document.getElementById("depthValue");
 
             function getBoxDimensions() {
+                const width = Number(widthInput.value);
+                const height = Number(heightInput.value);
+                let depth = Number(depthInput.value);
+
+                // Limit depth to be at most half the shortest of width or height
+                const maxDepth = Math.min(width, height) / 2;
+                if (depth > maxDepth) {
+                    depth = maxDepth;
+                    depthInput.value = maxDepth;
+                    depthValue.textContent = Math.round(maxDepth);
+                }
+
                 return {
-                    width: Number(widthInput.value),
-                    height: Number(heightInput.value),
-                    depth: Number(depthInput.value),
+                    width,
+                    height,
+                    depth,
                 };
             }
 
             const output = document.getElementById("svgOutput");
 
             function drawBox({ width, height, depth, padding = 20 }) {
-                const tabSize = {
+                const tab = {
                     width: Math.min(width / 5, 30),
                     height: Math.min(depth / 6, 5),
                 };
@@ -115,9 +127,8 @@
                 const grid = G({
                     transform: `translate(${padding}, ${padding})`,
                     fill: "none",
-                    stroke: "limegreen",
-                    strokeWidth: 0.5,
-                    strokeDasharray: 1,
+                    stroke: "#F004",
+                    strokeWidth: 0.2,
                     children: [
                         G([
                             Rect({
@@ -236,8 +247,8 @@
 
                 const foldLines = G({
                     transform: `translate(${padding}, ${padding})`,
-                    stroke: "black",
-                    strokeWidth: 2,
+                    stroke: "lightgray",
+                    strokeWidth: 1,
                     strokeDasharray: "4,3",
                     children: [
                         // Vertical fold lines
@@ -294,11 +305,131 @@
                     ],
                 });
 
+                const depthThird = depth / 3;
+
+                const edge = G({
+                    transform: `translate(${padding}, ${padding})`,
+                    fill: "none",
+                    stroke: "black",
+                    strokeWidth: 2,
+                    strokeLinecap: "round",
+                    children: PathBuilder.moveTo({ x: depth * 2, y: 0 })
+                        .lineTo({ dx: width })
+
+                        // front right tab
+                        .arcBevel({ dx: depth, dy: depth - depthThird })
+                        .arcBevel({ dx: -depthThird, y: depth })
+                        .lineTo({ x: depth * 2 + width })
+
+                        // top right tab
+                        .lineTo({ dx: depth + tab.height, dy: depthThird })
+                        .lineTo({ dy: depth - depthThird })
+                        .lineTo({ dx: -tab.height })
+                        .lineTo({ dy: height - depth * 2 })
+                        .lineTo({ dx: tab.height })
+                        .lineTo({ dy: depth - depthThird })
+                        .lineTo({ x: depth * 2 + width, y: depth + height })
+
+                        // back right tab
+                        .lineTo({ dx: depth })
+                        .lineTo({ dy: depth - depthThird })
+                        .lineTo({ x: depth * 2 + width, y: depth * 2 + height })
+
+                        // bottom right tab
+                        .lineTo({ dx: depth * 2 })
+                        .lineTo({ dy: depthThird })
+                        .lineTo({ dx: tab.height })
+                        .lineTo({ dy: depth - depthThird })
+                        .lineTo({ dx: -tab.height })
+                        .lineTo({ dy: height - 2 * depth })
+                        .lineTo({ dx: tab.height })
+                        .lineTo({ dy: depth - depthThird })
+                        .lineTo({ dx: -tab.height })
+                        .lineTo({ dy: depthThird })
+                        .lineTo({ x: depth * 2 + width, y: depth * 2 + height * 2 })
+
+                        // front tab
+                        .lineTo({ dx: depth, dy: depthThird })
+                        .lineTo({ dy: depth - depthThird })
+                        .lineTo({ x: depth, y: depth * 3 + height * 2 })
+                        .lineTo({ dy: -depth + depthThird })
+                        .lineTo({ dx: depth, dy: -depthThird })
+
+                        // bottom left tab
+                        .lineTo({ dx: -depth * 2 })
+                        .lineTo({ dy: -depthThird })
+                        .lineTo({ dx: -tab.height })
+                        .lineTo({ dy: -depth + depthThird })
+                        .lineTo({ dx: tab.height })
+                        .lineTo({ dy: -height + 2 * depth })
+                        .lineTo({ dx: -tab.height })
+                        .lineTo({ dy: -depth + depthThird })
+                        .lineTo({ dx: tab.height })
+                        .lineTo({ dy: -depthThird })
+                        .lineTo({ x: depth * 2 })
+
+                        // back left tab
+                        .lineTo({ dx: -depth, dy: -depthThird })
+                        .lineTo({ dy: -depth + depthThird })
+                        .lineTo({ x: depth * 2, y: depth + height })
+
+                        // top left tab
+                        .lineTo({ dx: -depth - tab.height, dy: -depthThird })
+                        .lineTo({ dy: -depth + depthThird })
+                        .lineTo({ dx: tab.height })
+                        .lineTo({ dy: -height + 2 * depth })
+                        .lineTo({ dx: -tab.height })
+                        .lineTo({ dy: -depth + depthThird })
+                        .lineTo({ x: depth * 2, y: depth })
+
+                        // front left tab
+                        .lineTo({ dx: -depth + depthThird })
+                        .arcBevel({ dx: -depthThird, dy: -depthThird })
+                        .arcBevel({ dx: depth, y: 0 })
+
+                        .closePath()
+                        .build(),
+                });
+
+                const holes = G({
+                    transform: `translate(${padding}, ${padding})`,
+                    fill: "none",
+                    stroke: "black",
+                    strokeWidth: 2,
+                    strokeLinecap: "round",
+                    children: [
+                        Line({
+                            x1: depth * 2,
+                            x2: depth * 2,
+                            y1: depth * 2 + height + depthThird,
+                            y2: depth * 3 + height,
+                        }),
+                        Line({
+                            x1: depth * 2,
+                            x2: depth * 2,
+                            y1: depth * 4 + height,
+                            y2: depth * 4 + height + depth - depthThird,
+                        }),
+                        Line({
+                            x1: depth * 2 + width,
+                            x2: depth * 2 + width,
+                            y1: depth * 2 + height + depthThird,
+                            y2: depth * 3 + height,
+                        }),
+                        Line({
+                            x1: depth * 2 + width,
+                            x2: depth * 2 + width,
+                            y1: depth * 4 + height,
+                            y2: depth * 4 + height + depth - depthThird,
+                        }),
+                    ],
+                });
+
                 const box = Svg({
                     version: "1.1",
                     width: padding * 2 + width + depth * 4,
                     height: padding * 2 + height * 2 + depth * 3,
-                    children: [grid, foldLines],
+                    children: [foldLines, edge, holes],
                 });
 
                 output.innerHTML = "";
