@@ -13,71 +13,70 @@
 
     <body>
         <script type="module">
-            import { Svg, PathBuilder } from "../module/Svg.js";
+            import { Svg, G, PathBuilder } from "../module/Svg.js";
 
-            const svg = Svg.with({
+            const svg = Svg({
                 attribute: {
                     xmlns: "http://www.w3.org/2000/svg",
                     version: "1.1",
                     width: 325,
                     height: 325,
                 },
-                children: [
-                    PathBuilder.moveTo({ x: 80, y: 80 })
-                        .arc({
-                            rx: 45,
-                            ry: 45,
-                            xAxisRotation: 0,
-                            largeArcFlag: 0,
-                            sweepFlag: 0,
-                            x: 125,
-                            y: 125,
-                        })
-                        .lineTo({ x: 125, y: 80 })
-                        .closePath()
-                        .build({
-                            stroke: "black",
-                            fill: "transparent",
-                            "stroke-width": 1,
-                            "fill-opacity": 0.1,
+                children: G({
+                    stroke: "black",
+                    fill: "transparent",
+                    "stroke-width": 1,
+                    "fill-opacity": 0.1,
+                    children: [
+                        G({
+                            children: PathBuilder.moveTo({ x: 80, y: 80 })
+                                .arc({
+                                    rx: 45,
+                                    ry: 45,
+                                    xAxisRotation: 0,
+                                    largeArcFlag: 0,
+                                    sweepFlag: 0,
+                                    x: 125,
+                                    y: 125,
+                                })
+                                .lineTo({ x: 125, y: 80 })
+                                .closePath()
+                                .build(),
                         }),
-                    PathBuilder.moveTo({ x: 80, y: 80 })
-                        .arc({
-                            rx: 160,
-                            ry: 45,
-                            xAxisRotation: 0,
-                            largeArcFlag: 0,
-                            sweepFlag: 0,
-                            x: 125,
-                            y: 125,
-                        })
-                        .lineTo({ x: 125, y: 80 })
-                        .closePath()
-                        .build({
-                            stroke: "black",
-                            fill: "transparent",
-                            "stroke-width": 1,
-                            "fill-opacity": 0.1,
+                        G({
+                            transform: "translate(150, 0)",
+                            children: PathBuilder.moveTo({ x: 80, y: 80 })
+                                .arc({
+                                    rx: 160,
+                                    ry: 45,
+                                    xAxisRotation: 0,
+                                    largeArcFlag: 0,
+                                    sweepFlag: 0,
+                                    x: 125,
+                                    y: 125,
+                                })
+                                .lineTo({ x: 125, y: 80 })
+                                .closePath()
+                                .build(),
                         }),
-                    PathBuilder.moveTo({ x: 80, y: 80 })
-                        .arc({
-                            rx: 45,
-                            ry: 160,
-                            xAxisRotation: 0,
-                            largeArcFlag: 0,
-                            sweepFlag: 0,
-                            x: 125,
-                            y: 125,
-                        })
-                        .lineTo({ x: 125, y: 80 })
-                        .closePath()
-                        .build({
-                            stroke: "black",
-                            fill: "transparent",
-                            "stroke-width": 1,
-                            "fill-opacity": 0.1,
+                        G({
+                            transform: "translate(0, 150)",
+                            children: PathBuilder.moveTo({ x: 80, y: 80 })
+                                .arc({
+                                    rx: 45,
+                                    ry: 160,
+                                    xAxisRotation: 0,
+                                    largeArcFlag: false,
+                                    sweepFlag: false,
+                                    x: 125,
+                                    y: 125,
+                                })
+                                .lineTo({ x: 125, y: 80 })
+                                .closePath()
+                                .build(),
                         }),
-                ],
+                    ],
+                }),
             });
 
             document.body.append(svg.create({ namespace: "http://www.w3.org/2000/svg" }));

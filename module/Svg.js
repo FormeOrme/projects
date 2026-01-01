@@ -111,7 +111,7 @@ export class PathBuilder {
     }
 
     arc({ rx, ry, xAxisRotation, largeArcFlag, sweepFlag, x, y }) {
-        this.d += `A ${rx} ${ry} ${xAxisRotation} ${largeArcFlag} ${sweepFlag} ${x} ${y} `;
+        this.d += `A ${rx} ${ry} ${xAxisRotation} ${largeArcFlag ? 1 : 0} ${sweepFlag ? 1 : 0} ${x} ${y} `;
         this.lastPoint = new Vector({ x, y });
         return this;
     }
