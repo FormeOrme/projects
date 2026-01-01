@@ -47,7 +47,17 @@ export const {
     LinearGradient,
     Stop,
 } = asFunctions(elementClasses);
-
+/**
+ * A utility class for building SVG path data strings using a fluent API.
+ * Supports various SVG path commands such as move, line, curve, arc, and more.
+ *
+ * @example
+ * const path = PathBuilder.moveTo({ x: 0, y: 0 })
+ *   .lineTo({ x: 100, y: 0 })
+ *   .lineTo({ x: 100, y: 100 })
+ *   .closePath()
+ *   .build();
+ */
 export class PathBuilder {
     constructor({ x, y }) {
         this.d = `M ${x} ${y} `;
@@ -58,62 +68,104 @@ export class PathBuilder {
         return new PathBuilder({ x, y });
     }
 
-    moveTo({ x, y }) {
-        this.d += `M ${x} ${y} `;
+    #getXY({ x, y, dx = 0, dy = 0 } = {}) {
+        const baseX = this.lastPoint?.x ?? 0;
+        const baseY = this.lastPoint?.y ?? 0;
+        return {
+            x: x ?? baseX + dx,
+            y: y ?? baseY + dy,
+        };
+    }
+
+    #append(command) {
+        this.d += `${command} `;
+    }
+
+    moveTo(args) {
+        const { x, y } = this.#getXY(args);
+        this.#append(`M ${x} ${y}`);
+
         this.lastPoint = new Vector({ x, y });
         return this;
     }
 
-    lineTo({ x, y }) {
-        this.d += `L ${x} ${y} `;
+    lineTo(args) {
+        const { x, y } = this.#getXY(args);
+        this.#append(`L ${x} ${y}`);
+
         this.lastPoint = new Vector({ x, y });
         return this;
     }
 
     horizontalLineTo(x) {
-        this.d += `H ${x} `;
+        this.#append(`H ${x}`);
         this.lastPoint.x = x;
         return this;
     }
 
     verticalLineTo(y) {
-        this.d += `V ${y} `;
+        this.#append(`V ${y}`);
         this.lastPoint.y = y;
         return this;
     }
 
     curve({ x1, y1, x2, y2, x, y }) {
-        this.d += `C ${x1} ${y1}, ${x2} ${y2}, ${x} ${y} `;
+        this.#append(`C ${x1} ${y1}, ${x2} ${y2}, ${x} ${y}`);
         this.lastPoint = new Vector({ x, y });
         return this;
     }
 
     smoothCurve({ x2, y2, x, y }) {
-        this.d += `S ${x2} ${y2}, ${x} ${y} `;
+        this.#append(`S ${x2} ${y2}, ${x} ${y}`);
         this.lastPoint = new Vector({ x, y });
         return this;
     }
 
     quadraticCurve({ x1, y1, x, y }) {
-        this.d += `Q ${x1} ${y1}, ${x} ${y} `;
+        this.#append(`Q ${x1} ${y1}, ${x} ${y}`);
         this.lastPoint = new Vector({ x, y });
         return this;
     }
 
-    squareCurve({ x1, y1, x, y, angleRadius }) {
-        return this.lineTo({ x: x1, y: y1 }).lineTo({ x, y });
-    }
-
-    smoothQuadraticCurve({ x, y }) {
-        this.d += `T ${x} ${y} `;
+    smoothQuadraticCurve(args) {
+        const { x, y } = this.#getXY(args);
+        this.#append(`T ${x} ${y}`);
         this.lastPoint = new Vector({ x, y });
         return this;
     }
 
     arc({ rx, ry, xAxisRotation, largeArcFlag, sweepFlag, x, y }) {
-        this.d += `A ${rx} ${ry} ${xAxisRotation} ${largeArcFlag ? 1 : 0} ${sweepFlag ? 1 : 0} ${x} ${y} `;
+        this.#append(
+            `A ${rx} ${ry} ${xAxisRotation} ${largeArcFlag ? 1 : 0} ${sweepFlag ? 1 : 0} ${x} ${y}`,
+        );
         this.lastPoint = new Vector({ x, y });
         return this;
+    }
+
+    /**
+     * Draws a rounded bevel (arc) from the last point to the specified (x, y) coordinates.
+     *
+     * Calculates the radii based on the distance between the last point and the target point,
+     * and creates an SVG arc command with those parameters.
+     *
+     * @param {Object} args - The target coordinates for the arc.
+     * @returns {string} The SVG arc path command.
+     */
+    arcBevel(args) {
+        const { x, y } = this.#getXY(args);
+        const cx = this.lastPoint.x;
+        const cy = this.lastPoint.y;
+        const radiusX = Math.abs(cx - x);
+        const radiusY = Math.abs(cy - y);
+        return this.arc({
+            rx: radiusX,
+            ry: radiusY,
+            xAxisRotation: 0,
+            largeArcFlag: false,
+            sweepFlag: true,
+            x,
+            y,
+        });
     }
 
     closePath() {
@@ -123,6 +175,7 @@ export class PathBuilder {
 
     build(attribute = {}) {
         if (this.d.includes("undefined")) {
+            console.error("Error building path:", this.d);
             throw new Error("Error building path");
         }
         return Path({
