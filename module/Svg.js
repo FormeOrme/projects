@@ -4,9 +4,10 @@ import Vector from "./Vector.js";
 class SvgElement extends Elem {
     manageArgs(args) {
         if (args && !args.attribute) {
-            const { children, ...attribute } = args;
+            const { children, style, ...attribute } = args;
             super.manageArgs({
                 attribute,
+                style,
                 children,
             });
         } else {

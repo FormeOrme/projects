@@ -24,39 +24,51 @@
                     <h2 class="mb-4 fs-4">Paper Box Dimensions</h2>
                     <form autocomplete="off" onsubmit="return false;" class="w-100">
                         <div class="mb-3">
-                            <label for="widthInput" class="form-label">Width</label>
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <label for="widthInput" class="form-label mb-0">Width</label>
+                                <span id="widthValue" class="badge bg-primary">120</span>
+                            </div>
                             <input
                                 id="widthInput"
                                 name="width"
-                                type="number"
+                                type="range"
                                 min="1"
+                                max="300"
                                 value="120"
                                 required
-                                class="form-control"
+                                class="form-range"
                             />
                         </div>
                         <div class="mb-3">
-                            <label for="heightInput" class="form-label">Height</label>
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <label for="heightInput" class="form-label mb-0">Height</label>
+                                <span id="heightValue" class="badge bg-primary">90</span>
+                            </div>
                             <input
                                 id="heightInput"
                                 name="height"
-                                type="number"
+                                type="range"
                                 min="1"
+                                max="300"
                                 value="90"
                                 required
-                                class="form-control"
+                                class="form-range"
                             />
                         </div>
                         <div class="mb-3">
-                            <label for="depthInput" class="form-label">Depth</label>
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <label for="depthInput" class="form-label mb-0">Depth</label>
+                                <span id="depthValue" class="badge bg-primary">30</span>
+                            </div>
                             <input
                                 id="depthInput"
                                 name="depth"
-                                type="number"
+                                type="range"
                                 min="1"
+                                max="200"
                                 value="30"
                                 required
-                                class="form-control"
+                                class="form-range"
                             />
                         </div>
                     </form>
@@ -74,12 +86,15 @@
             </div>
         </div>
         <script type="module">
-            import { Svg, G, Rect, PathBuilder } from "../module/Svg.js";
+            import { Svg, G, Rect, PathBuilder, Line } from "../module/Svg.js";
 
             // Retrieve the three input values
             const widthInput = document.getElementById("widthInput");
             const heightInput = document.getElementById("heightInput");
             const depthInput = document.getElementById("depthInput");
+            const widthValue = document.getElementById("widthValue");
+            const heightValue = document.getElementById("heightValue");
+            const depthValue = document.getElementById("depthValue");
 
             function getBoxDimensions() {
                 return {
@@ -92,142 +107,213 @@
             const output = document.getElementById("svgOutput");
 
             function drawBox({ width, height, depth, padding = 20 }) {
-                // if
+                const tabSize = {
+                    width: Math.min(width / 5, 30),
+                    height: Math.min(depth / 6, 5),
+                };
+
+                const grid = G({
+                    transform: `translate(${padding}, ${padding})`,
+                    fill: "none",
+                    stroke: "limegreen",
+                    strokeWidth: 0.5,
+                    strokeDasharray: 1,
+                    children: [
+                        G([
+                            Rect({
+                                y: 0,
+                                x: depth,
+                                width: depth,
+                                height: depth,
+                            }),
+                            Rect({
+                                y: 0,
+                                x: depth * 2,
+                                width: width,
+                                height: depth,
+                            }),
+                            Rect({
+                                y: 0,
+                                x: depth * 2 + width,
+                                width: depth,
+                                height: depth,
+                            }),
+                        ]),
+                        G([
+                            Rect({
+                                y: depth,
+                                x: depth,
+                                width: depth,
+                                height: height,
+                            }),
+                            Rect({
+                                y: depth,
+                                x: depth * 2,
+                                width: width,
+                                height: height,
+                            }),
+                            Rect({
+                                y: depth,
+                                x: depth * 2 + width,
+                                width: depth,
+                                height: height,
+                            }),
+                        ]),
+                        G([
+                            Rect({
+                                y: depth + height,
+                                x: depth,
+                                width: depth,
+                                height: depth,
+                            }),
+                            Rect({
+                                y: depth + height,
+                                x: depth * 2,
+                                width: width,
+                                height: depth,
+                            }),
+                            Rect({
+                                y: depth + height,
+                                x: depth * 2 + width,
+                                width: depth,
+                                height: depth,
+                            }),
+                        ]),
+                        G([
+                            Rect({
+                                y: depth * 2 + height,
+                                x: 0,
+                                width: depth,
+                                height: height,
+                            }),
+                            Rect({
+                                y: depth * 2 + height,
+                                x: depth,
+                                width: depth,
+                                height: height,
+                            }),
+                            Rect({
+                                y: depth * 2 + height,
+                                x: depth * 2,
+                                width: width,
+                                height: height,
+                            }),
+                            Rect({
+                                y: depth * 2 + height,
+                                x: depth * 2 + width,
+                                width: depth,
+                                height: height,
+                            }),
+                            Rect({
+                                y: depth * 2 + height,
+                                x: depth * 3 + width,
+                                width: depth,
+                                height: height,
+                            }),
+                        ]),
+                        G([
+                            Rect({
+                                y: depth * 2 + height * 2,
+                                x: depth,
+                                width: depth,
+                                height: depth,
+                            }),
+                            Rect({
+                                y: depth * 2 + height * 2,
+                                x: depth * 2,
+                                width: width,
+                                height: depth,
+                            }),
+                            Rect({
+                                y: depth * 2 + height * 2,
+                                x: depth * 2 + width,
+                                width: depth,
+                                height: depth,
+                            }),
+                        ]),
+                    ],
+                });
+
+                const foldLines = G({
+                    transform: `translate(${padding}, ${padding})`,
+                    stroke: "black",
+                    strokeWidth: 2,
+                    strokeDasharray: "4,3",
+                    children: [
+                        // Vertical fold lines
+                        Line({
+                            x1: depth * 2,
+                            x2: depth * 2,
+                            y1: 0,
+                            y2: depth * 3 + height * 2,
+                        }),
+                        Line({
+                            x1: depth * 2 + width,
+                            x2: depth * 2 + width,
+                            y1: 0,
+                            y2: depth * 3 + height * 2,
+                        }),
+                        Line({
+                            x1: depth,
+                            x2: depth,
+                            y1: depth * 2 + height,
+                            y2: depth * 2 + height * 2,
+                        }),
+                        Line({
+                            x1: depth * 3 + width,
+                            x2: depth * 3 + width,
+                            y1: depth * 2 + height,
+                            y2: depth * 2 + height * 2,
+                        }),
+
+                        // Horizontal fold lines
+                        Line({
+                            x1: depth * 2,
+                            x2: depth * 2 + width,
+                            y1: depth,
+                            y2: depth,
+                        }),
+                        Line({
+                            x1: depth * 2,
+                            x2: depth * 2 + width,
+                            y1: depth + height,
+                            y2: depth + height,
+                        }),
+                        Line({
+                            x1: depth * 2,
+                            x2: depth * 2 + width,
+                            y1: depth * 2 + height,
+                            y2: depth * 2 + height,
+                        }),
+                        Line({
+                            x1: depth * 2,
+                            x2: depth * 2 + width,
+                            y1: depth * 2 + height * 2,
+                            y2: depth * 2 + height * 2,
+                        }),
+                    ],
+                });
 
                 const box = Svg({
                     version: "1.1",
                     width: padding * 2 + width + depth * 4,
                     height: padding * 2 + height * 2 + depth * 3,
-                    children: G({
-                        transform: `translate(${padding}, ${padding})`,
-                        fill: "none",
-                        stroke: "black",
-                        strokeWidth: 1,
-                        strokeDasharray: 1,
-                        children: [
-                            G([
-                                Rect({
-                                    y: 0,
-                                    x: depth,
-                                    width: depth,
-                                    height: depth,
-                                }),
-                                Rect({
-                                    y: 0,
-                                    x: depth * 2,
-                                    width: width,
-                                    height: depth,
-                                }),
-                                Rect({
-                                    y: 0,
-                                    x: depth * 2 + width,
-                                    width: depth,
-                                    height: depth,
-                                }),
-                            ]),
-                            G([
-                                Rect({
-                                    y: depth,
-                                    x: depth,
-                                    width: depth,
-                                    height: height,
-                                }),
-                                Rect({
-                                    y: depth,
-                                    x: depth * 2,
-                                    width: width,
-                                    height: height,
-                                }),
-                                Rect({
-                                    y: depth,
-                                    x: depth * 2 + width,
-                                    width: depth,
-                                    height: height,
-                                }),
-                            ]),
-                            G([
-                                Rect({
-                                    y: depth + height,
-                                    x: depth,
-                                    width: depth,
-                                    height: depth,
-                                }),
-                                Rect({
-                                    y: depth + height,
-                                    x: depth * 2,
-                                    width: width,
-                                    height: depth,
-                                }),
-                                Rect({
-                                    y: depth + height,
-                                    x: depth * 2 + width,
-                                    width: depth,
-                                    height: depth,
-                                }),
-                            ]),
-                            G([
-                                Rect({
-                                    y: depth * 2 + height,
-                                    x: 0,
-                                    width: depth,
-                                    height: height,
-                                }),
-                                Rect({
-                                    y: depth * 2 + height,
-                                    x: depth,
-                                    width: depth,
-                                    height: height,
-                                }),
-                                Rect({
-                                    y: depth * 2 + height,
-                                    x: depth * 2,
-                                    width: width,
-                                    height: height,
-                                }),
-                                Rect({
-                                    y: depth * 2 + height,
-                                    x: depth * 2 + width,
-                                    width: depth,
-                                    height: height,
-                                }),
-                                Rect({
-                                    y: depth * 2 + height,
-                                    x: depth * 3 + width,
-                                    width: depth,
-                                    height: height,
-                                }),
-                            ]),
-                            G([
-                                Rect({
-                                    y: depth * 2 + height * 2,
-                                    x: depth,
-                                    width: depth,
-                                    height: depth,
-                                }),
-                                Rect({
-                                    y: depth * 2 + height * 2,
-                                    x: depth * 2,
-                                    width: width,
-                                    height: depth,
-                                }),
-                                Rect({
-                                    y: depth * 2 + height * 2,
-                                    x: depth * 2 + width,
-                                    width: depth,
-                                    height: depth,
-                                }),
-                            ]),
-                        ],
-                    }),
+                    children: [grid, foldLines],
                 });
 
                 output.innerHTML = "";
+                output.style.transform = `scale(2)`;
                 output.appendChild(box.createSvg());
             }
 
             drawBox(getBoxDimensions());
             for (let input of [widthInput, heightInput, depthInput]) {
-                input.addEventListener("input", () => drawBox(getBoxDimensions()));
+                input.addEventListener("input", () => {
+                    widthValue.textContent = widthInput.value;
+                    heightValue.textContent = heightInput.value;
+                    depthValue.textContent = depthInput.value;
+                    drawBox(getBoxDimensions());
+                });
             }
         </script>
     </body>
