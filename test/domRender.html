@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dom Render</title>
+</head>
+
+<body>
+    <script type="module">
+        import { Pre, P, A, Div, Span, Input, Select, Option_, Form, Button } from "../module/Dom.js";
+
+        const app = Form({
+            id: "app",
+            children: [
+                A({
+                    text: "Click me",
+                    attribute: { href: "#" },
+                }),
+                Input({ attribute: { type: "text", placeholder: "disabled", disabled: true } }),
+                Input({ attribute: { type: "text", placeholder: "readOnly", readOnly: true } }),
+                Input({ attribute: { type: "text", placeholder: "required", required: true } }),
+                Input({ attribute: { type: "text", placeholder: "autofocus", autofocus: true } }),
+                Select({
+                    attribute: { multiple: true },
+                    children: [
+                        Option_({ text: "Option 1", attribute: { value: "1" } }),
+                        Option_({ text: "Option 2", attribute: { value: "2", selected: true } }),
+                        Option_({ text: "Option 3", attribute: { value: "3" } }),
+                    ],
+                }),
+                Input({ attribute: { type: "checkbox", checked: true } }),
+                Input({ attribute: { type: "checkbox", } }),
+                Button({ text: "Submit", attribute: { type: "submit" } }),
+            ].map(P),
+        });
+
+
+        document.body.appendChild(Pre(app.create().outerHTML).create());
+    </script>
+
+</body>
+
+</html>
