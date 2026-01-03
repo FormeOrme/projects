@@ -59,9 +59,19 @@ export const {
  *   .build();
  */
 export class PathBuilder {
+    #d = [];
+
     constructor({ x, y }) {
-        this.d = `M ${x} ${y} `;
         this.firstPoint = this.lastPoint = new Vector({ x, y });
+        this.#append(`M ${x} ${y}`);
+    }
+
+    #append(command) {
+        if (command.includes("undefined")) {
+            console.error("Error building path:", command);
+            throw new Error("Error building path");
+        }
+        this.#d.push(command);
     }
 
     static moveTo({ x, y }) {
@@ -76,10 +86,6 @@ export class PathBuilder {
             y: y ?? baseY + dy,
             ...other,
         };
-    }
-
-    #append(command) {
-        this.d += `${command} `;
     }
 
     moveTo(args) {
@@ -166,17 +172,14 @@ export class PathBuilder {
     }
 
     closePath() {
-        this.d += `Z `;
+        this.#append("Z");
+        this.lastPoint = this.firstPoint;
         return this;
     }
 
     build(attribute = {}) {
-        if (this.d.includes("undefined")) {
-            console.error("Error building path:", this.d);
-            throw new Error("Error building path");
-        }
         return Path({
-            d: this.d.trim(),
+            d: this.#d.join(" "),
             ...attribute,
         });
     }
