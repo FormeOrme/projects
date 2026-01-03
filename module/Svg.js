@@ -61,6 +61,10 @@ export const {
 export class PathBuilder {
     #d = [];
 
+    get d() {
+        return this.#d.join(" ");
+    }
+
     constructor({ x, y }) {
         this.firstPoint = this.lastPoint = new Vector({ x, y });
         this.#append(`M ${x} ${y}`);
@@ -179,7 +183,7 @@ export class PathBuilder {
 
     build(attribute = {}) {
         return Path({
-            d: this.#d.join(" "),
+            d: this.d,
             ...attribute,
         });
     }
