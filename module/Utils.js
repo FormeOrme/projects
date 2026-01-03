@@ -133,7 +133,18 @@ export function profile(name, func) {
     }
     return result;
 }
-
+/**
+ * Converts input to array, trims strings, removes falsy values and whitespace-only strings
+ * @param {*} obj - Value to compact (string, array, or any value)
+ * @returns {Array} Array with trimmed strings, falsy values removed
+ * @example
+ * compact("  hello  ")              // ["hello"]
+ * compact(["  a  ", "", null, "b"]) // ["a", "b"]
+ * compact(undefined)                // []
+ */
 export function compact(obj) {
-    return [].concat(obj).filter(Boolean).map(trim);
+    if (obj == null) {
+        return [];
+    }
+    return [].concat(obj).map(trim).filter(Boolean);
 }
