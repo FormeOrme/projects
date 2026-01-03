@@ -13,11 +13,11 @@ class Nodes extends Array {
     }
 }
 
-const BOOLEAN_PROPS = new Set([
+const BOOLEAN_ATTRIBUTES = new Set([
     "checked",
     "disabled",
     "selected",
-    "readonly",
+    "readOnly",
     "required",
     "multiple",
     "autofocus",
@@ -50,8 +50,11 @@ function createElement(e, namespace) {
     }
     if (e.attribute) {
         Dom.formatKeys(e.attribute).forEach(([k, v]) => {
-            if (BOOLEAN_PROPS.has(k)) {
+            if (BOOLEAN_ATTRIBUTES.has(k)) {
                 node[k] = Boolean(v);
+                node.setAttribute(k, "");
+                console.log(`Set boolean attribute ${k} to ${node[k]}`);
+                console.log(node.outerHTML);
             } else {
                 node.setAttribute(k, v);
             }
@@ -90,10 +93,6 @@ export class Elem {
 
     manageArgs(args) {
         Object.assign(this, args);
-    }
-
-    static with(obj = {}) {
-        return new this(obj);
     }
 
     and(obj) {
@@ -144,7 +143,7 @@ export class Dom {
         Object.entries(obj)
             .filter(([_, v]) => Boolean(v) || v === 0)
             .map(([k, v]) => [
-                Dom.svgCamelCaseAttributes.includes(k) || k.includes("--") ? k : format(k),
+                Dom.camelCaseAttributes.includes(k) || k.includes("--") ? k : format(k),
                 v,
             ]);
 
@@ -187,7 +186,10 @@ export class Dom {
         document.querySelectorAll(targetSelector).forEach((element) => callback(element, observer));
     }
 
-    static svgCamelCaseAttributes = [
+    static camelCaseAttributes = [
+        /* HTML */
+        "readOnly",
+        /* SVG */
         "allowReorder",
         "attributeName",
         "attributeType",
