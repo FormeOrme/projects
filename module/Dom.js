@@ -112,11 +112,7 @@ export class Elem {
         if (!options?.optional) {
             return this;
         }
-        element.children = Array.isArray(element.children)
-            ? element.children
-            : element.children
-              ? [element.children]
-              : [];
+        element.children = compact(element.children);
         element.children.splice(
             options?.position === undefined ? element.children.length : options.position,
             0,
@@ -127,11 +123,7 @@ export class Elem {
 
     addChild(child) {
         if (child) {
-            this.children = Array.isArray(this.children)
-                ? this.children
-                : this.children
-                  ? [this.children]
-                  : [];
+            this.children = compact(this.children);
             this.children.push(child);
         }
         return this;
