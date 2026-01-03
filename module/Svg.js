@@ -68,12 +68,13 @@ export class PathBuilder {
         return new PathBuilder({ x, y });
     }
 
-    #getXY({ x, y, dx = 0, dy = 0 } = {}) {
+    #getXY({ x, y, dx = 0, dy = 0, ...other } = {}) {
         const baseX = this.lastPoint?.x ?? 0;
         const baseY = this.lastPoint?.y ?? 0;
         return {
             x: x ?? baseX + dx,
             y: y ?? baseY + dy,
+            ...other,
         };
     }
 
@@ -143,7 +144,7 @@ export class PathBuilder {
     }
 
     /**
-     * Draws a rounded bevel (arc) from the last point to the specified (x, y) coordinates.
+     * Draws an arc from the last point to the specified (x, y) coordinates.
      *
      * Calculates the radii based on the distance between the last point and the target point,
      * and creates an SVG arc command with those parameters.
@@ -151,20 +152,16 @@ export class PathBuilder {
      * @param {Object} args - The target coordinates for the arc.
      * @returns {string} The SVG arc path command.
      */
-    arcBevel(args) {
-        const { x, y } = this.#getXY(args);
-        const cx = this.lastPoint.x;
-        const cy = this.lastPoint.y;
-        const radiusX = Math.abs(cx - x);
-        const radiusY = Math.abs(cy - y);
+    arcTo(args) {
+        const { x, y, largeArcFlag = false, sweepFlag = true } = this.#getXY(args);
         return this.arc({
-            rx: radiusX,
-            ry: radiusY,
-            xAxisRotation: 0,
-            largeArcFlag: false,
-            sweepFlag: true,
+            rx: Math.abs(this.lastPoint.x - x),
+            ry: Math.abs(this.lastPoint.y - y),
             x,
             y,
+            largeArcFlag,
+            sweepFlag,
+            xAxisRotation: 0,
         });
     }
 
