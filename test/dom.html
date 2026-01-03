@@ -1,104 +1,226 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Util.js Dom Test</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mocha/10.2.0/mocha.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dom.js Dom Test</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mocha/10.2.0/mocha.css" />
 </head>
 
 <body>
     <div id="mocha"></div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mocha/10.2.0/mocha.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chai/4.3.7/chai.js"></script>
-    <script>
-        mocha.setup('bdd');
+    <script type="module">
+        import { A, Div, Span, Input, Select, Option_ } from "../module/Dom.js";
+
+        mocha.setup("bdd");
         const { expect } = chai;
-    </script>
-    <script src="../util.js"></script>
-    <script>
-        describe('style', () => {
-            it('should render the correct style', () => {
-                expect(A.with({
-                    style: {
-                        border: "#000"
-                    }
-                }).create().outerHTML).to.equal(`<a style="border: rgb(0, 0, 0);"></a>`);
-                
-                expect(A.with({
-                    style: {
-                        "--custom-var": "10"
-                    }
-                }).create().outerHTML).to.equal(`<a style="--custom-var: 10;"></a>`);
 
-                expect(A.with({
-                    style: {
-                        borderColor: "#000"
-                    }
-                }).create().outerHTML).to.equal(`<a style="border-color: rgb(0, 0, 0);"></a>`);
+        describe("Dom Element", () => {
+            it("Creates an anchor element", () => {
+                expect(A().create().outerHTML).to.equal("<a></a>");
+            });
 
-                expect(A.with({
-                    style: {
-                        margin: "1px!important"
-                    }
-                }).create().outerHTML).to.equal(`<a style="margin: 1px !important;"></a>`);
+            it("Creates an input element", () => {
+                expect(Input().create().outerHTML).to.equal("<input>");
+            });
 
-                expect(A.with({
-                    style: {
-                        margin: null,
-                        padding: undefined,
-                        zoom: 0,
-                        display: false
-                    }
-                }).create().outerHTML).to.equal(`<a style="zoom: 0;"></a>`);
+            it("Creates an anchor element with text if passed only text", () => {
+                expect(A("text").create().outerHTML).to.equal("<a>text</a>");
+            });
 
+            it("Creates an anchor element with children", () => {
+                expect(
+                    Div({
+                        id: "parent",
+                        children: [Span(), A()],
+                    }).create().outerHTML,
+                ).to.equal('<div id="parent"><span></span><a></a></div>');
+            });
+
+            it("Creates an element with children if passed an array", () => {
+                expect(Div([Span(), A()]).create().outerHTML).to.equal(
+                    "<div><span></span><a></a></div>",
+                );
             });
         });
 
-        describe('attribute', () => {
-            it('should render the correct attributes', () => {
-                expect(A.with({
-                    attribute: {
-                        href: "https://example.com"
-                    }
-                }).create().outerHTML).to.equal(`<a href="https://example.com"></a>`);
+        describe("Style", () => {
+            it("Renders border hex to rgb", () => {
+                expect(
+                    A({
+                        style: {
+                            border: "#000",
+                        },
+                    }).create().outerHTML,
+                ).to.equal(`<a style="border: rgb(0, 0, 0);"></a>`);
+            });
 
-                expect(A.with({
-                    attribute: {
-                        id: "test-id"
-                    }
-                }).create().outerHTML).to.equal(`<a id="test-id"></a>`);
+            it("Keeps custom css var intact", () => {
+                expect(
+                    A({
+                        style: {
+                            "--custom-var": "10",
+                        },
+                    }).create().outerHTML,
+                ).to.equal(`<a style="--custom-var: 10;"></a>`);
+            });
 
-                expect(A.with({
-                    attribute: {
-                        "data-custom": "custom-value"
-                    }
-                }).create().outerHTML).to.equal(`<a data-custom="custom-value"></a>`);
+            it("Formats camelCase style keys", () => {
+                expect(
+                    A({
+                        style: {
+                            borderColor: "#000",
+                        },
+                    }).create().outerHTML,
+                ).to.equal(`<a style="border-color: rgb(0, 0, 0);"></a>`);
+            });
 
-                expect(A.with({
-                    attribute: {
-                        disabled: true
-                    }
-                }).create().outerHTML).to.equal(`<a disabled="true"></a>`);
+            it("Preserves important flag spacing", () => {
+                expect(
+                    A({
+                        style: {
+                            margin: "1px!important",
+                        },
+                    }).create().outerHTML,
+                ).to.equal(`<a style="margin: 1px !important;"></a>`);
+            });
+
+            it("Filters falsy styles except zero", () => {
+                expect(
+                    A({
+                        style: {
+                            margin: null,
+                            padding: undefined,
+                            zoom: 0,
+                            display: false,
+                        },
+                    }).create().outerHTML,
+                ).to.equal(`<a style="zoom: 0;"></a>`);
             });
         });
 
-        describe('class', () => {
-            it('should render the correct class', () => {
-                expect(A.with({
-                    class: "class1"
-                }).create().outerHTML).to.equal(`<a class="class1"></a>`);
+        describe("Attribute", () => {
+            it("Renders href attribute", () => {
+                expect(
+                    A({
+                        attribute: {
+                            href: "https://example.com",
+                        },
+                    }).create().outerHTML,
+                ).to.equal(`<a href="https://example.com"></a>`);
+            });
 
-                expect(A.with({
-                    class: "class1 class2 class3"
-                }).create().outerHTML).to.equal(`<a class="class1 class2 class3"></a>`);
-                expect(A.with({
-                    class: ["class1", "class2", "class3"]
-                }).create().outerHTML).to.equal(`<a class="class1 class2 class3"></a>`);
-                expect(A.with({
-                    class: ["class1 class2", false, 0, null, undefined, "class3"]
-                }).create().outerHTML).to.equal(`<a class="class1 class2 class3"></a>`);
+            it("Renders id attribute", () => {
+                expect(
+                    A({
+                        id: "test-id",
+                    }).create().outerHTML,
+                ).to.equal(`<a id="test-id"></a>`);
+            });
+
+            it("Renders data attribute", () => {
+                expect(
+                    A({
+                        attribute: {
+                            "data-custom": "custom-value",
+                        },
+                    }).create().outerHTML,
+                ).to.equal(`<a data-custom="custom-value"></a>`);
+            });
+
+            it("Omits boolean attribute when false", () => {
+                expect(
+                    Input({
+                        attribute: {
+                            checked: false,
+                            disabled: false,
+                            selected: false,
+                            readOnly: false,
+                            required: false,
+                            multiple: false,
+                            autofocus: false,
+                        },
+                    }).create().outerHTML,
+                ).to.equal(`<input>`);
+            });
+
+            it("Renders checked boolean attribute when true", () => {
+                expect(
+                    Input({
+                        attribute: {
+                            type: "checkbox",
+                            checked: true,
+                        },
+                    }).create().outerHTML,
+                ).to.equal(`<input type="checkbox" checked="">`);
+            });
+
+            it("Renders disabled boolean attribute when true", () => {
+                expect(
+                    Input({
+                        attribute: {
+                            disabled: true,
+                        },
+                    }).create().outerHTML,
+                ).to.equal(`<input disabled="">`);
+            });
+
+            it("Renders selected boolean attribute when true", () => {
+                expect(
+                    Select([
+                        Option_(),
+                        Option_({ attribute: { selected: true } }),
+                        Option_(),
+                    ]).create().outerHTML,
+                ).to.equal(`<select><option></option><option selected=""></option><option></option></select>`);
+            });
+
+            it("Renders readOnly boolean attribute when true", () => {
+                expect(
+                    Input({
+                        attribute: {
+                            readOnly: true,
+                        },
+                    }).create().outerHTML,
+                ).to.equal(`<input readonly="">`);
+            });
+
+        });
+
+        describe("Class", () => {
+            it("Renders single class string", () => {
+                expect(
+                    A({
+                        class: "class1",
+                    }).create().outerHTML,
+                ).to.equal(`<a class="class1"></a>`);
+            });
+
+            it("Renders multiple class string", () => {
+                expect(
+                    A({
+                        class: "class1 class2 class3",
+                    }).create().outerHTML,
+                ).to.equal(`<a class="class1 class2 class3"></a>`);
+            });
+
+            it("Renders array of classes", () => {
+                expect(
+                    A({
+                        class: ["class1", "class2", "class3"],
+                    }).create().outerHTML,
+                ).to.equal(`<a class="class1 class2 class3"></a>`);
+            });
+
+            it("Filters falsy class entries", () => {
+                expect(
+                    A({
+                        class: ["class1 class2", false, 0, null, undefined, "class3"],
+                    }).create().outerHTML,
+                ).to.equal(`<a class="class1 class2 class3"></a>`);
             });
         });
 
