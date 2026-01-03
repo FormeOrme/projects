@@ -5,19 +5,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>svg.js Test</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mocha/10.2.0/mocha.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mocha@11.7.5/mocha.min.css">
 </head>
 
 <body>
     <div id="mocha"></div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mocha/10.2.0/mocha.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/chai/4.3.7/chai.js"></script>
-    <script>
-        mocha.setup('bdd');
-        const { expect } = chai;
-    </script>
     <script type="module">
+        import 'https://cdn.jsdelivr.net/npm/mocha@11.7.5/mocha.min.js';
+        import { expect } from 'https://cdn.jsdelivr.net/npm/chai@6.2.2/index.min.js';
         import { PathBuilder } from '../module/Svg.js';
+
+        mocha.setup('bdd');
 
         describe('PathBuilder', () => {
             it('should initialize with moveTo', () => {
