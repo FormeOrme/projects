@@ -317,8 +317,8 @@
                         .lineTo({ dx: width })
 
                         // front right tab
-                        .arcBevel({ dx: depth, dy: depth - depthThird })
-                        .arcBevel({ dx: -depthThird, y: depth })
+                        .arcTo({ dx: depth, dy: depth - depthThird })
+                        .arcTo({ dx: -depthThird, y: depth })
                         .lineTo({ x: depth * 2 + width })
 
                         // top right tab
@@ -384,8 +384,8 @@
 
                         // front left tab
                         .lineTo({ dx: -depth + depthThird })
-                        .arcBevel({ dx: -depthThird, dy: -depthThird })
-                        .arcBevel({ dx: depth, y: 0 })
+                        .arcTo({ dx: -depthThird, dy: -depthThird })
+                        .arcTo({ dx: depth, y: 0 })
 
                         .closePath()
                         .build(),
@@ -398,6 +398,7 @@
                     strokeWidth: 2,
                     strokeLinecap: "round",
                     children: [
+                        // back holes
                         Line({
                             x1: depth * 2,
                             x2: depth * 2,
@@ -405,22 +406,23 @@
                             y2: depth * 3 + height,
                         }),
                         Line({
-                            x1: depth * 2,
-                            x2: depth * 2,
-                            y1: depth * 4 + height,
-                            y2: depth * 4 + height + depth - depthThird,
-                        }),
-                        Line({
                             x1: depth * 2 + width,
                             x2: depth * 2 + width,
                             y1: depth * 2 + height + depthThird,
                             y2: depth * 3 + height,
                         }),
+                        // front holes
+                        Line({
+                            x1: depth * 2,
+                            x2: depth * 2,
+                            y1: depth * 2 + height * 2 - depth,
+                            y2: depth * 2 + height * 2 - depthThird,
+                        }),
                         Line({
                             x1: depth * 2 + width,
                             x2: depth * 2 + width,
-                            y1: depth * 4 + height,
-                            y2: depth * 4 + height + depth - depthThird,
+                            y1: depth * 2 + height * 2 - depth,
+                            y2: depth * 2 + height * 2 - depthThird,
                         }),
                     ],
                 });
