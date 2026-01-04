@@ -1,24 +1,18 @@
+const { PI, cos, sin, floor, random } = Math;
+
 export function toRadians(degrees) {
-    return degrees * (Math.PI / 180);
+    return degrees * (PI / 180);
 }
 
 export function toDegrees(radians) {
-    return radians * (180 / Math.PI);
-}
-
-export function randomPoints(num) {
-    const points = Array.from({ length: num }, () => [
-        Math.random() * 10 - 5,
-        Math.random() * 10 - 5,
-    ]);
-    return points;
+    return radians * (180 / PI);
 }
 
 export function circlePoints(num, radius = 1, wiggle = 0) {
     const points = Array.from({ length: num }, (_, i) => {
-        const angle = (i / num) * Math.PI * 2;
-        const x = radius * Math.cos(angle) + (Math.random() - 0.5) * wiggle;
-        const y = radius * Math.sin(angle) + (Math.random() - 0.5) * wiggle;
+        const angle = (i / num) * PI * 2;
+        const x = radius * cos(angle) + (random() - 0.5) * wiggle;
+        const y = radius * sin(angle) + (random() - 0.5) * wiggle;
         return [x, y];
     });
     return points;
@@ -88,6 +82,15 @@ export function circleIntersectionPoints({ x1, y1, r1, x2, y2, r2, cx, cy }) {
           ];
 }
 
-export function random(l) {
-    return Math.floor(Math.random() * l);
+export function randomPoints(length, min = -5, max = 5) {
+    return Array.from({ length }, () => [randomInt(min, max), randomInt(min, max)]);
+}
+
+/**
+ * @param {number} minOrMax
+ * @param {number} [max]
+ */
+export function randomInt(...args) {
+    const [min, max] = args.length === 1 ? [0, args[0]] : args;
+    return floor(random() * (max - min)) + min;
 }
