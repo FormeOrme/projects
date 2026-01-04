@@ -53,8 +53,6 @@ function createElement(e, namespace) {
             if (BOOLEAN_ATTRIBUTES.has(k)) {
                 node[k] = Boolean(v);
                 node.setAttribute(k, "");
-                console.log(`Set boolean attribute ${k} to ${node[k]}`);
-                console.log(node.outerHTML);
             } else {
                 node.setAttribute(k, v);
             }
