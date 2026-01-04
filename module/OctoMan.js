@@ -7,7 +7,6 @@ class Content {
 }
 
 export default class OctoMan {
-
     constructor({ owner, token }) {
         this.owner = owner;
         this.token = token;
@@ -16,19 +15,18 @@ export default class OctoMan {
 
     async getContents({ repo, path }) {
         return await this.octokit
-            .request('GET /repos/{owner}/{repo}/contents/{path}', {
-                owner: this.owner, repo, path
+            .request("GET /repos/{owner}/{repo}/contents/{path}", {
+                owner: this.owner,
+                repo,
+                path,
             })
-            .then(response => response.data)
-            .then(contents => contents.map(content => new Content(content)))
+            .then((response) => response.data)
+            .then((contents) => contents.map((content) => new Content(content)));
     }
 
     async runQuery(query) {
         return await this.octokit.graphql(query, {
-            login: this.owner
+            login: this.owner,
         });
     }
-
-
 }
-

@@ -1,21 +1,32 @@
-const { PI, cos, sin, floor, random } = Math;
+const { PI, cos, random: rand } = Math;
+
+export function random({ min, max } = {}) {
+    return min + rand() * (max - min);
+}
+export function randomPoints({ length, min = -5, max = 5 } = {}) {
+    return Array.from({ length }, () => [random({ min, max }), random({ min, max })]);
+}
+const DEG_TO_RAD = PI / 180;
+const RAD_TO_DEG = 180 / PI;
 
 export function toRadians(degrees) {
-    return degrees * (PI / 180);
+    return degrees * DEG_TO_RAD;
 }
 
 export function toDegrees(radians) {
-    return radians * (180 / PI);
+    return radians * RAD_TO_DEG;
 }
 
-export function circlePoints(num, radius = 1, wiggle = 0) {
-    const points = Array.from({ length: num }, (_, i) => {
-        const angle = (i / num) * PI * 2;
-        const x = radius * cos(angle) + (random() - 0.5) * wiggle;
-        const y = radius * sin(angle) + (random() - 0.5) * wiggle;
-        return [x, y];
+export function circlePoints({ length, radius = 1, wiggle = 0 } = {}) {
+    return Array.from({ length }, (_, index) => {
+        const angle = (index / length) * Math.PI * 2;
+        const wiggleX = random({ min: -wiggle, max: wiggle });
+        const wiggleY = random({ min: -wiggle, max: wiggle });
+        return {
+            x: cos(angle) * radius + wiggleX,
+            y: sin(angle) * radius + wiggleY,
+        };
     });
-    return points;
 }
 
 /**
@@ -80,17 +91,4 @@ export function circleIntersectionPoints({ x1, y1, r1, x2, y2, r2, cx, cy }) {
               { x: p2x, y: p2y },
               { x: p1x, y: p1y },
           ];
-}
-
-export function randomPoints(length, min = -5, max = 5) {
-    return Array.from({ length }, () => [randomInt(min, max), randomInt(min, max)]);
-}
-
-/**
- * @param {number} minOrMax
- * @param {number} [max]
- */
-export function randomInt(...args) {
-    const [min, max] = args.length === 1 ? [0, args[0]] : args;
-    return floor(random() * (max - min)) + min;
 }
