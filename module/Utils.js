@@ -84,10 +84,6 @@ export function randomElement(arr) {
     return arr[(random() * arr.length) | 0];
 }
 
-export function chance(c) {
-    return random() * 100 < c;
-}
-
 export function getLocation() {
     return new URL(window.location.href);
 }

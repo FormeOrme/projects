@@ -3,6 +3,11 @@ const { PI, cos, random: rand } = Math;
 export function random({ min, max } = {}) {
     return min + rand() * (max - min);
 }
+
+export function chance(probability) {
+    return rand() * 100 < probability;
+}
+
 export function randomPoints({ length, min = -5, max = 5 } = {}) {
     return Array.from({ length }, () => [random({ min, max }), random({ min, max })]);
 }

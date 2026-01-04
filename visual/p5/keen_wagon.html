@@ -1,98 +1,40 @@
 <!doctype html>
 <html lang="en">
-    <head>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.0/p5.js"></script>
-        <script src="../../util.js"></script>
-        <link rel="stylesheet" href="../common.css" />
-        <meta charset="utf-8" />
-    </head>
 
-    <body>
-        <script>
-            let cells = [];
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.11.11/lib/p5.js"></script>
+    <meta charset="utf-8" />
+    <title>Keen Wagon</title>
+</head>
+
+<body>
+    <script type="module">
+
+        import { chance } from "/module/MUtils.js";
+        import { randomElement } from "/module/Utils.js";
+        import { with_ } from "/module/Reduce.js";
+        import { initP5 } from "/module/P5Instance.js";
+
+        const { abs, cos, sin } = Math;
+
+        // Setup function that receives bound proxy
+        initP5(({
+            createCanvas, createVector, noStroke, fill, rect, ellipse,
+            radians, random, get, line, translate, stroke, noFill,
+        }) => {
+
+            const cells = [];
             const W = 666;
             const H = 777;
             const padding = 50;
-
-            function setup() {
-                noStroke();
-                createCanvas(W, H);
-
-                const N = 666;
-                for (let i = 0; i < N; i++) {
-                    cells.push(
-                        new Cell({
-                            meta: (white = Utils.chance(55)),
-                            color: "red",
-                            colorF: white ? 255 : 10,
-                            colorFA: white ? 10 : 20,
-                            forwardAngle: random(360),
-                            radarAngle: 22,
-                            radarRange: 7,
-                            feroSize: white ? 10 : 3,
-                        }),
-                    );
-                }
-
-                noStroke();
-                fill(0);
-                rect(0, 0, W, H);
-
-                fill(255);
-                ellipse(W / 2, H / 2, W);
-
-                //textSize(500);
-                //text('&', 200, 600);
-
-                /**
-            f.loadPixels();
-            for (let i = 0; i < W * H * 4; i += 4) {
-                const c = 250//random(250, 254);
-                f.pixels[i] = c;
-                f.pixels[i + 1] = c;
-                f.pixels[i + 2] = c;
-                f.pixels[i + 3] = 255;
-            }
-            f.updatePixels();
-
-            f.noStroke();
-            f.fill(0);
-            f.rect(0, 0, width, padding)
-            f.rect(0, height - padding, width, padding)
-            f.rect(0, 0, padding, height)
-            f.rect(width - padding, 0, padding, height)
-            */
-            }
-            function draw() {
-                cells.forEach((cell) => {
-                    cell.update();
-                    cell.display();
-                });
-                //drawDebug();
-            }
-
-            function drawDebug() {
-                translate(W, 0);
-                fill(100);
-                rect(0, 0, W, H);
-                cells.forEach((cell) => {
-                    cell.displayDebug();
-                });
-            }
-        </script>
-        <script>
-            const startRangeX = 10; //W / 2 - padding;
-            const startRangeY = 10; //H / 2 - padding;
+            const startRangeX = 10;
+            const startRangeY = 10;
 
             function getRandomPointInCircle(center, radius) {
-                // Generate random polar coordinates
-                const r = Math.sqrt(Math.random()) * radius; // Random distance from center
-                const theta = Math.random() * 2 * Math.PI; // Random angle in radians
-
-                // Convert polar coordinates to Cartesian coordinates
+                const r = Math.sqrt(Math.random()) * radius;
+                const theta = Math.random() * 2 * Math.PI;
                 const x = center.x + r * Math.cos(theta);
                 const y = center.y + r * Math.sin(theta);
-
                 return [x, y];
             }
 
@@ -138,7 +80,7 @@
 
                 update() {
                     const radar = [this.radarF, this.radarL, this.radarR].reduce(
-                        Reduce.with((a, c) => {
+                        with_((a, c) => {
                             const pos2 = p5.Vector.add(
                                 this.position,
                                 p5.Vector.mult(c, this.radarRange),
@@ -153,8 +95,8 @@
                         { min: 0, vals: new Map() },
                     );
 
-                    if (Utils.chance(5)) {
-                        radar.goTo = Utils.randomElement([this.radarF, this.radarL, this.radarR]);
+                    if (chance(5)) {
+                        radar.goTo = randomElement([this.radarF, this.radarL, this.radarR]);
                     }
                     if (radar.goTo) {
                         // Calculate the angle between the current direction and radar.goTo
@@ -221,6 +163,56 @@
                     );
                 }
             }
-        </script>
-    </body>
+
+            const setup = () => {
+                noStroke();
+                createCanvas(W, H);
+
+                const N = 666;
+                for (let i = 0; i < N; i++) {
+                    const white = chance(55);
+                    cells.push(
+                        new Cell({
+                            meta: white,
+                            color: "red",
+                            colorF: white ? 255 : 10,
+                            colorFA: white ? 10 : 20,
+                            forwardAngle: random(360),
+                            radarAngle: 22,
+                            radarRange: 7,
+                            feroSize: white ? 10 : 3,
+                        }),
+                    );
+                }
+
+                noStroke();
+                fill(0);
+                rect(0, 0, W, H);
+
+                fill(255);
+                ellipse(W / 2, H / 2, W);
+            };
+
+            const draw = () => {
+                cells.forEach((cell) => {
+                    cell.update();
+                    cell.display();
+                });
+            };
+
+            function drawDebug() {
+                translate(W, 0);
+                fill(100);
+                rect(0, 0, W, H);
+                cells.forEach((cell) => {
+                    cell.displayDebug();
+                });
+            }
+
+            // Return setup and draw for the module to manage
+            return { setup, draw };
+        });
+    </script>
+</body>
+
 </html>
