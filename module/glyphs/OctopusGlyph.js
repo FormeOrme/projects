@@ -4,7 +4,7 @@ import {
     createLineFromAngle,
     createGlyphGroups,
     DEFAULT_PRECISION,
-} from "./glyphUtils.js";
+} from "/module/glyphs/glyphUtils.js";
 
 /**
  * Octopus glyph calculator - radial segment layout

@@ -1,4 +1,4 @@
-import { Identity } from "./Utils.js";
+import { Identity } from "/module/Utils.js";
 
 /**
  * Creates a comparator function for alphabetical sorting.

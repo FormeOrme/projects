@@ -1,5 +1,5 @@
-import { deepMerge, compact, profile } from "./Utils.js";
-import { kebabCase } from "./SUtils.js";
+import { deepMerge, compact, profile } from "/module/Utils.js";
+import { kebabCase } from "/module/SUtils.js";
 
 class Nodes extends Array {
     querySelector(query) {

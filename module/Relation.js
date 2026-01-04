@@ -1,4 +1,4 @@
-import { Identity } from "./Utils.js";
+import { Identity } from "/module/Utils.js";
 
 /**
  * A bidirectional relationship mapping class that maintains connections between two types of entities.

@@ -1,5 +1,5 @@
-import { Elem, asFunctions } from "./Dom.js";
-import Vector from "./Vector.js";
+import { Elem, asFunctions } from "/module/Dom.js";
+import Vector from "/module/Vector.js";
 
 class SvgElement extends Elem {
     manageArgs(args) {

@@ -1,5 +1,5 @@
-import { G, Line } from "../Svg.js";
-import { visibleOrNull } from "./glyphUtils.js";
+import { G, Line } from "/module/Svg.js";
+import { visibleOrNull } from "/module/glyphs/glyphUtils.js";
 
 /**
  * Grid glyph calculator - 7-segment style layout

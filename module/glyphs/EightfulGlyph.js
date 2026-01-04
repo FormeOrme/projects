@@ -1,5 +1,5 @@
-import { Line } from "../Svg.js";
-import { createGlyphGroups } from "./glyphUtils.js";
+import { Line } from "/module/Svg.js";
+import { createGlyphGroups } from "/module/glyphs/glyphUtils.js";
 
 /**
  * Eightful glyph calculator - diagonal segment layout

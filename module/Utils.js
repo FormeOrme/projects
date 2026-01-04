@@ -1,4 +1,4 @@
-import { trim } from "./SUtils.js";
+import { trim } from "/module/SUtils.js";
 
 const { floor, random } = Math;
 

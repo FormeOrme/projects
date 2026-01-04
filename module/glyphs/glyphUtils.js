@@ -1,4 +1,4 @@
-import { G, Line } from "../Svg.js";
+import { G, Line } from "/module/Svg.js";
 
 /**
  * Utility functions for glyph rendering
