@@ -1,6 +1,6 @@
-import { Pre, Section, H1, Span } from "/module/Dom.js";
-import { Svg, G } from "/module/Svg.js";
-import ControlPanel from "/module/ControlPanel.js";
+import { Pre, Section, H1, Span } from "./Dom.js";
+import { Svg, G } from "./Svg.js";
+import ControlPanel from "./ControlPanel.js";
 
 /**
  * Base class for 8-segment glyph rendering systems

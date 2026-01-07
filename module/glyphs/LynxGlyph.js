@@ -4,7 +4,7 @@ import {
     createLine,
     createGlyphGroups,
     hexFilter,
-} from "/module/glyphs/glyphUtils.js";
+} from "./glyphUtils.js";
 
 /**
  * Lynx glyph calculator

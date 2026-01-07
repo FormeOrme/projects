@@ -1,5 +1,5 @@
-import { Span } from "/module/Dom.js";
-import { compact } from "/module/Utils.js";
+import { Span } from "./Dom.js";
+import { compact } from "./Utils.js";
 
 export default class TableBuilder {
     setColumns(columns) {

@@ -4,16 +4,16 @@ import {
     createLineFromAngle,
     createGlyphGroups,
     DEFAULT_PRECISION,
-} from "/module/glyphs/glyphUtils.js";
+} from "./glyphUtils.js";
 
 /**
  * Octopus glyph calculator - radial segment layout
  * Creates glyphs using 8 radial segments arranged in a circle:
  *
  *     0
- * 7       1
+ *  7     1
  * 6       2
- *   5   3
+ *  5     3
  *     4
  *
  * Each segment radiates from center at 45° intervals

@@ -1,4 +1,4 @@
-import { Div, Input, Label, Span } from "/module/Dom.js";
+import { Div, Input, Label, Span } from "./Dom.js";
 
 export default class ControlPanel {
     constructor(args) {
