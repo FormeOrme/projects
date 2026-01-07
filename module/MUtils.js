@@ -1,5 +1,9 @@
 const { PI, cos, random: rand } = Math;
 
+const DEG_TO_RAD = PI / 180;
+const RAD_TO_DEG = 180 / PI;
+const TAU = PI * 2;
+
 export function random({ min, max } = {}) {
     return min + rand() * (max - min);
 }
@@ -11,8 +15,6 @@ export function chance(probability) {
 export function randomPoints({ length, min = -5, max = 5 } = {}) {
     return Array.from({ length }, () => [random({ min, max }), random({ min, max })]);
 }
-const DEG_TO_RAD = PI / 180;
-const RAD_TO_DEG = 180 / PI;
 
 export function toRadians(degrees) {
     return degrees * DEG_TO_RAD;

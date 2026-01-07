@@ -1,32 +1,40 @@
 /**
- * Creates a p5 sketch instance with bound methods and destructurable functions
- * Simplifies p5 instance mode setup for module contexts
- *
- * @param {Function} setupFn - Function that receives bound proxy and returns { setup, draw }
- * @returns {Function} - p5 sketch function
- */
-export const createP5Sketch = (setupFn) => {
-    return (p) => {
-        // Proxy that binds all methods to preserve 'this' context
-        const bound = new Proxy(p, {
-            get: (target, prop) => {
-                const value = target[prop];
-                return typeof value === "function" ? value.bind(target) : value;
-            },
-        });
-
-        // Call the user's setup function and expect { setup, draw } return value
-        const { setup, draw } = setupFn(bound) || {};
-
-        // Automatically assign setup and draw to p5 instance
-        if (setup) bound.setup = setup;
-        if (draw) bound.draw = draw;
-    };
-};
-
-/**
  * Helper to initialize a p5 sketch with full module support
+ * Returns a chainable builder for setup and draw functions
+ *
+ * @returns {Object} - Builder with setup() and draw() methods
+ *
+ * @example
+ * createP5()
+ *   .setup(({createCanvas, background}) => {
+ *     createCanvas(400, 400);
+ *     background(220);
+ *   })
+ *   .draw(({circle, frameCount}) => {
+ *     circle(200, 200, 50);
+ *   });
  */
-export const initP5 = (setupFn) => {
-    new p5(createP5Sketch(setupFn));
+export const createP5 = () => {
+    let setupFn, drawFn;
+
+    return {
+        setup(fn) {
+            setupFn = fn;
+            return this;
+        },
+        draw(fn) {
+            drawFn = fn;
+            new p5((p) => {
+                const bound = new Proxy(p, {
+                    get: (target, prop) => {
+                        const value = target[prop];
+                        return typeof value === "function" ? value.bind(target) : value;
+                    },
+                });
+                if (setupFn) p.setup = () => setupFn(bound);
+                if (drawFn) p.draw = () => drawFn(bound);
+            });
+            return this;
+        },
+    };
 };

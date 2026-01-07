@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swirls</title>
+    <script src="https://cdn.jsdelivr.net/npm/p5@2.0.0-beta.2/lib/p5.js"></script>
+    <style>
+        body {
+            display: grid;
+            align-content: center;
+            justify-content: center;
+            margin: 0;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+    <script type="module">
+        import { createP5 } from '/module/P5Instance.js';
+
+        let temporaryLayer;
+
+        createP5()
+            .setup(({ createCanvas, background, createGraphics, CENTER }) => {
+                createCanvas(400, 400);
+                background(220);
+
+                // Create a graphics buffer (temporary canvas)
+                // The first two parameters are width and height
+                temporaryLayer = createGraphics(222, 222);
+
+                // Draw something onto the temporary layer
+                temporaryLayer.background(200, 100, 100, 22); // Semi-transparent background
+                temporaryLayer.textSize(32);
+                temporaryLayer.fill(0);
+                temporaryLayer.textAlign(CENTER);
+                temporaryLayer.text("Temporary Content", temporaryLayer.width / 2, temporaryLayer.height / 2);
+
+
+            })
+            .draw(({ circle, fill, stroke, background, image }) => {
+                background(220);
+
+
+                fill(100, 150, 250);
+                stroke(100, 50, 150);
+                circle(200, 200, 50);
+
+                // Draw the temporary layer onto the main canvas
+                image(temporaryLayer, 70, 100);
+            });
+
+    </script>
+</body>
+
+</html>
