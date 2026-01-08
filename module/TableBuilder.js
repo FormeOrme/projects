@@ -26,11 +26,11 @@ export default class TableBuilder {
     }
 
     #applyClass(classArg, section, index) {
-        // if clazz is a function, call it with the section and index
+        // if classArg is a function, call it with the section and index
         if (typeof classArg === "function") {
             return classArg(section, index);
         }
-        // otherwise, return the clazz as is
+        // otherwise, return the classArg as is
         return classArg;
     }
 
