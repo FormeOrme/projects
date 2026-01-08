@@ -136,6 +136,7 @@ export function profile(name, func) {
  * @example
  * compact("  hello  ")              // ["hello"]
  * compact(["  a  ", "", null, "b"]) // ["a", "b"]
+ * compact([[" a "], [" ", "b"]])   // ["a", "b"]
  * compact(undefined)                // []
  */
 export function compact(obj) {
