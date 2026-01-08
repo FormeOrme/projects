@@ -142,5 +142,5 @@ export function compact(obj) {
     if (obj == null) {
         return [];
     }
-    return [].concat(obj).map(trim).filter(Boolean).flat(Infinity);
+    return [].concat(obj).flat(Infinity).map(trim).filter(Boolean);
 }
