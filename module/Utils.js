@@ -129,6 +129,7 @@ export function profile(name, func) {
     }
     return result;
 }
+
 /**
  * Converts input to array, trims strings, removes falsy values and whitespace-only strings
  * @param {*} obj - Value to compact (string, array, or any value)

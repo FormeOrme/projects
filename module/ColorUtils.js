@@ -1,4 +1,4 @@
-const { round, abs } = Math;
+const { round, abs, max, min } = Math;
 
 function hueFromString(str) {
     if (!str) return 0; // Fallback hue
@@ -12,7 +12,7 @@ export function rgbFromString(
 ) {
     return !str
         ? fallback
-        : hslToRgb({
+        : hsl2rgb({
               h: hueFromString(str),
               s: saturation,
               l: lightness,
@@ -28,7 +28,7 @@ export function hue2rgb(p, q, t) {
     return p;
 }
 
-export function hslToRgb({ h, s, l }) {
+export function hsl2rgb({ h, s, l }) {
     let r, g, b;
 
     if (s == 0) {
@@ -42,4 +42,44 @@ export function hslToRgb({ h, s, l }) {
     }
 
     return [round(r * 255), round(g * 255), round(b * 255)];
+}
+
+export function rgb2hsl([r, g, b] = [0, 0, 0]) {
+    // Destructure RGB values and normalize to [0, 1]
+    const [r, g, b] = rgb.map((value) => value / 255);
+
+    // Find min and max values
+    const maxC = max(r, g, b);
+    const minC = min(r, g, b);
+    const delta = maxC - minC;
+
+    // Calculate lightness
+    const l = (maxC + minC) / 2;
+
+    // Calculate saturation
+    let s = 0;
+    if (delta !== 0) {
+        s = delta / (1 - abs(2 * l - 1));
+    }
+
+    // Calculate hue
+    let h = 0;
+    if (delta !== 0) {
+        if (maxC === r) {
+            h = ((g - b) / delta) % 6;
+        } else if (maxC === g) {
+            h = (b - r) / delta + 2;
+        } else if (maxC === b) {
+            h = (r - g) / delta + 4;
+        }
+    }
+    h = round(h * 60);
+    if (h < 0) h += 360;
+
+    // Convert saturation and lightness to percentages
+    return {
+        h: h / 360,
+        s,
+        l,
+    };
 }

@@ -27,7 +27,7 @@ export function kebabCase(s) {
 
 export function camelCase(s) {
     return tokenize(s)
-        ?.map((w, i) => (i ? capitalize(w) : w))
+        ?.map((w, i) => (i ? capitalize(w?.toLowerCase()) : w?.toLowerCase()))
         ?.join("");
 }
 
