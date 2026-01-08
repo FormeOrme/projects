@@ -1,5 +1,4 @@
 import { Span } from "./Dom.js";
-import { compact } from "./Utils.js";
 
 export default class TableBuilder {
     setColumns(columns) {
@@ -26,20 +25,13 @@ export default class TableBuilder {
         return this;
     }
 
-    buildCell(text, clazz = "") {
-        return Span({
-            text,
-            class: clazz,
-        });
-    }
-
-    manageClass(clazz, cell, index) {
-        // if clazz is a function, call it with the cell and index
-        if (typeof clazz === "function") {
-            return clazz(cell, index);
+    #applyClass(classArg, section, index) {
+        // if clazz is a function, call it with the section and index
+        if (typeof classArg === "function") {
+            return classArg(section, index);
         }
         // otherwise, return the clazz as is
-        return clazz;
+        return classArg;
     }
 
     build() {
@@ -60,11 +52,11 @@ export default class TableBuilder {
                                     dataKey: key,
                                 },
                                 class: [
-                                    this.manageClass(this.classes?.headerCell, column, x),
+                                    this.#applyClass(this.classes?.headerCell, column, x),
                                     x !== 0 ? "border-start" : "",
-                                    ...compact(column.class),
+                                    ...column.class,
                                 ],
-                                children: this.buildCell(column.label),
+                                children: Span(column.label),
                             }),
                         ),
                     }),
@@ -75,7 +67,7 @@ export default class TableBuilder {
                     children: this.data.map((row, y) =>
                         Span({
                             id: `row-${y}`,
-                            class: ["d-flex flex-row", this.classes?.row],
+                            class: ["d-flex flex-row", this.#applyClass(this.classes?.row, row, y)],
                             children: Object.entries(this.columns).map(([key, column], x) =>
                                 Span({
                                     id: `cell-${y}-${key}`,
@@ -83,13 +75,11 @@ export default class TableBuilder {
                                         dataKey: key,
                                     },
                                     class: [
-                                        this.manageClass(this.classes?.cell, column, x),
+                                        this.#applyClass(this.classes?.cell, column, x),
                                         x !== 0 ? "border-start" : "",
-                                        ...compact(column.class),
+                                        ...column.class,
                                     ],
-                                    children: column.cellFn
-                                        ? column.cellFn(row)
-                                        : this.buildCell(row[key]),
+                                    children: column.cellFn ? column.cellFn(row) : Span(row[key]),
                                 }),
                             ),
                         }),
