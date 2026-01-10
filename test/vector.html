@@ -12,12 +12,12 @@
     <div id="mocha"></div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mocha/10.2.0/mocha.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chai/4.3.7/chai.js"></script>
-    <script>
+    <script type="module">
+        import Vector from '../module/Vector.js';
+
         mocha.setup('bdd');
         const { expect } = chai;
-    </script>
-    <script src="../vector.js"></script>
-    <script>
+
         describe('Vector', () => {
             it('should create a vector with given x and y', () => {
                 const v = new Vector(3, 4);
