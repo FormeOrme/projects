@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ColorUtils.js Test</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mocha/10.2.0/mocha.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1,
+        h2 {
+            color: #333;
+        }
+
+        .color-preview {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ccc;
+            background: #f9f9f9;
+        }
+
+        .color-demo {
+            margin: 15px 0;
+            padding: 10px;
+            background: white;
+            border-radius: 4px;
+        }
+
+        .color-box {
+            display: inline-block;
+            width: 100px;
+            height: 100px;
+            margin: 10px;
+            border: 2px solid #333;
+            vertical-align: top;
+            border-radius: 4px;
+        }
+
+        .color-info {
+            display: inline-block;
+            margin: 10px;
+            vertical-align: top;
+            font-family: monospace;
+            font-size: 14px;
+        }
+
+        .color-info div {
+            margin: 4px 0;
+        }
+
+        #mocha {
+            margin-top: 30px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>ColorUtils.js Test Suite</h1>
+
+    <h2>Visual Color Tests</h2>
+    <div class="color-preview" id="visualTests"></div>
+
+    <div id="mocha"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mocha/10.2.0/mocha.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chai/4.3.7/chai.js"></script>
+    <script type="module">
+        import {
+            rgbFromString,
+            hue2rgb,
+            hsl2rgb,
+            rgb2hsl,
+            hex2rgb,
+            rgb2hex,
+            rgb2cymk,
+            cymk2rgb,
+            Color
+        } from '../module/ColorUtils.js';
+
+        // Visual Tests
+        const visualTests = document.getElementById('visualTests');
+
+        function createColorDemo(title, rgb) {
+            const demo = document.createElement('div');
+            demo.className = 'color-demo';
+
+            const colorBox = document.createElement('div');
+            colorBox.className = 'color-box';
+            colorBox.style.backgroundColor = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+
+            const hsl = rgb2hsl(rgb);
+            const hex = rgb2hex(rgb);
+            const cmyk = rgb2cymk(rgb);
+
+            const info = document.createElement('div');
+            info.className = 'color-info';
+            info.innerHTML = `
+                <strong>${title}</strong><br>
+                <div>RGB: [${rgb[0]}, ${rgb[1]}, ${rgb[2]}]</div>
+                <div>HEX: ${hex}</div>
+                <div>HSL: {h: ${hsl.h.toFixed(3)}, s: ${hsl.s.toFixed(3)}, l: ${hsl.l.toFixed(3)}}</div>
+                <div>CMYK: {c: ${cmyk.c.toFixed(3)}, m: ${cmyk.m.toFixed(3)}, y: ${cmyk.y.toFixed(3)}, k: ${cmyk.k.toFixed(3)}}</div>
+            `;
+
+            demo.appendChild(colorBox);
+            demo.appendChild(info);
+            visualTests.appendChild(demo);
+        }
+
+        // Create visual demos
+        createColorDemo('Red', [255, 0, 0]);
+        createColorDemo('Green', [0, 255, 0]);
+        createColorDemo('Blue', [0, 0, 255]);
+        createColorDemo('From String: "apple"', rgbFromString('apple'));
+        createColorDemo('From String: "banana"', rgbFromString('banana'));
+        createColorDemo('From String: "cherry"', rgbFromString('cherry'));
+        createColorDemo('Custom Color', [123, 45, 67]);
+
+        // Mocha Tests
+        mocha.setup('bdd');
+        const { expect } = chai;
+
+        describe('ColorUtils', () => {
+            describe('rgbFromString', () => {
+                it('should generate consistent RGB values from string', () => {
+                    const color1 = rgbFromString('test');
+                    const color2 = rgbFromString('test');
+                    expect(color1).to.deep.equal(color2);
+                });
+
+                it('should return fallback for empty string', () => {
+                    const color = rgbFromString('', { fallback: [100, 100, 100] });
+                    expect(color).to.deep.equal([100, 100, 100]);
+                });
+
+                it('should return fallback for null', () => {
+                    const color = rgbFromString(null, { fallback: [100, 100, 100] });
+                    expect(color).to.deep.equal([100, 100, 100]);
+                });
+
+                it('should use custom saturation and lightness', () => {
+                    const color = rgbFromString('test', { saturation: 0.5, lightness: 0.3 });
+                    expect(color).to.be.an('array').with.lengthOf(3);
+                    expect(color[0]).to.be.within(0, 255);
+                    expect(color[1]).to.be.within(0, 255);
+                    expect(color[2]).to.be.within(0, 255);
+                });
+
+                it('should generate different colors for different strings', () => {
+                    const color1 = rgbFromString('apple');
+                    const color2 = rgbFromString('banana');
+                    expect(color1).to.not.deep.equal(color2);
+                });
+            });
+
+            describe('hsl2rgb', () => {
+                it('should convert pure red HSL to RGB', () => {
+                    const rgb = hsl2rgb({ h: 0, s: 1, l: 0.5 });
+                    expect(rgb).to.deep.equal([255, 0, 0]);
+                });
+
+                it('should convert pure green HSL to RGB', () => {
+                    const rgb = hsl2rgb({ h: 1 / 3, s: 1, l: 0.5 });
+                    expect(rgb).to.deep.equal([0, 255, 0]);
+                });
+
+                it('should convert pure blue HSL to RGB', () => {
+                    const rgb = hsl2rgb({ h: 2 / 3, s: 1, l: 0.5 });
+                    expect(rgb).to.deep.equal([0, 0, 255]);
+                });
+
+                it('should convert gray (achromatic)', () => {
+                    const rgb = hsl2rgb({ h: 0, s: 0, l: 0.5 });
+                    expect(rgb).to.deep.equal([128, 128, 128]);
+                });
+
+                it('should convert white', () => {
+                    const rgb = hsl2rgb({ h: 0, s: 0, l: 1 });
+                    expect(rgb).to.deep.equal([255, 255, 255]);
+                });
+
+                it('should convert black', () => {
+                    const rgb = hsl2rgb({ h: 0, s: 0, l: 0 });
+                    expect(rgb).to.deep.equal([0, 0, 0]);
+                });
+            });
+
+            describe('rgb2hsl', () => {
+                it('should convert red RGB to HSL', () => {
+                    const hsl = rgb2hsl([255, 0, 0]);
+                    expect(hsl.h).to.equal(0);
+                    expect(hsl.s).to.equal(1);
+                    expect(hsl.l).to.equal(0.5);
+                });
+
+                it('should convert green RGB to HSL', () => {
+                    const hsl = rgb2hsl([0, 255, 0]);
+                    expect(hsl.h).to.be.closeTo(1 / 3, 0.01);
+                    expect(hsl.s).to.equal(1);
+                    expect(hsl.l).to.equal(0.5);
+                });
+
+                it('should convert blue RGB to HSL', () => {
+                    const hsl = rgb2hsl([0, 0, 255]);
+                    expect(hsl.h).to.be.closeTo(2 / 3, 0.01);
+                    expect(hsl.s).to.equal(1);
+                    expect(hsl.l).to.equal(0.5);
+                });
+
+                it('should convert gray RGB to HSL', () => {
+                    const hsl = rgb2hsl([128, 128, 128]);
+                    expect(hsl.s).to.equal(0);
+                    expect(hsl.l).to.be.closeTo(0.502, 0.01);
+                });
+
+                it('should convert white RGB to HSL', () => {
+                    const hsl = rgb2hsl([255, 255, 255]);
+                    expect(hsl.s).to.equal(0);
+                    expect(hsl.l).to.equal(1);
+                });
+
+                it('should convert black RGB to HSL', () => {
+                    const hsl = rgb2hsl([0, 0, 0]);
+                    expect(hsl.s).to.equal(0);
+                    expect(hsl.l).to.equal(0);
+                });
+
+                it('should handle default parameter [0, 0, 0]', () => {
+                    const hsl = rgb2hsl();
+                    expect(hsl).to.have.property('h');
+                    expect(hsl).to.have.property('s');
+                    expect(hsl).to.have.property('l');
+                });
+            });
+
+            describe('hex2rgb', () => {
+                it('should convert hex with # to RGB', () => {
+                    const rgb = hex2rgb('#FF0000');
+                    expect(rgb).to.deep.equal([255, 0, 0]);
+                });
+
+                it('should convert hex without # to RGB', () => {
+                    const rgb = hex2rgb('00FF00');
+                    expect(rgb).to.deep.equal([0, 255, 0]);
+                });
+
+                it('should convert lowercase hex', () => {
+                    const rgb = hex2rgb('#0000ff');
+                    expect(rgb).to.deep.equal([0, 0, 255]);
+                });
+
+                it('should convert mixed case hex', () => {
+                    const rgb = hex2rgb('#FfAa00');
+                    expect(rgb).to.deep.equal([255, 170, 0]);
+                });
+            });
+
+            describe('rgb2hex', () => {
+                it('should convert red RGB to hex', () => {
+                    const hex = rgb2hex([255, 0, 0]);
+                    expect(hex).to.equal('#FF0000');
+                });
+
+                it('should convert green RGB to hex', () => {
+                    const hex = rgb2hex([0, 255, 0]);
+                    expect(hex).to.equal('#00FF00');
+                });
+
+                it('should convert blue RGB to hex', () => {
+                    const hex = rgb2hex([0, 0, 255]);
+                    expect(hex).to.equal('#0000FF');
+                });
+
+                it('should handle low values with leading zeros', () => {
+                    const hex = rgb2hex([1, 2, 3]);
+                    expect(hex).to.equal('#010203');
+                });
+            });
+
+            describe('rgb2cymk and cymk2rgb', () => {
+                it('should convert red RGB to CMYK', () => {
+                    const cmyk = rgb2cymk([255, 0, 0]);
+                    expect(cmyk.c).to.equal(0);
+                    expect(cmyk.m).to.equal(1);
+                    expect(cmyk.y).to.equal(1);
+                    expect(cmyk.k).to.equal(0);
+                });
+
+                it('should convert CMYK back to RGB', () => {
+                    const cmyk = { c: 0, m: 1, y: 1, k: 0 };
+                    const rgb = cymk2rgb(cmyk);
+                    expect(rgb).to.deep.equal([255, 0, 0]);
+                });
+
+                it('should convert black RGB to CMYK', () => {
+                    const cmyk = rgb2cymk([0, 0, 0]);
+                    expect(cmyk.k).to.equal(1);
+                });
+
+                it('should handle round-trip conversion', () => {
+                    const original = [123, 45, 67];
+                    const cmyk = rgb2cymk(original);
+                    const converted = cymk2rgb(cmyk);
+                    expect(converted[0]).to.be.closeTo(original[0], 1);
+                    expect(converted[1]).to.be.closeTo(original[1], 1);
+                    expect(converted[2]).to.be.closeTo(original[2], 1);
+                });
+            });
+
+            describe('Color class', () => {
+                describe('static constructors', () => {
+                    it('should create from RGB', () => {
+                        const color = Color.fromRGB([255, 0, 0]);
+                        expect(color).to.be.instanceOf(Color);
+                        expect(color.toRGB()).to.deep.equal([255, 0, 0]);
+                    });
+
+                    it('should create from hex', () => {
+                        const color = Color.fromHex('#00FF00');
+                        expect(color).to.be.instanceOf(Color);
+                        expect(color.toRGB()).to.deep.equal([0, 255, 0]);
+                    });
+
+                    it('should create from HSL', () => {
+                        const color = Color.fromHSL({ h: 2 / 3, s: 1, l: 0.5 });
+                        expect(color).to.be.instanceOf(Color);
+                        expect(color.toRGB()).to.deep.equal([0, 0, 255]);
+                    });
+
+                    it('should create from CMYK', () => {
+                        const color = Color.fromCMYK({ c: 0, m: 1, y: 1, k: 0 });
+                        expect(color).to.be.instanceOf(Color);
+                        expect(color.toRGB()).to.deep.equal([255, 0, 0]);
+                    });
+                });
+
+                describe('conversions', () => {
+                    it('should convert to RGB', () => {
+                        const color = new Color([123, 45, 67]);
+                        expect(color.toRGB()).to.deep.equal([123, 45, 67]);
+                    });
+
+                    it('should convert to hex', () => {
+                        const color = new Color([255, 0, 0]);
+                        expect(color.toHex()).to.equal('#FF0000');
+                    });
+
+                    it('should convert to HSL', () => {
+                        const color = new Color([255, 0, 0]);
+                        const hsl = color.toHSL();
+                        expect(hsl).to.have.property('h');
+                        expect(hsl).to.have.property('s');
+                        expect(hsl).to.have.property('l');
+                    });
+
+                    it('should convert to CMYK', () => {
+                        const color = new Color([255, 0, 0]);
+                        const cmyk = color.toCMYK();
+                        expect(cmyk).to.have.property('c');
+                        expect(cmyk).to.have.property('m');
+                        expect(cmyk).to.have.property('y');
+                        expect(cmyk).to.have.property('k');
+                    });
+                });
+
+                describe('round-trip conversions', () => {
+                    it('should maintain color through RGB->HSL->RGB', () => {
+                        const original = Color.fromRGB([123, 45, 67]);
+                        const hsl = original.toHSL();
+                        const converted = Color.fromHSL(hsl);
+                        const rgb = converted.toRGB();
+                        expect(rgb[0]).to.be.closeTo(123, 1);
+                        expect(rgb[1]).to.be.closeTo(45, 1);
+                        expect(rgb[2]).to.be.closeTo(67, 1);
+                    });
+
+                    it('should maintain color through RGB->CMYK->RGB', () => {
+                        const original = Color.fromRGB([123, 45, 67]);
+                        const cmyk = original.toCMYK();
+                        const converted = Color.fromCMYK(cmyk);
+                        const rgb = converted.toRGB();
+                        expect(rgb[0]).to.be.closeTo(123, 1);
+                        expect(rgb[1]).to.be.closeTo(45, 1);
+                        expect(rgb[2]).to.be.closeTo(67, 1);
+                    });
+
+                    it('should maintain color through RGB->Hex->RGB', () => {
+                        const original = Color.fromRGB([123, 45, 67]);
+                        const hex = original.toHex();
+                        const converted = Color.fromHex(hex);
+                        expect(converted.toRGB()).to.deep.equal([123, 45, 67]);
+                    });
+                });
+            });
+
+            describe('hue2rgb helper', () => {
+                it('should handle t < 0', () => {
+                    const result = hue2rgb(0.2, 0.8, -0.1);
+                    expect(result).to.be.a('number');
+                });
+
+                it('should handle t > 1', () => {
+                    const result = hue2rgb(0.2, 0.8, 1.1);
+                    expect(result).to.be.a('number');
+                });
+
+                it('should return value in valid range', () => {
+                    const result = hue2rgb(0.2, 0.8, 0.5);
+                    expect(result).to.be.within(0, 1);
+                });
+            });
+        });
+
+        mocha.run();
+    </script>
+</body>
+
+</html>

@@ -46,7 +46,9 @@ export function hsl2rgb({ h, s, l }) {
 
 export function rgb2hsl([r, g, b] = [0, 0, 0]) {
     // Destructure RGB values and normalize to [0, 1]
-    const [r, g, b] = rgb.map((value) => value / 255);
+    r /= 255;
+    g /= 255;
+    b /= 255;
 
     // Find min and max values
     const maxC = max(r, g, b);
