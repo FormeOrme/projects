@@ -1,3 +1,4 @@
+import { toFixed } from "./MUtils.js";
 const { round, abs, max, min } = Math;
 
 function hueFromString(str) {
@@ -44,7 +45,7 @@ export function hsl2rgb({ h, s, l }) {
     return [round(r * 255), round(g * 255), round(b * 255)];
 }
 
-export function rgb2hsl([r, g, b] = [0, 0, 0]) {
+export function rgb2hsl([r, g, b] = [0, 0, 0], digits = 3) {
     // Destructure RGB values and normalize to [0, 1]
     r /= 255;
     g /= 255;
@@ -80,9 +81,9 @@ export function rgb2hsl([r, g, b] = [0, 0, 0]) {
 
     // Convert saturation and lightness to percentages
     return {
-        h: h / 360,
-        s,
-        l,
+        h: toFixed(h / 360, digits),
+        s: toFixed(s, digits),
+        l: toFixed(l, digits),
     };
 }
 
@@ -101,20 +102,28 @@ export function rgb2hex([r, g, b]) {
     return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase();
 }
 
-export function rgb2cymk([r, g, b]) {
+export function rgb2cmyk([r, g, b], digits = 3) {
     const c = 1 - r / 255;
     const m = 1 - g / 255;
     const y = 1 - b / 255;
     const k = min(c, m, y);
     return {
-        c: (c - k) / (1 - k) || 0,
-        m: (m - k) / (1 - k) || 0,
-        y: (y - k) / (1 - k) || 0,
-        k,
+        c: toFixed((c - k) / (1 - k) || 0, digits),
+        m: toFixed((m - k) / (1 - k) || 0, digits),
+        y: toFixed((y - k) / (1 - k) || 0, digits),
+        k: toFixed(k, digits),
     };
 }
 
-export function cymk2rgb({ c, m, y, k }) {
+export function rgb2cmy([r, g, b], digits = 3) {
+    return {
+        c: toFixed(1 - r / 255, digits),
+        m: toFixed(1 - g / 255, digits),
+        y: toFixed(1 - b / 255, digits),
+    };
+}
+
+export function cmyk2rgb({ c, m, y, k }) {
     return [
         round(255 * (1 - c) * (1 - k)),
         round(255 * (1 - m) * (1 - k)),
@@ -141,7 +150,7 @@ export class Color {
     }
 
     static fromCMYK({ c, m, y, k }) {
-        return new Color(cymk2rgb({ c, m, y, k }));
+        return new Color(cmyk2rgb({ c, m, y, k }));
     }
 
     toRGB() {
@@ -152,11 +161,11 @@ export class Color {
         return rgb2hex(this.#rgb);
     }
 
-    toHSL() {
-        return rgb2hsl(this.#rgb);
+    toHSL(digits) {
+        return rgb2hsl(this.#rgb, digits);
     }
 
-    toCMYK() {
-        return rgb2cymk(this.#rgb);
+    toCMYK(digits) {
+        return rgb2cmyk(this.#rgb, digits);
     }
 }

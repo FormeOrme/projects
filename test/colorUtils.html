@@ -20,23 +20,25 @@
         }
 
         .color-preview {
-            margin: 20px 0;
-            padding: 20px;
-            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             background: #f9f9f9;
+            display: grid;
+            gap: 10px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
         }
 
         .color-demo {
-            margin: 15px 0;
-            padding: 10px;
             background: white;
             border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
         .color-box {
             display: inline-block;
-            width: 100px;
-            height: 100px;
+            width: 50px;
+            height: 50px;
             margin: 10px;
             border: 2px solid #333;
             vertical-align: top;
@@ -79,8 +81,8 @@
             rgb2hsl,
             hex2rgb,
             rgb2hex,
-            rgb2cymk,
-            cymk2rgb,
+            rgb2cmyk,
+            cmyk2rgb,
             Color
         } from '../module/ColorUtils.js';
 
@@ -95,18 +97,20 @@
             colorBox.className = 'color-box';
             colorBox.style.backgroundColor = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
 
-            const hsl = rgb2hsl(rgb);
-            const hex = rgb2hex(rgb);
-            const cmyk = rgb2cymk(rgb);
+
+            const color = Color.fromRGB(rgb);
+            const hex = color.toHex();
+            const hsl = color.toHSL(3);
+            const cmyk = color.toCMYK(3);
 
             const info = document.createElement('div');
             info.className = 'color-info';
             info.innerHTML = `
-                <strong>${title}</strong><br>
-                <div>RGB: [${rgb[0]}, ${rgb[1]}, ${rgb[2]}]</div>
+                <strong>${title}</strong>
                 <div>HEX: ${hex}</div>
-                <div>HSL: {h: ${hsl.h.toFixed(3)}, s: ${hsl.s.toFixed(3)}, l: ${hsl.l.toFixed(3)}}</div>
-                <div>CMYK: {c: ${cmyk.c.toFixed(3)}, m: ${cmyk.m.toFixed(3)}, y: ${cmyk.y.toFixed(3)}, k: ${cmyk.k.toFixed(3)}}</div>
+                <div>RGB: ${rgb}</div>
+                <div>HSL: ${Object.values(hsl)}</div>
+                <div>CMYK: ${Object.values(cmyk)}</div>
             `;
 
             demo.appendChild(colorBox);
@@ -118,10 +122,22 @@
         createColorDemo('Red', [255, 0, 0]);
         createColorDemo('Green', [0, 255, 0]);
         createColorDemo('Blue', [0, 0, 255]);
-        createColorDemo('From String: "apple"', rgbFromString('apple'));
-        createColorDemo('From String: "banana"', rgbFromString('banana'));
-        createColorDemo('From String: "cherry"', rgbFromString('cherry'));
-        createColorDemo('Custom Color', [123, 45, 67]);
+        createColorDemo('White', [255, 255, 255]);
+
+        createColorDemo('Cyan', [0, 255, 255]);
+        createColorDemo('Magenta', [255, 0, 255]);
+        createColorDemo('Yellow', [255, 255, 0]);
+        createColorDemo('Black', [0, 0, 0]);
+
+        createColorDemo('PhPea Cyan', hex2rgb('#00adee'));
+        createColorDemo('PhPea Magenta', hex2rgb('#eb008b'));
+        createColorDemo('PhPea Yellow', hex2rgb('#fff100'));
+        createColorDemo('PhPea Black', hex2rgb('#231f20'));
+
+        createColorDemo('Cyan', cmyk2rgb({ c: 1, m: 0, y: 0, k: 0 }));
+        createColorDemo('Magenta', cmyk2rgb({ c: 0, m: 1, y: 0, k: 0 }));
+        createColorDemo('Yellow', cmyk2rgb({ c: 0, m: 0, y: 1, k: 0 }));
+        createColorDemo('Black', cmyk2rgb({ c: 0, m: 0, y: 0, k: 1 }));
 
         // Mocha Tests
         mocha.setup('bdd');
@@ -284,9 +300,9 @@
                 });
             });
 
-            describe('rgb2cymk and cymk2rgb', () => {
+            describe('rgb2cmyk and cmyk2rgb', () => {
                 it('should convert red RGB to CMYK', () => {
-                    const cmyk = rgb2cymk([255, 0, 0]);
+                    const cmyk = rgb2cmyk([255, 0, 0]);
                     expect(cmyk.c).to.equal(0);
                     expect(cmyk.m).to.equal(1);
                     expect(cmyk.y).to.equal(1);
@@ -295,19 +311,19 @@
 
                 it('should convert CMYK back to RGB', () => {
                     const cmyk = { c: 0, m: 1, y: 1, k: 0 };
-                    const rgb = cymk2rgb(cmyk);
+                    const rgb = cmyk2rgb(cmyk);
                     expect(rgb).to.deep.equal([255, 0, 0]);
                 });
 
                 it('should convert black RGB to CMYK', () => {
-                    const cmyk = rgb2cymk([0, 0, 0]);
+                    const cmyk = rgb2cmyk([0, 0, 0]);
                     expect(cmyk.k).to.equal(1);
                 });
 
                 it('should handle round-trip conversion', () => {
                     const original = [123, 45, 67];
-                    const cmyk = rgb2cymk(original);
-                    const converted = cymk2rgb(cmyk);
+                    const cmyk = rgb2cmyk(original);
+                    const converted = cmyk2rgb(cmyk);
                     expect(converted[0]).to.be.closeTo(original[0], 1);
                     expect(converted[1]).to.be.closeTo(original[1], 1);
                     expect(converted[2]).to.be.closeTo(original[2], 1);

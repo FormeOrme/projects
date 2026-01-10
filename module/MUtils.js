@@ -4,6 +4,10 @@ const DEG_TO_RAD = PI / 180;
 const RAD_TO_DEG = 180 / PI;
 const TAU = PI * 2;
 
+export function toFixed(value, digits) {
+    return digits ? Number(value.toFixed(digits)) : value;
+}
+
 export function random({ min, max } = {}) {
     return min + rand() * (max - min);
 }
