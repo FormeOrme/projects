@@ -83,3 +83,39 @@ export function rgb2hsl([r, g, b] = [0, 0, 0]) {
         l,
     };
 }
+
+export function hex2rgb(hex) {
+    // Remove the leading '#' if present
+    hex = hex.replace(/^#/, "");
+    // Parse the hex string into RGB components
+    const bigint = parseInt(hex, 16);
+    const r = (bigint >> 16) & 255;
+    const g = (bigint >> 8) & 255;
+    const b = bigint & 255;
+    return [r, g, b];
+}
+
+export function rgb2hex([r, g, b]) {
+    return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase();
+}
+
+export function rgb2cymk([r, g, b]) {
+    const c = 1 - r / 255;
+    const m = 1 - g / 255;
+    const y = 1 - b / 255;
+    const k = min(c, m, y);
+    return {
+        c: (c - k) / (1 - k) || 0,
+        m: (m - k) / (1 - k) || 0,
+        y: (y - k) / (1 - k) || 0,
+        k,
+    };
+}
+
+export function cymk2rgb({ c, m, y, k }) {
+    return [
+        round(255 * (1 - c) * (1 - k)),
+        round(255 * (1 - m) * (1 - k)),
+        round(255 * (1 - y) * (1 - k)),
+    ];
+}
