@@ -119,3 +119,42 @@ export function cymk2rgb({ c, m, y, k }) {
         round(255 * (1 - y) * (1 - k)),
     ];
 }
+
+export class Color {
+    #rgb = [0, 0, 0];
+    constructor([r, g, b]) {
+        this.#rgb = [r, g, b];
+    }
+
+    static fromRGB([r, g, b]) {
+        return new Color([r, g, b]);
+    }
+
+    static fromHex(hex) {
+        return new Color(hex2rgb(hex));
+    }
+
+    static fromHSL({ h, s, l }) {
+        return new Color(hsl2rgb({ h, s, l }));
+    }
+
+    static fromCMYK({ c, m, y, k }) {
+        return new Color(cymk2rgb({ c, m, y, k }));
+    }
+
+    toRGB() {
+        return this.#rgb;
+    }
+
+    toHex() {
+        return rgb2hex(this.#rgb);
+    }
+
+    toHSL() {
+        return rgb2hsl(this.#rgb);
+    }
+
+    toCMYK() {
+        return rgb2cymk(this.#rgb);
+    }
+}
