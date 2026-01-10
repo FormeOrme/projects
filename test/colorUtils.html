@@ -83,6 +83,7 @@
             rgb2hex,
             rgb2cmyk,
             cmyk2rgb,
+            cmy2rgb,
             Color
         } from '../module/ColorUtils.js';
 
@@ -102,6 +103,7 @@
             const hex = color.toHex();
             const hsl = color.toHSL(3);
             const cmyk = color.toCMYK(3);
+            const cmy = color.toCMY(3);
 
             const info = document.createElement('div');
             info.className = 'color-info';
@@ -111,6 +113,7 @@
                 <div>RGB: ${rgb}</div>
                 <div>HSL: ${Object.values(hsl)}</div>
                 <div>CMYK: ${Object.values(cmyk)}</div>
+                <div>CMY: ${Object.values(cmy)}</div>
             `;
 
             demo.appendChild(colorBox);
@@ -134,10 +137,10 @@
         createColorDemo('PhPea Yellow', hex2rgb('#fff100'));
         createColorDemo('PhPea Black', hex2rgb('#231f20'));
 
-        createColorDemo('Cyan', cmyk2rgb({ c: 1, m: 0, y: 0, k: 0 }));
-        createColorDemo('Magenta', cmyk2rgb({ c: 0, m: 1, y: 0, k: 0 }));
-        createColorDemo('Yellow', cmyk2rgb({ c: 0, m: 0, y: 1, k: 0 }));
-        createColorDemo('Black', cmyk2rgb({ c: 0, m: 0, y: 0, k: 1 }));
+        createColorDemo('X', cmy2rgb({ c: .5, m: .5, y: 0 }));
+        createColorDemo('X', cmy2rgb({ c: 0, m: .5, y: .5 }));
+        createColorDemo('X', cmy2rgb({ c: .5, m: 0, y: .5 }));
+        createColorDemo('X', cmy2rgb({ c: .5, m: .5, y: .5 }));
 
         // Mocha Tests
         mocha.setup('bdd');

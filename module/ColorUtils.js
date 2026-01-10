@@ -90,12 +90,13 @@ export function rgb2hsl([r, g, b] = [0, 0, 0], digits = 3) {
 export function hex2rgb(hex) {
     // Remove the leading '#' if present
     hex = hex.replace(/^#/, "");
+    // Expand 3-digit hex to 6-digit (e.g., "ABC" → "AABBCC")
+    if (hex.length === 3) {
+        hex = [...hex].map((c) => c + c).join("");
+    }
     // Parse the hex string into RGB components
     const bigint = parseInt(hex, 16);
-    const r = (bigint >> 16) & 255;
-    const g = (bigint >> 8) & 255;
-    const b = bigint & 255;
-    return [r, g, b];
+    return [(bigint >> 16) & 255, (bigint >> 8) & 255, bigint & 255];
 }
 
 export function rgb2hex([r, g, b]) {
@@ -115,20 +116,24 @@ export function rgb2cmyk([r, g, b], digits = 3) {
     };
 }
 
-export function rgb2cmy([r, g, b], digits = 3) {
-    return {
-        c: toFixed(1 - r / 255, digits),
-        m: toFixed(1 - g / 255, digits),
-        y: toFixed(1 - b / 255, digits),
-    };
-}
-
 export function cmyk2rgb({ c, m, y, k }) {
     return [
         round(255 * (1 - c) * (1 - k)),
         round(255 * (1 - m) * (1 - k)),
         round(255 * (1 - y) * (1 - k)),
     ];
+}
+
+export function cmy2rgb({ c, m, y }) {
+    return [round(255 * (1 - c)), round(255 * (1 - m)), round(255 * (1 - y))];
+}
+
+export function rgb2cmy([r, g, b], digits = 3) {
+    return {
+        c: toFixed(1 - r / 255, digits),
+        m: toFixed(1 - g / 255, digits),
+        y: toFixed(1 - b / 255, digits),
+    };
 }
 
 export class Color {
@@ -153,6 +158,10 @@ export class Color {
         return new Color(cmyk2rgb({ c, m, y, k }));
     }
 
+    static fromCMY({ c, m, y }) {
+        return new Color(cmy2rgb({ c, m, y }));
+    }
+
     toRGB() {
         return this.#rgb;
     }
@@ -167,5 +176,9 @@ export class Color {
 
     toCMYK(digits) {
         return rgb2cmyk(this.#rgb, digits);
+    }
+
+    toCMY(digits) {
+        return rgb2cmy(this.#rgb, digits);
     }
 }
