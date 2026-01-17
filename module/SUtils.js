@@ -12,6 +12,7 @@ export function strip(s) {
 
 export function tokenize(s) {
     return normalize(s)
+        ?.toLowerCase()
         ?.split(/[\W_]+/)
         .flatMap((w) => w.split(/(?=[A-Z])/))
         .filter(Boolean);

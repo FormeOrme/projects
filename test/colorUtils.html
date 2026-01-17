@@ -137,11 +137,6 @@
         createColorDemo('PhPea Yellow', hex2rgb('#fff100'));
         createColorDemo('PhPea Black', hex2rgb('#231f20'));
 
-        createColorDemo('X', cmy2rgb({ c: .5, m: .5, y: 0 }));
-        createColorDemo('X', cmy2rgb({ c: 0, m: .5, y: .5 }));
-        createColorDemo('X', cmy2rgb({ c: .5, m: 0, y: .5 }));
-        createColorDemo('X', cmy2rgb({ c: .5, m: .5, y: .5 }));
-
         // Mocha Tests
         mocha.setup('bdd');
         const { expect } = chai;
@@ -394,20 +389,14 @@
                         const original = Color.fromRGB([123, 45, 67]);
                         const hsl = original.toHSL();
                         const converted = Color.fromHSL(hsl);
-                        const rgb = converted.toRGB();
-                        expect(rgb[0]).to.be.closeTo(123, 1);
-                        expect(rgb[1]).to.be.closeTo(45, 1);
-                        expect(rgb[2]).to.be.closeTo(67, 1);
+                        expect(converted.toRGB()).to.deep.equal([123, 45, 67]);
                     });
 
                     it('should maintain color through RGB->CMYK->RGB', () => {
                         const original = Color.fromRGB([123, 45, 67]);
                         const cmyk = original.toCMYK();
                         const converted = Color.fromCMYK(cmyk);
-                        const rgb = converted.toRGB();
-                        expect(rgb[0]).to.be.closeTo(123, 1);
-                        expect(rgb[1]).to.be.closeTo(45, 1);
-                        expect(rgb[2]).to.be.closeTo(67, 1);
+                        expect(converted.toRGB()).to.deep.equal([123, 45, 67]);
                     });
 
                     it('should maintain color through RGB->Hex->RGB', () => {

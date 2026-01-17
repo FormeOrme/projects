@@ -8,7 +8,7 @@ export function toFixed(value, digits) {
     return digits ? Number(value.toFixed(digits)) : value;
 }
 
-export function random({ min, max } = {}) {
+export function random({ min = 0, max = 1 } = {}) {
     return min + rand() * (max - min);
 }
 

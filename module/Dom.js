@@ -131,7 +131,7 @@ export class Elem {
 export class Dom {
     static formatKeys = (obj, format = kebabCase) =>
         Object.entries(obj)
-            .filter(([_, v]) => Boolean(v) || v === 0)
+            .filter(([_, v]) => Boolean(v) || v === 0 || v === false)
             .map(([k, v]) => [
                 Dom.camelCaseAttributes.includes(k) || k.includes("--") ? k : format(k),
                 v,
