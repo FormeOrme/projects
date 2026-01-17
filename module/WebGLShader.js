@@ -8,6 +8,7 @@
  * @type {string}
  */
 const vertexSrcDefault = `
+precision mediump float;
 attribute vec2 a_position;
 void main() {
     gl_Position = vec4(a_position, 0.0, 1.0);
@@ -16,7 +17,7 @@ void main() {
 export class WebGLShader {
     constructor({ canvas, fragmentSource, vertexSource = vertexSrcDefault, parameters = {} }) {
         this.canvas = canvas;
-        this.gl = canvas.getContext("webgl");
+        this.gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
         if (!this.gl) {
             throw new Error("WebGL not supported");
         }
@@ -34,8 +35,10 @@ export class WebGLShader {
         gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
         gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
         const posLoc = this.getAttribLocation("a_position");
-        gl.enableVertexAttribArray(posLoc);
-        gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0);
+        if (posLoc !== -1) {
+            gl.enableVertexAttribArray(posLoc);
+            gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0);
+        }
     }
 
     setParameters(params) {
