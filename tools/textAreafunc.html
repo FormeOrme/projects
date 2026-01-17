@@ -12,13 +12,18 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 
-    <script src="https://cdn.jsdelivr.net/gh/FormeOrme/projects@latest/util.js"></script>
-</head>
+    <script type="module">
+        import { Dom, Section, Title, TextArea, H1, Span, Pre, Button, I } from "../module/Dom.js";
+        import * as Sort from "../module/Sort.js";
+        import { Identity } from "../module/Utils.js";
+        import * as QueStMan from "../module/QueStMan.js";
 
-<body>
-    <script>
-        String.prototype.apply = function(f){ return f(this); }
-        Array.prototype.apply = function(f){ return f(this); }
+        import * as Utils from "../module/Utils.js";
+        import * as SUtils from "../module/SUtils.js";
+        import * as MUtils from "../module/MUtils.js";
+
+        String.prototype.apply = function (f) { return f(this); }
+        Array.prototype.apply = function (f) { return f(this); }
 
         const TITLE = 'TextAreaFunc';
         const START_HEIGHT = `calc(${10}lh + .5rem + var(--bs-border-width) * 2)`;
@@ -51,55 +56,64 @@
             }
         }
 
-        document.querySelector("head").append(Title.with({
+        document.querySelector("head").append(Title({
             id: "title",
             innerText: TITLE
         }).create());
 
-        document.querySelector("body").append(Section.with({
+        const input = TextArea({
+            id: "input",
+            class: "border-3 lh-sm form-control font-monospace border-bottom-0 rounded-0 rounded-top-2 pb-0",
+            event: { input: apply },
+            style: { height: 'calc(1.5em + .75rem + calc(var(--bs-border-width) * 2))', },
+            attribute: { placeholder: "input" }
+        });
+
+        const func = TextArea({
+            id: "func",
+            class: "border-3 lh-sm form-control font-monospace border-top-0 rounded-0 rounded-bottom-2 pt-0",
+            value: atob(QueStMan.get("func") || '') || _body.map(s => s.trim()).join("\n"),
+            event: { input: apply },
+            style: { height: START_HEIGHT }
+        });
+
+        const output = Span({
+            class: "position-relative",
+            children: [
+                Pre({
+                    id: "output",
+                    class: "border-3 lh-sm form-control mt-3 text-wrap text-break",
+                }),
+                Span({
+                    class: "m-2 position-absolute top-0 end-0",
+                    children: Button({
+                        class: "btn btn-sm btn-light",
+                        children: I({ class: "bi bi-clipboard" }),
+                        attribute: {
+                            title: "copy"
+                        },
+                        event: {
+                            click: () => navigator.clipboard.writeText(Dom.nodes.output.innerText)
+                        }
+                    })
+                })
+            ]
+        });
+
+        document.querySelector("body").append(Section({
             class: "container mt-2",
             attribute: { spellcheck: false },
             children: [
-                H1.with({ innerText: "Textarea Func" }),
-                TextArea.with({
-                    id: "input",
-                    class: "border-3 lh-sm form-control font-monospace border-bottom-0 rounded-0 rounded-top-2 pb-0",
-                    event: { input: apply },
-                    style: { height: 'calc(1.5em + .75rem + calc(var(--bs-border-width) * 2))', },
-                    attribute: { placeholder: "input" }
-                }),
-                TextArea.with({
-                    id: "func",
-                    class: "border-3 lh-sm form-control font-monospace border-top-0 rounded-0 rounded-bottom-2 pt-0",
-                    value: atob(QueStMan.get("func") || '') || _body.map(s => s.trim()).join("\n"),
-                    event: { input: apply },
-                    style: { height: START_HEIGHT }
-                }),
-                Span.with({
-                    class: "position-relative",
-                    children: [
-                        Pre.with({
-                            id: "output",
-                            class: "border-3 lh-sm form-control mt-3 text-wrap text-break",
-                        }),
-                        Span.with({
-                            class: "m-2 position-absolute top-0 end-0",
-                            children: Button.with({
-                                class: "btn btn-sm btn-light",
-                                children: I.with({ class: "bi bi-clipboard" }),
-                                attribute: {
-                                    title: "copy"
-                                },
-                                event: {
-                                    click: () => navigator.clipboard.writeText(Dom.nodes.output.innerText)
-                                }
-                            })
-                        })
-                    ]
-                })
+                H1({ innerText: "Textarea Func" }),
+                input,
+                func,
+                output,
             ]
         }).create());
     </script>
+</head>
+
+<body>
 </body>
 
 </html>
