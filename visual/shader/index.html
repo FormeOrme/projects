@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>WebGL Shader Demo</title>
+    <style>
+        body {
+            background: #222;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        canvas {
+            display: block;
+            margin: 2em auto;
+            background: #000;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="glcanvas"></canvas>
+    <script type="module">
+        import { WebGLShader } from '../../module/WebGLShader.js';
+
+        const canvas = document.getElementById('glcanvas');
+        function resizeCanvas() {
+            canvas.width = window.innerWidth - 10;
+            canvas.height = window.innerHeight - 10;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        const fragmentSource = `
+            precision mediump float;
+            
+            #define PI 3.1415926535897932384626433832795
+            #define TWO_PI 6.283185307179586476925286766559
+
+            uniform float u_time;
+            uniform vec2 u_resolution;
+            
+
+            float random(in vec3 st) {
+                return fract(sin(dot(st.xyz, vec3(12.9898,78.233, 45.164))) * 43758.5453123);
+            }
+
+            float noise(in vec3 st) {
+                vec3 i = floor(st);
+                vec3 f = fract(st);
+                
+                // 8 corners of the cube
+                float a = random(i);
+                float b = random(i + vec3(1.0, 0.0, 0.0));
+                float c = random(i + vec3(0.0, 1.0, 0.0));
+                float d = random(i + vec3(1.0, 1.0, 0.0));
+                
+                float e = random(i + vec3(0.0, 0.0, 1.0));
+                float f2 = random(i + vec3(1.0, 0.0, 1.0));
+                float g = random(i + vec3(0.0, 1.0, 1.0));
+                float h = random(i + vec3(1.0, 1.0, 1.0));
+
+                vec3 u = f * f * (3.0 - 2.0 * f);
+
+                return mix(mix(mix(a, b, u.x), mix(c, d, u.x), u.y),
+                           mix(mix(e, f2, u.x), mix(g, h, u.x), u.y), u.z);
+            }
+
+            #define OCTAVES 6
+            float fbm(in vec3 st) {
+                float value = 0.0;
+                float amplitude = 0.5;
+                for (int i = 0; i < OCTAVES; i++) {
+                    value += amplitude * noise(st);
+                    st *= 2.0;
+                    amplitude *= 0.5;
+                }
+                return value;
+            }
+
+            void main() {
+
+                vec2 uv = (gl_FragCoord.xy - 0.5 * u_resolution.xy) / u_resolution.y;
+                // slowly zoom out over time
+                uv *= 11.0;
+
+                float r = length(uv);
+                float a = atan(uv.y, uv.x) + PI; // 0 to 2PI
+                
+                float sides = 1.0;
+                float segment = TWO_PI / sides;
+                float index = floor(a / segment);
+                float localAngle = mod(a, segment);
+
+                if (mod(index, 2.0) >= 1.0) {
+                    localAngle = segment - localAngle;
+                }
+
+                // convert back to cartesian for noise sampling, scaled
+                vec2 st_kaleidoscoped = vec2(cos(localAngle), sin(localAngle)) * r; 
+
+                st_kaleidoscoped.x -= sin(u_time * 0.313 + r * 3.1 * cos(u_time * 0.17)) * 0.37;
+                st_kaleidoscoped.y += cos(u_time * 0.213 + r * 5.2 * sin(u_time * 0.23)) * 0.45;
+
+                vec3 st = vec3(st_kaleidoscoped * 3.0, u_time * 0.05);
+
+                float n = smoothstep(0.2, 0.7, fbm(st));
+
+                vec3 color = vec3(n);
+                
+                // smoothly mix to red for very dark areas
+                // as n goes from 0.0 to 0.1, we transition from red to the noise color
+                float redAmount = 1.0 - smoothstep(0.0, 0.05, n);
+                color = mix(color, vec3(1.0, 0.0, 0.0), redAmount);
+
+                gl_FragColor = vec4(color, 1.0);
+            }`;
+
+        new WebGLShader({
+            canvas: canvas,
+            fragmentSource: fragmentSource,
+        }).animate();
+    </script>
+</body>
+
+</html>
