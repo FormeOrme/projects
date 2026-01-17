@@ -104,10 +104,16 @@
                 // convert back to cartesian for noise sampling, scaled
                 vec2 st_kaleidoscoped = vec2(cos(localAngle), sin(localAngle)) * r; 
 
-                st_kaleidoscoped.x -= sin(u_time * 0.313 + r * 3.1 * cos(u_time * 0.17)) * 0.37;
-                st_kaleidoscoped.y += cos(u_time * 0.213 + r * 5.2 * sin(u_time * 0.23)) * 0.45;
+                float fbmAmount = fbm(vec3(st_kaleidoscoped * 0.5,.5));
+                st_kaleidoscoped += st_kaleidoscoped * fbmAmount * 0.1;
+
+                st_kaleidoscoped.x -= sin(u_time * 0.313 + r * (2.1 + fbmAmount*0.71) * cos(u_time * 0.17)) * 0.37;
+                st_kaleidoscoped.y += cos(u_time * 0.213 + r * (1.7 + fbmAmount*0.73) * sin(u_time * 0.23)) * 0.45;
 
                 vec3 st = vec3(st_kaleidoscoped * 3.0, u_time * 0.05);
+
+                float fbmScale = fbm(st * 0.5);
+                st *= mix(0.8, 2.5, fbmScale);
 
                 float n = smoothstep(0.2, 0.7, fbm(st));
 
@@ -115,8 +121,8 @@
                 
                 // smoothly mix to red for very dark areas
                 // as n goes from 0.0 to 0.1, we transition from red to the noise color
-                float redAmount = 1.0 - smoothstep(0.0, 0.05, n);
-                color = mix(color, vec3(1.0, 0.0, 0.0), redAmount);
+                // float redAmount = 1.0 - smoothstep(0.0, 0.05, n);
+                // color = mix(color, vec3(1.0, 0.0, 0.0), redAmount);
 
                 gl_FragColor = vec4(color, 1.0);
             }`;
