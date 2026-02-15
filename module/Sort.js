@@ -21,6 +21,16 @@ export function asc(func = Identity) {
 }
 
 /**
+ * Creates a comparator function for descending numerical sorting.
+ *
+ * @param {Function} [func=Identity] - A function to extract the value to be compared from each object.
+ * @returns {Function} A comparator function for descending numerical sorting.
+ */
+export function desc(func = Identity) {
+    return (o1, o2) => (func(o2) ?? 0) - (func(o1) ?? 0);
+}
+
+/**
  * Reverses the order of a given comparator function.
  *
  * @param {Function} sorting - A comparator function to reverse.
