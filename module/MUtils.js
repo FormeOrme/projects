@@ -1,8 +1,11 @@
-const { PI, cos, random: rand } = Math;
+const { PI, cos, sin, random: rand, min: _min, max: _max } = Math;
 
 const DEG_TO_RAD = PI / 180;
 const RAD_TO_DEG = 180 / PI;
-const TAU = PI * 2;
+
+export function clamp(num, min, max) {
+    return _min(_max(num, min), max);
+}
 
 export function toFixed(value, digits) {
     return digits ? Number(value.toFixed(digits)) : value;
