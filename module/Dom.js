@@ -145,8 +145,8 @@ export class Dom {
 
     static addStyleNode = (css) =>
         document.head.appendChild(
-            Style.with({
-                innerText: css,
+            Style({
+                text: css,
                 attribute: {
                     type: "text/css",
                 },
