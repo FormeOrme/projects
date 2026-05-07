@@ -146,3 +146,33 @@ export function compact(obj) {
     }
     return [].concat(obj).flat(Infinity).map(trim).filter(Boolean);
 }
+
+/**
+ * Returns a new object containing only the keys present in the mask.
+ * Supports nested masks: if a mask value is an object/array, it is applied
+ * recursively to the corresponding nested object.
+ * @param {Object} obj - The source object.
+ * @param {string[] | Object} mask - An array of keys, or an object whose keys define the mask.
+ *   Nested masks: { a: true, b: { x: true } } will include obj.a and only obj.b.x.
+ * @returns {Object} A new object with only the masked properties.
+ */
+export function mask(obj, mask) {
+    const result = {};
+    if (Array.isArray(mask)) {
+        for (let i = 0; i < mask.length; i++) {
+            const k = mask[i];
+            if (Object.hasOwn(obj, k)) result[k] = obj[k];
+        }
+        return result;
+    }
+    for (const k in mask) {
+        if (!Object.hasOwn(obj, k)) continue;
+        const subMask = mask[k];
+        const val = obj[k];
+        result[k] =
+            subMask && typeof subMask === "object" && val && typeof val === "object"
+                ? mask(val, subMask)
+                : val;
+    }
+    return result;
+}
