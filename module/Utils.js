@@ -151,28 +151,37 @@ export function compact(obj) {
  * Returns a new object containing only the keys present in the mask.
  * Supports nested masks: if a mask value is an object/array, it is applied
  * recursively to the corresponding nested object.
+ * Wildcard "*": if a mask key is "*", its sub-mask is applied to every key
+ * of the corresponding object in obj.
  * @param {Object} obj - The source object.
- * @param {string[] | Object} mask - An array of keys, or an object whose keys define the mask.
+ * @param {string[] | Object} msk - An array of keys, or an object whose keys define the mask.
  *   Nested masks: { a: true, b: { x: true } } will include obj.a and only obj.b.x.
+ *   Wildcard: { a: { "*": { b: true } } } will include b from every value in obj.a.
  * @returns {Object} A new object with only the masked properties.
  */
-export function mask(obj, mask) {
+export function mask(obj, msk) {
     const result = {};
-    if (Array.isArray(mask)) {
-        for (let i = 0; i < mask.length; i++) {
-            const k = mask[i];
+    const applySubMask = (val, subMask) =>
+        subMask && typeof subMask === "object" && val && typeof val === "object"
+            ? mask(val, subMask)
+            : val;
+    if (Array.isArray(msk)) {
+        for (let i = 0; i < msk.length; i++) {
+            const k = msk[i];
             if (Object.hasOwn(obj, k)) result[k] = obj[k];
         }
         return result;
     }
-    for (const k in mask) {
+    for (const k in msk) {
+        if (k === "*") {
+            const subMask = msk[k];
+            for (const ck of Object.keys(obj)) {
+                result[ck] = applySubMask(obj[ck], subMask);
+            }
+            continue;
+        }
         if (!Object.hasOwn(obj, k)) continue;
-        const subMask = mask[k];
-        const val = obj[k];
-        result[k] =
-            subMask && typeof subMask === "object" && val && typeof val === "object"
-                ? mask(val, subMask)
-                : val;
+        result[k] = applySubMask(obj[k], msk[k]);
     }
     return result;
 }
