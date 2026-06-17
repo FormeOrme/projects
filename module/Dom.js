@@ -98,12 +98,12 @@ export class Elem {
         return deepMerge(Object.assign(updated, this), obj);
     }
 
-    createSvg({ profile: profileName } = {}) {
-        return this.create({ profile: profileName, namespace: "http://www.w3.org/2000/svg" });
+    createSvg() {
+        return this.create({ namespace: "http://www.w3.org/2000/svg" });
     }
 
-    create({ profile: profileName, namespace } = {}) {
-        return profile(profileName, () => createElement(this, namespace));
+    create({ namespace } = {}) {
+        return createElement(this, namespace);
     }
 
     wrapWith(element, options = {}) {

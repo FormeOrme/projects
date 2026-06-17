@@ -185,3 +185,13 @@ export function mask(obj, msk) {
     }
     return result;
 }
+
+export function debounce(func, delay = 200) {
+    let task = null;
+    return (...args) => {
+        if (task) clearTimeout(task);
+        task = setTimeout(() => {
+            func(...args);
+        }, delay);
+    };
+}
