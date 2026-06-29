@@ -153,27 +153,52 @@ export class Dom {
             }).create(),
         );
 
+    /**
+     * Watches `parentSelector` for elements matching `targetSelector` being added to the DOM,
+     * invoking `callback(element, observer)` for each. Also runs immediately on any pre-existing matches.
+     * @param {string} parentSelector - CSS selector for the root element to observe.
+     * @param {string} targetSelector - CSS selector for elements to watch for.
+     * @param {(element: Element, observer: MutationObserver) => void} callback
+     * @returns {MutationObserver | null} The observer (call `.disconnect()` to stop), or null if the parent wasn't found.
+     */
     static monitor(parentSelector, targetSelector, callback) {
         const parent = document.querySelector(parentSelector);
-        if (!parent) return;
+        if (!parent) {
+            console.warn(`Dom.monitor: parent not found for selector "${parentSelector}"`);
+            return null;
+        }
 
-        const observer = new MutationObserver((mutationsList, observer) =>
-            mutationsList.forEach((mutation) => {
-                if (mutation.type !== "childList") return;
-                Array.from(mutation.addedNodes).forEach((node) => {
-                    if (node.nodeType !== Node.ELEMENT_NODE) return;
-                    if (node.matches(targetSelector)) {
-                        callback(node, observer);
-                        return;
-                    }
-                    node.querySelectorAll(targetSelector).forEach((child) =>
-                        callback(child, observer),
-                    );
-                });
-            }),
-        );
+        const notify = (node) => {
+            try {
+                if (node.matches(targetSelector)) {
+                    callback(node, observer);
+                    return;
+                }
+                for (const child of node.querySelectorAll(targetSelector)) {
+                    callback(child, observer);
+                }
+            } catch (e) {
+                console.error("Dom.monitor: error in callback or selector", e);
+            }
+        };
+
+        const observer = new MutationObserver((mutationsList) => {
+            for (const mutation of mutationsList) {
+                for (const node of mutation.addedNodes) {
+                    if (node.nodeType !== Node.ELEMENT_NODE) continue;
+                    notify(node);
+                }
+            }
+        });
         observer.observe(parent, { childList: true, subtree: true });
-        document.querySelectorAll(targetSelector).forEach((element) => callback(element, observer));
+        try {
+            for (const element of parent.querySelectorAll(targetSelector)) {
+                callback(element, observer);
+            }
+        } catch (e) {
+            console.error("Dom.monitor: error in initial scan or selector", e);
+        }
+        return observer;
     }
 
     static camelCaseAttributes = [
