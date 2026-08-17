@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Juice Art Recipes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:wght@600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    <link rel="stylesheet" href="./styles.css">
+    <script type="module" src="./app.js"></script>
+</head>
+
+<body>
+    <header class="site-header">
+        <div class="container">
+            <h1>Recipes</h1>
+        </div>
+    </header>
+    <main class="container">
+        <section class="filters" aria-label="Recipe filters">
+            <div class="filter-row">
+                <label for="category">Category
+                    <select id="category">
+                        <option value="">All categories</option>
+                    </select>
+                </label>
+                <button id="clear" class="secondary outline" type="button">Clear filters</button>
+            </div>
+            <fieldset class="ingredient-filters">
+                <legend>Ingredients</legend>
+                <div id="ingredient-filters" class="ingredient-toggles" role="group" aria-label="Filter by ingredients">
+                </div>
+            </fieldset>
+        </section>
+        <div class="results-bar">
+            <strong id="result-count">Loading recipes...</strong>
+            <span id="status" role="status"></span>
+        </div>
+        <section id="recipes" class="recipe-grid" aria-live="polite"></section>
+    </main>
+</body>
+
+</html>
