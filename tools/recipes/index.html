@@ -24,19 +24,25 @@
     <main class="container">
         <section class="filters" aria-label="Recipe filters">
             <div class="filter-row">
-                <label for="category">Category
+                <label for="category">I want to make a
                     <select id="category">
                         <option value="">All categories</option>
                     </select>
                 </label>
+                <div class="have-ingredients">
+                    <span class="control-label">I have:</span>
+                    <div id="owned-ingredients" class="ingredient-toggles" role="group" aria-label="Ingredients I have">
+                    </div>
+                </div>
                 <button id="clear" class="secondary outline" type="button">Clear filters</button>
             </div>
-            <fieldset class="ingredient-filters">
-                <legend>Ingredients</legend>
-                <div id="ingredient-filters" class="ingredient-toggles" role="group" aria-label="Filter by ingredients">
-                </div>
-            </fieldset>
+            <details class="ingredient-filters">
+                <summary>Ingredients I don't have</summary>
+                <div id="ingredient-filters" class="ingredient-toggles" role="group"
+                    aria-label="Ingredients I do not have"></div>
+            </details>
         </section>
+        <p id="recap" class="recap" aria-live="polite">Loading recipes...</p>
         <div class="results-bar">
             <strong id="result-count">Loading recipes...</strong>
             <span id="status" role="status"></span>
