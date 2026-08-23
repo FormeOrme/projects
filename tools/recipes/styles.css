@@ -386,8 +386,30 @@ h1 {
 }
 
 .recipe-ingredient-label {
+    display: flex;
+    align-items: center;
+    gap: .45rem;
     min-width: 0;
     overflow-wrap: anywhere;
+}
+
+.recipe-ingredient-icon {
+    display: inline-grid;
+    flex: 0 0 1.65rem;
+    width: 1.65rem;
+    height: 1.65rem;
+    place-items: center;
+    border: 1px solid rgba(36, 50, 56, .1);
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .72);
+    font-size: 1rem;
+    line-height: 1;
+}
+
+.recipe-ingredient-text {
+    flex: 1;
+    min-width: 0;
+    text-align: left;
 }
 
 .recipe-ingredient-remove {

@@ -1,1788 +1,2331 @@
 {
-  "source": "The Juice Lady's Guide to Juicing for Health",
-  "recipes": [
-    {
-      "id": "afternoon-refresher",
-      "category": "juice",
-      "serves": "1",
-      "ingredients": [
+    "source": "The Juice Lady's Guide to Juicing for Health",
+    "recipes": [
         {
-          "ingredient": "cucumber",
-          "quantity": "1 medium to large organic",
-          "details": "scrubbed well if organic, or peeled if not organic"
+            "id": "afternoon-refresher",
+            "category": "juice",
+            "serves": "1",
+            "ingredients": [
+                {
+                    "ingredient": "cucumber",
+                    "quantity": "1 medium to large organic",
+                    "details": "scrubbed well if organic, or peeled if not organic"
+                },
+                {
+                    "ingredient": "lemon",
+                    "quantity": "½ small or medium",
+                    "details": "peeled"
+                }
+            ],
+            "tags": ["afternoon"]
         },
         {
-          "ingredient": "lemon",
-          "quantity": "½ small or medium",
-          "details": "peeled"
+            "id": "allergy-relief",
+            "category": "juice",
+            "serves": "1",
+            "ingredients": [
+                {
+                    "ingredient": "parsley",
+                    "quantity": "1 small bunch"
+                },
+                {
+                    "ingredient": "lemon",
+                    "quantity": "¼ to ½ small or medium",
+                    "details": "washed, or peeled if not organic"
+                },
+                {
+                    "ingredient": "celery",
+                    "quantity": "2",
+                    "details": "stalks with leaves"
+                },
+                {
+                    "ingredient": "carrot",
+                    "quantity": "2 to 3 large",
+                    "details": "scrubbed well, green tops removed, and ends trimmed"
+                }
+            ],
+            "tags": ["allergy"]
+        },
+        {
+            "id": "antiulcer-cabbage-cocktail",
+            "category": "juice",
+            "serves": "1",
+            "ingredients": [
+                {
+                    "ingredient": "cabbage",
+                    "quantity": "¼ small head"
+                },
+                {
+                    "ingredient": "carrot",
+                    "quantity": "3",
+                    "details": "scrubbed well, tops removed, and ends trimmed"
+                },
+                {
+                    "ingredient": "celery",
+                    "quantity": "4",
+                    "details": "stalks, with leaves if desired"
+                }
+            ],
+            "note": "Scientific research has proven that cabbage juice is an effective treatment for stomach ulcers."
+        },
+        {
+            "id": "antiviral-cocktail",
+            "category": "juice",
+            "serves": "1-2",
+            "ingredients": [
+                {
+                    "ingredient": "apple",
+                    "quantity": "1"
+                },
+                {
+                    "ingredient": "garlic",
+                    "quantity": "1 large",
+                    "details": "clove with peel"
+                },
+                {
+                    "ingredient": "turnip",
+                    "quantity": "1",
+                    "details": "scrubbed well"
+                },
+                {
+                    "ingredient": "watercress",
+                    "quantity": "1 handful",
+                    "details": "rinsed"
+                },
+                {
+                    "ingredient": "carrot",
+                    "quantity": "5",
+                    "details": "scrubbed well, green tops removed, and ends trimmed"
+                }
+            ]
+        },
+        {
+            "id": "awesome-green-smoothie",
+            "category": "smoothie",
+            "serves": "1-2",
+            "ingredients": [
+                {
+                    "ingredient": "cucumber",
+                    "quantity": "½",
+                    "details": "peeled and cut in chunks"
+                },
+                {
+                    "ingredient": "avocado",
+                    "quantity": "1",
+                    "details": "peeled, seeded, and cut in quarters"
+                },
+                {
+                    "ingredient": "spinach",
+                    "quantity": "240 ml raw"
+                },
+                {
+                    "ingredient": "coconut-milk",
+                    "quantity": "120 ml"
+                },
+                {
+                    "ingredient": "lime",
+                    "quantity": "Juice of 1"
+                },
+                {
+                    "ingredient": "green-powder",
+                    "quantity": "15 ml",
+                    "details": "of choice (optional)"
+                },
+                {
+                    "ingredient": "almonds",
+                    "quantity": "30 to 45 ml ground",
+                    "details": "(optional)"
+                }
+            ],
+            "tags": ["green", "smoothie"]
+        },
+        {
+            "id": "beautiful-bone-solution",
+            "category": "juice",
+            "serves": "1",
+            "ingredients": [
+                {
+                    "ingredient": "apple",
+                    "quantity": "1"
+                },
+                {
+                    "ingredient": "kale",
+                    "quantity": "1 to 2",
+                    "details": "leaves"
+                },
+                {
+                    "ingredient": "parsley",
+                    "quantity": "1 handful"
+                },
+                {
+                    "ingredient": "celery",
+                    "quantity": "1 organic",
+                    "details": "stalk"
+                },
+                {
+                    "ingredient": "lemon",
+                    "quantity": "¼ small or medium",
+                    "details": "peeled"
+                },
+                {
+                    "ingredient": "gingerroot",
+                    "quantity": "1.3 to 2.5 cm piece",
+                    "details": "peeled"
+                }
+            ]
+        },
+        {
+            "id": "beautiful-skin-cocktail",
+            "category": "juice",
+            "serves": "1-2",
+            "ingredients": [
+                {
+                    "ingredient": "cucumber",
+                    "quantity": "1",
+                    "details": "peeled"
+                },
+                {
+                    "ingredient": "parsnip",
+                    "quantity": "1",
+                    "details": "peeled"
+                },
+                {
+                    "ingredient": "carrot",
+                    "quantity": "2 to 3",
+                    "details": "scrubbed well, tops removed, and ends trimmed"
+                },
+                {
+                    "ingredient": "lemon",
+                    "quantity": "½",
+                    "details": "peeled"
+                },
+                {
+                    "ingredient": "bell-pepper",
+                    "quantity": "¼ green",
+                    "details": "seeded"
+                }
+            ],
+            "note": "Cucumber and bell pepper are good sources of the trace mineral silicon, which is recommended to strengthen skin, hair, and fingernails along with bones. In studies, silicon has been shown to reduce signs of aging by improving thickness of skin and reducing wrinkles.",
+            "tags": ["bones", "skin"]
+        },
+        {
+            "id": "beet-cucumber-cleansing-cocktail",
+            "category": "juice",
+            "serves": "1-2",
+            "ingredients": [
+                {
+                    "ingredient": "cucumber",
+                    "quantity": "1",
+                    "details": "peeled"
+                },
+                {
+                    "ingredient": "carrot",
+                    "quantity": "3",
+                    "details": "scrubbed well, tops removed, and ends trimmed"
+                },
+                {
+                    "ingredient": "beetroot",
+                    "quantity": "1",
+                    "details": "with stem and leaves, scrubbed well"
+                },
+                {
+                    "ingredient": "celery",
+                    "quantity": "2",
+                    "details": "stalks"
+                },
+                {
+                    "ingredient": "parsley",
+                    "quantity": "1 handful"
+                },
+                {
+                    "ingredient": "gingerroot",
+                    "quantity": "2.5 to 5 cm piece",
+                    "details": "scrubbed or peeled if old"
+                },
+                {
+                    "ingredient": "lemon",
+                    "quantity": "½",
+                    "details": "peeled"
+                }
+            ],
+            "tags": ["cleansing"]
+        },
+        {
+            "id": "bladder-tonic",
+            "category": "juice",
+            "serves": "1-2",
+            "ingredients": [
+                {
+                    "ingredient": "tomato",
+                    "quantity": "1 medium vine-ripened"
+                },
+                {
+                    "ingredient": "cucumber",
+                    "quantity": "1 organic",
+                    "details": "peeled if not organic"
+                },
+                {
+                    "ingredient": "asparagus",
+                    "quantity": "8",
+                    "details": "stems"
+                },
+                {
+                    "ingredient": "lemon",
+                    "quantity": "½ medium",
+                    "details": "washed, or peeled if not organic"
+                },
+                {
+                    "ingredient": "hot-sauce",
+                    "quantity": "Dash"
+                }
+            ],
+            "tags": ["bladder"]
+        },
+        {
+            "id": "cabbage-patch-cocktail",
+            "category": "juice",
+            "serves": "1",
+            "ingredients": [
+                {
+                    "ingredient": "cabbage",
+                    "quantity": "1.36 to 1.81 kg",
+                    "details": "(spring or summer cabbage is best)"
+                },
+                {
+                    "ingredient": "tomato",
+                    "quantity": "1",
+                    "details": "or 1 lemon, peeled"
+                },
+                {
+                    "ingredient": "celery",
+                    "quantity": "454 g organic",
+                    "details": "with leaves"
+                }
+            ]
+        },
+        {
+            "id": "calcium-rich-cocktail",
+            "category": "juice",
+            "serves": "1-2",
+            "ingredients": [
+                {
+                    "ingredient": "cucumber",
+                    "quantity": "1",
+                    "details": "peeled"
+                },
+                {
+                    "ingredient": "kale",
+                    "quantity": "1 to 2 medium-large",
+                    "details": "leaves"
+                },
+                {
+                    "ingredient": "parsley",
+                    "quantity": "1 handful"
+                },
+                {
+                    "ingredient": "celery",
+                    "quantity": "1",
+                    "details": "stalk"
+                },
+                {
+                    "ingredient": "lemon",
+                    "quantity": "½",
+                    "details": "peeled"
+                },
+                {
+                    "ingredient": "gingerroot",
+                    "quantity": "2.5 cm piece",
+                    "details": "scrubbed or peeled if old"
+                }
+            ]
+        },
+        {
+            "id": "cheries-green-smoothie",
+            "category": "smoothie",
+            "serves": "2",
+            "ingredients": [
+                {
+                    "ingredient": "cucumber",
+                    "quantity": "½",
+                    "details": "peeled and cut into chunks"
+                },
+                {
+                    "ingredient": "avocado",
+                    "quantity": "1",
+                    "details": "peeled, seeded, and cut into quarters"
+                },
+                {
+                    "ingredient": "spinach",
+                    "quantity": "240 ml raw"
+                },
+                {
+                    "ingredient": "lime",
+                    "quantity": "Juice of 1"
+                },
+                {
+                    "ingredient": "green-powder",
+                    "quantity": "15 ml",
+                    "details": "of choice (optional)"
+                },
+                {
+                    "ingredient": "almonds",
+                    "quantity": "30 to 45 ml ground",
+                    "details": "(optional)"
+                }
+            ],
+            "tags": ["green", "smoothie"]
+        },
+        {
+            "id": "cheries-quick-energy-soup",
+            "category": "soup",
+            "serves": "1",
+            "ingredients": [
+                {
+                    "ingredient": "carrot",
+                    "quantity": "300 ml fresh",
+                    "details": "juice (5 to 7 medium, or approximately 454 g, yield about 240 ml)"
+                },
+                {
+                    "ingredient": "avocado",
+                    "quantity": "1",
+                    "details": "peeled and seeded"
+                },
+                {
+                    "ingredient": "cumin",
+                    "quantity": "2.5 ml ground"
+                }
+            ],
+            "tags": ["energy", "soup"]
+        },
+        {
+            "id": "colon-cleanser",
+            "category": "juice",
+            "serves": "1",
+            "ingredients": [
+                {
+                    "ingredient": "apple",
+                    "quantity": "2",
+                    "details": "s"
+                },
+                {
+                    "ingredient": "lemon",
+                    "quantity": "½ medium"
+                },
+                {
+                    "ingredient": "spinach",
+                    "quantity": "1 bunch"
+                },
+                {
+                    "ingredient": "parsley",
+                    "quantity": "1 handful"
+                }
+            ],
+            "tags": ["colon"]
+        },
+        {
+            "id": "cranberry-apple-cocktail",
+            "category": "juice",
+            "serves": "1",
+            "ingredients": [
+                {
+                    "ingredient": "apple",
+                    "quantity": "2 organic",
+                    "details": "s"
+                },
+                {
+                    "ingredient": "cranberries",
+                    "quantity": "60 to 120 ml fresh or frozen (thawed)"
+                },
+                {
+                    "ingredient": "lemon",
+                    "quantity": "¼ small or medium",
+                    "details": "washed, or peeled if not organic"
+                },
+                {
+                    "ingredient": "water",
+                    "quantity": "120 ml purified",
+                    "details": "(optional)"
+                }
+            ]
+        },
+        {
+            "id": "gallbladder-liver-cleansing-cocktail",
+            "category": "juice",
+            "serves": "1",
+            "ingredients": [
+                {
+                    "ingredient": "cucumber",
+                    "quantity": "½ organic",
+                    "details": "scrubbed"
+                },
+                {
+                    "ingredient": "lemon",
+                    "quantity": "½ medium",
+                    "details": "peeled"
+                },
+                {
+                    "ingredient": "carrot",
+                    "quantity": "5",
+                    "details": "scrubbed well, green tops removed, and ends trimmed"
+                },
+                {
+                    "ingredient": "beetroot",
+                    "quantity": "½ small to medium",
+                    "details": "with leaves and stems, scrubbed well"
+                }
+            ],
+            "tags": ["cleansing", "gallbladder", "liver"]
+        },
+        {
+            "id": "gallbladder-rejuvenator",
+            "category": "juice",
+            "serves": "1-2",
+            "ingredients": [
+                {
+                    "ingredient": "cabbage",
+                    "quantity": "¼ purple"
+                },
+                {
+                    "ingredient": "carrot",
+                    "quantity": "3 to 4",
+                    "details": "scrubbed well, green tops removed, and ends trimmed"
+                },
+                {
+                    "ingredient": "beetroot",
+                    "quantity": "½",
+                    "details": "with leaves and stems, scrubbed well"
+                },
+                {
+                    "ingredient": "lemon",
+                    "quantity": "½",
+                    "details": "peeled"
+                },
+                {
+                    "ingredient": "apple",
+                    "quantity": "½"
+                },
+                {
+                    "ingredient": "gingerroot",
+                    "quantity": "2.5 cm piece",
+                    "details": "scrubbed or peeled if old"
+                }
+            ],
+            "tags": ["gallbladder"]
+        },
+        {
+            "id": "garlic-surprise",
+            "category": "juice",
+            "serves": "1-2",
+            "ingredients": [
+                {
+                    "ingredient": "parsley",
+                    "quantity": "1 handful"
+                },
+                {
+                    "ingredient": "lettuce",
+                    "quantity": "1",
+                    "details": "leaf"
+                },
+                {
+                    "ingredient": "cucumber",
+                    "quantity": "½ medium",
+                    "details": "peeled"
+                },
+                {
+                    "ingredient": "garlic",
+                    "quantity": "1",
+                    "details": "clove"
+                },
+                {
+                    "ingredient": "carrot",
+                    "quantity": "3",
+                    "details": "scrubbed well, green tops removed, and ends trimmed"
+                },
+                {
+                    "ingredient": "celery",
+                    "quantity": "2",
+                    "details": "stalks"
+                }
+            ]
+        },
+        {
+            "id": "the-ginger-hopper",
+            "category": "juice",
+            "serves": "1",
+            "ingredients": [
+                {
+                    "ingredient": "apple",
+                    "quantity": "½"
+                },
+                {
+                    "ingredient": "gingerroot",
+                    "quantity": "1.3 to 2.5 cm piece",
+                    "details": "peeled"
+                },
+                {
+                    "ingredient": "carrot",
+                    "quantity": "5 medium",
+                    "details": "scrubbed well, green tops removed, and ends trimmed"
+                }
+            ],
+            "tags": ["ginger"]
+        },
+        {
+            "id": "ginger-twist",
+            "category": "juice",
+            "serves": "1",
+            "ingredients": [
+                {
+                    "ingredient": "parsley",
+                    "quantity": "1 handful"
+                },
+                {
+                    "ingredient": "lemon",
+                    "quantity": "½",
+                    "details": "peeled"
+                },
+                {
+                    "ingredient": "carrot",
+                    "quantity": "4",
+                    "details": "scrubbed well, green tops removed, and ends trimmed"
+                },
+                {
+                    "ingredient": "gingerroot",
+                    "quantity": "2.5 cm piece",
+                    "details": "peeled"
+                }
+            ],
+            "tags": ["ginger"]
+        },
+        {
+            "id": "gout-fighting-tonic",
+            "category": "juice",
+            "serves": "1",
+            "ingredients": [
+                {
+                    "ingredient": "apple",
+                    "quantity": "1"
+                },
+                {
+                    "ingredient": "strawberries",
+                    "quantity": "240 ml",
+                    "details": "or 227 g organic cherries, pits removed"
+                },
+                {
+                    "ingredient": "celery",
+                    "quantity": "2",
+                    "details": "stalks"
+                },
+                {
+                    "ingredient": "lemon",
+                    "quantity": "½",
+                    "details": "peeled"
+                }
+            ],
+            "tags": ["gout"]
+        },
+        {
+            "id": "happy-morning",
+            "category": "juice",
+            "serves": "1",
+            "ingredients": [
+                {
+                    "ingredient": "apple",
+                    "quantity": "½"
+                },
+                {
+                    "ingredient": "carrot",
+                    "quantity": "4 to 5",
+                    "details": "well scrubbed, green tops removed, and ends trimmed"
+                },
+                {
+                    "ingredient": "fennel",
+                    "quantity": "3",
+                    "details": "stalks; include leaves and flowers"
+                },
+                {
+                    "ingredient": "cucumber",
+                    "quantity": "½",
+                    "details": "peeled"
+                },
+                {
+                    "ingredient": "spinach",
+                    "quantity": "1 handful"
+                },
+                {
+                    "ingredient": "gingerroot",
+                    "quantity": "2.5 cm piece",
+                    "details": "peeled"
+                }
+            ],
+            "note": "Fennel juice has been used as a traditional tonic to help the body release endorphins, the feel-good peptides, from the brain into the bloodstream. Endorphins help diminish anxiety and fear, and generate a mood of euphoria.",
+            "tags": ["mood", "morning"]
+        },
+        {
+            "id": "healthy-lungs",
+            "category": "juice",
+            "serves": "1",
+            "ingredients": [
+                {
+                    "ingredient": "watercress",
+                    "quantity": "1 handful"
+                },
+                {
+                    "ingredient": "turnip",
+                    "quantity": "1 small",
+                    "details": "scrubbed well, tops removed, and ends trimmed"
+                },
+                {
+                    "ingredient": "jicama",
+                    "quantity": "5 cm piece of",
+                    "details": "scrubbed well or peeled"
+                },
+                {
+                    "ingredient": "carrot",
+                    "quantity": "2 to 3",
+                    "details": "scrubbed well, tops removed, and ends trimmed"
+                },
+                {
+                    "ingredient": "garlic",
+                    "quantity": "1",
+                    "details": "clove"
+                },
+                {
+                    "ingredient": "lemon",
+                    "quantity": "½",
+                    "details": "peeled"
+                }
+            ],
+            "note": "Turnip juice has traditionally been used a remedy to strengthen lung tissue.",
+            "tags": ["lungs"]
+        },
+        {
+            "id": "healthy-sinus-solution",
+            "category": "juice",
+            "serves": "1",
+            "ingredients": [
+                {
+                    "ingredient": "tomato",
+                    "quantity": "2 vine-ripened"
+                },
+                {
+                    "ingredient": "cucumber",
+                    "quantity": "½",
+                    "details": "peeled"
+                },
+                {
+                    "ingredient": "radishes",
+                    "quantity": "6",
+                    "details": "scrubbed"
+                },
+                {
+                    "ingredient": "lime",
+                    "quantity": "½",
+                    "details": "peeled"
+                }
+            ],
+            "note": "Radish juice is a traditional remedy to open up the sinuses and support the mucous membranes.",
+            "tags": ["sinus"]
+        },
+        {
+            "id": "hot-ginger-lemon-tea",
+            "category": "tea",
+            "serves": "2",
+            "ingredients": [
+                {
+                    "ingredient": "gingerroot",
+                    "quantity": "5 cm piece",
+                    "details": "Dash ground cardamom"
+                },
+                {
+                    "ingredient": "lemon",
+                    "quantity": "½ small or medium",
+                    "details": "washed, or peeled if not organic"
+                },
+                {
+                    "ingredient": "water",
+                    "quantity": "480 ml pure"
+                },
+                {
+                    "ingredient": "licorice-tea",
+                    "quantity": "15 ml loose",
+                    "details": "or 1 tea bag (optional)"
+                },
+                {
+                    "ingredient": "cinnamon",
+                    "quantity": "1 stick",
+                    "details": "broken"
+                },
+                {
+                    "ingredient": "cloves",
+                    "quantity": "4 to 5 whole"
+                },
+                {
+                    "ingredient": "nutmeg",
+                    "quantity": "Dash ground"
+                }
+            ],
+            "tags": ["ginger", "tea"]
+        },
+        {
+            "id": "icy-spicy-tomato",
+            "category": "juice",
+            "serves": "1",
+            "ingredients": [
+                {
+                    "ingredient": "tomato",
+                    "quantity": "2 medium vine-ripened"
+                },
+                {
+                    "ingredient": "lettuce",
+                    "quantity": "2 dark green",
+                    "details": "leaves"
+                },
+                {
+                    "ingredient": "radishes",
+                    "quantity": "2",
+                    "details": "scrubbed"
+                },
+                {
+                    "ingredient": "parsley",
+                    "quantity": "4 sprigs"
+                },
+                {
+                    "ingredient": "lemon",
+                    "quantity": "½ lime or",
+                    "details": "peeled"
+                }
+            ],
+            "tags": ["tomato"]
+        },
+        {
+            "id": "immune-builder",
+            "category": "juice",
+            "serves": "1",
+            "ingredients": [
+                {
+                    "ingredient": "watercress",
+                    "quantity": "1 handful"
+                },
+                {
+                    "ingredient": "turnip",
+                    "quantity": "1",
+                    "details": "scrubbed, tops removed, and ends trimmed"
+                },
+                {
+                    "ingredient": "carrot",
+                    "quantity": "3",
+                    "details": "scrubbed well, tops removed, and ends trimmed"
+                },
+                {
+                    "ingredient": "garlic",
+                    "quantity": "1 to 2",
+                    "details": "cloves"
+                },
+                {
+                    "ingredient": "apple",
+                    "quantity": "½",
+                    "details": "such as Granny Smith or pippin"
+                }
+            ],
+            "note": "Studies show that garlic has a compound that has a natural antibiotic-like effect. It is antibacterial, antifungal, antiparasitic, and antiviral, but it must be consumed raw to have this effect.",
+            "tags": ["immune"]
+        },
+        {
+            "id": "jack-and-the-bean",
+            "category": "juice",
+            "serves": "1",
+            "ingredients": [
+                {
+                    "ingredient": "tomato",
+                    "quantity": "1 large vine-ripened"
+                },
+                {
+                    "ingredient": "lettuce",
+                    "quantity": "2 romaine",
+                    "details": "leaves"
+                },
+                {
+                    "ingredient": "string-beans",
+                    "quantity": "8 organic"
+                },
+                {
+                    "ingredient": "sprouts",
+                    "quantity": "3 Brussels"
+                },
+                {
+                    "ingredient": "lemon",
+                    "quantity": "½ small or medium",
+                    "details": "peeled"
+                }
+            ]
+        },
+        {
+            "id": "liver-life-tonic",
+            "category": "juice",
+            "serves": "1",
+            "ingredients": [
+                {
+                    "ingredient": "dandelion-greens",
+                    "quantity": "1 handful"
+                },
+                {
+                    "ingredient": "carrot",
+                    "quantity": "3 to 4",
+                    "details": "scrubbed well, tops removed, and ends trimmed"
+                },
+                {
+                    "ingredient": "cucumber",
+                    "quantity": "½",
+                    "details": "peeled"
+                },
+                {
+                    "ingredient": "lemon",
+                    "quantity": "½",
+                    "details": "peeled"
+                }
+            ],
+            "note": "Dandelion juice is a traditional remedy for cleansing the liver.",
+            "tags": ["cleansing", "liver"]
+        },
+        {
+            "id": "magnesium-rich-cocktail",
+            "category": "juice",
+            "serves": "1",
+            "ingredients": [
+                {
+                    "ingredient": "carrot",
+                    "quantity": "3 to 4",
+                    "details": "scrubbed well, tops removed, and ends trimmed"
+                },
+                {
+                    "ingredient": "celery",
+                    "quantity": "2",
+                    "details": "stalks, with leaves as desired"
+                },
+                {
+                    "ingredient": "beetroot",
+                    "quantity": "½ small",
+                    "details": "scrubbed well"
+                },
+                {
+                    "ingredient": "broccoli",
+                    "quantity": "2 to 3",
+                    "details": "florets"
+                },
+                {
+                    "ingredient": "lemon",
+                    "quantity": "½",
+                    "details": "peeled"
+                }
+            ]
+        },
+        {
+            "id": "memory-mender",
+            "category": "juice",
+            "serves": "1-2",
+            "ingredients": [
+                {
+                    "ingredient": "tomato",
+                    "quantity": "2 medium vine-ripened"
+                },
+                {
+                    "ingredient": "lemon",
+                    "quantity": "½ small or medium",
+                    "details": "washed, or peeled if not organic"
+                },
+                {
+                    "ingredient": "lettuce",
+                    "quantity": "¼ small head iceberg"
+                },
+                {
+                    "ingredient": "cauliflower",
+                    "quantity": "4",
+                    "details": "florets, washed"
+                }
+            ],
+            "tags": ["memory"]
+        },
+        {
+            "id": "mint-refresher",
+            "category": "juice",
+            "serves": "1-2",
+            "ingredients": [
+                {
+                    "ingredient": "fennel",
+                    "quantity": "2 stalks",
+                    "details": "with leaves"
+                },
+                {
+                    "ingredient": "cucumber",
+                    "quantity": "½",
+                    "details": "peeled"
+                },
+                {
+                    "ingredient": "apple",
+                    "quantity": "½",
+                    "details": "such as Granny Smith or pippin"
+                },
+                {
+                    "ingredient": "mint",
+                    "quantity": "1 small handful"
+                },
+                {
+                    "ingredient": "gingerroot",
+                    "quantity": "2.5 cm piece",
+                    "details": "scrubbed or peeled if old"
+                }
+            ]
+        },
+        {
+            "id": "mood-mender",
+            "category": "juice",
+            "serves": "1-2",
+            "ingredients": [
+                {
+                    "ingredient": "fennel",
+                    "quantity": "3",
+                    "details": "stalks; include leaves and flowers"
+                },
+                {
+                    "ingredient": "carrot",
+                    "quantity": "3",
+                    "details": "scrubbed well, tops removed, and ends trimmed"
+                },
+                {
+                    "ingredient": "celery",
+                    "quantity": "2",
+                    "details": "stalks"
+                },
+                {
+                    "ingredient": "pear",
+                    "quantity": "½"
+                },
+                {
+                    "ingredient": "gingerroot",
+                    "quantity": "1.3 cm piece",
+                    "details": "scrubbed or peeled if old"
+                }
+            ],
+            "note": "Fennel juice has long been used as a tonic to help the body release endorphins, the feel-good peptides, from the brain into the bloodstream. Endorphins help diminish anxiety and fear, and generate a mood of euphoria.",
+            "tags": ["mood"]
+        },
+        {
+            "id": "morning-energizer",
+            "category": "juice",
+            "serves": "1-2",
+            "ingredients": [
+                {
+                    "ingredient": "carrot",
+                    "quantity": "3 to 4",
+                    "details": "scrubbed well, tops removed, and ends trimmed"
+                },
+                {
+                    "ingredient": "cucumber",
+                    "quantity": "1",
+                    "details": "peeled"
+                },
+                {
+                    "ingredient": "beetroot",
+                    "quantity": "½",
+                    "details": "scrubbed well (may include stem and 1 to 2 leaves)"
+                },
+                {
+                    "ingredient": "lemon",
+                    "quantity": "½",
+                    "details": "peeled"
+                },
+                {
+                    "ingredient": "gingerroot",
+                    "quantity": "2.5 cm piece",
+                    "details": "scrubbed or peeled if old"
+                }
+            ],
+            "tags": ["morning"]
+        },
+        {
+            "id": "natural-diuretic-cocktail",
+            "category": "juice",
+            "serves": "1",
+            "ingredients": [
+                {
+                    "ingredient": "tomato",
+                    "quantity": "1 medium vine-ripened"
+                },
+                {
+                    "ingredient": "lemon",
+                    "quantity": "½ small or medium",
+                    "details": "washed, or peeled if not organic"
+                },
+                {
+                    "ingredient": "parsley",
+                    "quantity": "1 small handful",
+                    "details": "rinsed"
+                },
+                {
+                    "ingredient": "cucumber",
+                    "quantity": "1 organic",
+                    "details": "scrubbed well"
+                },
+                {
+                    "ingredient": "asparagus",
+                    "quantity": "4",
+                    "details": "stems, washed"
+                }
+            ],
+            "note": "Lemon, parsley, cucumber, and asparagus all act as diuretics.",
+            "tags": ["diuretic"]
+        },
+        {
+            "id": "orient-express",
+            "category": "juice",
+            "serves": "1",
+            "ingredients": [
+                {
+                    "ingredient": "carrot",
+                    "quantity": "2 to 3",
+                    "details": "scrubbed well, tops removed, and ends trimmed"
+                },
+                {
+                    "ingredient": "daikon-radish",
+                    "quantity": "1",
+                    "details": "trimmed and scrubbed"
+                },
+                {
+                    "ingredient": "gingerroot",
+                    "quantity": "2.5 cm piece",
+                    "details": "scrubbed or peeled if old"
+                }
+            ]
+        },
+        {
+            "id": "pancreas-helper",
+            "category": "juice",
+            "serves": "1",
+            "ingredients": [
+                {
+                    "ingredient": "lettuce",
+                    "quantity": "2 romaine",
+                    "details": "leaves"
+                },
+                {
+                    "ingredient": "cucumber",
+                    "quantity": "½",
+                    "details": "peeled"
+                },
+                {
+                    "ingredient": "tomato",
+                    "quantity": "1 large vine-ripened"
+                },
+                {
+                    "ingredient": "string-beans",
+                    "quantity": "8 to 10"
+                },
+                {
+                    "ingredient": "sprouts",
+                    "quantity": "2 Brussels"
+                },
+                {
+                    "ingredient": "lemon",
+                    "quantity": "½",
+                    "details": "peeled"
+                }
+            ],
+            "note": "Brussels sprouts and string bean juice are traditional remedies to help strengthen and support the pancreas. Drink before a meal. (If this drink is too strong, dilute with a little water.) For best pancreas support, also avoid refined carbohydrates such as white-flour products, sugars of all types, soda, and all sweets.",
+            "tags": ["pancreas", "sprouts"]
+        },
+        {
+            "id": "peppy-parsley",
+            "category": "juice",
+            "serves": "1",
+            "ingredients": [
+                {
+                    "ingredient": "parsley",
+                    "quantity": "1 bunch"
+                },
+                {
+                    "ingredient": "celery",
+                    "quantity": "2",
+                    "details": "stalks"
+                },
+                {
+                    "ingredient": "carrot",
+                    "quantity": "1 to 2",
+                    "details": "scrubbed well, tops removed, and ends trimmed"
+                },
+                {
+                    "ingredient": "cucumber",
+                    "quantity": "½",
+                    "details": "peeled"
+                },
+                {
+                    "ingredient": "lemon",
+                    "quantity": "½",
+                    "details": "peeled"
+                }
+            ]
+        },
+        {
+            "id": "the-pink-onion",
+            "category": "juice",
+            "serves": "1",
+            "ingredients": [
+                {
+                    "ingredient": "onion",
+                    "quantity": "1 large yellow"
+                },
+                {
+                    "ingredient": "gingerroot",
+                    "quantity": "2.5 cm piece",
+                    "details": "washed"
+                },
+                {
+                    "ingredient": "grapefruit",
+                    "quantity": "1 large pink",
+                    "details": "peeled, or enough to make 480 ml juice"
+                },
+                {
+                    "ingredient": "lemon",
+                    "quantity": "1 small or medium",
+                    "details": "washed, or peeled if not organic"
+                }
+            ]
+        },
+        {
+            "id": "pure-green-sprout-drink",
+            "category": "juice",
+            "serves": "1",
+            "ingredients": [
+                {
+                    "ingredient": "cucumber",
+                    "quantity": "1 organic",
+                    "details": "scrubbed well"
+                },
+                {
+                    "ingredient": "clover-sprouts",
+                    "quantity": "1 small handful"
+                },
+                {
+                    "ingredient": "sunflower-sprouts",
+                    "quantity": "1 large handful"
+                },
+                {
+                    "ingredient": "buckwheat-sprouts",
+                    "quantity": "1 small handful"
+                }
+            ],
+            "tags": ["green"]
+        },
+        {
+            "id": "radish-care",
+            "category": "juice",
+            "serves": "1",
+            "ingredients": [
+                {
+                    "ingredient": "carrot",
+                    "quantity": "5",
+                    "details": "scrubbed well, green tops removed, and ends trimmed"
+                },
+                {
+                    "ingredient": "radishes",
+                    "quantity": "5 to 6",
+                    "details": "(green tops removed), washed well"
+                },
+                {
+                    "ingredient": "lemon",
+                    "quantity": "½ small or medium",
+                    "details": "washed, or peeled if not organic"
+                }
+            ]
+        },
+        {
+            "id": "the-revitalizer",
+            "category": "juice",
+            "serves": "1",
+            "ingredients": [
+                {
+                    "ingredient": "tomato",
+                    "quantity": "2"
+                },
+                {
+                    "ingredient": "cucumber",
+                    "quantity": "½",
+                    "details": "peeled"
+                },
+                {
+                    "ingredient": "string-beans",
+                    "quantity": "6 to 8"
+                },
+                {
+                    "ingredient": "lemon",
+                    "quantity": "½",
+                    "details": "or lime, peeled"
+                },
+                {
+                    "ingredient": "hot-sauce",
+                    "quantity": "Dash"
+                }
+            ]
+        },
+        {
+            "id": "salsa-in-a-glass",
+            "category": "juice",
+            "serves": "1",
+            "ingredients": [
+                {
+                    "ingredient": "tomato",
+                    "quantity": "1 medium vine-ripened"
+                },
+                {
+                    "ingredient": "cucumber",
+                    "quantity": "½",
+                    "details": "peeled"
+                },
+                {
+                    "ingredient": "cilantro",
+                    "quantity": "1 small handful"
+                },
+                {
+                    "ingredient": "lime",
+                    "quantity": "½",
+                    "details": "peeled"
+                },
+                {
+                    "ingredient": "hot-sauce",
+                    "quantity": "Dash",
+                    "details": "(optional)"
+                }
+            ]
+        },
+        {
+            "id": "sinus-solution",
+            "category": "juice",
+            "serves": "1",
+            "ingredients": [
+                {
+                    "ingredient": "tomato",
+                    "quantity": "2 medium vine-ripened"
+                },
+                {
+                    "ingredient": "radishes",
+                    "quantity": "4",
+                    "details": "with green tops, washed"
+                },
+                {
+                    "ingredient": "lemon",
+                    "quantity": "½ small or medium lime or",
+                    "details": "peeled"
+                }
+            ],
+            "tags": ["sinus"]
+        },
+        {
+            "id": "sleep-mender",
+            "category": "juice",
+            "serves": "1",
+            "ingredients": [
+                {
+                    "ingredient": "lettuce",
+                    "quantity": "2 romaine",
+                    "details": "leaves"
+                },
+                {
+                    "ingredient": "lemon",
+                    "quantity": "½",
+                    "details": "peeled"
+                },
+                {
+                    "ingredient": "carrot",
+                    "quantity": "5 medium",
+                    "details": "scrubbed well, green tops removed, and ends trimmed"
+                },
+                {
+                    "ingredient": "cauliflower",
+                    "quantity": "4",
+                    "details": "florets, washed"
+                }
+            ],
+            "tags": ["sleep"]
+        },
+        {
+            "id": "spinach-power",
+            "category": "juice",
+            "serves": "1-2",
+            "ingredients": [
+                {
+                    "ingredient": "cucumber",
+                    "quantity": "½",
+                    "details": "peeled"
+                },
+                {
+                    "ingredient": "carrot",
+                    "quantity": "3",
+                    "details": "scrubbed well, tops removed, and ends trimmed"
+                },
+                {
+                    "ingredient": "celery",
+                    "quantity": "2",
+                    "details": "stalks, with leaves as desired"
+                },
+                {
+                    "ingredient": "beetroot",
+                    "quantity": "½",
+                    "details": "scrubbed well (may include stem and 1 to 2 leaves)"
+                },
+                {
+                    "ingredient": "parsley",
+                    "quantity": "1 small handful"
+                },
+                {
+                    "ingredient": "lemon",
+                    "quantity": "½",
+                    "details": "peeled"
+                }
+            ]
+        },
+        {
+            "id": "spring-tonic",
+            "category": "juice",
+            "serves": "1-2",
+            "ingredients": [
+                {
+                    "ingredient": "tomato",
+                    "quantity": "1 vine-ripened"
+                },
+                {
+                    "ingredient": "cucumber",
+                    "quantity": "1",
+                    "details": "peeled"
+                },
+                {
+                    "ingredient": "asparagus",
+                    "quantity": "8",
+                    "details": "stems"
+                },
+                {
+                    "ingredient": "lemon",
+                    "quantity": "½",
+                    "details": "peeled"
+                }
+            ],
+            "note": "Asparagus is a natural diuretic, which helps flush toxins from the body and promotes kidney cleansing.",
+            "tags": ["cleansing", "diuretic"]
+        },
+        {
+            "id": "sweet-dreams-nightcap",
+            "category": "juice",
+            "serves": "1",
+            "ingredients": [
+                {
+                    "ingredient": "parsley",
+                    "quantity": "1 small handful"
+                },
+                {
+                    "ingredient": "lettuce",
+                    "quantity": "2 romaine",
+                    "details": "leaves"
+                },
+                {
+                    "ingredient": "cucumber",
+                    "quantity": "½",
+                    "details": "peeled"
+                },
+                {
+                    "ingredient": "carrot",
+                    "quantity": "3",
+                    "details": "scrubbed well, tops removed, and ends trimmed"
+                },
+                {
+                    "ingredient": "cucumber",
+                    "quantity": "½",
+                    "details": "peeled"
+                },
+                {
+                    "ingredient": "celery",
+                    "quantity": "1",
+                    "details": "stalk"
+                }
+            ]
+        },
+        {
+            "id": "super-green-sprout-drink",
+            "category": "juice",
+            "serves": "1",
+            "ingredients": [
+                {
+                    "ingredient": "cucumber",
+                    "quantity": "1",
+                    "details": "peeled"
+                },
+                {
+                    "ingredient": "sunflower-sprouts",
+                    "quantity": "1 large handful"
+                },
+                {
+                    "ingredient": "buckwheat-sprouts",
+                    "quantity": "1 small handful"
+                },
+                {
+                    "ingredient": "clover-sprouts",
+                    "quantity": "1 small handful"
+                },
+                {
+                    "ingredient": "spinach",
+                    "quantity": "1 large handful"
+                }
+            ],
+            "tags": ["green"]
+        },
+        {
+            "id": "sweet-and-regular",
+            "category": "juice",
+            "serves": "1",
+            "ingredients": [
+                {
+                    "ingredient": "pear",
+                    "quantity": "1",
+                    "details": "washed"
+                },
+                {
+                    "ingredient": "apple",
+                    "quantity": "1 organic",
+                    "details": "any kind, washed"
+                }
+            ]
+        },
+        {
+            "id": "thyroid-tonic",
+            "category": "juice",
+            "serves": "1",
+            "ingredients": [
+                {
+                    "ingredient": "carrot",
+                    "quantity": "5",
+                    "details": "scrubbed well, green tops removed, and ends trimmed"
+                },
+                {
+                    "ingredient": "lemon",
+                    "quantity": "½ medium",
+                    "details": "peeled"
+                },
+                {
+                    "ingredient": "radishes",
+                    "quantity": "5 to 6",
+                    "details": "with green tops"
+                }
+            ],
+            "note": "Radishes are a traditional remedy for the thyroid.",
+            "tags": ["thyroid"]
+        },
+        {
+            "id": "tomato-florentine",
+            "category": "juice",
+            "serves": "1",
+            "ingredients": [
+                {
+                    "ingredient": "tomato",
+                    "quantity": "2 vine-ripened"
+                },
+                {
+                    "ingredient": "basil",
+                    "quantity": "4 to 5 sprigs"
+                },
+                {
+                    "ingredient": "spinach",
+                    "quantity": "1 large handful"
+                },
+                {
+                    "ingredient": "lemon",
+                    "quantity": "½",
+                    "details": "peeled"
+                }
+            ],
+            "tags": ["tomato"]
+        },
+        {
+            "id": "triple-c",
+            "category": "juice",
+            "serves": "1-2",
+            "ingredients": [
+                {
+                    "ingredient": "cabbage",
+                    "quantity": "¼ small head"
+                },
+                {
+                    "ingredient": "celery",
+                    "quantity": "4 organic",
+                    "details": "stalks with leaves"
+                },
+                {
+                    "ingredient": "carrot",
+                    "quantity": "4",
+                    "details": "scrubbed well, green tops removed, and ends trimmed"
+                }
+            ]
+        },
+        {
+            "id": "turnip-time",
+            "category": "juice",
+            "serves": "1-2",
+            "ingredients": [
+                {
+                    "ingredient": "turnip",
+                    "quantity": "1",
+                    "details": "scrubbed well"
+                },
+                {
+                    "ingredient": "lemon",
+                    "quantity": "½ small or medium",
+                    "details": "peeled"
+                },
+                {
+                    "ingredient": "jicama",
+                    "quantity": "5 cm piece",
+                    "details": "scrubbed, or peeled if not organic"
+                },
+                {
+                    "ingredient": "watercress",
+                    "quantity": "1 handful"
+                },
+                {
+                    "ingredient": "carrot",
+                    "quantity": "4",
+                    "details": "scrubbed well, green tops removed, and ends trimmed"
+                },
+                {
+                    "ingredient": "garlic",
+                    "quantity": "1",
+                    "details": "clove with peel, washed (optional)"
+                }
+            ]
+        },
+        {
+            "id": "veggie-delight",
+            "category": "juice",
+            "serves": "1-2",
+            "ingredients": [
+                {
+                    "ingredient": "cucumber",
+                    "quantity": "1",
+                    "details": "peeled"
+                },
+                {
+                    "ingredient": "celery",
+                    "quantity": "2 to 3",
+                    "details": "stalks (leaves can be included)"
+                },
+                {
+                    "ingredient": "lemon",
+                    "quantity": "½",
+                    "details": "with peel, seeded (use only organic)"
+                },
+                {
+                    "ingredient": "gingerroot",
+                    "quantity": "2.5 cm piece"
+                }
+            ]
+        },
+        {
+            "id": "waldorf-twist",
+            "category": "juice",
+            "serves": "1",
+            "ingredients": [
+                {
+                    "ingredient": "apple",
+                    "quantity": "1"
+                },
+                {
+                    "ingredient": "celery",
+                    "quantity": "3 organic",
+                    "details": "stalks with leaves"
+                },
+                {
+                    "ingredient": "lemon",
+                    "quantity": "½",
+                    "details": "peeled"
+                }
+            ]
+        },
+        {
+            "id": "weight-loss-buddy",
+            "category": "juice",
+            "serves": "1",
+            "ingredients": [
+                {
+                    "ingredient": "jerusalem-artichoke",
+                    "quantity": "1 small Jerusalem",
+                    "details": "scrubbed well"
+                },
+                {
+                    "ingredient": "carrot",
+                    "quantity": "3 to 4",
+                    "details": "scrubbed well, tops removed, and ends trimmed"
+                },
+                {
+                    "ingredient": "beetroot",
+                    "quantity": "½ small",
+                    "details": "scrubbed well"
+                },
+                {
+                    "ingredient": "cucumber",
+                    "quantity": "½"
+                },
+                {
+                    "ingredient": "lemon",
+                    "quantity": "½"
+                }
+            ],
+            "note": "Jerusalem artichoke juice combined with carrot and beetroot juices is a traditional remedy for satisfying cravings for sweets and junk food. The key is to sip it slowly when you get a craving for high-fat or high-carb foods.",
+            "tags": ["weight"]
+        },
+        {
+            "id": "wheatgrass-light",
+            "category": "juice",
+            "serves": "1",
+            "ingredients": [
+                {
+                    "ingredient": "apple",
+                    "quantity": "1",
+                    "details": "washed"
+                },
+                {
+                    "ingredient": "wheatgrass",
+                    "quantity": "1 handful",
+                    "details": "rinsed"
+                },
+                {
+                    "ingredient": "mint",
+                    "quantity": "2 to 3 sprigs",
+                    "details": "rinsed (optional)"
+                },
+                {
+                    "ingredient": "lemon",
+                    "quantity": "½ small or medium",
+                    "details": "washed, or peeled if not organic"
+                }
+            ]
+        },
+        {
+            "id": "pineapple-green-juice",
+            "category": "juice",
+            "serves": "1",
+            "ingredients": [
+                {
+                    "ingredient": "spinach",
+                    "quantity": "225 g"
+                },
+                {
+                    "ingredient": "pineapple",
+                    "quantity": "1",
+                    "details": "peeled and cored"
+                },
+                {
+                    "ingredient": "apple",
+                    "quantity": "1 Granny Smith",
+                    "details": "cored"
+                },
+                {
+                    "ingredient": "cucumber",
+                    "quantity": "1 English"
+                },
+                {
+                    "ingredient": "ginger",
+                    "quantity": "2.5 cm"
+                }
+            ],
+            "note": "Juice all ingredients in an extractor; omit the filtered water used for the blender method.",
+            "source": "https://nutritiontofit.com/pineapple-green-juice/"
+        },
+        {
+            "id": "ace",
+            "category": "juice",
+            "serves": "1",
+            "ingredients": [
+                {
+                    "ingredient": "orange",
+                    "quantity": "2"
+                },
+                {
+                    "ingredient": "carrot",
+                    "quantity": "4"
+                },
+                {
+                    "ingredient": "lemon",
+                    "quantity": "1"
+                },
+                {
+                    "ingredient": "mint",
+                    "quantity": "5 leaves"
+                }
+            ],
+            "source": "RGV Slow Juicer"
+        },
+        {
+            "id": "kiwi-melon",
+            "category": "juice",
+            "serves": "1",
+            "ingredients": [
+                {
+                    "ingredient": "kiwi",
+                    "quantity": "2"
+                },
+                {
+                    "ingredient": "celery",
+                    "quantity": "2 stalks"
+                },
+                {
+                    "ingredient": "melon",
+                    "quantity": "2 slices"
+                }
+            ],
+            "source": "RGV Slow Juicer"
+        },
+        {
+            "id": "cool",
+            "category": "juice",
+            "serves": "1",
+            "ingredients": [
+                {
+                    "ingredient": "apple",
+                    "quantity": "2"
+                },
+                {
+                    "ingredient": "banana",
+                    "quantity": "2"
+                },
+                {
+                    "ingredient": "lemon",
+                    "quantity": "1"
+                },
+                {
+                    "ingredient": "strawberry",
+                    "quantity": "175 g"
+                }
+            ],
+            "source": "RGV Slow Juicer"
+        },
+        {
+            "id": "oriental-express",
+            "category": "juice",
+            "serves": "1",
+            "ingredients": [
+                {
+                    "ingredient": "orange",
+                    "quantity": "3"
+                },
+                {
+                    "ingredient": "apple",
+                    "quantity": "1"
+                },
+                {
+                    "ingredient": "kiwi",
+                    "quantity": "1"
+                },
+                {
+                    "ingredient": "gingerroot",
+                    "quantity": "25 g"
+                }
+            ],
+            "source": "RGV Slow Juicer"
+        },
+        {
+            "id": "rich",
+            "category": "juice",
+            "serves": "1",
+            "ingredients": [
+                {
+                    "ingredient": "apple",
+                    "quantity": "2"
+                },
+                {
+                    "ingredient": "pomegranate",
+                    "quantity": "1"
+                },
+                {
+                    "ingredient": "orange",
+                    "quantity": "2"
+                }
+            ],
+            "source": "RGV Slow Juicer"
+        },
+        {
+            "id": "green-power",
+            "category": "juice",
+            "serves": "1",
+            "ingredients": [
+                {
+                    "ingredient": "spinach",
+                    "quantity": "1 bunch"
+                },
+                {
+                    "ingredient": "cucumber",
+                    "quantity": "1",
+                    "details": "with peel"
+                },
+                {
+                    "ingredient": "celery",
+                    "quantity": "1 stalk"
+                },
+                {
+                    "ingredient": "apple",
+                    "quantity": "1"
+                }
+            ],
+            "source": "RGV Slow Juicer"
+        },
+        {
+            "id": "detox",
+            "category": "juice",
+            "serves": "1",
+            "ingredients": [
+                {
+                    "ingredient": "asparagus",
+                    "quantity": "1"
+                },
+                {
+                    "ingredient": "celery",
+                    "quantity": "6 stalks"
+                },
+                {
+                    "ingredient": "carrot",
+                    "quantity": "2 large"
+                }
+            ],
+            "source": "RGV Slow Juicer"
+        },
+        {
+            "id": "digestive-juice",
+            "category": "juice",
+            "serves": "1",
+            "ingredients": [
+                {
+                    "ingredient": "apple",
+                    "quantity": "2"
+                },
+                {
+                    "ingredient": "lime",
+                    "quantity": "1"
+                },
+                {
+                    "ingredient": "mint",
+                    "quantity": "10 g"
+                },
+                {
+                    "ingredient": "gingerroot",
+                    "quantity": "25 g"
+                }
+            ],
+            "source": "RGV Slow Juicer"
+        },
+        {
+            "id": "yellow-spark",
+            "category": "juice",
+            "serves": "1",
+            "ingredients": [
+                {
+                    "ingredient": "orange",
+                    "quantity": "2"
+                },
+                {
+                    "ingredient": "kiwi",
+                    "quantity": "1"
+                },
+                {
+                    "ingredient": "lemon",
+                    "quantity": "1"
+                }
+            ],
+            "source": "RGV Slow Juicer"
+        },
+        {
+            "id": "sunny-time",
+            "category": "juice",
+            "serves": "1",
+            "ingredients": [
+                {
+                    "ingredient": "carrot",
+                    "quantity": "3"
+                },
+                {
+                    "ingredient": "melon",
+                    "quantity": "2 slices"
+                },
+                {
+                    "ingredient": "peach",
+                    "quantity": "1 yellow"
+                }
+            ],
+            "source": "RGV Slow Juicer"
+        },
+        {
+            "id": "sweet-watermelon",
+            "category": "juice",
+            "serves": "1",
+            "ingredients": [
+                {
+                    "ingredient": "watermelon",
+                    "quantity": "1 slice"
+                },
+                {
+                    "ingredient": "strawberry",
+                    "quantity": "10"
+                },
+                {
+                    "ingredient": "peach",
+                    "quantity": "1"
+                }
+            ],
+            "source": "RGV Slow Juicer"
+        },
+        {
+            "id": "tropical-magic",
+            "category": "juice",
+            "serves": "1",
+            "ingredients": [
+                {
+                    "ingredient": "pineapple",
+                    "quantity": "1/2"
+                },
+                {
+                    "ingredient": "lime",
+                    "quantity": "2"
+                },
+                {
+                    "ingredient": "honey",
+                    "quantity": "30 ml"
+                }
+            ],
+            "source": "RGV Slow Juicer"
+        },
+        {
+            "id": "green-apple",
+            "category": "juice",
+            "serves": "1",
+            "ingredients": [
+                {
+                    "ingredient": "grapefruit",
+                    "quantity": "1/2"
+                },
+                {
+                    "ingredient": "cucumber",
+                    "quantity": "1"
+                },
+                {
+                    "ingredient": "mint",
+                    "quantity": "5 leaves"
+                }
+            ],
+            "source": "RGV Slow Juicer"
+        },
+        {
+            "id": "carrot-orange-ginger",
+            "category": "juice",
+            "serves": "1",
+            "ingredients": [
+                {
+                    "ingredient": "carrot",
+                    "quantity": "5"
+                },
+                {
+                    "ingredient": "tomato",
+                    "quantity": "3"
+                },
+                {
+                    "ingredient": "gingerroot",
+                    "quantity": "1 root"
+                },
+                {
+                    "ingredient": "lemon",
+                    "quantity": "1"
+                },
+                {
+                    "ingredient": "water",
+                    "quantity": "125 ml"
+                },
+                {
+                    "ingredient": "cashew",
+                    "quantity": "175 g"
+                },
+                {
+                    "ingredient": "curry",
+                    "quantity": "14 g"
+                },
+                {
+                    "ingredient": "salt",
+                    "quantity": "1 pinch"
+                }
+            ],
+            "source": "RGV Slow Juicer"
+        },
+        {
+            "id": "grape-celery",
+            "category": "juice",
+            "serves": "1",
+            "ingredients": [
+                {
+                    "ingredient": "grape",
+                    "quantity": "350 g"
+                },
+                {
+                    "ingredient": "cucumber",
+                    "quantity": "1/2"
+                },
+                {
+                    "ingredient": "honey",
+                    "quantity": "15 ml"
+                }
+            ],
+            "source": "RGV Slow Juicer"
+        },
+        {
+            "id": "bloody-mary-soup",
+            "category": "soup",
+            "serves": "1",
+            "ingredients": [
+                {
+                    "ingredient": "tomato",
+                    "quantity": "3"
+                },
+                {
+                    "ingredient": "bell-pepper",
+                    "quantity": "1"
+                },
+                {
+                    "ingredient": "lemon",
+                    "quantity": "1/2"
+                },
+                {
+                    "ingredient": "celery",
+                    "quantity": "1 stalk"
+                },
+                {
+                    "ingredient": "apple",
+                    "quantity": "1"
+                },
+                {
+                    "ingredient": "salt",
+                    "quantity": "1 pinch"
+                }
+            ],
+            "source": "RGV Slow Juicer"
+        },
+        {
+            "id": "carrot-soup",
+            "category": "soup",
+            "serves": "1",
+            "ingredients": [
+                {
+                    "ingredient": "carrot",
+                    "quantity": "5"
+                },
+                {
+                    "ingredient": "tomato",
+                    "quantity": "3"
+                },
+                {
+                    "ingredient": "gingerroot",
+                    "quantity": "1 root"
+                },
+                {
+                    "ingredient": "lemon",
+                    "quantity": "1"
+                },
+                {
+                    "ingredient": "water",
+                    "quantity": "125 ml"
+                },
+                {
+                    "ingredient": "cashew",
+                    "quantity": "175 g"
+                },
+                {
+                    "ingredient": "curry",
+                    "quantity": "14 g"
+                },
+                {
+                    "ingredient": "salt",
+                    "quantity": "1 pinch"
+                }
+            ],
+            "source": "RGV Slow Juicer"
+        },
+        {
+            "id": "corn-soup",
+            "category": "soup",
+            "serves": "1",
+            "ingredients": [
+                {
+                    "ingredient": "corn",
+                    "quantity": "1 can"
+                },
+                {
+                    "ingredient": "onion",
+                    "quantity": "14 g"
+                },
+                {
+                    "ingredient": "milk",
+                    "quantity": "99 g"
+                }
+            ],
+            "source": "RGV Slow Juicer"
+        },
+        {
+            "id": "breeze-soup",
+            "category": "soup",
+            "serves": "1",
+            "ingredients": [
+                {
+                    "ingredient": "tomato",
+                    "quantity": "2"
+                },
+                {
+                    "ingredient": "onion",
+                    "quantity": "1"
+                },
+                {
+                    "ingredient": "cucumber",
+                    "quantity": "1"
+                },
+                {
+                    "ingredient": "bell-pepper",
+                    "quantity": "1"
+                },
+                {
+                    "ingredient": "garlic",
+                    "quantity": "1 clove"
+                },
+                {
+                    "ingredient": "salt",
+                    "quantity": "1 pinch"
+                },
+                {
+                    "ingredient": "oregano",
+                    "quantity": "1 pinch"
+                },
+                {
+                    "ingredient": "bell-pepper",
+                    "quantity": "1 pinch red"
+                },
+                {
+                    "ingredient": "olive-oil",
+                    "quantity": "15 ml"
+                }
+            ],
+            "source": "RGV Slow Juicer"
+        },
+        {
+            "id": "spring-soup",
+            "category": "soup",
+            "serves": "1",
+            "ingredients": [
+                {
+                    "ingredient": "asparagus",
+                    "quantity": "350 g"
+                },
+                {
+                    "ingredient": "avocado",
+                    "quantity": "1"
+                },
+                {
+                    "ingredient": "garlic",
+                    "quantity": "1 clove"
+                },
+                {
+                    "ingredient": "salt",
+                    "quantity": "1 pinch"
+                },
+                {
+                    "ingredient": "bell-pepper",
+                    "quantity": "1 pinch cayenne or black"
+                }
+            ],
+            "source": "RGV Slow Juicer"
+        },
+        {
+            "id": "grape-ice-watercress",
+            "category": "frozen",
+            "serves": "1",
+            "ingredients": [
+                {
+                    "ingredient": "grape",
+                    "quantity": "350 g"
+                },
+                {
+                    "ingredient": "milk",
+                    "quantity": "120 ml"
+                },
+                {
+                    "ingredient": "honey",
+                    "quantity": "15 ml"
+                }
+            ],
+            "source": "RGV Slow Juicer"
+        },
+        {
+            "id": "watermelon-ice-watercress",
+            "category": "frozen",
+            "serves": "1",
+            "ingredients": [
+                {
+                    "ingredient": "watermelon",
+                    "quantity": "2 slices"
+                },
+                {
+                    "ingredient": "milk",
+                    "quantity": "120 ml"
+                },
+                {
+                    "ingredient": "honey",
+                    "quantity": "15 ml"
+                }
+            ],
+            "source": "RGV Slow Juicer"
+        },
+        {
+            "id": "kiwi-ice-watercress",
+            "category": "frozen",
+            "serves": "1",
+            "ingredients": [
+                {
+                    "ingredient": "kiwi",
+                    "quantity": "4",
+                    "details": "peeled"
+                },
+                {
+                    "ingredient": "milk",
+                    "quantity": "120 ml"
+                },
+                {
+                    "ingredient": "honey",
+                    "quantity": "15 ml"
+                }
+            ],
+            "source": "RGV Slow Juicer"
+        },
+        {
+            "id": "soft-cream",
+            "category": "frozen",
+            "serves": "1",
+            "ingredients": [
+                {
+                    "ingredient": "plum",
+                    "quantity": "4"
+                },
+                {
+                    "ingredient": "raspberry",
+                    "quantity": "45 ml"
+                },
+                {
+                    "ingredient": "blueberry",
+                    "quantity": "45 ml"
+                },
+                {
+                    "ingredient": "yogurt",
+                    "quantity": "optional"
+                }
+            ],
+            "source": "RGV Slow Juicer"
         }
-      ],
-      "tags": [
-        "afternoon"
-      ]
-    },
-    {
-      "id": "allergy-relief",
-      "category": "juice",
-      "serves": "1",
-      "ingredients": [
-        {
-          "ingredient": "parsley",
-          "quantity": "1 small bunch"
-        },
-        {
-          "ingredient": "lemon",
-          "quantity": "¼ to ½ small or medium",
-          "details": "washed, or peeled if not organic"
-        },
-        {
-          "ingredient": "celery",
-          "quantity": "2",
-          "details": "stalks with leaves"
-        },
-        {
-          "ingredient": "carrot",
-          "quantity": "2 to 3 large",
-          "details": "scrubbed well, green tops removed, and ends trimmed"
-        }
-      ],
-      "tags": [
-        "allergy"
-      ]
-    },
-    {
-      "id": "antiulcer-cabbage-cocktail",
-      "category": "juice",
-      "serves": "1",
-      "ingredients": [
-        {
-          "ingredient": "cabbage",
-          "quantity": "¼ small head"
-        },
-        {
-          "ingredient": "carrot",
-          "quantity": "3",
-          "details": "scrubbed well, tops removed, and ends trimmed"
-        },
-        {
-          "ingredient": "celery",
-          "quantity": "4",
-          "details": "stalks, with leaves if desired"
-        }
-      ],
-      "note": "Scientific research has proven that cabbage juice is an effective treatment for stomach ulcers."
-    },
-    {
-      "id": "antiviral-cocktail",
-      "category": "juice",
-      "serves": "1-2",
-      "ingredients": [
-        {
-          "ingredient": "apple",
-          "quantity": "1"
-        },
-        {
-          "ingredient": "garlic",
-          "quantity": "1 large",
-          "details": "clove with peel"
-        },
-        {
-          "ingredient": "turnip",
-          "quantity": "1",
-          "details": "scrubbed well"
-        },
-        {
-          "ingredient": "watercress",
-          "quantity": "1 handful",
-          "details": "rinsed"
-        },
-        {
-          "ingredient": "carrot",
-          "quantity": "5",
-          "details": "scrubbed well, green tops removed, and ends trimmed"
-        }
-      ]
-    },
-    {
-      "id": "awesome-green-smoothie",
-      "category": "smoothie",
-      "serves": "1-2",
-      "ingredients": [
-        {
-          "ingredient": "cucumber",
-          "quantity": "½",
-          "details": "peeled and cut in chunks"
-        },
-        {
-          "ingredient": "avocado",
-          "quantity": "1",
-          "details": "peeled, seeded, and cut in quarters"
-        },
-        {
-          "ingredient": "spinach",
-          "quantity": "1 cup raw"
-        },
-        {
-          "ingredient": "coconut-milk",
-          "quantity": "½ cup"
-        },
-        {
-          "ingredient": "lime",
-          "quantity": "Juice of 1"
-        },
-        {
-          "ingredient": "green-powder",
-          "quantity": "1 tablespoon",
-          "details": "of choice (optional)"
-        },
-        {
-          "ingredient": "almonds",
-          "quantity": "2 to 3 tablespoons ground",
-          "details": "(optional)"
-        }
-      ],
-      "tags": [
-        "green",
-        "smoothie"
-      ]
-    },
-    {
-      "id": "beautiful-bone-solution",
-      "category": "juice",
-      "serves": "1",
-      "ingredients": [
-        {
-          "ingredient": "apple",
-          "quantity": "1"
-        },
-        {
-          "ingredient": "kale",
-          "quantity": "1 to 2",
-          "details": "leaves"
-        },
-        {
-          "ingredient": "parsley",
-          "quantity": "1 handful"
-        },
-        {
-          "ingredient": "celery",
-          "quantity": "1 organic",
-          "details": "stalk"
-        },
-        {
-          "ingredient": "lemon",
-          "quantity": "¼ small or medium",
-          "details": "peeled"
-        },
-        {
-          "ingredient": "gingerroot",
-          "quantity": "½- to 1-inch piece",
-          "details": "peeled"
-        }
-      ]
-    },
-    {
-      "id": "beautiful-skin-cocktail",
-      "category": "juice",
-      "serves": "1-2",
-      "ingredients": [
-        {
-          "ingredient": "cucumber",
-          "quantity": "1",
-          "details": "peeled"
-        },
-        {
-          "ingredient": "parsnip",
-          "quantity": "1",
-          "details": "peeled"
-        },
-        {
-          "ingredient": "carrot",
-          "quantity": "2 to 3",
-          "details": "scrubbed well, tops removed, and ends trimmed"
-        },
-        {
-          "ingredient": "lemon",
-          "quantity": "½",
-          "details": "peeled"
-        },
-        {
-          "ingredient": "bell-pepper",
-          "quantity": "¼ green",
-          "details": "seeded"
-        }
-      ],
-      "note": "Cucumber and bell pepper are good sources of the trace mineral silicon, which is recommended to strengthen skin, hair, and fingernails along with bones. In studies, silicon has been shown to reduce signs of aging by improving thickness of skin and reducing wrinkles.",
-      "tags": [
-        "bones",
-        "skin"
-      ]
-    },
-    {
-      "id": "beet-cucumber-cleansing-cocktail",
-      "category": "juice",
-      "serves": "1-2",
-      "ingredients": [
-        {
-          "ingredient": "cucumber",
-          "quantity": "1",
-          "details": "peeled"
-        },
-        {
-          "ingredient": "carrot",
-          "quantity": "3",
-          "details": "scrubbed well, tops removed, and ends trimmed"
-        },
-        {
-          "ingredient": "beetroot",
-          "quantity": "1",
-          "details": "with stem and leaves, scrubbed well"
-        },
-        {
-          "ingredient": "celery",
-          "quantity": "2",
-          "details": "stalks"
-        },
-        {
-          "ingredient": "parsley",
-          "quantity": "1 handful"
-        },
-        {
-          "ingredient": "gingerroot",
-          "quantity": "1- to 2-inch piece",
-          "details": "scrubbed or peeled if old"
-        },
-        {
-          "ingredient": "lemon",
-          "quantity": "½",
-          "details": "peeled"
-        }
-      ],
-      "tags": [
-        "cleansing"
-      ]
-    },
-    {
-      "id": "bladder-tonic",
-      "category": "juice",
-      "serves": "1-2",
-      "ingredients": [
-        {
-          "ingredient": "tomato",
-          "quantity": "1 medium vine-ripened"
-        },
-        {
-          "ingredient": "cucumber",
-          "quantity": "1 organic",
-          "details": "peeled if not organic"
-        },
-        {
-          "ingredient": "asparagus",
-          "quantity": "8",
-          "details": "stems"
-        },
-        {
-          "ingredient": "lemon",
-          "quantity": "½ medium",
-          "details": "washed, or peeled if not organic"
-        },
-        {
-          "ingredient": "hot-sauce",
-          "quantity": "Dash"
-        }
-      ],
-      "tags": [
-        "bladder"
-      ]
-    },
-    {
-      "id": "cabbage-patch-cocktail",
-      "category": "juice",
-      "serves": "1",
-      "ingredients": [
-        {
-          "ingredient": "cabbage",
-          "quantity": "3 to 4 pounds",
-          "details": "(spring or summer cabbage is best)"
-        },
-        {
-          "ingredient": "tomato",
-          "quantity": "1",
-          "details": "or 1 lemon, peeled"
-        },
-        {
-          "ingredient": "celery",
-          "quantity": "1 pound organic",
-          "details": "with leaves"
-        }
-      ]
-    },
-    {
-      "id": "calcium-rich-cocktail",
-      "category": "juice",
-      "serves": "1-2",
-      "ingredients": [
-        {
-          "ingredient": "cucumber",
-          "quantity": "1",
-          "details": "peeled"
-        },
-        {
-          "ingredient": "kale",
-          "quantity": "1 to 2 medium-large",
-          "details": "leaves"
-        },
-        {
-          "ingredient": "parsley",
-          "quantity": "1 handful"
-        },
-        {
-          "ingredient": "celery",
-          "quantity": "1",
-          "details": "stalk"
-        },
-        {
-          "ingredient": "lemon",
-          "quantity": "½",
-          "details": "peeled"
-        },
-        {
-          "ingredient": "gingerroot",
-          "quantity": "1-inch piece",
-          "details": "scrubbed or peeled if old"
-        }
-      ]
-    },
-    {
-      "id": "cheries-green-smoothie",
-      "category": "smoothie",
-      "serves": "2",
-      "ingredients": [
-        {
-          "ingredient": "cucumber",
-          "quantity": "½",
-          "details": "peeled and cut into chunks"
-        },
-        {
-          "ingredient": "avocado",
-          "quantity": "1",
-          "details": "peeled, seeded, and cut into quarters"
-        },
-        {
-          "ingredient": "spinach",
-          "quantity": "1 cup raw"
-        },
-        {
-          "ingredient": "lime",
-          "quantity": "Juice of 1"
-        },
-        {
-          "ingredient": "green-powder",
-          "quantity": "1 tablespoon",
-          "details": "of choice (optional)"
-        },
-        {
-          "ingredient": "almonds",
-          "quantity": "2 to 3 tablespoons ground",
-          "details": "(optional)"
-        }
-      ],
-      "tags": [
-        "green",
-        "smoothie"
-      ]
-    },
-    {
-      "id": "cheries-quick-energy-soup",
-      "category": "soup",
-      "serves": "1",
-      "ingredients": [
-        {
-          "ingredient": "carrot",
-          "quantity": "1¼ cups fresh",
-          "details": "juice (5 to 7 medium, or approximately 1 pound, yield about 1 cup)"
-        },
-        {
-          "ingredient": "avocado",
-          "quantity": "1",
-          "details": "peeled and seeded"
-        },
-        {
-          "ingredient": "cumin",
-          "quantity": "½ teaspoon ground"
-        }
-      ],
-      "tags": [
-        "energy",
-        "soup"
-      ]
-    },
-    {
-      "id": "colon-cleanser",
-      "category": "juice",
-      "serves": "1",
-      "ingredients": [
-        {
-          "ingredient": "apple",
-          "quantity": "2",
-          "details": "s"
-        },
-        {
-          "ingredient": "lemon",
-          "quantity": "½ medium"
-        },
-        {
-          "ingredient": "spinach",
-          "quantity": "1 bunch"
-        },
-        {
-          "ingredient": "parsley",
-          "quantity": "1 handful"
-        }
-      ],
-      "tags": [
-        "colon"
-      ]
-    },
-    {
-      "id": "cranberry-apple-cocktail",
-      "category": "juice",
-      "serves": "1",
-      "ingredients": [
-        {
-          "ingredient": "apple",
-          "quantity": "2 organic",
-          "details": "s"
-        },
-        {
-          "ingredient": "cranberries",
-          "quantity": "¼ to ½ cup fresh or frozen (thawed)"
-        },
-        {
-          "ingredient": "lemon",
-          "quantity": "¼ small or medium",
-          "details": "washed, or peeled if not organic"
-        },
-        {
-          "ingredient": "water",
-          "quantity": "½ cup purified",
-          "details": "(optional)"
-        }
-      ]
-    },
-    {
-      "id": "gallbladder-liver-cleansing-cocktail",
-      "category": "juice",
-      "serves": "1",
-      "ingredients": [
-        {
-          "ingredient": "cucumber",
-          "quantity": "½ organic",
-          "details": "scrubbed"
-        },
-        {
-          "ingredient": "lemon",
-          "quantity": "½ medium",
-          "details": "peeled"
-        },
-        {
-          "ingredient": "carrot",
-          "quantity": "5",
-          "details": "scrubbed well, green tops removed, and ends trimmed"
-        },
-        {
-          "ingredient": "beetroot",
-          "quantity": "½ small to medium",
-          "details": "with leaves and stems, scrubbed well"
-        }
-      ],
-      "tags": [
-        "cleansing",
-        "gallbladder",
-        "liver"
-      ]
-    },
-    {
-      "id": "gallbladder-rejuvenator",
-      "category": "juice",
-      "serves": "1-2",
-      "ingredients": [
-        {
-          "ingredient": "cabbage",
-          "quantity": "¼ purple"
-        },
-        {
-          "ingredient": "carrot",
-          "quantity": "3 to 4",
-          "details": "scrubbed well, green tops removed, and ends trimmed"
-        },
-        {
-          "ingredient": "beetroot",
-          "quantity": "½",
-          "details": "with leaves and stems, scrubbed well"
-        },
-        {
-          "ingredient": "lemon",
-          "quantity": "½",
-          "details": "peeled"
-        },
-        {
-          "ingredient": "apple",
-          "quantity": "½"
-        },
-        {
-          "ingredient": "gingerroot",
-          "quantity": "1-inch piece",
-          "details": "scrubbed or peeled if old"
-        }
-      ],
-      "tags": [
-        "gallbladder"
-      ]
-    },
-    {
-      "id": "garlic-surprise",
-      "category": "juice",
-      "serves": "1-2",
-      "ingredients": [
-        {
-          "ingredient": "parsley",
-          "quantity": "1 handful"
-        },
-        {
-          "ingredient": "lettuce",
-          "quantity": "1",
-          "details": "leaf"
-        },
-        {
-          "ingredient": "cucumber",
-          "quantity": "½ medium",
-          "details": "peeled"
-        },
-        {
-          "ingredient": "garlic",
-          "quantity": "1",
-          "details": "clove"
-        },
-        {
-          "ingredient": "carrot",
-          "quantity": "3",
-          "details": "scrubbed well, green tops removed, and ends trimmed"
-        },
-        {
-          "ingredient": "celery",
-          "quantity": "2",
-          "details": "stalks"
-        }
-      ]
-    },
-    {
-      "id": "the-ginger-hopper",
-      "category": "juice",
-      "serves": "1",
-      "ingredients": [
-        {
-          "ingredient": "apple",
-          "quantity": "½"
-        },
-        {
-          "ingredient": "gingerroot",
-          "quantity": "½- to 1-inch piece",
-          "details": "peeled"
-        },
-        {
-          "ingredient": "carrot",
-          "quantity": "5 medium",
-          "details": "scrubbed well, green tops removed, and ends trimmed"
-        }
-      ],
-      "tags": [
-        "ginger"
-      ]
-    },
-    {
-      "id": "ginger-twist",
-      "category": "juice",
-      "serves": "1",
-      "ingredients": [
-        {
-          "ingredient": "parsley",
-          "quantity": "1 handful"
-        },
-        {
-          "ingredient": "lemon",
-          "quantity": "½",
-          "details": "peeled"
-        },
-        {
-          "ingredient": "carrot",
-          "quantity": "4",
-          "details": "scrubbed well, green tops removed, and ends trimmed"
-        },
-        {
-          "ingredient": "gingerroot",
-          "quantity": "1-inch piece",
-          "details": "peeled"
-        }
-      ],
-      "tags": [
-        "ginger"
-      ]
-    },
-    {
-      "id": "gout-fighting-tonic",
-      "category": "juice",
-      "serves": "1",
-      "ingredients": [
-        {
-          "ingredient": "apple",
-          "quantity": "1"
-        },
-        {
-          "ingredient": "strawberries",
-          "quantity": "1 cup",
-          "details": "or ½ pound organic cherries, pits removed"
-        },
-        {
-          "ingredient": "celery",
-          "quantity": "2",
-          "details": "stalks"
-        },
-        {
-          "ingredient": "lemon",
-          "quantity": "½",
-          "details": "peeled"
-        }
-      ],
-      "tags": [
-        "gout"
-      ]
-    },
-    {
-      "id": "happy-morning",
-      "category": "juice",
-      "serves": "1",
-      "ingredients": [
-        {
-          "ingredient": "apple",
-          "quantity": "½"
-        },
-        {
-          "ingredient": "carrot",
-          "quantity": "4 to 5",
-          "details": "well scrubbed, green tops removed, and ends trimmed"
-        },
-        {
-          "ingredient": "fennel",
-          "quantity": "3",
-          "details": "stalks; include leaves and flowers"
-        },
-        {
-          "ingredient": "cucumber",
-          "quantity": "½",
-          "details": "peeled"
-        },
-        {
-          "ingredient": "spinach",
-          "quantity": "1 handful"
-        },
-        {
-          "ingredient": "gingerroot",
-          "quantity": "1-inch piece",
-          "details": "peeled"
-        }
-      ],
-      "note": "Fennel juice has been used as a traditional tonic to help the body release endorphins, the feel-good peptides, from the brain into the bloodstream. Endorphins help diminish anxiety and fear, and generate a mood of euphoria.",
-      "tags": [
-        "mood",
-        "morning"
-      ]
-    },
-    {
-      "id": "healthy-lungs",
-      "category": "juice",
-      "serves": "1",
-      "ingredients": [
-        {
-          "ingredient": "watercress",
-          "quantity": "1 handful"
-        },
-        {
-          "ingredient": "turnip",
-          "quantity": "1 small",
-          "details": "scrubbed well, tops removed, and ends trimmed"
-        },
-        {
-          "ingredient": "jicama",
-          "quantity": "2-inch piece of",
-          "details": "scrubbed well or peeled"
-        },
-        {
-          "ingredient": "carrot",
-          "quantity": "2 to 3",
-          "details": "scrubbed well, tops removed, and ends trimmed"
-        },
-        {
-          "ingredient": "garlic",
-          "quantity": "1",
-          "details": "clove"
-        },
-        {
-          "ingredient": "lemon",
-          "quantity": "½",
-          "details": "peeled"
-        }
-      ],
-      "note": "Turnip juice has traditionally been used a remedy to strengthen lung tissue.",
-      "tags": [
-        "lungs"
-      ]
-    },
-    {
-      "id": "healthy-sinus-solution",
-      "category": "juice",
-      "serves": "1",
-      "ingredients": [
-        {
-          "ingredient": "tomato",
-          "quantity": "2 vine-ripened"
-        },
-        {
-          "ingredient": "cucumber",
-          "quantity": "½",
-          "details": "peeled"
-        },
-        {
-          "ingredient": "radishes",
-          "quantity": "6",
-          "details": "scrubbed"
-        },
-        {
-          "ingredient": "lime",
-          "quantity": "½",
-          "details": "peeled"
-        }
-      ],
-      "note": "Radish juice is a traditional remedy to open up the sinuses and support the mucous membranes.",
-      "tags": [
-        "sinus"
-      ]
-    },
-    {
-      "id": "hot-ginger-lemon-tea",
-      "category": "tea",
-      "serves": "2",
-      "ingredients": [
-        {
-          "ingredient": "gingerroot",
-          "quantity": "2-inch piece",
-          "details": "Dash ground cardamom"
-        },
-        {
-          "ingredient": "lemon",
-          "quantity": "½ small or medium",
-          "details": "washed, or peeled if not organic"
-        },
-        {
-          "ingredient": "water",
-          "quantity": "2 cups pure"
-        },
-        {
-          "ingredient": "licorice-tea",
-          "quantity": "1 tablespoon loose",
-          "details": "or 1 tea bag (optional)"
-        },
-        {
-          "ingredient": "cinnamon",
-          "quantity": "1 stick",
-          "details": "broken"
-        },
-        {
-          "ingredient": "cloves",
-          "quantity": "4 to 5 whole"
-        },
-        {
-          "ingredient": "nutmeg",
-          "quantity": "Dash ground"
-        }
-      ],
-      "tags": [
-        "ginger",
-        "tea"
-      ]
-    },
-    {
-      "id": "icy-spicy-tomato",
-      "category": "juice",
-      "serves": "1",
-      "ingredients": [
-        {
-          "ingredient": "tomato",
-          "quantity": "2 medium vine-ripened"
-        },
-        {
-          "ingredient": "lettuce",
-          "quantity": "2 dark green",
-          "details": "leaves"
-        },
-        {
-          "ingredient": "radishes",
-          "quantity": "2",
-          "details": "scrubbed"
-        },
-        {
-          "ingredient": "parsley",
-          "quantity": "4 sprigs"
-        },
-        {
-          "ingredient": "lemon",
-          "quantity": "½ lime or",
-          "details": "peeled"
-        }
-      ],
-      "tags": [
-        "tomato"
-      ]
-    },
-    {
-      "id": "immune-builder",
-      "category": "juice",
-      "serves": "1",
-      "ingredients": [
-        {
-          "ingredient": "watercress",
-          "quantity": "1 handful"
-        },
-        {
-          "ingredient": "turnip",
-          "quantity": "1",
-          "details": "scrubbed, tops removed, and ends trimmed"
-        },
-        {
-          "ingredient": "carrot",
-          "quantity": "3",
-          "details": "scrubbed well, tops removed, and ends trimmed"
-        },
-        {
-          "ingredient": "garlic",
-          "quantity": "1 to 2",
-          "details": "cloves"
-        },
-        {
-          "ingredient": "apple",
-          "quantity": "½",
-          "details": "such as Granny Smith or pippin"
-        }
-      ],
-      "note": "Studies show that garlic has a compound that has a natural antibiotic-like effect. It is antibacterial, antifungal, antiparasitic, and antiviral, but it must be consumed raw to have this effect.",
-      "tags": [
-        "immune"
-      ]
-    },
-    {
-      "id": "jack-and-the-bean",
-      "category": "juice",
-      "serves": "1",
-      "ingredients": [
-        {
-          "ingredient": "tomato",
-          "quantity": "1 large vine-ripened"
-        },
-        {
-          "ingredient": "lettuce",
-          "quantity": "2 romaine",
-          "details": "leaves"
-        },
-        {
-          "ingredient": "string-beans",
-          "quantity": "8 organic"
-        },
-        {
-          "ingredient": "sprouts",
-          "quantity": "3 Brussels"
-        },
-        {
-          "ingredient": "lemon",
-          "quantity": "½ small or medium",
-          "details": "peeled"
-        }
-      ]
-    },
-    {
-      "id": "liver-life-tonic",
-      "category": "juice",
-      "serves": "1",
-      "ingredients": [
-        {
-          "ingredient": "dandelion-greens",
-          "quantity": "1 handful"
-        },
-        {
-          "ingredient": "carrot",
-          "quantity": "3 to 4",
-          "details": "scrubbed well, tops removed, and ends trimmed"
-        },
-        {
-          "ingredient": "cucumber",
-          "quantity": "½",
-          "details": "peeled"
-        },
-        {
-          "ingredient": "lemon",
-          "quantity": "½",
-          "details": "peeled"
-        }
-      ],
-      "note": "Dandelion juice is a traditional remedy for cleansing the liver.",
-      "tags": [
-        "cleansing",
-        "liver"
-      ]
-    },
-    {
-      "id": "magnesium-rich-cocktail",
-      "category": "juice",
-      "serves": "1",
-      "ingredients": [
-        {
-          "ingredient": "carrot",
-          "quantity": "3 to 4",
-          "details": "scrubbed well, tops removed, and ends trimmed"
-        },
-        {
-          "ingredient": "celery",
-          "quantity": "2",
-          "details": "stalks, with leaves as desired"
-        },
-        {
-          "ingredient": "beetroot",
-          "quantity": "½ small",
-          "details": "scrubbed well"
-        },
-        {
-          "ingredient": "broccoli",
-          "quantity": "2 to 3",
-          "details": "florets"
-        },
-        {
-          "ingredient": "lemon",
-          "quantity": "½",
-          "details": "peeled"
-        }
-      ]
-    },
-    {
-      "id": "memory-mender",
-      "category": "juice",
-      "serves": "1-2",
-      "ingredients": [
-        {
-          "ingredient": "tomato",
-          "quantity": "2 medium vine-ripened"
-        },
-        {
-          "ingredient": "lemon",
-          "quantity": "½ small or medium",
-          "details": "washed, or peeled if not organic"
-        },
-        {
-          "ingredient": "lettuce",
-          "quantity": "¼ small head iceberg"
-        },
-        {
-          "ingredient": "cauliflower",
-          "quantity": "4",
-          "details": "florets, washed"
-        }
-      ],
-      "tags": [
-        "memory"
-      ]
-    },
-    {
-      "id": "mint-refresher",
-      "category": "juice",
-      "serves": "1-2",
-      "ingredients": [
-        {
-          "ingredient": "fennel",
-          "quantity": "2 stalks",
-          "details": "with leaves"
-        },
-        {
-          "ingredient": "cucumber",
-          "quantity": "½",
-          "details": "peeled"
-        },
-        {
-          "ingredient": "apple",
-          "quantity": "½",
-          "details": "such as Granny Smith or pippin"
-        },
-        {
-          "ingredient": "mint",
-          "quantity": "1 small handful"
-        },
-        {
-          "ingredient": "gingerroot",
-          "quantity": "1-inch piece",
-          "details": "scrubbed or peeled if old"
-        }
-      ]
-    },
-    {
-      "id": "mood-mender",
-      "category": "juice",
-      "serves": "1-2",
-      "ingredients": [
-        {
-          "ingredient": "fennel",
-          "quantity": "3",
-          "details": "stalks; include leaves and flowers"
-        },
-        {
-          "ingredient": "carrot",
-          "quantity": "3",
-          "details": "scrubbed well, tops removed, and ends trimmed"
-        },
-        {
-          "ingredient": "celery",
-          "quantity": "2",
-          "details": "stalks"
-        },
-        {
-          "ingredient": "pear",
-          "quantity": "½"
-        },
-        {
-          "ingredient": "gingerroot",
-          "quantity": "½-inch piece",
-          "details": "scrubbed or peeled if old"
-        }
-      ],
-      "note": "Fennel juice has long been used as a tonic to help the body release endorphins, the feel-good peptides, from the brain into the bloodstream. Endorphins help diminish anxiety and fear, and generate a mood of euphoria.",
-      "tags": [
-        "mood"
-      ]
-    },
-    {
-      "id": "morning-energizer",
-      "category": "juice",
-      "serves": "1-2",
-      "ingredients": [
-        {
-          "ingredient": "carrot",
-          "quantity": "3 to 4",
-          "details": "scrubbed well, tops removed, and ends trimmed"
-        },
-        {
-          "ingredient": "cucumber",
-          "quantity": "1",
-          "details": "peeled"
-        },
-        {
-          "ingredient": "beetroot",
-          "quantity": "½",
-          "details": "scrubbed well (may include stem and 1 to 2 leaves)"
-        },
-        {
-          "ingredient": "lemon",
-          "quantity": "½",
-          "details": "peeled"
-        },
-        {
-          "ingredient": "gingerroot",
-          "quantity": "1-inch piece",
-          "details": "scrubbed or peeled if old"
-        }
-      ],
-      "tags": [
-        "morning"
-      ]
-    },
-    {
-      "id": "natural-diuretic-cocktail",
-      "category": "juice",
-      "serves": "1",
-      "ingredients": [
-        {
-          "ingredient": "tomato",
-          "quantity": "1 medium vine-ripened"
-        },
-        {
-          "ingredient": "lemon",
-          "quantity": "½ small or medium",
-          "details": "washed, or peeled if not organic"
-        },
-        {
-          "ingredient": "parsley",
-          "quantity": "1 small handful",
-          "details": "rinsed"
-        },
-        {
-          "ingredient": "cucumber",
-          "quantity": "1 organic",
-          "details": "scrubbed well"
-        },
-        {
-          "ingredient": "asparagus",
-          "quantity": "4",
-          "details": "stems, washed"
-        }
-      ],
-      "note": "Lemon, parsley, cucumber, and asparagus all act as diuretics.",
-      "tags": [
-        "diuretic"
-      ]
-    },
-    {
-      "id": "orient-express",
-      "category": "juice",
-      "serves": "1",
-      "ingredients": [
-        {
-          "ingredient": "carrot",
-          "quantity": "2 to 3",
-          "details": "scrubbed well, tops removed, and ends trimmed"
-        },
-        {
-          "ingredient": "daikon-radish",
-          "quantity": "1",
-          "details": "trimmed and scrubbed"
-        },
-        {
-          "ingredient": "gingerroot",
-          "quantity": "1-inch piece",
-          "details": "scrubbed or peeled if old"
-        }
-      ]
-    },
-    {
-      "id": "pancreas-helper",
-      "category": "juice",
-      "serves": "1",
-      "ingredients": [
-        {
-          "ingredient": "lettuce",
-          "quantity": "2 romaine",
-          "details": "leaves"
-        },
-        {
-          "ingredient": "cucumber",
-          "quantity": "½",
-          "details": "peeled"
-        },
-        {
-          "ingredient": "tomato",
-          "quantity": "1 large vine-ripened"
-        },
-        {
-          "ingredient": "string-beans",
-          "quantity": "8 to 10"
-        },
-        {
-          "ingredient": "sprouts",
-          "quantity": "2 Brussels"
-        },
-        {
-          "ingredient": "lemon",
-          "quantity": "½",
-          "details": "peeled"
-        }
-      ],
-      "note": "Brussels sprouts and string bean juice are traditional remedies to help strengthen and support the pancreas. Drink before a meal. (If this drink is too strong, dilute with a little water.) For best pancreas support, also avoid refined carbohydrates such as white-flour products, sugars of all types, soda, and all sweets.",
-      "tags": [
-        "pancreas",
-        "sprouts"
-      ]
-    },
-    {
-      "id": "peppy-parsley",
-      "category": "juice",
-      "serves": "1",
-      "ingredients": [
-        {
-          "ingredient": "parsley",
-          "quantity": "1 bunch"
-        },
-        {
-          "ingredient": "celery",
-          "quantity": "2",
-          "details": "stalks"
-        },
-        {
-          "ingredient": "carrot",
-          "quantity": "1 to 2",
-          "details": "scrubbed well, tops removed, and ends trimmed"
-        },
-        {
-          "ingredient": "cucumber",
-          "quantity": "½",
-          "details": "peeled"
-        },
-        {
-          "ingredient": "lemon",
-          "quantity": "½",
-          "details": "peeled"
-        }
-      ]
-    },
-    {
-      "id": "the-pink-onion",
-      "category": "juice",
-      "serves": "1",
-      "ingredients": [
-        {
-          "ingredient": "onion",
-          "quantity": "1 large yellow"
-        },
-        {
-          "ingredient": "gingerroot",
-          "quantity": "1-inch piece",
-          "details": "washed"
-        },
-        {
-          "ingredient": "grapefruit",
-          "quantity": "1 large pink",
-          "details": "peeled, or enough to make 2 cups juice"
-        },
-        {
-          "ingredient": "lemon",
-          "quantity": "1 small or medium",
-          "details": "washed, or peeled if not organic"
-        }
-      ]
-    },
-    {
-      "id": "pure-green-sprout-drink",
-      "category": "juice",
-      "serves": "1",
-      "ingredients": [
-        {
-          "ingredient": "cucumber",
-          "quantity": "1 organic",
-          "details": "scrubbed well"
-        },
-        {
-          "ingredient": "clover-sprouts",
-          "quantity": "1 small handful"
-        },
-        {
-          "ingredient": "sunflower-sprouts",
-          "quantity": "1 large handful"
-        },
-        {
-          "ingredient": "buckwheat-sprouts",
-          "quantity": "1 small handful"
-        }
-      ],
-      "tags": [
-        "green"
-      ]
-    },
-    {
-      "id": "radish-care",
-      "category": "juice",
-      "serves": "1",
-      "ingredients": [
-        {
-          "ingredient": "carrot",
-          "quantity": "5",
-          "details": "scrubbed well, green tops removed, and ends trimmed"
-        },
-        {
-          "ingredient": "radishes",
-          "quantity": "5 to 6",
-          "details": "(green tops removed), washed well"
-        },
-        {
-          "ingredient": "lemon",
-          "quantity": "½ small or medium",
-          "details": "washed, or peeled if not organic"
-        }
-      ]
-    },
-    {
-      "id": "the-revitalizer",
-      "category": "juice",
-      "serves": "1",
-      "ingredients": [
-        {
-          "ingredient": "tomato",
-          "quantity": "2"
-        },
-        {
-          "ingredient": "cucumber",
-          "quantity": "½",
-          "details": "peeled"
-        },
-        {
-          "ingredient": "string-beans",
-          "quantity": "6 to 8"
-        },
-        {
-          "ingredient": "lemon",
-          "quantity": "½",
-          "details": "or lime, peeled"
-        },
-        {
-          "ingredient": "hot-sauce",
-          "quantity": "Dash"
-        }
-      ]
-    },
-    {
-      "id": "salsa-in-a-glass",
-      "category": "juice",
-      "serves": "1",
-      "ingredients": [
-        {
-          "ingredient": "tomato",
-          "quantity": "1 medium vine-ripened"
-        },
-        {
-          "ingredient": "cucumber",
-          "quantity": "½",
-          "details": "peeled"
-        },
-        {
-          "ingredient": "cilantro",
-          "quantity": "1 small handful"
-        },
-        {
-          "ingredient": "lime",
-          "quantity": "½",
-          "details": "peeled"
-        },
-        {
-          "ingredient": "hot-sauce",
-          "quantity": "Dash",
-          "details": "(optional)"
-        }
-      ]
-    },
-    {
-      "id": "sinus-solution",
-      "category": "juice",
-      "serves": "1",
-      "ingredients": [
-        {
-          "ingredient": "tomato",
-          "quantity": "2 medium vine-ripened"
-        },
-        {
-          "ingredient": "radishes",
-          "quantity": "4",
-          "details": "with green tops, washed"
-        },
-        {
-          "ingredient": "lemon",
-          "quantity": "½ small or medium lime or",
-          "details": "peeled"
-        }
-      ],
-      "tags": [
-        "sinus"
-      ]
-    },
-    {
-      "id": "sleep-mender",
-      "category": "juice",
-      "serves": "1",
-      "ingredients": [
-        {
-          "ingredient": "lettuce",
-          "quantity": "2 romaine",
-          "details": "leaves"
-        },
-        {
-          "ingredient": "lemon",
-          "quantity": "½",
-          "details": "peeled"
-        },
-        {
-          "ingredient": "carrot",
-          "quantity": "5 medium",
-          "details": "scrubbed well, green tops removed, and ends trimmed"
-        },
-        {
-          "ingredient": "cauliflower",
-          "quantity": "4",
-          "details": "florets, washed"
-        }
-      ],
-      "tags": [
-        "sleep"
-      ]
-    },
-    {
-      "id": "spinach-power",
-      "category": "juice",
-      "serves": "1-2",
-      "ingredients": [
-        {
-          "ingredient": "cucumber",
-          "quantity": "½",
-          "details": "peeled"
-        },
-        {
-          "ingredient": "carrot",
-          "quantity": "3",
-          "details": "scrubbed well, tops removed, and ends trimmed"
-        },
-        {
-          "ingredient": "celery",
-          "quantity": "2",
-          "details": "stalks, with leaves as desired"
-        },
-        {
-          "ingredient": "beetroot",
-          "quantity": "½",
-          "details": "scrubbed well (may include stem and 1 to 2 leaves)"
-        },
-        {
-          "ingredient": "parsley",
-          "quantity": "1 small handful"
-        },
-        {
-          "ingredient": "lemon",
-          "quantity": "½",
-          "details": "peeled"
-        }
-      ]
-    },
-    {
-      "id": "spring-tonic",
-      "category": "juice",
-      "serves": "1-2",
-      "ingredients": [
-        {
-          "ingredient": "tomato",
-          "quantity": "1 vine-ripened"
-        },
-        {
-          "ingredient": "cucumber",
-          "quantity": "1",
-          "details": "peeled"
-        },
-        {
-          "ingredient": "asparagus",
-          "quantity": "8",
-          "details": "stems"
-        },
-        {
-          "ingredient": "lemon",
-          "quantity": "½",
-          "details": "peeled"
-        }
-      ],
-      "note": "Asparagus is a natural diuretic, which helps flush toxins from the body and promotes kidney cleansing.",
-      "tags": [
-        "cleansing",
-        "diuretic"
-      ]
-    },
-    {
-      "id": "sweet-dreams-nightcap",
-      "category": "juice",
-      "serves": "1",
-      "ingredients": [
-        {
-          "ingredient": "parsley",
-          "quantity": "1 small handful"
-        },
-        {
-          "ingredient": "lettuce",
-          "quantity": "2 romaine",
-          "details": "leaves"
-        },
-        {
-          "ingredient": "cucumber",
-          "quantity": "½",
-          "details": "peeled"
-        },
-        {
-          "ingredient": "carrot",
-          "quantity": "3",
-          "details": "scrubbed well, tops removed, and ends trimmed"
-        },
-        {
-          "ingredient": "cucumber",
-          "quantity": "½",
-          "details": "peeled"
-        },
-        {
-          "ingredient": "celery",
-          "quantity": "1",
-          "details": "stalk"
-        }
-      ]
-    },
-    {
-      "id": "super-green-sprout-drink",
-      "category": "juice",
-      "serves": "1",
-      "ingredients": [
-        {
-          "ingredient": "cucumber",
-          "quantity": "1",
-          "details": "peeled"
-        },
-        {
-          "ingredient": "sunflower-sprouts",
-          "quantity": "1 large handful"
-        },
-        {
-          "ingredient": "buckwheat-sprouts",
-          "quantity": "1 small handful"
-        },
-        {
-          "ingredient": "clover-sprouts",
-          "quantity": "1 small handful"
-        },
-        {
-          "ingredient": "spinach",
-          "quantity": "1 large handful"
-        }
-      ],
-      "tags": [
-        "green"
-      ]
-    },
-    {
-      "id": "sweet-and-regular",
-      "category": "juice",
-      "serves": "1",
-      "ingredients": [
-        {
-          "ingredient": "pear",
-          "quantity": "1",
-          "details": "washed"
-        },
-        {
-          "ingredient": "apple",
-          "quantity": "1 organic",
-          "details": "any kind, washed"
-        }
-      ]
-    },
-    {
-      "id": "thyroid-tonic",
-      "category": "juice",
-      "serves": "1",
-      "ingredients": [
-        {
-          "ingredient": "carrot",
-          "quantity": "5",
-          "details": "scrubbed well, green tops removed, and ends trimmed"
-        },
-        {
-          "ingredient": "lemon",
-          "quantity": "½ medium",
-          "details": "peeled"
-        },
-        {
-          "ingredient": "radishes",
-          "quantity": "5 to 6",
-          "details": "with green tops"
-        }
-      ],
-      "note": "Radishes are a traditional remedy for the thyroid.",
-      "tags": [
-        "thyroid"
-      ]
-    },
-    {
-      "id": "tomato-florentine",
-      "category": "juice",
-      "serves": "1",
-      "ingredients": [
-        {
-          "ingredient": "tomato",
-          "quantity": "2 vine-ripened"
-        },
-        {
-          "ingredient": "basil",
-          "quantity": "4 to 5 sprigs"
-        },
-        {
-          "ingredient": "spinach",
-          "quantity": "1 large handful"
-        },
-        {
-          "ingredient": "lemon",
-          "quantity": "½",
-          "details": "peeled"
-        }
-      ],
-      "tags": [
-        "tomato"
-      ]
-    },
-    {
-      "id": "triple-c",
-      "category": "juice",
-      "serves": "1-2",
-      "ingredients": [
-        {
-          "ingredient": "cabbage",
-          "quantity": "¼ small head"
-        },
-        {
-          "ingredient": "celery",
-          "quantity": "4 organic",
-          "details": "stalks with leaves"
-        },
-        {
-          "ingredient": "carrot",
-          "quantity": "4",
-          "details": "scrubbed well, green tops removed, and ends trimmed"
-        }
-      ]
-    },
-    {
-      "id": "turnip-time",
-      "category": "juice",
-      "serves": "1-2",
-      "ingredients": [
-        {
-          "ingredient": "turnip",
-          "quantity": "1",
-          "details": "scrubbed well"
-        },
-        {
-          "ingredient": "lemon",
-          "quantity": "½ small or medium",
-          "details": "peeled"
-        },
-        {
-          "ingredient": "jicama",
-          "quantity": "2-inch piece",
-          "details": "scrubbed, or peeled if not organic"
-        },
-        {
-          "ingredient": "watercress",
-          "quantity": "1 handful"
-        },
-        {
-          "ingredient": "carrot",
-          "quantity": "4",
-          "details": "scrubbed well, green tops removed, and ends trimmed"
-        },
-        {
-          "ingredient": "garlic",
-          "quantity": "1",
-          "details": "clove with peel, washed (optional)"
-        }
-      ]
-    },
-    {
-      "id": "veggie-delight",
-      "category": "juice",
-      "serves": "1-2",
-      "ingredients": [
-        {
-          "ingredient": "cucumber",
-          "quantity": "1",
-          "details": "peeled"
-        },
-        {
-          "ingredient": "celery",
-          "quantity": "2 to 3",
-          "details": "stalks (leaves can be included)"
-        },
-        {
-          "ingredient": "lemon",
-          "quantity": "½",
-          "details": "with peel, seeded (use only organic)"
-        },
-        {
-          "ingredient": "gingerroot",
-          "quantity": "1-inch piece"
-        }
-      ]
-    },
-    {
-      "id": "waldorf-twist",
-      "category": "juice",
-      "serves": "1",
-      "ingredients": [
-        {
-          "ingredient": "apple",
-          "quantity": "1"
-        },
-        {
-          "ingredient": "celery",
-          "quantity": "3 organic",
-          "details": "stalks with leaves"
-        },
-        {
-          "ingredient": "lemon",
-          "quantity": "½",
-          "details": "peeled"
-        }
-      ]
-    },
-    {
-      "id": "weight-loss-buddy",
-      "category": "juice",
-      "serves": "1",
-      "ingredients": [
-        {
-          "ingredient": "jerusalem-artichoke",
-          "quantity": "1 small Jerusalem",
-          "details": "scrubbed well"
-        },
-        {
-          "ingredient": "carrot",
-          "quantity": "3 to 4",
-          "details": "scrubbed well, tops removed, and ends trimmed"
-        },
-        {
-          "ingredient": "beetroot",
-          "quantity": "½ small",
-          "details": "scrubbed well"
-        },
-        {
-          "ingredient": "cucumber",
-          "quantity": "½"
-        },
-        {
-          "ingredient": "lemon",
-          "quantity": "½"
-        }
-      ],
-      "note": "Jerusalem artichoke juice combined with carrot and beetroot juices is a traditional remedy for satisfying cravings for sweets and junk food. The key is to sip it slowly when you get a craving for high-fat or high-carb foods.",
-      "tags": [
-        "weight"
-      ]
-    },
-    {
-      "id": "wheatgrass-light",
-      "category": "juice",
-      "serves": "1",
-      "ingredients": [
-        {
-          "ingredient": "apple",
-          "quantity": "1",
-          "details": "washed"
-        },
-        {
-          "ingredient": "wheatgrass",
-          "quantity": "1 handful",
-          "details": "rinsed"
-        },
-        {
-          "ingredient": "mint",
-          "quantity": "2 to 3 sprigs",
-          "details": "rinsed (optional)"
-        },
-        {
-          "ingredient": "lemon",
-          "quantity": "½ small or medium",
-          "details": "washed, or peeled if not organic"
-        }
-      ]
-    }
-  ]
+    ]
 }
+

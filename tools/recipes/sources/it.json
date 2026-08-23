@@ -33,7 +33,8 @@
     "juice": "Succo",
     "smoothie": "Frullato",
     "soup": "Zuppa",
-    "tea": "Tè"
+    "tea": "Tè",
+    "frozen": "Congelato"
   },
   "ingredients": {
     "almonds": "mandorle",
@@ -63,6 +64,7 @@
     "garlic": "aglio",
     "gingerroot": "radice di zenzero",
     "grapefruit": "pompelmo",
+    "ginger": "zenzero",
     "green-powder": "polvere verde",
     "hot-sauce": "salsa piccante",
     "jerusalem-artichoke": "topinambur",
@@ -88,7 +90,29 @@
     "turnip": "rapa",
     "water": "acqua",
     "watercress": "crescione",
-    "wheatgrass": "erba di grano"
+    "wheatgrass": "erba di grano",
+    "banana": "banana",
+    "blueberry": "mirtillo",
+    "cashew": "anacardi",
+    "corn": "mais",
+    "curry": "curry",
+    "grape": "uva",
+    "honey": "miele",
+    "kiwi": "kiwi",
+    "melon": "melone",
+    "milk": "latte",
+    "olive-oil": "olio d’oliva",
+    "orange": "arancia",
+    "oregano": "origano",
+    "peach": "pesca",
+    "pineapple": "ananas",
+    "plum": "prugna",
+    "pomegranate": "melagrana",
+    "raspberry": "lampone",
+    "salt": "sale",
+    "strawberry": "fragola",
+    "watermelon": "anguria",
+    "yogurt": "yogurt"
   },
   "tags": {
     "afternoon": "pomeriggio",
@@ -411,6 +435,131 @@
       "title": "Leggerezza all’erba di grano",
       "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell’estrattore. Starting with the apple, juice all the ingredients and stir. Versare in un bicchiere e bere al più presto.",
       "note": null
+    },
+    "ace": {
+      "title": "Ace",
+      "preparation": "Lavare accuratamente tutta la frutta e la verdura. Estrarre il succo da tutti gli ingredienti.",
+      "note": null
+    },
+    "kiwi-melon": {
+      "title": "Kiwi e melone",
+      "preparation": "Lavare accuratamente tutta la frutta e la verdura. Estrarre il succo da tutti gli ingredienti.",
+      "note": null
+    },
+    "cool": {
+      "title": "Fresco",
+      "preparation": "Lavare accuratamente tutta la frutta. Estrarre il succo da tutti gli ingredienti.",
+      "note": null
+    },
+    "oriental-express": {
+      "title": "Oriental Express",
+      "preparation": "Lavare accuratamente tutta la frutta. Estrarre il succo da tutti gli ingredienti.",
+      "note": null
+    },
+    "rich": {
+      "title": "Ricco",
+      "preparation": "Lavare accuratamente tutta la frutta. Estrarre il succo da tutti gli ingredienti.",
+      "note": null
+    },
+    "green-power": {
+      "title": "Potere verde",
+      "preparation": "Lavare accuratamente tutta la frutta e la verdura. Estrarre il succo da tutti gli ingredienti.",
+      "note": null
+    },
+    "detox": {
+      "title": "Detox",
+      "preparation": "Lavare accuratamente tutta la verdura. Estrarre il succo da tutti gli ingredienti.",
+      "note": null
+    },
+    "digestive-juice": {
+      "title": "Succo digestivo",
+      "preparation": "Lavare accuratamente tutta la frutta. Estrarre il succo da tutti gli ingredienti.",
+      "note": null
+    },
+    "yellow-spark": {
+      "title": "Scintilla gialla",
+      "preparation": "Lavare accuratamente tutta la frutta. Estrarre il succo da tutti gli ingredienti.",
+      "note": null
+    },
+    "sunny-time": {
+      "title": "Momento soleggiato",
+      "preparation": "Lavare accuratamente tutta la frutta e la verdura. Estrarre il succo da tutti gli ingredienti. Non pelare le carote: la buccia contiene molte vitamine e sostanze nutritive.",
+      "note": null
+    },
+    "sweet-watermelon": {
+      "title": "Anguria dolce",
+      "preparation": "Lavare accuratamente tutta la frutta. Estrarre il succo da tutti gli ingredienti. Aggiungere succo di limone per una bevanda più rinfrescante.",
+      "note": null
+    },
+    "tropical-magic": {
+      "title": "Magia tropicale",
+      "preparation": "Pelare l’ananas ed estrarre il succo da entrambi i frutti. Dolcificare con il miele.",
+      "note": null
+    },
+    "green-apple": {
+      "title": "Mela verde",
+      "preparation": "Lavare accuratamente tutta la frutta e la verdura. Estrarre il succo da tutti gli ingredienti.",
+      "note": null
+    },
+    "carrot-orange-ginger": {
+      "title": "Carota, arancia e zenzero",
+      "preparation": "Lavare accuratamente tutta la frutta e la verdura. Estrarre il succo da tutti gli ingredienti.",
+      "note": null
+    },
+    "grape-celery": {
+      "title": "Uva e sedano",
+      "preparation": "Lavare accuratamente l’uva e il cetriolo. Estrarre il succo da tutti gli ingredienti e dolcificare con il miele.",
+      "note": null
+    },
+    "bloody-mary-soup": {
+      "title": "Zuppa Bloody Mary",
+      "preparation": "Lavare accuratamente tutta la frutta e la verdura. Estrarre il succo da tutti gli ingredienti. Servire con ghiaccio.",
+      "note": null
+    },
+    "carrot-soup": {
+      "title": "Zuppa di carote",
+      "preparation": "Lavare accuratamente tutta la frutta e la verdura ed estrarre il succo da tutti gli ingredienti. Aggiungere gli anacardi, trasferire il composto in una pentola e scaldare a fuoco medio.",
+      "note": null
+    },
+    "corn-soup": {
+      "title": "Zuppa di mais",
+      "preparation": "Scolare il mais e metterlo con il latte nel Juice Art. Aggiungere la cipolla, trasferire il composto in una pentola e scaldare a fuoco medio.",
+      "note": null
+    },
+    "breeze-soup": {
+      "title": "Zuppa brezza",
+      "preparation": "Lavare accuratamente tutta la frutta e la verdura. Estrarre il succo da tutti gli ingredienti insieme a origano, peperoncino rosso, sale e olio d’oliva.",
+      "note": null
+    },
+    "spring-soup": {
+      "title": "Zuppa primaverile",
+      "preparation": "Lavare accuratamente la verdura. Estrarre il succo da tutti gli ingredienti, poi condire con aglio, sale e pepe.",
+      "note": null
+    },
+    "grape-ice-watercress": {
+      "title": "Ghiaccio d’uva e crescione",
+      "preparation": "Lavare l’uva e inserirla nel Juice Art con il latte. Aggiungere il miele al succo e conservare in freezer per 6 ore.",
+      "note": null
+    },
+    "watermelon-ice-watercress": {
+      "title": "Ghiaccio d’anguria e crescione",
+      "preparation": "Rimuovere la buccia dall’anguria e inserirla nel Juice Art con il latte. Aggiungere il miele al succo e conservare in freezer per 6 ore.",
+      "note": null
+    },
+    "kiwi-ice-watercress": {
+      "title": "Ghiaccio di kiwi e crescione",
+      "preparation": "Rimuovere la buccia dai kiwi e aggiungere il latte nel Juice Art. Aggiungere il miele al succo e conservare in freezer per 6 ore.",
+      "note": null
+    },
+    "soft-cream": {
+      "title": "Crema morbida",
+      "preparation": "Lavare accuratamente tutta la frutta e inserirla nel Juice Art. Per un gusto più dolce, aggiungere un vasetto di yogurt bianco cremoso e servire.",
+      "note": null
+    },
+    "pineapple-green-juice": {
+      "title": "Succo verde all’ananas",
+      "preparation": "Lavare accuratamente tutta la frutta e la verdura. Pelare e privare l’ananas del torsolo, poi privare la mela del torsolo. Estrarre il succo da tutti gli ingredienti.",
+      "note": "Estrarre il succo da tutti gli ingredienti nell’estrattore; omettere l’acqua filtrata prevista per il metodo con frullatore."
     }
   }
 }

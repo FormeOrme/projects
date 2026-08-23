@@ -81,6 +81,9 @@
     "grapefruit": {
       "emoji": "🍊"
     },
+    "ginger": {
+      "emoji": "🌿"
+    },
     "green-powder": {
       "emoji": "🌿"
     },
@@ -158,6 +161,72 @@
     },
     "wheatgrass": {
       "emoji": "🌿"
+    },
+    "banana": {
+      "emoji": "🍌"
+    },
+    "blueberry": {
+      "emoji": "🫐"
+    },
+    "cashew": {
+      "emoji": "🥜"
+    },
+    "corn": {
+      "emoji": "🌽"
+    },
+    "curry": {
+      "emoji": "🌶️"
+    },
+    "grape": {
+      "emoji": "🍇"
+    },
+    "honey": {
+      "emoji": "🍯"
+    },
+    "kiwi": {
+      "emoji": "🥝"
+    },
+    "melon": {
+      "emoji": "🍈"
+    },
+    "milk": {
+      "emoji": "🥛"
+    },
+    "olive-oil": {
+      "emoji": "🫒"
+    },
+    "orange": {
+      "emoji": "🍊"
+    },
+    "oregano": {
+      "emoji": "🌿"
+    },
+    "peach": {
+      "emoji": "🍑"
+    },
+    "pineapple": {
+      "emoji": "🍍"
+    },
+    "plum": {
+      "emoji": "🟣"
+    },
+    "pomegranate": {
+      "emoji": "🔴"
+    },
+    "raspberry": {
+      "emoji": "🍓"
+    },
+    "salt": {
+      "emoji": "🧂"
+    },
+    "strawberry": {
+      "emoji": "🍓"
+    },
+    "watermelon": {
+      "emoji": "🍉"
+    },
+    "yogurt": {
+      "emoji": "🥣"
     }
   },
   "tags": [
@@ -200,6 +269,9 @@
     },
     "soup": {
       "emoji": "🍲"
+    },
+    "frozen": {
+      "emoji": "🍧"
     },
     "tea": {
       "emoji": "🍵"

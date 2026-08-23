@@ -291,7 +291,14 @@ function renderRecipe(recipe) {
         item.title = ownedIngredients.has(key) ? text("own") : text("need");
         const label = document.createElement("span");
         label.className = "recipe-ingredient-label";
-        label.textContent = `${state.data.dictionary.ingredients[key]?.emoji || "•"} ${quantity} ${state.data.ingredients[key] || key}${details ? `, ${details}` : ""}`;
+        const icon = document.createElement("span");
+        icon.className = "recipe-ingredient-icon";
+        icon.textContent = state.data.dictionary.ingredients[key]?.emoji || "•";
+        icon.setAttribute("aria-hidden", "true");
+        const ingredientText = document.createElement("span");
+        ingredientText.className = "recipe-ingredient-text";
+        ingredientText.textContent = `${quantity} ${state.data.ingredients[key] || key}${details ? `, ${details}` : ""}`;
+        label.append(icon, ingredientText);
         item.append(label);
         if (!ownedIngredients.has(key)) {
             item.setAttribute("role", "button");

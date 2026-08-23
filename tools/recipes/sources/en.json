@@ -33,7 +33,8 @@
     "juice": "Juice",
     "smoothie": "Smoothie",
     "soup": "Soup",
-    "tea": "Tea"
+    "tea": "Tea",
+    "frozen": "Frozen"
   },
   "ingredients": {
     "almonds": "Almonds",
@@ -63,6 +64,7 @@
     "garlic": "Garlic",
     "gingerroot": "Gingerroot",
     "grapefruit": "Grapefruit",
+    "ginger": "Ginger",
     "green-powder": "Green Powder",
     "hot-sauce": "Hot Sauce",
     "jerusalem-artichoke": "Jerusalem Artichoke",
@@ -88,7 +90,29 @@
     "turnip": "Turnip",
     "water": "Water",
     "watercress": "Watercress",
-    "wheatgrass": "Wheatgrass"
+    "wheatgrass": "Wheatgrass",
+    "banana": "Banana",
+    "blueberry": "Blueberry",
+    "cashew": "Cashew Nuts",
+    "corn": "Corn",
+    "curry": "Curry",
+    "grape": "Grape",
+    "honey": "Honey",
+    "kiwi": "Kiwi",
+    "melon": "Melon",
+    "milk": "Milk",
+    "olive-oil": "Olive Oil",
+    "orange": "Orange",
+    "oregano": "Oregano",
+    "peach": "Peach",
+    "pineapple": "Pineapple",
+    "plum": "Plum",
+    "pomegranate": "Pomegranate",
+    "raspberry": "Raspberry",
+    "salt": "Salt",
+    "strawberry": "Strawberry",
+    "watermelon": "Watermelon",
+    "yogurt": "Yogurt"
   },
   "tags": {
     "afternoon": "Afternoon",
@@ -411,6 +435,131 @@
       "title": "Wheatgrass Light",
       "preparation": "Cut the produce to fit your juicer’s feed tube. Starting with the apple, juice all the ingredients and stir. Pour into a glass and drink as soon as possible.",
       "note": null
+    },
+    "ace": {
+      "title": "Ace",
+      "preparation": "Wash all fruit and vegetables carefully. Juice all ingredients.",
+      "note": null
+    },
+    "kiwi-melon": {
+      "title": "Kiwi & Melon",
+      "preparation": "Wash all fruit and vegetables carefully. Juice all ingredients.",
+      "note": null
+    },
+    "cool": {
+      "title": "Cool",
+      "preparation": "Wash all fruit carefully. Juice all ingredients.",
+      "note": null
+    },
+    "oriental-express": {
+      "title": "Oriental Express",
+      "preparation": "Wash all fruit carefully. Juice all ingredients.",
+      "note": null
+    },
+    "rich": {
+      "title": "Rich",
+      "preparation": "Wash all fruit carefully. Juice all ingredients.",
+      "note": null
+    },
+    "green-power": {
+      "title": "Green Power",
+      "preparation": "Wash all fruit and vegetables carefully. Juice all ingredients.",
+      "note": null
+    },
+    "detox": {
+      "title": "Detox",
+      "preparation": "Wash all vegetables carefully. Juice all ingredients.",
+      "note": null
+    },
+    "digestive-juice": {
+      "title": "Digestive Juice",
+      "preparation": "Wash all fruit carefully. Juice all ingredients.",
+      "note": null
+    },
+    "yellow-spark": {
+      "title": "Yellow Spark",
+      "preparation": "Wash all fruit carefully. Juice all ingredients.",
+      "note": null
+    },
+    "sunny-time": {
+      "title": "Sunny Time",
+      "preparation": "Wash all fruit and vegetables carefully. Juice all ingredients. Do not peel the carrots; the peel contains many vitamins and nutrients.",
+      "note": null
+    },
+    "sweet-watermelon": {
+      "title": "Sweet Watermelon",
+      "preparation": "Wash all fruit carefully. Juice all ingredients. Add lemon juice for a more refreshing drink.",
+      "note": null
+    },
+    "tropical-magic": {
+      "title": "Tropical Magic",
+      "preparation": "Peel the pineapple and juice both fruits. Sweeten with honey.",
+      "note": null
+    },
+    "green-apple": {
+      "title": "Green Apple",
+      "preparation": "Wash all fruit and vegetables carefully. Juice all ingredients.",
+      "note": null
+    },
+    "carrot-orange-ginger": {
+      "title": "Carrot, Orange & Ginger",
+      "preparation": "Wash all fruit and vegetables carefully. Juice all ingredients.",
+      "note": null
+    },
+    "grape-celery": {
+      "title": "Grape & Celery",
+      "preparation": "Wash the grapes and cucumber carefully. Juice all ingredients and sweeten with honey.",
+      "note": null
+    },
+    "bloody-mary-soup": {
+      "title": "Bloody Mary Soup",
+      "preparation": "Wash all fruit and vegetables carefully. Juice all ingredients. Serve with ice.",
+      "note": null
+    },
+    "carrot-soup": {
+      "title": "Carrot Soup",
+      "preparation": "Wash all fruit and vegetables carefully and juice all ingredients. Add the cashew nuts and transfer the mixture to a saucepan. Heat over medium heat.",
+      "note": null
+    },
+    "corn-soup": {
+      "title": "Corn Soup",
+      "preparation": "Drain the corn and put it with the milk into the Juice Art. Add the onion and transfer the mixture into a saucepan. Heat over medium heat.",
+      "note": null
+    },
+    "breeze-soup": {
+      "title": "Breeze Soup",
+      "preparation": "Wash all fruit and vegetables carefully. Juice all ingredients together with the oregano, red pepper, salt and olive oil.",
+      "note": null
+    },
+    "spring-soup": {
+      "title": "Spring Soup",
+      "preparation": "Wash the vegetables carefully. Juice all ingredients, then season with garlic, salt and pepper.",
+      "note": null
+    },
+    "grape-ice-watercress": {
+      "title": "Grape Ice Watercress",
+      "preparation": "Wash the grapes and put them into the Juice Art with the milk. Add honey to the juice and store in the freezer for 6 hours.",
+      "note": null
+    },
+    "watermelon-ice-watercress": {
+      "title": "Watermelon Ice Watercress",
+      "preparation": "Remove the peel from the watermelon and put it with the milk into the Juice Art. Add honey to the juice and store in the freezer for 6 hours.",
+      "note": null
+    },
+    "kiwi-ice-watercress": {
+      "title": "Kiwi Ice Watercress",
+      "preparation": "Remove the peel from the kiwis and add the milk in the Juice Art. Add honey to the juice and store in the freezer for 6 hours.",
+      "note": null
+    },
+    "soft-cream": {
+      "title": "Soft Cream",
+      "preparation": "Wash all fruit carefully and put it into the Juice Art. For a sweeter taste, add a jar of creamy white yogurt and serve.",
+      "note": null
+    },
+    "pineapple-green-juice": {
+      "title": "Pineapple Green Juice",
+      "preparation": "Wash all fruit and vegetables carefully. Peel and core the pineapple, then core the apple. Juice all ingredients.",
+      "note": "Juice all ingredients in an extractor; omit the filtered water used for the blender method."
     }
   }
 }
