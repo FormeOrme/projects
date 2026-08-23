@@ -1,10 +1,10 @@
 const state = {
     data: null,
     query: new URLSearchParams(window.location.search),
+    language: "en",
 };
 
 const elements = {
-    category: document.querySelector("#category"),
     ownedIngredients: document.querySelector("#owned-ingredients"),
     ingredientFilters: document.querySelector("#ingredient-filters"),
     clear: document.querySelector("#clear"),
@@ -14,9 +14,25 @@ const elements = {
     recipes: document.querySelector("#recipes"),
 };
 
+function text(key) {
+    return state.data.locale.ui[key];
+}
+
+function localizedRecipe(recipe) {
+    return state.data.locale.recipes[recipe.id] || {};
+}
+
+function updatePageText() {
+    document.documentElement.lang = state.language;
+    for (const element of document.querySelectorAll("[data-i18n]"))
+        element.textContent = text(element.dataset.i18n);
+    elements.ownedIngredients.setAttribute("aria-label", text("haveIngredients"));
+    elements.ingredientFilters.setAttribute("aria-label", text("missingIngredients"));
+}
+
 function updateUrl() {
     const params = new URLSearchParams();
-    if (elements.category.value) params.set("category", elements.category.value);
+    if (state.language !== "en") params.set("lang", state.language);
     const ownedIngredients = getSelectedIngredients(elements.ownedIngredients);
     const filteredIngredients = getSelectedIngredients(elements.ingredientFilters);
     if (ownedIngredients.size) params.set("owned", [...ownedIngredients].join(","));
@@ -25,7 +41,6 @@ function updateUrl() {
 }
 
 function setFiltersFromUrl() {
-    elements.category.value = state.query.get("category") || "";
     const ownedIngredients = new Set((state.query.get("owned") || "").split(",").filter(Boolean));
     const filteredIngredients = new Set(
         (state.query.get("ingredients") || "").split(",").filter(Boolean),
@@ -52,47 +67,84 @@ function getSelectedIngredients(container) {
 
 function getVisibleRecipes() {
     const excludedIngredients = getSelectedIngredients(elements.ingredientFilters);
-    return state.data.recipes.filter((recipe) => {
-        const ingredientKeys = new Set(recipe.ingredients.map(([key]) => key));
+    return getCategoryRecipes().filter((recipe) => {
+        const ingredientKeys = new Set(recipe.ingredients.map(({ ingredient }) => ingredient));
         return (
-            (!elements.category.value || recipe.category === elements.category.value) &&
+            recipe.category === "juice" &&
             ![...excludedIngredients].some((ingredient) => ingredientKeys.has(ingredient))
         );
     });
 }
 
+function getCategoryRecipes() {
+    return state.data.recipes.filter((recipe) => recipe.category === "juice");
+}
+
 function getAvailableIngredients() {
-    const availableIngredients = new Set(
-        state.data.recipes
-            .filter(
-                (recipe) => !elements.category.value || recipe.category === elements.category.value,
-            )
-            .flatMap((recipe) => recipe.ingredients.map(([key]) => key)),
-    );
+    const ingredientFrequency = new Map();
+    for (const recipe of getVisibleRecipes()) {
+        for (const { ingredient } of recipe.ingredients) {
+            ingredientFrequency.set(ingredient, (ingredientFrequency.get(ingredient) || 0) + 1);
+        }
+    }
     return Object.entries(state.data.ingredients)
-        .filter(([key]) => availableIngredients.has(key))
-        .sort(([, left], [, right]) => left.title.localeCompare(right.title));
+        .filter(([key]) =>
+            getCategoryRecipes().some((recipe) =>
+                recipe.ingredients.some((item) => item.ingredient === key),
+            ),
+        )
+        .sort(
+            ([leftKey, left], [rightKey, right]) =>
+                (ingredientFrequency.get(rightKey) || 0) -
+                    (ingredientFrequency.get(leftKey) || 0) || left.localeCompare(right),
+        );
 }
 
 function getAvailableOwnedIngredients() {
     const excludedIngredients = getSelectedIngredients(elements.ingredientFilters);
-    const visibleIngredients = new Set(
-        getVisibleRecipes().flatMap((recipe) => recipe.ingredients.map(([key]) => key)),
-    );
+    const ingredientFrequency = new Map();
+    for (const recipe of getVisibleRecipes()) {
+        for (const { ingredient } of recipe.ingredients) {
+            ingredientFrequency.set(ingredient, (ingredientFrequency.get(ingredient) || 0) + 1);
+        }
+    }
+    const visibleIngredients = new Set(ingredientFrequency.keys());
     return Object.entries(state.data.ingredients)
         .filter(([key]) => visibleIngredients.has(key) && !excludedIngredients.has(key))
-        .sort(([, left], [, right]) => left.title.localeCompare(right.title));
+        .sort(
+            ([leftKey, left], [rightKey, right]) =>
+                ingredientFrequency.get(rightKey) - ingredientFrequency.get(leftKey) ||
+                left.localeCompare(right),
+        );
 }
 
 function renderIngredientToggles(container, selectedIngredients, ingredientEntries) {
     container.replaceChildren();
+    const recipeCounts = new Map();
+    for (const recipe of getVisibleRecipes()) {
+        for (const { ingredient } of recipe.ingredients) {
+            recipeCounts.set(ingredient, (recipeCounts.get(ingredient) || 0) + 1);
+        }
+    }
     for (const [key, ingredient] of ingredientEntries) {
         const button = document.createElement("button");
         button.type = "button";
         button.className = "ingredient-toggle";
         button.dataset.ingredient = key;
         button.setAttribute("aria-pressed", String(selectedIngredients.has(key)));
-        button.textContent = `${ingredient.emoji} ${ingredient.title}`;
+        const icon = document.createElement("span");
+        icon.className = "ingredient-icon";
+        icon.textContent = state.data.dictionary.ingredients[key]?.emoji || "•";
+        icon.setAttribute("aria-hidden", "true");
+        const label = document.createElement("span");
+        label.className = "ingredient-name";
+        label.textContent = ingredient;
+        button.append(icon, label);
+        const count = document.createElement("span");
+        count.className = "ingredient-count";
+        count.textContent = recipeCounts.get(key) || 0;
+        count.setAttribute("aria-label", `${recipeCounts.get(key) || 0} recipes`);
+        button.append(count);
         button.addEventListener("click", () => {
             button.setAttribute(
                 "aria-pressed",
@@ -120,19 +172,16 @@ function renderIngredientFilters() {
 }
 
 function populateFilters() {
-    for (const [key, category] of Object.entries(state.data.categories)) {
-        elements.category.add(new Option(`${category.emoji} ${category.title}`, key));
-    }
     setFiltersFromUrl();
 }
 
 function recipeMatches(recipe) {
-    const ingredientKeys = new Map(recipe.ingredients);
+    const ingredientKeys = new Set(recipe.ingredients.map(({ ingredient }) => ingredient));
     const ownedIngredients = getSelectedIngredients(elements.ownedIngredients);
     const selectedIngredients = getSelectedIngredients(elements.ingredientFilters);
 
     return (
-        (!elements.category.value || recipe.category === elements.category.value) &&
+        recipe.category === "juice" &&
         (!ownedIngredients.size ||
             [...ownedIngredients].some((ingredient) => ingredientKeys.has(ingredient))) &&
         ![...selectedIngredients].some((ingredient) => ingredientKeys.has(ingredient))
@@ -143,67 +192,86 @@ function recipeIsReady(
     recipe,
     ownedIngredients = getSelectedIngredients(elements.ownedIngredients),
 ) {
-    return recipe.ingredients.every(([key]) => ownedIngredients.has(key));
+    return recipe.ingredients.every(({ ingredient }) => ownedIngredients.has(ingredient));
 }
 
 function renderRecipe(recipe) {
-    const category = state.data.categories[recipe.category];
+    const localized = localizedRecipe(recipe);
     const ownedIngredients = getSelectedIngredients(elements.ownedIngredients);
     const card = document.createElement("article");
     card.className = "recipe-card";
 
     const header = document.createElement("header");
     const title = document.createElement("h2");
-    title.textContent = recipe.title;
+    title.textContent = localized.title;
     const categoryLabel = document.createElement("span");
     categoryLabel.className = "category";
-    categoryLabel.textContent = `${category.emoji} ${category.title}`;
+    categoryLabel.textContent = `${state.data.dictionary.categories[recipe.category]?.emoji || "•"} ${state.data.categories[recipe.category]}`;
     header.append(title, categoryLabel);
 
     const missingIngredients = recipe.ingredients
-        .filter(([key]) => !ownedIngredients.has(key))
-        .map(([key]) => state.data.ingredients[key]?.title.toLowerCase() || key);
+        .filter(({ ingredient }) => !ownedIngredients.has(ingredient))
+        .map(({ ingredient }) => state.data.ingredients[ingredient]?.toLowerCase() || ingredient);
     const alert = document.createElement("p");
     alert.className = `recipe-alert ${missingIngredients.length ? "missing" : "ready"}`;
     alert.textContent = missingIngredients.length
-        ? `For this recipe you are missing ${formatIngredientList(missingIngredients)}.`
-        : "You are set for this recipe.";
+        ? `${text("missing")} ${formatIngredientList(missingIngredients)}.`
+        : text("ready");
 
     const ingredientsHeading = document.createElement("h3");
-    ingredientsHeading.textContent = "Ingredients";
+    ingredientsHeading.textContent = text("ingredients");
     const list = document.createElement("ul");
     list.className = "ingredient-list";
 
-    for (const [key, quantity] of recipe.ingredients) {
-        const ingredient = state.data.ingredients[key];
+    for (const { ingredient: key, quantity, details } of recipe.ingredients) {
         const item = document.createElement("li");
         item.className = ownedIngredients.has(key) ? "owned" : "missing";
-        item.title = ownedIngredients.has(key)
-            ? "You have this ingredient"
-            : "You need this ingredient";
-        item.textContent = `${ingredient?.emoji || "•"} ${quantity} ${ingredient?.title || key}`;
+        item.title = ownedIngredients.has(key) ? text("own") : text("need");
+        item.textContent = `${state.data.dictionary.ingredients[key]?.emoji || "•"} ${quantity} ${state.data.ingredients[key] || key}${details ? `, ${details}` : ""}`;
         list.append(item);
     }
 
     const preparationHeading = document.createElement("h3");
-    preparationHeading.textContent = "Preparation";
+    preparationHeading.textContent = text("preparation");
     const preparation = document.createElement("p");
     preparation.className = "preparation";
-    preparation.textContent = recipe.preparation;
+    preparation.textContent = localized.preparation || "";
     card.append(header, alert, ingredientsHeading, list, preparationHeading, preparation);
+    if (recipe.tags?.length) {
+        const tags = document.createElement("p");
+        tags.className = "recipe-tags";
+        const tagsLabel = document.createElement("span");
+        tagsLabel.className = "recipe-tags-label";
+        tagsLabel.textContent = `${text("tags")}:`;
+        tags.append(tagsLabel);
+        for (const tag of recipe.tags) {
+            const tagBadge = document.createElement("span");
+            tagBadge.className = "recipe-tag";
+            tagBadge.textContent = state.data.locale.tags[tag] || tag;
+            tags.append(tagBadge);
+        }
+        card.append(tags);
+    }
+    if (localized.note) {
+        const note = document.createElement("p");
+        note.className = "recipe-note";
+        note.setAttribute("role", "note");
+        note.textContent = localized.note;
+        card.append(note);
+    }
     return card;
 }
 
 function formatIngredientList(ingredients) {
     if (ingredients.length < 2) return ingredients[0];
-    if (ingredients.length === 2) return `${ingredients[0]} and ${ingredients[1]}`;
-    return `${ingredients.slice(0, -1).join(", ")} and ${ingredients.at(-1)}`;
+    if (ingredients.length === 2) return `${ingredients[0]} ${text("and")} ${ingredients[1]}`;
+    return `${ingredients.slice(0, -1).join(", ")} ${text("and")} ${ingredients.at(-1)}`;
 }
 
 function formatOrList(ingredients) {
     if (ingredients.length < 2) return ingredients[0];
-    if (ingredients.length === 2) return `${ingredients[0]} or ${ingredients[1]}`;
-    return `${ingredients.slice(0, -1).join(", ")} or ${ingredients.at(-1)}`;
+    if (ingredients.length === 2) return `${ingredients[0]} ${text("or")} ${ingredients[1]}`;
+    return `${ingredients.slice(0, -1).join(", ")} ${text("or")} ${ingredients.at(-1)}`;
 }
 
 function render() {
@@ -215,19 +283,19 @@ function render() {
                 Number(recipeIsReady(right, ownedIngredientKeys)) -
                 Number(recipeIsReady(left, ownedIngredientKeys)),
         );
-    const category = state.data.categories[elements.category.value];
+    const category = state.data.categories.juice;
     const ownedIngredients = [...getSelectedIngredients(elements.ownedIngredients)].map(
-        (key) => state.data.ingredients[key]?.title || key,
+        (key) => state.data.ingredients[key] || key,
     );
-    const categoryText = category?.title.toLowerCase() || "something";
-    const recipeLabel = `${matches.length} recipe${matches.length === 1 ? "" : "s"}`;
+    const categoryText = category.toLowerCase();
+    const recipeLabel = `${matches.length} ${matches.length === 1 ? text("recipe") : text("recipes")}`;
     const ingredientText = ownedIngredients.length
-        ? ` containing ${formatOrList(ownedIngredients)}`
+        ? ` ${text("containing")} ${formatOrList(ownedIngredients)}`
         : "";
-    elements.recap.textContent = `${recipeLabel} for ${categoryText} found${ingredientText}.`;
+    elements.recap.textContent = `${recipeLabel} ${categoryText} ${text("found")}${ingredientText}.`;
     elements.recipes.replaceChildren(...matches.map(renderRecipe));
-    elements.count.textContent = `${matches.length} recipe${matches.length === 1 ? "" : "s"}`;
-    elements.status.textContent = matches.length ? "" : "No recipes match these filters.";
+    elements.count.textContent = recipeLabel;
+    elements.status.textContent = matches.length ? "" : text("noMatch");
 }
 
 function handleFilterChange() {
@@ -238,9 +306,29 @@ function handleFilterChange() {
 
 async function init() {
     try {
-        const response = await fetch("./recipes.json");
-        if (!response.ok) throw new Error(`Could not load recipes.json (${response.status})`);
-        state.data = await response.json();
+        state.language = state.query.get("lang") === "it" ? "it" : "en";
+        const responses = await Promise.all([
+            fetch("./sources/dictionary.json"),
+            fetch("./sources/recipes.json"),
+            fetch(`./sources/${state.language}.json`),
+        ]);
+        if (responses.some((response) => !response.ok))
+            throw new Error("Could not load localized recipe data");
+        const [dictionary, recipeData, locale] = await Promise.all(
+            responses.map((response) => response.json()),
+        );
+        state.data = {
+            dictionary,
+            categories: Object.fromEntries(
+                Object.keys(dictionary.categories).map((key) => [key, locale.categories[key]]),
+            ),
+            ingredients: Object.fromEntries(
+                Object.keys(dictionary.ingredients).map((key) => [key, locale.ingredients[key]]),
+            ),
+            recipes: recipeData.recipes,
+            locale,
+        };
+        updatePageText();
         populateFilters();
         render();
     } catch (error) {
@@ -250,9 +338,7 @@ async function init() {
     }
 }
 
-elements.category.addEventListener("change", handleFilterChange);
 elements.clear.addEventListener("click", () => {
-    elements.category.value = "";
     for (const container of [elements.ownedIngredients, elements.ingredientFilters]) {
         for (const button of container.querySelectorAll("button")) {
             button.setAttribute("aria-pressed", "false");

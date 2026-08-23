@@ -1,0 +1,410 @@
+{
+  "ui": {
+    "pageTitle": "Recipes",
+    "languageLabel": "Language",
+    "categoryPrompt": "I want to make a",
+    "allCategories": "All categories",
+    "haveIngredients": "I have:",
+    "clearFilters": "Clear filters",
+    "missingIngredients": "Ingredients I don't have",
+    "loading": "Loading recipes...",
+    "ingredients": "Ingredients",
+    "preparation": "Preparation",
+    "tags": "Tags",
+    "missing": "For this recipe you are missing",
+    "ready": "You are set for this recipe.",
+    "noMatch": "No recipes match these filters.",
+    "recipe": "recipe",
+    "recipes": "recipes",
+    "found": "found",
+    "containing": "containing",
+    "and": "and",
+    "or": "or",
+    "own": "You have this ingredient",
+    "need": "You need this ingredient"
+  },
+  "categories": {
+    "juice": "Juice",
+    "smoothie": "Smoothie",
+    "soup": "Soup",
+    "tea": "Tea"
+  },
+  "ingredients": {
+    "almonds": "Almonds",
+    "apple": "Apple",
+    "asparagus": "Asparagus",
+    "avocado": "Avocado",
+    "basil": "Basil",
+    "beetroot": "Beetroot",
+    "bell-pepper": "Bell Pepper",
+    "broccoli": "Broccoli",
+    "buckwheat-sprouts": "Buckwheat Sprouts",
+    "cabbage": "Cabbage",
+    "carrot": "Carrot",
+    "cauliflower": "Cauliflower",
+    "celery": "Celery",
+    "cilantro": "Cilantro",
+    "cinnamon": "Cinnamon",
+    "clover-sprouts": "Clover Sprouts",
+    "cloves": "Cloves",
+    "coconut-milk": "Coconut Milk",
+    "cranberries": "Cranberries",
+    "cucumber": "Cucumber",
+    "cumin": "Cumin",
+    "daikon-radish": "Daikon Radish",
+    "dandelion-greens": "Dandelion Greens",
+    "fennel": "Fennel",
+    "garlic": "Garlic",
+    "gingerroot": "Gingerroot",
+    "grapefruit": "Grapefruit",
+    "green-powder": "Green Powder",
+    "hot-sauce": "Hot Sauce",
+    "jerusalem-artichoke": "Jerusalem Artichoke",
+    "jicama": "Jicama",
+    "kale": "Kale",
+    "lemon": "Lemon",
+    "lettuce": "Lettuce",
+    "licorice-tea": "Licorice Tea",
+    "lime": "Lime",
+    "mint": "Mint",
+    "nutmeg": "Nutmeg",
+    "onion": "Onion",
+    "parsley": "Parsley",
+    "parsnip": "Parsnip",
+    "pear": "Pear",
+    "radishes": "Radishes",
+    "spinach": "Spinach",
+    "sprouts": "Sprouts",
+    "strawberries": "Strawberries",
+    "string-beans": "String Beans",
+    "sunflower-sprouts": "Sunflower Sprouts",
+    "tomato": "Tomato",
+    "turnip": "Turnip",
+    "water": "Water",
+    "watercress": "Watercress",
+    "wheatgrass": "Wheatgrass"
+  },
+  "tags": {
+    "afternoon": "Afternoon",
+    "allergy": "Allergy",
+    "bladder": "Bladder",
+    "bones": "Bones",
+    "cleansing": "Cleansing",
+    "colon": "Colon",
+    "diuretic": "Diuretic",
+    "energy": "Energy",
+    "gallbladder": "Gallbladder",
+    "ginger": "Ginger",
+    "gout": "Gout",
+    "green": "Green",
+    "immune": "Immune",
+    "liver": "Liver",
+    "lungs": "Lungs",
+    "memory": "Memory",
+    "mood": "Mood",
+    "morning": "Morning",
+    "pancreas": "Pancreas",
+    "sinus": "Sinus",
+    "skin": "Skin",
+    "sleep": "Sleep",
+    "smoothie": "Smoothie",
+    "soup": "Soup",
+    "sprouts": "Sprouts",
+    "tea": "Tea",
+    "thyroid": "Thyroid",
+    "tomato": "Tomato",
+    "weight": "Weight"
+  },
+  "recipes": {
+    "afternoon-refresher": {
+      "title": "Afternoon Refresher",
+      "preparation": "Cut the produce to fit your juicer’s feed tube. Juice the ingredients and stir. Pour into a glass and drink as soon as possible.",
+      "note": null
+    },
+    "allergy-relief": {
+      "title": "Allergy Relief",
+      "preparation": "Cut the produce to fit your juicer’s feed tube. Bunch up the parsley and add to the juicer before turning it on. Then add the lemon and place the plunger in place. Juice the remaining ingredients and stir. Pour into a glass and drink as soon as possible.",
+      "note": null
+    },
+    "antiulcer-cabbage-cocktail": {
+      "title": "Antiulcer Cabbage Cocktail",
+      "preparation": "Cut the produce to fit your juicer’s feed tube. Juice the ingredients and stir. Pour into a glass and drink as soon as possible.",
+      "note": "Scientific research has proven that cabbage juice is an effective treatment for stomach ulcers."
+    },
+    "antiviral-cocktail": {
+      "title": "Antiviral Cocktail",
+      "preparation": "Cut the produce to fit your juicer’s feed tube. Juice the ingredients and stir. Pour into a glass and drink as soon as possible.",
+      "note": null
+    },
+    "awesome-green-smoothie": {
+      "title": "Awesome Green Smoothie",
+      "preparation": "Combine all ingredients except almonds in a blender and blend well. Sprinkle ground almonds on top, as desired.",
+      "note": null
+    },
+    "beautiful-bone-solution": {
+      "title": "Beautiful-Bone Solution",
+      "preparation": "Cut the apple into sections to fit your juicer’s feed tube. Bunch up the kale and parsley, and push through the feed tube with the apple, celery, lemon, and gingerroot. Stir the juice, and pour into a glass. Serve at room temperature or chilled, as desired.",
+      "note": null
+    },
+    "beautiful-skin-cocktail": {
+      "title": "Beautiful-Skin Cocktail",
+      "preparation": "Cut the produce to fit your juicer’s feed tube. Juice the ingredients and stir. Pour into a glass and drink as soon as possible.",
+      "note": "Cucumber and bell pepper are good sources of the trace mineral silicon, which is recommended to strengthen skin, hair, and fingernails along with bones. In studies, silicon has been shown to reduce signs of aging by improving thickness of skin and reducing wrinkles."
+    },
+    "beet-cucumber-cleansing-cocktail": {
+      "title": "Beet-Cucumber Cleansing Cocktail",
+      "preparation": "Cut the produce to fit your juicer’s feed tube. Juice the ingredients and stir. Pour into a glass and drink as soon as possible.",
+      "note": null
+    },
+    "bladder-tonic": {
+      "title": "Bladder Tonic",
+      "preparation": "Cut the produce to fit your juicer’s feed tube. Juice the ingredients except hot sauce. Pour into a glass, stir in hot sauce, and drink as soon as possible.",
+      "note": null
+    },
+    "cabbage-patch-cocktail": {
+      "title": "Cabbage Patch Cocktail",
+      "preparation": "Cut the produce to fit your juicer’s feed tube. Juice the ingredients and stir. Pour into a glass and drink as soon as possible.",
+      "note": null
+    },
+    "calcium-rich-cocktail": {
+      "title": "Calcium-Rich Cocktail",
+      "preparation": "Cut the produce to fit your juicer’s feed tube. Juice the ingredients and stir. Pour into a glass and drink as soon as possible.",
+      "note": null
+    },
+    "cheries-green-smoothie": {
+      "title": "Cherie’s Green Smoothie",
+      "preparation": "Combine all ingredients except almonds in a blender and blend well. Sprinkle ground almonds on top, as desired.",
+      "note": null
+    },
+    "cheries-quick-energy-soup": {
+      "title": "Cherie’s Quick Energy Soup",
+      "preparation": "Juice the carrots and pour the juice into a blender. Add the avocado and cumin and blend until smooth. Serve chilled.",
+      "note": null
+    },
+    "colon-cleanser": {
+      "title": "Colon Cleanser",
+      "preparation": "Cut the produce to fit your juicer’s feed tube. Juice the ingredients and stir. Pour into a glass and drink as soon as possible.",
+      "note": null
+    },
+    "cranberry-apple-cocktail": {
+      "title": "Cranberry-Apple Cocktail",
+      "preparation": "Cut the produce to fit your juicer’s feed tube. Juice one apple first. Turn off the machine, add the cranberries, and put the plunger in, then turn the machine on and juice. Follow with the lemon and second apple, and stir. Pour into a glass and drink as soon as possible.",
+      "note": null
+    },
+    "gallbladder-liver-cleansing-cocktail": {
+      "title": "Gallbladder-Liver Cleansing Cocktail",
+      "preparation": "Cut the produce to fit your juicer’s feed tube. Juice the ingredients and stir. Pour into a glass and drink as soon as possible.",
+      "note": null
+    },
+    "gallbladder-rejuvenator": {
+      "title": "Gallbladder Rejuvenator",
+      "preparation": "Cut the produce to fit your juicer’s feed tube. Juice the ingredients and stir. Pour into a glass and drink as soon as possible.",
+      "note": null
+    },
+    "garlic-surprise": {
+      "title": "Garlic Surprise",
+      "preparation": "Roll the parsley in the lettuce leaf. Juice the cucumber and the parsley rolled in the lettuce leaf. Add the garlic and push through the juicer with the carrots, followed by the celery. Stir and pour into a glass.",
+      "note": null
+    },
+    "the-ginger-hopper": {
+      "title": "The Ginger Hopper",
+      "preparation": "Cut the produce to fit your juicer’s feed tube. Juice the ingredients and stir. Pour into a glass and drink as soon as possible.",
+      "note": null
+    },
+    "ginger-twist": {
+      "title": "Ginger Twist",
+      "preparation": "Cut the produce to fit your juicer’s feed tube. Juice the ingredients and stir. Pour into a glass and drink as soon as possible.",
+      "note": null
+    },
+    "gout-fighting-tonic": {
+      "title": "Gout-Fighting Tonic",
+      "preparation": "Cut the produce to fit your juicer’s feed tube. Juice the ingredients and stir. Pour into a glass and drink as soon as possible.",
+      "note": null
+    },
+    "happy-morning": {
+      "title": "Happy Morning",
+      "preparation": "Cut the produce to fit your juicer’s feed tube. Juice the apple first and follow with the other ingredients. Stir and pour into a glass; drink as soon as possible.",
+      "note": "Fennel juice has been used as a traditional tonic to help the body release endorphins, the feel-good peptides, from the brain into the bloodstream. Endorphins help diminish anxiety and fear, and generate a mood of euphoria."
+    },
+    "healthy-lungs": {
+      "title": "Healthy Lungs",
+      "preparation": "Bunch up the watercress. Cut the produce to fit your juicer’s feed tube. Tuck the watercress in the feed tube and push through with the turnip. Juice the remaining ingredients, finishing with a carrot. Stir the juice, pour into a glass, and drink as soon as possible.",
+      "note": "Turnip juice has traditionally been used a remedy to strengthen lung tissue."
+    },
+    "healthy-sinus-solution": {
+      "title": "Healthy-Sinus Solution",
+      "preparation": "Cut the produce to fit your juicer’s feed tube. Juice the ingredients and stir. Pour into a glass and drink as soon as possible.",
+      "note": "Radish juice is a traditional remedy to open up the sinuses and support the mucous membranes."
+    },
+    "hot-ginger-lemon-tea": {
+      "title": "Hot Ginger-Lemon Tea",
+      "preparation": "Place all ingredients in a saucepan and simmer for 10 minutes. Strain and drink immediately.",
+      "note": null
+    },
+    "icy-spicy-tomato": {
+      "title": "Icy Spicy Tomato",
+      "preparation": "Cut the produce to fit your juicer’s feed tube. Juice the ingredients and stir. Pour into a glass and drink as soon as possible.",
+      "note": null
+    },
+    "immune-builder": {
+      "title": "Immune Builder",
+      "preparation": "Bunch up the watercress. Cut the produce to fit your juicer’s feed tube. Tuck the watercress in the feed tube and push through with the turnip. Juice the remaining ingredients, finishing with a carrot. Stir the juice, pour into a glass, and drink as soon as possible.",
+      "note": "Studies show that garlic has a compound that has a natural antibiotic-like effect. It is antibacterial, antifungal, antiparasitic, and antiviral, but it must be consumed raw to have this effect."
+    },
+    "jack-and-the-bean": {
+      "title": "Jack & the Bean",
+      "preparation": "Cut the produce to fit your juicer’s feed tube. Juice the ingredients and stir. Pour into a glass and drink as soon as possible.",
+      "note": null
+    },
+    "liver-life-tonic": {
+      "title": "Liver Life Tonic",
+      "preparation": "Bunch up the dandelion greens. Cut the produce to fit your juicer’s feed tube. Tuck the dandelion greens in the feed tube and push through with the carrots. Juice the remaining ingredients, finishing with a carrot. Stir the juice, pour into a glass, and drink as soon as possible.",
+      "note": "Dandelion juice is a traditional remedy for cleansing the liver."
+    },
+    "magnesium-rich-cocktail": {
+      "title": "Magnesium-Rich Cocktail",
+      "preparation": "Cut the produce to fit your juicer’s feed tube. Juice the ingredients and stir. Pour into a glass and drink as soon as possible.",
+      "note": null
+    },
+    "memory-mender": {
+      "title": "Memory Mender",
+      "preparation": "Cut the produce to fit your juicer’s feed tube. Juice the ingredients and stir. Pour into a glass and drink as soon as possible.",
+      "note": null
+    },
+    "mint-refresher": {
+      "title": "Mint Refresher",
+      "preparation": "Cut the produce to fit your juicer’s feed tube. Juice the ingredients and stir. Pour into a glass and drink as soon as possible.",
+      "note": null
+    },
+    "mood-mender": {
+      "title": "Mood Mender",
+      "preparation": "Cut the produce to fit your juicer’s feed tube. Juice the ingredients and stir. Pour into a glass and drink as soon as possible.",
+      "note": "Fennel juice has long been used as a tonic to help the body release endorphins, the feel-good peptides, from the brain into the bloodstream. Endorphins help diminish anxiety and fear, and generate a mood of euphoria."
+    },
+    "morning-energizer": {
+      "title": "Morning Energizer",
+      "preparation": "Cut the produce to fit your juicer’s feed tube. Juice the ingredients and stir. Pour into a glass and drink as soon as possible.",
+      "note": null
+    },
+    "natural-diuretic-cocktail": {
+      "title": "Natural Diuretic Cocktail",
+      "preparation": "Cut the produce to fit your juicer’s feed tube. Juice the tomato and lemon. Turn off the juicer and add the parsley, followed by half the cucumber. Put in the plunger and turn the machine on. Juice the remaining ingredients and stir. Pour into a glass and drink as soon as possible.",
+      "note": "Lemon, parsley, cucumber, and asparagus all act as diuretics."
+    },
+    "orient-express": {
+      "title": "Orient Express",
+      "preparation": "Cut the produce to fit your juicer’s feed tube. Juice the ingredients and stir. Pour into a glass and drink as soon as possible.",
+      "note": null
+    },
+    "pancreas-helper": {
+      "title": "Pancreas Helper",
+      "preparation": "Bunch up the lettuce leaves. Cut the produce to fit your juicer’s feed tube. Tuck the lettuce in the feed tube and push through with the cucumber. Juice the remaining ingredients, finishing with some tomato. Pour into a glass and drink as soon as possible.",
+      "note": "Brussels sprouts and string bean juice are traditional remedies to help strengthen and support the pancreas. Drink before a meal. (If this drink is too strong, dilute with a little water.) For best pancreas support, also avoid refined carbohydrates such as white-flour products, sugars of all types, soda, and all sweets."
+    },
+    "peppy-parsley": {
+      "title": "Peppy Parsley",
+      "preparation": "Cut the produce to fit your juicer’s feed tube. Juice the ingredients and stir. Pour into a glass and drink as soon as possible.",
+      "note": null
+    },
+    "the-pink-onion": {
+      "title": "The Pink Onion",
+      "preparation": "Cut the produce to fit your juicer’s feed tube. Juice the ingredients and stir. Pour into a glass and drink as soon as possible.",
+      "note": null
+    },
+    "pure-green-sprout-drink": {
+      "title": "Pure Green Sprout Drink",
+      "preparation": "Cut the produce to fit your juicer’s feed tube. Juice the ingredients and stir. Pour into a glass and drink as soon as possible.",
+      "note": null
+    },
+    "radish-care": {
+      "title": "Radish Care",
+      "preparation": "Cut the produce to fit your juicer’s feed tube. Juice the ingredients and stir. Pour into a glass. Serve at room temperature or chilled, as desired.",
+      "note": null
+    },
+    "the-revitalizer": {
+      "title": "The Revitalizer",
+      "preparation": "Cut the produce to fit your juicer’s feed tube. Juice the ingredients and stir. Pour into a glass and drink as soon as possible.",
+      "note": null
+    },
+    "salsa-in-a-glass": {
+      "title": "Salsa in a Glass",
+      "preparation": "Cut the produce to fit your juicer’s feed tube. Juice the ingredients and stir. Pour into a glass and drink as soon as possible.",
+      "note": null
+    },
+    "sinus-solution": {
+      "title": "Sinus Solution",
+      "preparation": "Cut the produce to fit your juicer’s feed tube. Juice the ingredients and stir. Pour into a glass and drink as soon as possible.",
+      "note": null
+    },
+    "sleep-mender": {
+      "title": "Sleep Mender",
+      "preparation": "Cut the produce to fit your juicer’s feed tube. Juice the ingredients and stir. Pour into a glass and drink as soon as possible.",
+      "note": null
+    },
+    "spinach-power": {
+      "title": "Spinach Power",
+      "preparation": "Cut the produce to fit your juicer’s feed tube. Juice the ingredients and stir. Pour into a glass and drink as soon as possible.",
+      "note": null
+    },
+    "spring-tonic": {
+      "title": "Spring Tonic",
+      "preparation": "Cut the produce to fit your juicer’s feed tube. Juice the ingredients and stir. Pour into a glass and drink as soon as possible.",
+      "note": "Asparagus is a natural diuretic, which helps flush toxins from the body and promotes kidney cleansing."
+    },
+    "sweet-dreams-nightcap": {
+      "title": "Sweet Dreams Nightcap",
+      "preparation": "Bunch up the parsley and roll in a romaine leaf. Juice the cucumber and turn off the juicer. Add the romaine and parsley to the feed tube, turn the machine back on, and tap them through with a carrot. Juice the remaining ingredients and stir. Pour into a glass and drink as soon as possible.",
+      "note": null
+    },
+    "super-green-sprout-drink": {
+      "title": "Super Green Sprout Drink",
+      "preparation": "Cut the cucumber to fit your juicer’s feed tube. Juice part of the cucumber first. Bunch up the sprouts and wrap in spinach leaves, turn off the machine, and add them to the feed tube. Turn the machine back on and tap with the rest of the cucumber to gently push the sprouts and spinach through, and then juice the remaining part of the cucumber. Stir the ingredients, pour into a glass, and drink as soon as possible.",
+      "note": null
+    },
+    "sweet-and-regular": {
+      "title": "Sweet & Regular",
+      "preparation": "Cut the produce to fit your juicer’s feed tube. Juice the ingredients and stir. Pour into a glass and drink as soon as possible.",
+      "note": null
+    },
+    "thyroid-tonic": {
+      "title": "Thyroid Tonic",
+      "preparation": "Cut the produce to fit your juicer’s feed tube. Juice the ingredients and stir. Pour into a glass and drink as soon as possible.",
+      "note": "Radishes are a traditional remedy for the thyroid."
+    },
+    "tomato-florentine": {
+      "title": "Tomato Florentine",
+      "preparation": "Juice one tomato. Wrap the basil in several spinach leaves. Turn off the juicer and add the spinach and basil. Turn the juicer back on and gently tap to juice them. Juice the remaining tomato and the lemon, and stir. Pour in a glass, and drink as soon as possible.",
+      "note": null
+    },
+    "triple-c": {
+      "title": "Triple C",
+      "preparation": "Cut the produce to fit your juicer’s feed tube. Juice the ingredients and stir. Pour into a glass and drink as soon as possible.",
+      "note": null
+    },
+    "turnip-time": {
+      "title": "Turnip Time",
+      "preparation": "Cut the produce to fit your juicer’s feed tube. Juice the ingredients and stir. Pour into a glass and drink as soon as possible.",
+      "note": null
+    },
+    "veggie-delight": {
+      "title": "Veggie Delight",
+      "preparation": "Cut the produce to fit your juicer’s feed tube. Juice the ingredients and stir. Pour into a glass and drink as soon as possible.",
+      "note": null
+    },
+    "waldorf-twist": {
+      "title": "Waldorf Twist",
+      "preparation": "Cut the produce to fit your juicer’s feed tube. Juice the ingredients and stir. Pour into a glass and drink as soon as possible.",
+      "note": null
+    },
+    "weight-loss-buddy": {
+      "title": "Weight-Loss Buddy",
+      "preparation": "Cut the produce to fit your juicer’s feed tube. Juice the ingredients and stir. Pour into a glass and drink as soon as possible.",
+      "note": "Jerusalem artichoke juice combined with carrot and beetroot juices is a traditional remedy for satisfying cravings for sweets and junk food. The key is to sip it slowly when you get a craving for high-fat or high-carb foods."
+    },
+    "wheatgrass-light": {
+      "title": "Wheatgrass Light",
+      "preparation": "Cut the produce to fit your juicer’s feed tube. Starting with the apple, juice all the ingredients and stir. Pour into a glass and drink as soon as possible.",
+      "note": null
+    }
+  }
+}

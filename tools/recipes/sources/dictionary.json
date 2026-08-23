@@ -1,0 +1,208 @@
+{
+  "ingredients": {
+    "almonds": {
+      "emoji": "🥜"
+    },
+    "apple": {
+      "emoji": "🍎"
+    },
+    "asparagus": {
+      "emoji": "🌱"
+    },
+    "avocado": {
+      "emoji": "🥑"
+    },
+    "basil": {
+      "emoji": "🌿"
+    },
+    "beetroot": {
+      "emoji": "🥕"
+    },
+    "bell-pepper": {
+      "emoji": "🌶️"
+    },
+    "broccoli": {
+      "emoji": "🥦"
+    },
+    "buckwheat-sprouts": {
+      "emoji": "🌱"
+    },
+    "cabbage": {
+      "emoji": "🥬"
+    },
+    "carrot": {
+      "emoji": "🥕"
+    },
+    "cauliflower": {
+      "emoji": "🥦"
+    },
+    "celery": {
+      "emoji": "🥬"
+    },
+    "cilantro": {
+      "emoji": "🌿"
+    },
+    "cinnamon": {
+      "emoji": "🌿"
+    },
+    "clover-sprouts": {
+      "emoji": "🌱"
+    },
+    "cloves": {
+      "emoji": "🌿"
+    },
+    "coconut-milk": {
+      "emoji": "🥥"
+    },
+    "cranberries": {
+      "emoji": "🍒"
+    },
+    "cucumber": {
+      "emoji": "🥒"
+    },
+    "cumin": {
+      "emoji": "🌿"
+    },
+    "daikon-radish": {
+      "emoji": "🥕"
+    },
+    "dandelion-greens": {
+      "emoji": "🌿"
+    },
+    "fennel": {
+      "emoji": "🌿"
+    },
+    "garlic": {
+      "emoji": "🧄"
+    },
+    "gingerroot": {
+      "emoji": "🌿"
+    },
+    "grapefruit": {
+      "emoji": "🍊"
+    },
+    "green-powder": {
+      "emoji": "🌿"
+    },
+    "hot-sauce": {
+      "emoji": "🌶️"
+    },
+    "jerusalem-artichoke": {
+      "emoji": "🥕"
+    },
+    "jicama": {
+      "emoji": "🥕"
+    },
+    "kale": {
+      "emoji": "🥬"
+    },
+    "lemon": {
+      "emoji": "🍋"
+    },
+    "lettuce": {
+      "emoji": "🥬"
+    },
+    "licorice-tea": {
+      "emoji": "🍵"
+    },
+    "lime": {
+      "emoji": "🍋"
+    },
+    "mint": {
+      "emoji": "🌿"
+    },
+    "nutmeg": {
+      "emoji": "🌰"
+    },
+    "onion": {
+      "emoji": "🧅"
+    },
+    "parsley": {
+      "emoji": "🌿"
+    },
+    "parsnip": {
+      "emoji": "🥕"
+    },
+    "pear": {
+      "emoji": "🍐"
+    },
+    "radishes": {
+      "emoji": "🥕"
+    },
+    "spinach": {
+      "emoji": "🌿"
+    },
+    "sprouts": {
+      "emoji": "🌱"
+    },
+    "strawberries": {
+      "emoji": "🍓"
+    },
+    "string-beans": {
+      "emoji": "🌱"
+    },
+    "sunflower-sprouts": {
+      "emoji": "🌱"
+    },
+    "tomato": {
+      "emoji": "🍅"
+    },
+    "turnip": {
+      "emoji": "🥕"
+    },
+    "water": {
+      "emoji": "💧"
+    },
+    "watercress": {
+      "emoji": "🌿"
+    },
+    "wheatgrass": {
+      "emoji": "🌿"
+    }
+  },
+  "tags": [
+    "afternoon",
+    "allergy",
+    "bladder",
+    "bones",
+    "cleansing",
+    "colon",
+    "diuretic",
+    "energy",
+    "gallbladder",
+    "ginger",
+    "gout",
+    "green",
+    "immune",
+    "liver",
+    "lungs",
+    "memory",
+    "mood",
+    "morning",
+    "pancreas",
+    "sinus",
+    "skin",
+    "sleep",
+    "smoothie",
+    "soup",
+    "sprouts",
+    "tea",
+    "thyroid",
+    "tomato",
+    "weight"
+  ],
+  "categories": {
+    "juice": {
+      "emoji": "🧃"
+    },
+    "smoothie": {
+      "emoji": "🥤"
+    },
+    "soup": {
+      "emoji": "🍲"
+    },
+    "tea": {
+      "emoji": "🍵"
+    }
+  }
+}

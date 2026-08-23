@@ -11,40 +11,38 @@
         href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:wght@600;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
-    <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="./styles.css?v=3">
     <script type="module" src="./app.js"></script>
 </head>
 
 <body>
     <header class="site-header">
         <div class="container">
-            <h1>Recipes</h1>
+            <div class="header-row">
+                <h1 data-i18n="pageTitle">Recipes</h1>
+            </div>
         </div>
     </header>
     <main class="container">
         <section class="filters" aria-label="Recipe filters">
             <div class="filter-row">
-                <label for="category">I want to make a
-                    <select id="category">
-                        <option value="">All categories</option>
-                    </select>
-                </label>
-                <div class="have-ingredients">
-                    <span class="control-label">I have:</span>
-                    <div id="owned-ingredients" class="ingredient-toggles" role="group" aria-label="Ingredients I have">
-                    </div>
-                </div>
-                <button id="clear" class="secondary outline" type="button">Clear filters</button>
+                <button id="clear" class="secondary outline" type="button" data-i18n="clearFilters">Clear
+                    filters</button>
             </div>
+            <details class="ingredient-filters" open>
+                <summary data-i18n="haveIngredients">I have:</summary>
+                <div id="owned-ingredients" class="ingredient-toggles" role="group" aria-label="Ingredients I have">
+                </div>
+            </details>
             <details class="ingredient-filters">
-                <summary>Ingredients I don't have</summary>
+                <summary data-i18n="missingIngredients">Ingredients I don't have</summary>
                 <div id="ingredient-filters" class="ingredient-toggles" role="group"
                     aria-label="Ingredients I do not have"></div>
             </details>
         </section>
-        <p id="recap" class="recap" aria-live="polite">Loading recipes...</p>
+        <p id="recap" class="recap" aria-live="polite" data-i18n="loading">Loading recipes...</p>
         <div class="results-bar">
-            <strong id="result-count">Loading recipes...</strong>
+            <strong id="result-count" data-i18n="loading">Loading recipes...</strong>
             <span id="status" role="status"></span>
         </div>
         <section id="recipes" class="recipe-grid" aria-live="polite"></section>
