@@ -4,7 +4,7 @@
     "languageLabel": "Language",
     "categoryPrompt": "I want to make a",
     "allCategories": "All categories",
-    "haveIngredients": "I have:",
+    "haveIngredients": "I want to cook with",
     "clearFilters": "Clear filters",
     "missingIngredients": "Ingredients I don't have",
     "loading": "Loading recipes...",
@@ -21,7 +21,13 @@
     "and": "and",
     "or": "or",
     "own": "You have this ingredient",
-    "need": "You need this ingredient"
+    "need": "You need this ingredient",
+    "markMissing": "Mark ingredient as missing",
+    "unmarkMissing": "Mark ingredient as available",
+    "favourite": "Add to favourites",
+    "unfavourite": "Remove from favourites",
+    "showFavourites": "Show only favourites",
+    "showAll": "Show all recipes"
   },
   "categories": {
     "juice": "Juice",

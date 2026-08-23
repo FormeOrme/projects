@@ -82,17 +82,17 @@ INGREDIENT_EMOJI = {
 
 UI_EN = {
     "pageTitle": "Recipes", "languageLabel": "Language", "categoryPrompt": "I want to make a", "allCategories": "All categories",
-    "haveIngredients": "I have:", "clearFilters": "Clear filters", "missingIngredients": "Ingredients I don't have", "loading": "Loading recipes...",
+    "haveIngredients": "I want to cook with", "clearFilters": "Clear filters", "missingIngredients": "Ingredients I don't have", "loading": "Loading recipes...",
     "ingredients": "Ingredients", "preparation": "Preparation", "tags": "Tags", "missing": "For this recipe you are missing",
     "ready": "You are set for this recipe.", "noMatch": "No recipes match these filters.", "recipe": "recipe", "recipes": "recipes",
-    "found": "found", "containing": "containing", "and": "and", "or": "or", "own": "You have this ingredient", "need": "You need this ingredient",
+    "found": "found", "containing": "containing", "and": "and", "or": "or", "own": "You have this ingredient", "need": "You need this ingredient", "markMissing": "Mark ingredient as missing", "unmarkMissing": "Mark ingredient as available", "favourite": "Add to favourites", "unfavourite": "Remove from favourites", "showFavourites": "Show only favourites", "showAll": "Show all recipes",
 }
 UI_IT = {
     "pageTitle": "Ricette", "languageLabel": "Lingua", "categoryPrompt": "Voglio preparare un", "allCategories": "Tutte le categorie",
-    "haveIngredients": "Ho:", "clearFilters": "Azzera filtri", "missingIngredients": "Ingredienti che non ho", "loading": "Caricamento ricette...",
+    "haveIngredients": "Voglio cucinare con", "clearFilters": "Azzera filtri", "missingIngredients": "Ingredienti che non ho", "loading": "Caricamento ricette...",
     "ingredients": "Ingredienti", "preparation": "Preparazione", "tags": "Tag", "missing": "Per questa ricetta mancano",
     "ready": "Hai tutti gli ingredienti per questa ricetta.", "noMatch": "Nessuna ricetta corrisponde ai filtri.", "recipe": "ricetta", "recipes": "ricette",
-    "found": "trovate", "containing": "con", "and": "e", "or": "o", "own": "Ingrediente disponibile", "need": "Ingrediente mancante",
+    "found": "trovate", "containing": "con", "and": "e", "or": "o", "own": "Ingrediente disponibile", "need": "Ingrediente mancante", "markMissing": "Segna ingrediente come mancante", "unmarkMissing": "Segna ingrediente come disponibile", "favourite": "Aggiungi ai preferiti", "unfavourite": "Rimuovi dai preferiti", "showFavourites": "Mostra solo preferiti", "showAll": "Mostra tutte le ricette",
 }
 
 

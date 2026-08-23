@@ -2,11 +2,34 @@ const state = {
     data: null,
     query: new URLSearchParams(window.location.search),
     language: "en",
+    missingIngredients: new Set(),
+    favourites: new Set(),
+    favouritesOnly: false,
 };
+
+const storageKeys = {
+    missingIngredients: "juice-recipes.missing-ingredients",
+    favourites: "juice-recipes.favourites",
+    favouritesOnly: "juice-recipes.favourites-only",
+};
+
+function readStoredSet(key) {
+    try {
+        const value = JSON.parse(localStorage.getItem(key) || "[]");
+        return new Set(Array.isArray(value) ? value : []);
+    } catch {
+        return new Set();
+    }
+}
+
+function writeStoredSet(key, values) {
+    localStorage.setItem(key, JSON.stringify([...values].sort()));
+}
 
 const elements = {
     ownedIngredients: document.querySelector("#owned-ingredients"),
     ingredientFilters: document.querySelector("#ingredient-filters"),
+    favouritesOnly: document.querySelector("#favourites-only"),
     clear: document.querySelector("#clear"),
     recap: document.querySelector("#recap"),
     count: document.querySelector("#result-count"),
@@ -28,23 +51,28 @@ function updatePageText() {
         element.textContent = text(element.dataset.i18n);
     elements.ownedIngredients.setAttribute("aria-label", text("haveIngredients"));
     elements.ingredientFilters.setAttribute("aria-label", text("missingIngredients"));
+    updateFavouritesButton();
+}
+
+function updateFavouritesButton() {
+    const label = elements.favouritesOnly.querySelector("span:last-child");
+    label.textContent = text(state.favouritesOnly ? "showAll" : "showFavourites");
+    elements.favouritesOnly.querySelector("span:first-child").textContent = state.favouritesOnly
+        ? "♥"
+        : "♡";
+    elements.favouritesOnly.setAttribute("aria-pressed", String(state.favouritesOnly));
 }
 
 function updateUrl() {
     const params = new URLSearchParams();
     if (state.language !== "en") params.set("lang", state.language);
     const ownedIngredients = getSelectedIngredients(elements.ownedIngredients);
-    const filteredIngredients = getSelectedIngredients(elements.ingredientFilters);
     if (ownedIngredients.size) params.set("owned", [...ownedIngredients].join(","));
-    if (filteredIngredients.size) params.set("ingredients", [...filteredIngredients].join(","));
     history.replaceState(null, "", params.size ? `?${params}` : window.location.pathname);
 }
 
 function setFiltersFromUrl() {
     const ownedIngredients = new Set((state.query.get("owned") || "").split(",").filter(Boolean));
-    const filteredIngredients = new Set(
-        (state.query.get("ingredients") || "").split(",").filter(Boolean),
-    );
     renderIngredientToggles(
         elements.ownedIngredients,
         ownedIngredients,
@@ -52,7 +80,7 @@ function setFiltersFromUrl() {
     );
     renderIngredientToggles(
         elements.ingredientFilters,
-        filteredIngredients,
+        state.missingIngredients,
         getAvailableIngredients(),
     );
 }
@@ -65,12 +93,17 @@ function getSelectedIngredients(container) {
     );
 }
 
+function getMissingIngredients() {
+    return state.missingIngredients;
+}
+
 function getVisibleRecipes() {
-    const excludedIngredients = getSelectedIngredients(elements.ingredientFilters);
+    const excludedIngredients = getMissingIngredients();
     return getCategoryRecipes().filter((recipe) => {
         const ingredientKeys = new Set(recipe.ingredients.map(({ ingredient }) => ingredient));
         return (
             recipe.category === "juice" &&
+            (!state.favouritesOnly || state.favourites.has(recipe.id)) &&
             ![...excludedIngredients].some((ingredient) => ingredientKeys.has(ingredient))
         );
     });
@@ -101,7 +134,7 @@ function getAvailableIngredients() {
 }
 
 function getAvailableOwnedIngredients() {
-    const excludedIngredients = getSelectedIngredients(elements.ingredientFilters);
+    const excludedIngredients = getMissingIngredients();
     const ingredientFrequency = new Map();
     for (const recipe of getVisibleRecipes()) {
         for (const { ingredient } of recipe.ingredients) {
@@ -146,10 +179,13 @@ function renderIngredientToggles(container, selectedIngredients, ingredientEntri
         count.setAttribute("aria-label", `${recipeCounts.get(key) || 0} recipes`);
         button.append(count);
         button.addEventListener("click", () => {
-            button.setAttribute(
-                "aria-pressed",
-                String(button.getAttribute("aria-pressed") !== "true"),
-            );
+            const selected = button.getAttribute("aria-pressed") !== "true";
+            button.setAttribute("aria-pressed", String(selected));
+            if (container === elements.ingredientFilters) {
+                if (selected) state.missingIngredients.add(key);
+                else state.missingIngredients.delete(key);
+                writeStoredSet(storageKeys.missingIngredients, state.missingIngredients);
+            }
             handleFilterChange();
         });
         container.append(button);
@@ -158,7 +194,7 @@ function renderIngredientToggles(container, selectedIngredients, ingredientEntri
 
 function renderIngredientFilters() {
     const selectedOwnedIngredients = getSelectedIngredients(elements.ownedIngredients);
-    const selectedExcludedIngredients = getSelectedIngredients(elements.ingredientFilters);
+    const selectedExcludedIngredients = getMissingIngredients();
     renderIngredientToggles(
         elements.ownedIngredients,
         selectedOwnedIngredients,
@@ -178,10 +214,11 @@ function populateFilters() {
 function recipeMatches(recipe) {
     const ingredientKeys = new Set(recipe.ingredients.map(({ ingredient }) => ingredient));
     const ownedIngredients = getSelectedIngredients(elements.ownedIngredients);
-    const selectedIngredients = getSelectedIngredients(elements.ingredientFilters);
+    const selectedIngredients = getMissingIngredients();
 
     return (
         recipe.category === "juice" &&
+        (!state.favouritesOnly || state.favourites.has(recipe.id)) &&
         (!ownedIngredients.size ||
             [...ownedIngredients].some((ingredient) => ingredientKeys.has(ingredient))) &&
         ![...selectedIngredients].some((ingredient) => ingredientKeys.has(ingredient))
@@ -195,6 +232,14 @@ function recipeIsReady(
     return recipe.ingredients.every(({ ingredient }) => ownedIngredients.has(ingredient));
 }
 
+function recipeMatchCount(recipe, ownedIngredients) {
+    const selected = new Set(ownedIngredients);
+    return recipe.ingredients.reduce(
+        (count, { ingredient }) => count + Number(selected.has(ingredient)),
+        0,
+    );
+}
+
 function renderRecipe(recipe) {
     const localized = localizedRecipe(recipe);
     const ownedIngredients = getSelectedIngredients(elements.ownedIngredients);
@@ -204,10 +249,22 @@ function renderRecipe(recipe) {
     const header = document.createElement("header");
     const title = document.createElement("h2");
     title.textContent = localized.title;
-    const categoryLabel = document.createElement("span");
-    categoryLabel.className = "category";
-    categoryLabel.textContent = `${state.data.dictionary.categories[recipe.category]?.emoji || "•"} ${state.data.categories[recipe.category]}`;
-    header.append(title, categoryLabel);
+    const favourite = document.createElement("button");
+    favourite.type = "button";
+    favourite.className = `favourite-button${state.favourites.has(recipe.id) ? " active" : ""}`;
+    favourite.textContent = state.favourites.has(recipe.id) ? "🤍" : "💚";
+    favourite.setAttribute(
+        "aria-label",
+        text(state.favourites.has(recipe.id) ? "unfavourite" : "favourite"),
+    );
+    favourite.setAttribute("aria-pressed", String(state.favourites.has(recipe.id)));
+    favourite.addEventListener("click", () => {
+        if (state.favourites.has(recipe.id)) state.favourites.delete(recipe.id);
+        else state.favourites.add(recipe.id);
+        writeStoredSet(storageKeys.favourites, state.favourites);
+        render();
+    });
+    header.append(title, favourite);
 
     const missingIngredients = recipe.ingredients
         .filter(({ ingredient }) => !ownedIngredients.has(ingredient))
@@ -223,11 +280,43 @@ function renderRecipe(recipe) {
     const list = document.createElement("ul");
     list.className = "ingredient-list";
 
-    for (const { ingredient: key, quantity, details } of recipe.ingredients) {
+    const sortedIngredients = [...recipe.ingredients].sort(
+        (left, right) =>
+            Number(ownedIngredients.has(right.ingredient)) -
+            Number(ownedIngredients.has(left.ingredient)),
+    );
+    for (const { ingredient: key, quantity, details } of sortedIngredients) {
         const item = document.createElement("li");
         item.className = ownedIngredients.has(key) ? "owned" : "missing";
         item.title = ownedIngredients.has(key) ? text("own") : text("need");
-        item.textContent = `${state.data.dictionary.ingredients[key]?.emoji || "•"} ${quantity} ${state.data.ingredients[key] || key}${details ? `, ${details}` : ""}`;
+        const label = document.createElement("span");
+        label.className = "recipe-ingredient-label";
+        label.textContent = `${state.data.dictionary.ingredients[key]?.emoji || "•"} ${quantity} ${state.data.ingredients[key] || key}${details ? `, ${details}` : ""}`;
+        item.append(label);
+        if (!ownedIngredients.has(key)) {
+            item.setAttribute("role", "button");
+            item.tabIndex = 0;
+            const markMissing = () => {
+                state.missingIngredients.has(key)
+                    ? state.missingIngredients.delete(key)
+                    : state.missingIngredients.add(key);
+                writeStoredSet(storageKeys.missingIngredients, state.missingIngredients);
+                renderIngredientFilters();
+                render();
+            };
+            const remove = document.createElement("span");
+            remove.className = "recipe-ingredient-remove";
+            remove.textContent = "×";
+            remove.setAttribute("aria-hidden", "true");
+            item.append(remove);
+            item.addEventListener("click", markMissing);
+            item.addEventListener("keydown", (event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault();
+                    markMissing();
+                }
+            });
+        }
         list.append(item);
     }
 
@@ -280,8 +369,10 @@ function render() {
         .filter(recipeMatches)
         .sort(
             (left, right) =>
+                recipeMatchCount(right, ownedIngredientKeys) -
+                    recipeMatchCount(left, ownedIngredientKeys) ||
                 Number(recipeIsReady(right, ownedIngredientKeys)) -
-                Number(recipeIsReady(left, ownedIngredientKeys)),
+                    Number(recipeIsReady(left, ownedIngredientKeys)),
         );
     const category = state.data.categories.juice;
     const ownedIngredients = [...getSelectedIngredients(elements.ownedIngredients)].map(
@@ -307,6 +398,9 @@ function handleFilterChange() {
 async function init() {
     try {
         state.language = state.query.get("lang") === "it" ? "it" : "en";
+        state.missingIngredients = readStoredSet(storageKeys.missingIngredients);
+        state.favourites = readStoredSet(storageKeys.favourites);
+        state.favouritesOnly = localStorage.getItem(storageKeys.favouritesOnly) === "true";
         const responses = await Promise.all([
             fetch("./sources/dictionary.json"),
             fetch("./sources/recipes.json"),
@@ -339,12 +433,24 @@ async function init() {
 }
 
 elements.clear.addEventListener("click", () => {
+    state.missingIngredients.clear();
+    state.favouritesOnly = false;
+    writeStoredSet(storageKeys.missingIngredients, state.missingIngredients);
+    localStorage.setItem(storageKeys.favouritesOnly, "false");
     for (const container of [elements.ownedIngredients, elements.ingredientFilters]) {
         for (const button of container.querySelectorAll("button")) {
             button.setAttribute("aria-pressed", "false");
         }
     }
     handleFilterChange();
+});
+
+elements.favouritesOnly.addEventListener("click", () => {
+    state.favouritesOnly = !state.favouritesOnly;
+    localStorage.setItem(storageKeys.favouritesOnly, String(state.favouritesOnly));
+    updateFavouritesButton();
+    renderIngredientFilters();
+    render();
 });
 
 init();

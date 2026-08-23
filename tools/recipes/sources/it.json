@@ -4,7 +4,7 @@
     "languageLabel": "Lingua",
     "categoryPrompt": "Voglio preparare un",
     "allCategories": "Tutte le categorie",
-    "haveIngredients": "Ho:",
+    "haveIngredients": "Voglio cucinare con",
     "clearFilters": "Azzera filtri",
     "missingIngredients": "Ingredienti che non ho",
     "loading": "Caricamento ricette...",
@@ -21,7 +21,13 @@
     "and": "e",
     "or": "o",
     "own": "Ingrediente disponibile",
-    "need": "Ingrediente mancante"
+    "need": "Ingrediente mancante",
+    "markMissing": "Segna ingrediente come mancante",
+    "unmarkMissing": "Segna ingrediente come disponibile",
+    "favourite": "Aggiungi ai preferiti",
+    "unfavourite": "Rimuovi dai preferiti",
+    "showFavourites": "Mostra solo preferiti",
+    "showAll": "Mostra tutte le ricette"
   },
   "categories": {
     "juice": "Succo",
