@@ -207,6 +207,12 @@ h1 {
     font-size: 1.45rem;
 }
 
+.recipe-actions {
+    display: flex;
+    flex: 0 0 auto;
+    gap: .35rem;
+}
+
 .recipe-alert {
     margin: 0 0 1rem;
     padding: .55rem .7rem;
@@ -440,4 +446,82 @@ h1 {
     margin: 0;
     padding: .3rem .55rem;
     font-size: .75rem;
+}
+
+.shopping-list {
+    margin: 1.5rem 0 1.25rem;
+    padding: 1rem 1.1rem;
+    background: var(--paper);
+    border: 1px solid rgba(36, 50, 56, .1);
+    border-left: 4px solid var(--pico-primary);
+}
+
+.shopping-list-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.shopping-list h2 {
+    margin: 0;
+    font-size: 1.35rem;
+}
+
+.shopping-list-header button,
+.shopping-list-remove {
+    width: auto;
+    margin: 0;
+    padding: .3rem .55rem;
+    font-size: .75rem;
+}
+
+.shopping-list-ingredients {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    gap: .35rem .75rem;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.shopping-list-ingredients li {
+    display: flex;
+    align-items: center;
+    gap: .45rem;
+    min-width: 0;
+    padding: .3rem .4rem;
+    color: #526067;
+    font-size: .84rem;
+}
+
+.shopping-list-icon {
+    display: inline-grid;
+    flex: 0 0 1.5rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    place-items: center;
+    border: 1px solid rgba(36, 50, 56, .1);
+    border-radius: 50%;
+    background: #f2eadb;
+}
+
+.shopping-list-button {
+    flex: 0 0 auto;
+    width: 2rem;
+    height: 2rem;
+    margin: -.2rem 0 0;
+    padding: 0;
+    border: 1px solid #d6c7ae;
+    border-radius: 50%;
+    color: #6f4a2f;
+    background: #fffaf0;
+    font-size: 1.25rem;
+    line-height: 1;
+}
+
+.shopping-list-button.active {
+    border-color: #6f9d78;
+    color: #fff;
+    background: #6f9d78;
 }

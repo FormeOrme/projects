@@ -4,12 +4,14 @@ const state = {
     language: "en",
     missingIngredients: new Set(),
     favourites: new Set(),
+    shoppingList: new Set(),
     favouritesOnly: false,
 };
 
 const storageKeys = {
     missingIngredients: "juice-recipes.missing-ingredients",
     favourites: "juice-recipes.favourites",
+    shoppingList: "juice-recipes.shopping-list",
     favouritesOnly: "juice-recipes.favourites-only",
 };
 
@@ -29,6 +31,9 @@ function writeStoredSet(key, values) {
 const elements = {
     ownedIngredients: document.querySelector("#owned-ingredients"),
     ingredientFilters: document.querySelector("#ingredient-filters"),
+    shoppingList: document.querySelector("#shopping-list"),
+    shoppingListRecipes: document.querySelector("#shopping-list-recipes"),
+    clearShoppingList: document.querySelector("#clear-shopping-list"),
     favouritesOnly: document.querySelector("#favourites-only"),
     clear: document.querySelector("#clear"),
     recap: document.querySelector("#recap"),
@@ -58,9 +63,21 @@ function updateFavouritesButton() {
     const label = elements.favouritesOnly.querySelector("span:last-child");
     label.textContent = text(state.favouritesOnly ? "showAll" : "showFavourites");
     elements.favouritesOnly.querySelector("span:first-child").textContent = state.favouritesOnly
-        ? "♥"
-        : "♡";
+        ? "🤍"
+        : "💚";
     elements.favouritesOnly.setAttribute("aria-pressed", String(state.favouritesOnly));
+}
+
+function updateShoppingListButton(button, recipe) {
+    const inList = state.shoppingList.has(recipe.id);
+    button.className = `shopping-list-button${inList ? " active" : ""}`;
+    button.textContent = inList ? "➕" : "🛒";
+    button.setAttribute(
+        "aria-label",
+        text(inList ? "removeFromShoppingList" : "addToShoppingList"),
+    );
+    button.setAttribute("aria-pressed", String(inList));
+    button.title = text(inList ? "removeFromShoppingList" : "addToShoppingList");
 }
 
 function updateUrl() {
@@ -167,7 +184,7 @@ function renderIngredientToggles(container, selectedIngredients, ingredientEntri
         button.setAttribute("aria-pressed", String(selectedIngredients.has(key)));
         const icon = document.createElement("span");
         icon.className = "ingredient-icon";
-        icon.textContent = state.data.dictionary.ingredients[key]?.emoji || "•";
+        icon.textContent = state.data.dictionary.ingredients[key]?.emoji || "📦";
         icon.setAttribute("aria-hidden", "true");
         const label = document.createElement("span");
         label.className = "ingredient-name";
@@ -240,6 +257,97 @@ function recipeMatchCount(recipe, ownedIngredients) {
     );
 }
 
+function renderShoppingList() {
+    const recipes = state.data.recipes.filter((recipe) => state.shoppingList.has(recipe.id));
+    elements.shoppingList.hidden = recipes.length === 0;
+    elements.shoppingListRecipes.replaceChildren();
+    if (!recipes.length) return;
+
+    const ingredientGroups = new Map();
+    for (const recipe of recipes) {
+        for (const { ingredient: key, quantity, details } of recipe.ingredients) {
+            if (!ingredientGroups.has(key)) {
+                ingredientGroups.set(key, { quantities: [], details: new Set() });
+            }
+            const group = ingredientGroups.get(key);
+            group.quantities.push(quantity);
+            if (details) group.details.add(details);
+        }
+    }
+
+    const list = document.createElement("ul");
+    list.className = "shopping-list-ingredients";
+    for (const [key, group] of ingredientGroups) {
+        const item = document.createElement("li");
+        const icon = document.createElement("span");
+        icon.className = "shopping-list-icon";
+        icon.textContent = state.data.dictionary.ingredients[key]?.emoji || "•";
+        icon.setAttribute("aria-hidden", "true");
+        const label = document.createElement("span");
+        const quantity = mergeShoppingQuantities(group.quantities);
+        const details = [...group.details].join("; ");
+        label.textContent = `${quantity} ${state.data.ingredients[key] || key}${details ? `, ${details}` : ""}`;
+        item.append(icon, label);
+        list.append(item);
+    }
+    elements.shoppingListRecipes.append(list);
+}
+
+function mergeShoppingQuantities(quantities) {
+    const parsed = quantities.map(parseShoppingQuantity);
+    const first = parsed[0];
+    const canSum =
+        first &&
+        parsed.every(
+            (value) => value && value.unit === first.unit && value.suffix === first.suffix,
+        );
+    if (canSum) {
+        const total = parsed.reduce((sum, value) => sum + value.amount, 0);
+        return `${formatShoppingNumber(total)}${first.unit ? ` ${first.unit}` : ""}${first.suffix ? ` ${first.suffix}` : ""}`;
+    }
+    return [...new Set(quantities)].join(" + ");
+}
+
+function parseShoppingQuantity(quantity) {
+    const match = quantity
+        .trim()
+        .match(
+            /^(\d+\/\d+|\d+(?:\.\d+)?(?:\s+\d+\/\d+)?|[¼½¾])\s*(?:(kg|ml|cm|g|l)(?=\s|$))?\s*(.*)$/i,
+        );
+    if (!match) return null;
+    if (/^to\b/i.test(match[3].trim())) return null;
+    const amount = parseShoppingNumber(match[1]);
+    return Number.isFinite(amount)
+        ? { amount, unit: (match[2] || "").toLowerCase(), suffix: match[3].trim().toLowerCase() }
+        : null;
+}
+
+function parseShoppingNumber(value) {
+    const fractions = { "¼": 0.25, "½": 0.5, "¾": 0.75 };
+    if (fractions[value]) return fractions[value];
+    if (value.includes(" ")) {
+        const [whole, numerator, denominator] = value.match(/^(\d+)\s+(\d+)\/(\d+)$/).slice(1);
+        return Number(whole) + Number(numerator) / Number(denominator);
+    }
+    if (value.includes("/")) {
+        const [numerator, denominator] = value.split("/").map(Number);
+        return numerator / denominator;
+    }
+    return Number(value);
+}
+
+function formatShoppingNumber(value) {
+    return Number.isInteger(value) ? String(value) : String(Number(value.toFixed(2)));
+}
+
+function toggleShoppingList(recipe) {
+    if (state.shoppingList.has(recipe.id)) state.shoppingList.delete(recipe.id);
+    else state.shoppingList.add(recipe.id);
+    writeStoredSet(storageKeys.shoppingList, state.shoppingList);
+    renderShoppingList();
+    render();
+}
+
 function renderRecipe(recipe) {
     const localized = localizedRecipe(recipe);
     const ownedIngredients = getSelectedIngredients(elements.ownedIngredients);
@@ -264,7 +372,14 @@ function renderRecipe(recipe) {
         writeStoredSet(storageKeys.favourites, state.favourites);
         render();
     });
-    header.append(title, favourite);
+    const actions = document.createElement("div");
+    actions.className = "recipe-actions";
+    const shoppingList = document.createElement("button");
+    shoppingList.type = "button";
+    updateShoppingListButton(shoppingList, recipe);
+    shoppingList.addEventListener("click", () => toggleShoppingList(recipe));
+    actions.append(favourite, shoppingList);
+    header.append(title, actions);
 
     const missingIngredients = recipe.ingredients
         .filter(({ ingredient }) => !ownedIngredients.has(ingredient))
@@ -392,6 +507,7 @@ function render() {
         : "";
     elements.recap.textContent = `${recipeLabel} ${categoryText} ${text("found")}${ingredientText}.`;
     elements.recipes.replaceChildren(...matches.map(renderRecipe));
+    renderShoppingList();
     elements.count.textContent = recipeLabel;
     elements.status.textContent = matches.length ? "" : text("noMatch");
 }
@@ -407,6 +523,7 @@ async function init() {
         state.language = state.query.get("lang") === "it" ? "it" : "en";
         state.missingIngredients = readStoredSet(storageKeys.missingIngredients);
         state.favourites = readStoredSet(storageKeys.favourites);
+        state.shoppingList = readStoredSet(storageKeys.shoppingList);
         state.favouritesOnly = localStorage.getItem(storageKeys.favouritesOnly) === "true";
         const responses = await Promise.all([
             fetch("./sources/dictionary.json"),
@@ -457,6 +574,13 @@ elements.favouritesOnly.addEventListener("click", () => {
     localStorage.setItem(storageKeys.favouritesOnly, String(state.favouritesOnly));
     updateFavouritesButton();
     renderIngredientFilters();
+    render();
+});
+
+elements.clearShoppingList.addEventListener("click", () => {
+    state.shoppingList.clear();
+    writeStoredSet(storageKeys.shoppingList, state.shoppingList);
+    renderShoppingList();
     render();
 });
 

@@ -24,6 +24,14 @@
         </div>
     </header>
     <main class="container">
+        <section id="shopping-list" class="shopping-list" hidden>
+            <div class="shopping-list-header">
+                <h2 data-i18n="shoppingList">Shopping list</h2>
+                <button id="clear-shopping-list" class="secondary outline" type="button"
+                    data-i18n="clearShoppingList">Clear list</button>
+            </div>
+            <div id="shopping-list-recipes"></div>
+        </section>
         <section class="filters" aria-label="Recipe filters">
             <details class="ingredient-filters" open>
                 <summary data-i18n="haveIngredients">I have:</summary>
@@ -31,7 +39,7 @@
                 </div>
             </details>
             <details class="ingredient-filters">
-                <summary data-i18n="missingIngredients">Ingredients I don't have</summary>
+                <summary data-i18n="missingIngredients">Ingredients to exclude</summary>
                 <div id="ingredient-filters" class="ingredient-toggles" role="group"
                     aria-label="Ingredients I do not have"></div>
             </details>
