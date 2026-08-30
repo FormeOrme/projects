@@ -1,504 +1,504 @@
 {
-  "ui": {
-    "pageTitle": "Ricette",
-    "languageLabel": "Lingua",
-    "categoryPrompt": "Voglio preparare un",
-    "allCategories": "Tutte le categorie",
-    "haveIngredients": "Voglio cucinare con",
-    "clearFilters": "Azzera filtri",
-    "missingIngredients": "Ingredienti da escludere",
-    "loading": "Caricamento ricette...",
-    "ingredients": "Ingredienti",
-    "preparation": "Preparazione",
-    "tags": "Tag",
-    "missing": "Per questa ricetta mancano",
-    "ready": "Hai tutti gli ingredienti per questa ricetta.",
-    "noMatch": "Nessuna ricetta corrisponde ai filtri.",
-    "recipe": "ricetta",
-    "recipes": "ricette",
-    "found": "trovate",
-    "containing": "con",
-    "and": "e",
-    "or": "o",
-    "own": "Ingrediente disponibile",
-    "need": "Ingrediente mancante",
-    "markMissing": "Segna ingrediente come mancante",
-    "unmarkMissing": "Segna ingrediente come disponibile",
-    "favourite": "Aggiungi ai preferiti",
-    "unfavourite": "Rimuovi dai preferiti",
-    "shoppingList": "Lista della spesa",
-    "clearShoppingList": "Svuota lista",
-    "addToShoppingList": "Aggiungi alla lista della spesa",
-    "removeFromShoppingList": "Rimuovi dalla lista della spesa",
-    "showFavourites": "Mostra solo preferiti",
-    "showAll": "Mostra tutte le ricette"
-  },
-  "categories": {
-    "juice": "Succo",
-    "smoothie": "Frullato",
-    "soup": "Zuppa",
-    "tea": "Tè",
-    "frozen": "Congelato"
-  },
-  "ingredients": {
-    "almonds": "mandorle",
-    "apple": "mela",
-    "asparagus": "asparagi",
-    "avocado": "avocado",
-    "basil": "basilico",
-    "beetroot": "barbabietola",
-    "bell-pepper": "peperone",
-    "broccoli": "broccoli",
-    "buckwheat-sprouts": "germogli di grano saraceno",
-    "cabbage": "cavolo",
-    "carrot": "carota",
-    "cauliflower": "cavolfiore",
-    "celery": "sedano",
-    "cilantro": "coriandolo",
-    "cinnamon": "cannella",
-    "clover-sprouts": "germogli di trifoglio",
-    "cloves": "chiodi di garofano",
-    "coconut-milk": "latte di cocco",
-    "cranberries": "mirtilli rossi",
-    "cucumber": "cetriolo",
-    "cumin": "cumino",
-    "daikon-radish": "ravanello daikon",
-    "dandelion-greens": "foglie di tarassaco",
-    "fennel": "finocchio",
-    "garlic": "aglio",
-    "gingerroot": "radice di zenzero",
-    "grapefruit": "pompelmo",
-    "ginger": "zenzero",
-    "green-powder": "polvere verde",
-    "hot-sauce": "salsa piccante",
-    "jerusalem-artichoke": "topinambur",
-    "jicama": "jicama",
-    "kale": "cavolo riccio",
-    "lemon": "limone",
-    "lettuce": "lattuga",
-    "licorice-tea": "tisana alla liquirizia",
-    "lime": "lime",
-    "mint": "menta",
-    "nutmeg": "noce moscata",
-    "onion": "cipolla",
-    "parsley": "prezzemolo",
-    "parsnip": "pastinaca",
-    "pear": "pera",
-    "radishes": "ravanelli",
-    "spinach": "spinaci",
-    "sprouts": "germogli",
-    "strawberries": "fragole",
-    "string-beans": "fagiolini",
-    "sunflower-sprouts": "germogli di girasole",
-    "tomato": "pomodoro",
-    "turnip": "rapa",
-    "water": "acqua",
-    "watercress": "crescione",
-    "wheatgrass": "erba di grano",
-    "banana": "banana",
-    "blueberry": "mirtillo",
-    "cashew": "anacardi",
-    "corn": "mais",
-    "curry": "curry",
-    "grape": "uva",
-    "honey": "miele",
-    "kiwi": "kiwi",
-    "melon": "melone",
-    "milk": "latte",
-    "olive-oil": "olio d'oliva",
-    "orange": "arancia",
-    "oregano": "origano",
-    "peach": "pesca",
-    "pineapple": "ananas",
-    "plum": "prugna",
-    "pomegranate": "melagrana",
-    "raspberry": "lampone",
-    "salt": "sale",
-    "strawberry": "fragola",
-    "watermelon": "anguria",
-    "yogurt": "yogurt"
-  },
-  "tags": {
-    "afternoon": "pomeriggio",
-    "allergy": "allergie",
-    "bladder": "vescica",
-    "bones": "ossa",
-    "cleansing": "depurazione",
-    "colon": "colon",
-    "diuretic": "diuretico",
-    "energy": "energia",
-    "gallbladder": "cistifellea",
-    "ginger": "zenzero",
-    "gout": "gotta",
-    "green": "verde",
-    "immune": "immunità",
-    "liver": "fegato",
-    "lungs": "polmoni",
-    "memory": "memoria",
-    "mood": "umore",
-    "morning": "mattino",
-    "pancreas": "pancreas",
-    "sinus": "seni nasali",
-    "skin": "pelle",
-    "sleep": "sonno",
-    "smoothie": "frullato",
-    "soup": "zuppa",
-    "sprouts": "germogli",
-    "tea": "tè",
-    "thyroid": "tiroide",
-    "tomato": "pomodoro",
-    "weight": "peso"
-  },
-  "recipes": {
-    "afternoon-refresher": {
-      "title": "Rinfrescante pomeridiano",
-      "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto."
-    },
-    "allergy-relief": {
-      "title": "Sollievo dalle allergie",
-      "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Raggruppare parsley and add to the juicer before turning it on. Then add the lemon and place the plunger in place. Estrarre il succo dagli ingredienti rimanenti and stir. Versare in un bicchiere e bere al più presto."
-    },
-    "antiulcer-cabbage-cocktail": {
-      "title": "Cocktail di cavolo antiulcera",
-      "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto.",
-      "note": "Scientific research has proven that cabbage juice is an effective treatment for stomach ulcers."
-    },
-    "antiviral-cocktail": {
-      "title": "Cocktail antivirale",
-      "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto."
-    },
-    "awesome-green-smoothie": {
-      "title": "Fantastico frullato verde",
-      "preparation": "Frullare tutti gli ingredienti tranne le mandorle. Cospargere con le mandorle tritate, a piacere."
-    },
-    "beautiful-bone-solution": {
-      "title": "Soluzione per ossa belle",
-      "preparation": "Cut the apple into sections to fit your juicer's feed tube. Raggruppare kale and parsley, e spingere nel tubo di alimentazione insieme a apple, celery, lemon, and gingerroot. Stir the juice, and pour into a glass. Servire a temperatura ambiente o freddo, a piacere."
-    },
-    "beautiful-skin-cocktail": {
-      "title": "Cocktail per una pelle bella",
-      "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto.",
-      "note": "Cucumber and bell pepper are good sources of the trace mineral silicon, which is recommended to strengthen skin, hair, and fingernails along with bones. In studies, silicon has been shown to reduce signs of aging by improving thickness of skin and reducing wrinkles."
-    },
-    "beet-cucumber-cleansing-cocktail": {
-      "title": "Cocktail depurativo di barbabietola e cetriolo",
-      "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto."
-    },
-    "bladder-tonic": {
-      "title": "Tonico per la vescica",
-      "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Juice the ingredients except hot sauce. Pour into a glass, stir in hot sauce, and drink as soon as possible."
-    },
-    "cabbage-patch-cocktail": {
-      "title": "Cocktail di cavolo",
-      "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto."
-    },
-    "calcium-rich-cocktail": {
-      "title": "Cocktail ricco di calcio",
-      "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto."
-    },
-    "cheries-green-smoothie": {
-      "title": "Frullato verde di Cherie",
-      "preparation": "Frullare tutti gli ingredienti tranne le mandorle. Cospargere con le mandorle tritate, a piacere."
-    },
-    "cheries-quick-energy-soup": {
-      "title": "Vellutata energetica veloce di Cherie",
-      "preparation": "Estrarre il succo delle carote e versarlo in un frullatore. Aggiungere l'avocado e il cumino e frullare fino a ottenere una consistenza cremosa. Servire freddo."
-    },
-    "colon-cleanser": {
-      "title": "Depurativo del colon",
-      "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto."
-    },
-    "cranberry-apple-cocktail": {
-      "title": "Cocktail di mirtilli rossi e mela",
-      "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Juice one apple first. Turn off the machine, add the cranberries, and put the plunger in, then turn the machine on and juice. Follow with the lemon and second apple, and stir. Versare in un bicchiere e bere al più presto."
-    },
-    "gallbladder-liver-cleansing-cocktail": {
-      "title": "Cocktail depurativo per cistifellea e fegato",
-      "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto."
-    },
-    "gallbladder-rejuvenator": {
-      "title": "Rinvigorente della cistifellea",
-      "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto."
-    },
-    "garlic-surprise": {
-      "title": "Sorpresa all'aglio",
-      "preparation": "Roll the parsley in the lettuce leaf. Juice the cucumber and the parsley rolled in the lettuce leaf. Add the garlic and push through the juicer with the carrots, followed by the celery. Stir and pour into a glass."
-    },
-    "the-ginger-hopper": {
-      "title": "Il salto dello zenzero",
-      "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto."
-    },
-    "ginger-twist": {
-      "title": "Tocco di zenzero",
-      "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto."
-    },
-    "gout-fighting-tonic": {
-      "title": "Tonico contro la gotta",
-      "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto."
-    },
-    "happy-morning": {
-      "title": "Buongiorno felice",
-      "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Juice the apple first and follow with the other ingredients. Stir and pour into a glass; drink as soon as possible.",
-      "note": "Fennel juice has been used as a traditional tonic to help the body release endorphins, the feel-good peptides, from the brain into the bloodstream. Endorphins help diminish anxiety and fear, and generate a mood of euphoria."
-    },
-    "healthy-lungs": {
-      "title": "Polmoni sani",
-      "preparation": "Raggruppare watercress. Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Tuck the watercress in the feed tube and push through with the turnip. Estrarre il succo dagli ingredienti rimanenti, finishing with a carrot. Stir the juice, pour into a glass, and drink as soon as possible.",
-      "note": "Turnip juice has traditionally been used a remedy to strengthen lung tissue."
-    },
-    "healthy-sinus-solution": {
-      "title": "Soluzione per seni nasali sani",
-      "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto.",
-      "note": "Radish juice is a traditional remedy to open up the sinuses and support the mucous membranes."
-    },
-    "hot-ginger-lemon-tea": {
-      "title": "Tè caldo allo zenzero e limone",
-      "preparation": "Mettere tutti gli ingredienti in una pentola e cuocere a fuoco lento per 10 minuti. Filtrare e bere subito."
-    },
-    "icy-spicy-tomato": {
-      "title": "Pomodoro fresco e speziato",
-      "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto."
-    },
-    "immune-builder": {
-      "title": "Rinforzo immunitario",
-      "preparation": "Raggruppare watercress. Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Tuck the watercress in the feed tube and push through with the turnip. Estrarre il succo dagli ingredienti rimanenti, finishing with a carrot. Stir the juice, pour into a glass, and drink as soon as possible.",
-      "note": "Studies show that garlic has a compound that has a natural antibiotic-like effect. It is antibacterial, antifungal, antiparasitic, and antiviral, but it must be consumed raw to have this effect."
-    },
-    "jack-and-the-bean": {
-      "title": "Jack e il fagiolo",
-      "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto."
-    },
-    "liver-life-tonic": {
-      "title": "Tonico per il fegato",
-      "preparation": "Raggruppare dandelion greens. Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Tuck the dandelion greens in the feed tube and push through with the carrots. Estrarre il succo dagli ingredienti rimanenti, finishing with a carrot. Stir the juice, pour into a glass, and drink as soon as possible.",
-      "note": "Dandelion juice is a traditional remedy for cleansing the liver."
-    },
-    "magnesium-rich-cocktail": {
-      "title": "Cocktail ricco di magnesio",
-      "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto."
-    },
-    "memory-mender": {
-      "title": "Rinvigorente della memoria",
-      "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto."
-    },
-    "mint-refresher": {
-      "title": "Rinfrescante alla menta",
-      "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto."
-    },
-    "mood-mender": {
-      "title": "Rinvigorente dell'umore",
-      "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto.",
-      "note": "Fennel juice has long been used as a tonic to help the body release endorphins, the feel-good peptides, from the brain into the bloodstream. Endorphins help diminish anxiety and fear, and generate a mood of euphoria."
-    },
-    "morning-energizer": {
-      "title": "Energizzante del mattino",
-      "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto."
-    },
-    "natural-diuretic-cocktail": {
-      "title": "Cocktail diuretico naturale",
-      "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Juice the tomato and lemon. Turn off the juicer and add the parsley, followed by half the cucumber. Put in the plunger and turn the machine on. Estrarre il succo dagli ingredienti rimanenti and stir. Versare in un bicchiere e bere al più presto.",
-      "note": "Lemon, parsley, cucumber, and asparagus all act as diuretics."
-    },
-    "orient-express": {
-      "title": "Orient Express",
-      "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto."
-    },
-    "pancreas-helper": {
-      "title": "Aiuto per il pancreas",
-      "preparation": "Raggruppare lettuce leaves. Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Tuck the lettuce in the feed tube and push through with the cucumber. Estrarre il succo dagli ingredienti rimanenti, finishing with some tomato. Versare in un bicchiere e bere al più presto.",
-      "note": "Brussels sprouts and string bean juice are traditional remedies to help strengthen and support the pancreas. Drink before a meal. (If this drink is too strong, dilute with a little water.) For best pancreas support, also avoid refined carbohydrates such as white-flour products, sugars of all types, soda, and all sweets."
-    },
-    "peppy-parsley": {
-      "title": "Prezzemolo vivace",
-      "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto."
-    },
-    "the-pink-onion": {
-      "title": "La cipolla rosa",
-      "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto."
-    },
-    "pure-green-sprout-drink": {
-      "title": "Bevanda pura di germogli verdi",
-      "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto."
-    },
-    "radish-care": {
-      "title": "Cura del ravanello",
-      "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere. Servire a temperatura ambiente o freddo, a piacere."
-    },
-    "the-revitalizer": {
-      "title": "Il rivitalizzante",
-      "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto."
-    },
-    "salsa-in-a-glass": {
-      "title": "Salsa nel bicchiere",
-      "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto."
-    },
-    "sinus-solution": {
-      "title": "Soluzione per i seni nasali",
-      "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto."
-    },
-    "sleep-mender": {
-      "title": "Rimedio per il sonno",
-      "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto."
-    },
-    "spinach-power": {
-      "title": "Potere degli spinaci",
-      "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto."
-    },
-    "spring-tonic": {
-      "title": "Tonico primaverile",
-      "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto.",
-      "note": "Asparagus is a natural diuretic, which helps flush toxins from the body and promotes kidney cleansing."
-    },
-    "sweet-dreams-nightcap": {
-      "title": "Digestivo della buonanotte",
-      "preparation": "Raggruppare parsley and roll in a romaine leaf. Juice the cucumber and turn off the juicer. Add the romaine and parsley to the feed tube, turn the machine back on, and tap them through with a carrot. Estrarre il succo dagli ingredienti rimanenti and stir. Versare in un bicchiere e bere al più presto."
-    },
-    "super-green-sprout-drink": {
-      "title": "Super bevanda di germogli verdi",
-      "preparation": "Cut the cucumber to fit your juicer's feed tube. Juice part of the cucumber first. Raggruppare sprouts and wrap in spinach leaves, turn off the machine, and add them to the feed tube. Turn the machine back on and tap with the rest of the cucumber to gently push the sprouts and spinach through, and then juice the remaining part of the cucumber. Stir the ingredients, pour into a glass, and drink as soon as possible."
-    },
-    "sweet-and-regular": {
-      "title": "Dolce e semplice",
-      "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto."
-    },
-    "thyroid-tonic": {
-      "title": "Tonico per la tiroide",
-      "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto.",
-      "note": "Radishes are a traditional remedy for the thyroid."
-    },
-    "tomato-florentine": {
-      "title": "Pomodoro alla fiorentina",
-      "preparation": "Juice one tomato. Wrap the basil in several spinach leaves. Turn off the juicer and add the spinach and basil. Turn the juicer back on and gently tap to juice them. Juice the remaining tomato and the lemon, and stir. Pour in a glass, and drink as soon as possible."
-    },
-    "triple-c": {
-      "title": "Tripla C",
-      "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto."
-    },
-    "turnip-time": {
-      "title": "È tempo di rape",
-      "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto."
-    },
-    "veggie-delight": {
-      "title": "Delizia vegetale",
-      "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto."
-    },
-    "waldorf-twist": {
-      "title": "Tocco Waldorf",
-      "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto."
-    },
-    "weight-loss-buddy": {
-      "title": "Alleato per perdere peso",
-      "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto.",
-      "note": "Jerusalem artichoke juice combined with carrot and beetroot juices is a traditional remedy for satisfying cravings for sweets and junk food. The key is to sip it slowly when you get a craving for high-fat or high-carb foods."
-    },
-    "wheatgrass-light": {
-      "title": "Leggerezza all'erba di grano",
-      "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Starting with the apple, juice all the ingredients and stir. Versare in un bicchiere e bere al più presto."
-    },
-    "ace": {
-      "title": "Ace",
-      "preparation": "Lavare accuratamente tutta la frutta e la verdura. Estrarre il succo da tutti gli ingredienti."
-    },
-    "kiwi-melon": {
-      "title": "Kiwi e melone",
-      "preparation": "Lavare accuratamente tutta la frutta e la verdura. Estrarre il succo da tutti gli ingredienti."
-    },
-    "cool": {
-      "title": "Fresco",
-      "preparation": "Lavare accuratamente tutta la frutta. Estrarre il succo da tutti gli ingredienti."
-    },
-    "oriental-express": {
-      "title": "Oriental Express",
-      "preparation": "Lavare accuratamente tutta la frutta. Estrarre il succo da tutti gli ingredienti."
-    },
-    "rich": {
-      "title": "Ricco",
-      "preparation": "Lavare accuratamente tutta la frutta. Estrarre il succo da tutti gli ingredienti."
-    },
-    "green-power": {
-      "title": "Potere verde",
-      "preparation": "Lavare accuratamente tutta la frutta e la verdura. Estrarre il succo da tutti gli ingredienti."
-    },
-    "detox": {
-      "title": "Detox",
-      "preparation": "Lavare accuratamente tutta la verdura. Estrarre il succo da tutti gli ingredienti."
-    },
-    "digestive-juice": {
-      "title": "Succo digestivo",
-      "preparation": "Lavare accuratamente tutta la frutta. Estrarre il succo da tutti gli ingredienti."
-    },
-    "yellow-spark": {
-      "title": "Scintilla gialla",
-      "preparation": "Lavare accuratamente tutta la frutta. Estrarre il succo da tutti gli ingredienti."
-    },
-    "sunny-time": {
-      "title": "Momento soleggiato",
-      "preparation": "Lavare accuratamente tutta la frutta e la verdura. Estrarre il succo da tutti gli ingredienti. Non pelare le carote: la buccia contiene molte vitamine e sostanze nutritive."
-    },
-    "sweet-watermelon": {
-      "title": "Anguria dolce",
-      "preparation": "Lavare accuratamente tutta la frutta. Estrarre il succo da tutti gli ingredienti. Aggiungere succo di limone per una bevanda più rinfrescante."
-    },
-    "tropical-magic": {
-      "title": "Magia tropicale",
-      "preparation": "Pelare l'ananas ed estrarre il succo da entrambi i frutti. Dolcificare con il miele."
-    },
-    "green-apple": {
-      "title": "Mela verde",
-      "preparation": "Lavare accuratamente tutta la frutta e la verdura. Estrarre il succo da tutti gli ingredienti."
-    },
-    "carrot-orange-ginger": {
-      "title": "Carota, arancia e zenzero",
-      "preparation": "Lavare accuratamente tutta la frutta e la verdura. Estrarre il succo da tutti gli ingredienti."
-    },
-    "grape-celery": {
-      "title": "Uva e sedano",
-      "preparation": "Lavare accuratamente l'uva e il cetriolo. Estrarre il succo da tutti gli ingredienti e dolcificare con il miele."
-    },
-    "bloody-mary-soup": {
-      "title": "Zuppa Bloody Mary",
-      "preparation": "Lavare accuratamente tutta la frutta e la verdura. Estrarre il succo da tutti gli ingredienti. Servire con ghiaccio."
-    },
-    "carrot-soup": {
-      "title": "Zuppa di carote",
-      "preparation": "Lavare accuratamente tutta la frutta e la verdura ed estrarre il succo da tutti gli ingredienti. Aggiungere gli anacardi, trasferire il composto in una pentola e scaldare a fuoco medio."
-    },
-    "corn-soup": {
-      "title": "Zuppa di mais",
-      "preparation": "Scolare il mais e metterlo con il latte nel Juice Art. Aggiungere la cipolla, trasferire il composto in una pentola e scaldare a fuoco medio."
-    },
-    "breeze-soup": {
-      "title": "Zuppa brezza",
-      "preparation": "Lavare accuratamente tutta la frutta e la verdura. Estrarre il succo da tutti gli ingredienti insieme a origano, peperoncino rosso, sale e olio d'oliva."
-    },
-    "spring-soup": {
-      "title": "Zuppa primaverile",
-      "preparation": "Lavare accuratamente la verdura. Estrarre il succo da tutti gli ingredienti, poi condire con aglio, sale e pepe."
-    },
-    "grape-ice-watercress": {
-      "title": "Ghiaccio d'uva e crescione",
-      "preparation": "Lavare l'uva e inserirla nel Juice Art con il latte. Aggiungere il miele al succo e conservare in freezer per 6 ore."
-    },
-    "watermelon-ice-watercress": {
-      "title": "Ghiaccio d'anguria e crescione",
-      "preparation": "Rimuovere la buccia dall'anguria e inserirla nel Juice Art con il latte. Aggiungere il miele al succo e conservare in freezer per 6 ore."
-    },
-    "kiwi-ice-watercress": {
-      "title": "Ghiaccio di kiwi e crescione",
-      "preparation": "Rimuovere la buccia dai kiwi e aggiungere il latte nel Juice Art. Aggiungere il miele al succo e conservare in freezer per 6 ore."
-    },
-    "soft-cream": {
-      "title": "Crema morbida",
-      "preparation": "Lavare accuratamente tutta la frutta e inserirla nel Juice Art. Per un gusto più dolce, aggiungere un vasetto di yogurt bianco cremoso e servire."
-    },
-    "pineapple-green-juice": {
-      "title": "Succo verde all'ananas",
-      "preparation": "Lavare accuratamente tutta la frutta e la verdura. Pelare e privare l'ananas del torsolo, poi privare la mela del torsolo. Estrarre il succo da tutti gli ingredienti.",
-      "note": "Estrarre il succo da tutti gli ingredienti nell'estrattore; omettere l'acqua filtrata prevista per il metodo con frullatore."
-    },
-    "carrot-beach-party": {
-      "title": "Festa in Spiaggia alle Carote",
-      "preparation": "Basta frullare tutto insieme."
+    "ui": {
+        "pageTitle": "Ricette",
+        "languageLabel": "Lingua",
+        "categoryPrompt": "Voglio preparare un",
+        "allCategories": "Tutte le categorie",
+        "haveIngredients": "Voglio cucinare con",
+        "clearFilters": "Azzera filtri",
+        "missingIngredients": "Ingredienti da escludere",
+        "loading": "Caricamento ricette...",
+        "ingredients": "Ingredienti",
+        "preparation": "Preparazione",
+        "tags": "Tag",
+        "missing": "Per questa ricetta mancano",
+        "ready": "Hai tutti gli ingredienti per questa ricetta.",
+        "noMatch": "Nessuna ricetta corrisponde ai filtri.",
+        "recipe": "ricetta",
+        "recipes": "ricette",
+        "found": "trovate",
+        "containing": "con",
+        "and": "e",
+        "or": "o",
+        "own": "Ingrediente disponibile",
+        "need": "Ingrediente mancante",
+        "markMissing": "Segna ingrediente come mancante",
+        "unmarkMissing": "Segna ingrediente come disponibile",
+        "favourite": "Aggiungi ai preferiti",
+        "unfavourite": "Rimuovi dai preferiti",
+        "shoppingList": "Lista della spesa",
+        "clearShoppingList": "Svuota lista",
+        "addToShoppingList": "Aggiungi alla lista della spesa",
+        "removeFromShoppingList": "Rimuovi dalla lista della spesa",
+        "showFavourites": "Mostra solo preferiti",
+        "showAll": "Mostra tutte le ricette"
+    },
+    "categories": {
+        "juice": "Succo",
+        "smoothie": "Frullato",
+        "soup": "Zuppa",
+        "tea": "Tè",
+        "frozen": "Congelato"
+    },
+    "ingredients": {
+        "almonds": "mandorle",
+        "apple": "mela",
+        "asparagus": "asparagi",
+        "avocado": "avocado",
+        "basil": "basilico",
+        "beetroot": "barbabietola",
+        "bell-pepper": "peperone",
+        "broccoli": "broccoli",
+        "buckwheat-sprouts": "germogli di grano saraceno",
+        "cabbage": "cavolo",
+        "carrot": "carota",
+        "cauliflower": "cavolfiore",
+        "celery": "sedano",
+        "cilantro": "coriandolo",
+        "cinnamon": "cannella",
+        "clover-sprouts": "germogli di trifoglio",
+        "cloves": "chiodi di garofano",
+        "coconut-milk": "latte di cocco",
+        "cranberries": "mirtilli rossi",
+        "cucumber": "cetriolo",
+        "cumin": "cumino",
+        "daikon-radish": "ravanello daikon",
+        "dandelion-greens": "foglie di tarassaco",
+        "fennel": "finocchio",
+        "garlic": "aglio",
+        "gingerroot": "radice di zenzero",
+        "grapefruit": "pompelmo",
+        "ginger": "zenzero",
+        "green-powder": "polvere verde",
+        "hot-sauce": "salsa piccante",
+        "jerusalem-artichoke": "topinambur",
+        "jicama": "jicama",
+        "kale": "cavolo riccio",
+        "lemon": "limone",
+        "lettuce": "lattuga",
+        "licorice-tea": "tisana alla liquirizia",
+        "lime": "lime",
+        "mint": "menta",
+        "nutmeg": "noce moscata",
+        "onion": "cipolla",
+        "parsley": "prezzemolo",
+        "parsnip": "pastinaca",
+        "pear": "pera",
+        "radishes": "ravanelli",
+        "spinach": "spinaci",
+        "sprouts": "germogli",
+        "strawberries": "fragole",
+        "string-beans": "fagiolini",
+        "sunflower-sprouts": "germogli di girasole",
+        "tomato": "pomodoro",
+        "turnip": "rapa",
+        "water": "acqua",
+        "watercress": "crescione",
+        "wheatgrass": "erba di grano",
+        "banana": "banana",
+        "blueberry": "mirtillo",
+        "cashew": "anacardi",
+        "corn": "mais",
+        "curry": "curry",
+        "grape": "uva",
+        "honey": "miele",
+        "kiwi": "kiwi",
+        "melon": "melone",
+        "milk": "latte",
+        "olive-oil": "olio d'oliva",
+        "orange": "arancia",
+        "oregano": "origano",
+        "peach": "pesca",
+        "pineapple": "ananas",
+        "plum": "prugna",
+        "pomegranate": "melagrana",
+        "raspberry": "lampone",
+        "salt": "sale",
+        "strawberry": "fragola",
+        "watermelon": "anguria",
+        "yogurt": "yogurt"
+    },
+    "tags": {
+        "afternoon": "pomeriggio",
+        "allergy": "allergie",
+        "bladder": "vescica",
+        "bones": "ossa",
+        "cleansing": "depurazione",
+        "colon": "colon",
+        "diuretic": "diuretico",
+        "energy": "energia",
+        "gallbladder": "cistifellea",
+        "ginger": "zenzero",
+        "gout": "gotta",
+        "green": "verde",
+        "immune": "immunità",
+        "liver": "fegato",
+        "lungs": "polmoni",
+        "memory": "memoria",
+        "mood": "umore",
+        "morning": "mattino",
+        "pancreas": "pancreas",
+        "sinus": "seni nasali",
+        "skin": "pelle",
+        "sleep": "sonno",
+        "smoothie": "frullato",
+        "soup": "zuppa",
+        "sprouts": "germogli",
+        "tea": "tè",
+        "thyroid": "tiroide",
+        "tomato": "pomodoro",
+        "weight": "peso"
+    },
+    "recipes": {
+        "afternoon-refresher": {
+            "title": "Rinfrescante pomeridiano",
+            "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto."
+        },
+        "allergy-relief": {
+            "title": "Sollievo dalle allergie",
+            "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Raggruppare parsley and add to the juicer before turning it on. Then add the lemon and place the plunger in place. Estrarre il succo dagli ingredienti rimanenti and stir. Versare in un bicchiere e bere al più presto."
+        },
+        "antiulcer-cabbage-cocktail": {
+            "title": "Cocktail di cavolo antiulcera",
+            "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto.",
+            "note": "Scientific research has proven that cabbage juice is an effective treatment for stomach ulcers."
+        },
+        "antiviral-cocktail": {
+            "title": "Cocktail antivirale",
+            "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto."
+        },
+        "awesome-green-smoothie": {
+            "title": "Fantastico frullato verde",
+            "preparation": "Frullare tutti gli ingredienti tranne le mandorle. Cospargere con le mandorle tritate, a piacere."
+        },
+        "beautiful-bone-solution": {
+            "title": "Soluzione per ossa belle",
+            "preparation": "Cut the apple into sections to fit your juicer's feed tube. Raggruppare kale and parsley, e spingere nel tubo di alimentazione insieme a apple, celery, lemon, and gingerroot. Stir the juice, and pour into a glass. Servire a temperatura ambiente o freddo, a piacere."
+        },
+        "beautiful-skin-cocktail": {
+            "title": "Cocktail per una pelle bella",
+            "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto.",
+            "note": "Cucumber and bell pepper are good sources of the trace mineral silicon, which is recommended to strengthen skin, hair, and fingernails along with bones. In studies, silicon has been shown to reduce signs of aging by improving thickness of skin and reducing wrinkles."
+        },
+        "beet-cucumber-cleansing-cocktail": {
+            "title": "Cocktail depurativo di barbabietola e cetriolo",
+            "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto."
+        },
+        "bladder-tonic": {
+            "title": "Tonico per la vescica",
+            "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Juice the ingredients except hot sauce. Pour into a glass, stir in hot sauce, and drink as soon as possible."
+        },
+        "cabbage-patch-cocktail": {
+            "title": "Cocktail di cavolo",
+            "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto."
+        },
+        "calcium-rich-cocktail": {
+            "title": "Cocktail ricco di calcio",
+            "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto."
+        },
+        "cheries-green-smoothie": {
+            "title": "Frullato verde di Cherie",
+            "preparation": "Frullare tutti gli ingredienti tranne le mandorle. Cospargere con le mandorle tritate, a piacere."
+        },
+        "cheries-quick-energy-soup": {
+            "title": "Vellutata energetica veloce di Cherie",
+            "preparation": "Estrarre il succo delle carote e versarlo in un frullatore. Aggiungere l'avocado e il cumino e frullare fino a ottenere una consistenza cremosa. Servire freddo."
+        },
+        "colon-cleanser": {
+            "title": "Depurativo del colon",
+            "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto."
+        },
+        "cranberry-apple-cocktail": {
+            "title": "Cocktail di mirtilli rossi e mela",
+            "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Juice one apple first. Turn off the machine, add the cranberries, and put the plunger in, then turn the machine on and juice. Follow with the lemon and second apple, and stir. Versare in un bicchiere e bere al più presto."
+        },
+        "gallbladder-liver-cleansing-cocktail": {
+            "title": "Cocktail depurativo per cistifellea e fegato",
+            "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto."
+        },
+        "gallbladder-rejuvenator": {
+            "title": "Rinvigorente della cistifellea",
+            "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto."
+        },
+        "garlic-surprise": {
+            "title": "Sorpresa all'aglio",
+            "preparation": "Roll the parsley in the lettuce leaf. Juice the cucumber and the parsley rolled in the lettuce leaf. Add the garlic and push through the juicer with the carrots, followed by the celery. Stir and pour into a glass."
+        },
+        "the-ginger-hopper": {
+            "title": "Il salto dello zenzero",
+            "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto."
+        },
+        "ginger-twist": {
+            "title": "Tocco di zenzero",
+            "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto."
+        },
+        "gout-fighting-tonic": {
+            "title": "Tonico contro la gotta",
+            "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto."
+        },
+        "happy-morning": {
+            "title": "Buongiorno felice",
+            "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Juice the apple first and follow with the other ingredients. Stir and pour into a glass; drink as soon as possible.",
+            "note": "Fennel juice has been used as a traditional tonic to help the body release endorphins, the feel-good peptides, from the brain into the bloodstream. Endorphins help diminish anxiety and fear, and generate a mood of euphoria."
+        },
+        "healthy-lungs": {
+            "title": "Polmoni sani",
+            "preparation": "Raggruppare watercress. Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Tuck the watercress in the feed tube and push through with the turnip. Estrarre il succo dagli ingredienti rimanenti, finishing with a carrot. Stir the juice, pour into a glass, and drink as soon as possible.",
+            "note": "Turnip juice has traditionally been used a remedy to strengthen lung tissue."
+        },
+        "healthy-sinus-solution": {
+            "title": "Soluzione per seni nasali sani",
+            "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto.",
+            "note": "Radish juice is a traditional remedy to open up the sinuses and support the mucous membranes."
+        },
+        "hot-ginger-lemon-tea": {
+            "title": "Tè caldo allo zenzero e limone",
+            "preparation": "Mettere tutti gli ingredienti in una pentola e cuocere a fuoco lento per 10 minuti. Filtrare e bere subito."
+        },
+        "icy-spicy-tomato": {
+            "title": "Pomodoro fresco e speziato",
+            "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto."
+        },
+        "immune-builder": {
+            "title": "Rinforzo immunitario",
+            "preparation": "Raggruppare watercress. Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Tuck the watercress in the feed tube and push through with the turnip. Estrarre il succo dagli ingredienti rimanenti, finishing with a carrot. Stir the juice, pour into a glass, and drink as soon as possible.",
+            "note": "Studies show that garlic has a compound that has a natural antibiotic-like effect. It is antibacterial, antifungal, antiparasitic, and antiviral, but it must be consumed raw to have this effect."
+        },
+        "jack-and-the-bean": {
+            "title": "Jack e il fagiolo",
+            "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto."
+        },
+        "liver-life-tonic": {
+            "title": "Tonico per il fegato",
+            "preparation": "Raggruppare dandelion greens. Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Tuck the dandelion greens in the feed tube and push through with the carrots. Estrarre il succo dagli ingredienti rimanenti, finishing with a carrot. Stir the juice, pour into a glass, and drink as soon as possible.",
+            "note": "Dandelion juice is a traditional remedy for cleansing the liver."
+        },
+        "magnesium-rich-cocktail": {
+            "title": "Cocktail ricco di magnesio",
+            "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto."
+        },
+        "memory-mender": {
+            "title": "Rinvigorente della memoria",
+            "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto."
+        },
+        "mint-refresher": {
+            "title": "Rinfrescante alla menta",
+            "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto."
+        },
+        "mood-mender": {
+            "title": "Rinvigorente dell'umore",
+            "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto.",
+            "note": "Fennel juice has long been used as a tonic to help the body release endorphins, the feel-good peptides, from the brain into the bloodstream. Endorphins help diminish anxiety and fear, and generate a mood of euphoria."
+        },
+        "morning-energizer": {
+            "title": "Energizzante del mattino",
+            "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto."
+        },
+        "natural-diuretic-cocktail": {
+            "title": "Cocktail diuretico naturale",
+            "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Juice the tomato and lemon. Turn off the juicer and add the parsley, followed by half the cucumber. Put in the plunger and turn the machine on. Estrarre il succo dagli ingredienti rimanenti and stir. Versare in un bicchiere e bere al più presto.",
+            "note": "Lemon, parsley, cucumber, and asparagus all act as diuretics."
+        },
+        "orient-express": {
+            "title": "Orient Express",
+            "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto."
+        },
+        "pancreas-helper": {
+            "title": "Aiuto per il pancreas",
+            "preparation": "Raggruppare lettuce leaves. Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Tuck the lettuce in the feed tube and push through with the cucumber. Estrarre il succo dagli ingredienti rimanenti, finishing with some tomato. Versare in un bicchiere e bere al più presto.",
+            "note": "Brussels sprouts and string bean juice are traditional remedies to help strengthen and support the pancreas. Drink before a meal. (If this drink is too strong, dilute with a little water.) For best pancreas support, also avoid refined carbohydrates such as white-flour products, sugars of all types, soda, and all sweets."
+        },
+        "peppy-parsley": {
+            "title": "Prezzemolo vivace",
+            "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto."
+        },
+        "the-pink-onion": {
+            "title": "La cipolla rosa",
+            "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto."
+        },
+        "pure-green-sprout-drink": {
+            "title": "Bevanda pura di germogli verdi",
+            "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto."
+        },
+        "radish-care": {
+            "title": "Cura del ravanello",
+            "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere. Servire a temperatura ambiente o freddo, a piacere."
+        },
+        "the-revitalizer": {
+            "title": "Il rivitalizzante",
+            "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto."
+        },
+        "salsa-in-a-glass": {
+            "title": "Salsa nel bicchiere",
+            "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto."
+        },
+        "sinus-solution": {
+            "title": "Soluzione per i seni nasali",
+            "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto."
+        },
+        "sleep-mender": {
+            "title": "Rimedio per il sonno",
+            "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto."
+        },
+        "spinach-power": {
+            "title": "Potere degli spinaci",
+            "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto."
+        },
+        "spring-tonic": {
+            "title": "Tonico primaverile",
+            "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto.",
+            "note": "Asparagus is a natural diuretic, which helps flush toxins from the body and promotes kidney cleansing."
+        },
+        "sweet-dreams-nightcap": {
+            "title": "Digestivo della buonanotte",
+            "preparation": "Raggruppare parsley and roll in a romaine leaf. Juice the cucumber and turn off the juicer. Add the romaine and parsley to the feed tube, turn the machine back on, and tap them through with a carrot. Estrarre il succo dagli ingredienti rimanenti and stir. Versare in un bicchiere e bere al più presto."
+        },
+        "super-green-sprout-drink": {
+            "title": "Super bevanda di germogli verdi",
+            "preparation": "Cut the cucumber to fit your juicer's feed tube. Juice part of the cucumber first. Raggruppare sprouts and wrap in spinach leaves, turn off the machine, and add them to the feed tube. Turn the machine back on and tap with the rest of the cucumber to gently push the sprouts and spinach through, and then juice the remaining part of the cucumber. Stir the ingredients, pour into a glass, and drink as soon as possible."
+        },
+        "sweet-and-regular": {
+            "title": "Dolce e semplice",
+            "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto."
+        },
+        "thyroid-tonic": {
+            "title": "Tonico per la tiroide",
+            "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto.",
+            "note": "Radishes are a traditional remedy for the thyroid."
+        },
+        "tomato-florentine": {
+            "title": "Pomodoro alla fiorentina",
+            "preparation": "Juice one tomato. Wrap the basil in several spinach leaves. Turn off the juicer and add the spinach and basil. Turn the juicer back on and gently tap to juice them. Juice the remaining tomato and the lemon, and stir. Pour in a glass, and drink as soon as possible."
+        },
+        "triple-c": {
+            "title": "Tripla C",
+            "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto."
+        },
+        "turnip-time": {
+            "title": "È tempo di rape",
+            "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto."
+        },
+        "veggie-delight": {
+            "title": "Delizia vegetale",
+            "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto."
+        },
+        "waldorf-twist": {
+            "title": "Tocco Waldorf",
+            "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto."
+        },
+        "weight-loss-buddy": {
+            "title": "Alleato per perdere peso",
+            "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Estrarre il succo dagli ingredienti e mescolare. Versare in un bicchiere e bere al più presto.",
+            "note": "Jerusalem artichoke juice combined with carrot and beetroot juices is a traditional remedy for satisfying cravings for sweets and junk food. The key is to sip it slowly when you get a craving for high-fat or high-carb foods."
+        },
+        "wheatgrass-light": {
+            "title": "Leggerezza all'erba di grano",
+            "preparation": "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore. Starting with the apple, juice all the ingredients and stir. Versare in un bicchiere e bere al più presto."
+        },
+        "ace": {
+            "title": "Ace",
+            "preparation": "Lavare accuratamente tutta la frutta e la verdura. Estrarre il succo da tutti gli ingredienti."
+        },
+        "kiwi-melon": {
+            "title": "Kiwi e melone",
+            "preparation": "Lavare accuratamente tutta la frutta e la verdura. Estrarre il succo da tutti gli ingredienti."
+        },
+        "cool": {
+            "title": "Fresco",
+            "preparation": "Lavare accuratamente tutta la frutta. Estrarre il succo da tutti gli ingredienti."
+        },
+        "oriental-express": {
+            "title": "Oriental Express",
+            "preparation": "Lavare accuratamente tutta la frutta. Estrarre il succo da tutti gli ingredienti."
+        },
+        "rich": {
+            "title": "Ricco",
+            "preparation": "Lavare accuratamente tutta la frutta. Estrarre il succo da tutti gli ingredienti."
+        },
+        "green-power": {
+            "title": "Potere verde",
+            "preparation": "Lavare accuratamente tutta la frutta e la verdura. Estrarre il succo da tutti gli ingredienti."
+        },
+        "detox": {
+            "title": "Detox",
+            "preparation": "Lavare accuratamente tutta la verdura. Estrarre il succo da tutti gli ingredienti."
+        },
+        "digestive-juice": {
+            "title": "Succo digestivo",
+            "preparation": "Lavare accuratamente tutta la frutta. Estrarre il succo da tutti gli ingredienti."
+        },
+        "yellow-spark": {
+            "title": "Scintilla gialla",
+            "preparation": "Lavare accuratamente tutta la frutta. Estrarre il succo da tutti gli ingredienti."
+        },
+        "sunny-time": {
+            "title": "Momento soleggiato",
+            "preparation": "Lavare accuratamente tutta la frutta e la verdura. Estrarre il succo da tutti gli ingredienti. Non pelare le carote: la buccia contiene molte vitamine e sostanze nutritive."
+        },
+        "sweet-watermelon": {
+            "title": "Anguria dolce",
+            "preparation": "Lavare accuratamente tutta la frutta. Estrarre il succo da tutti gli ingredienti. Aggiungere succo di limone per una bevanda più rinfrescante."
+        },
+        "tropical-magic": {
+            "title": "Magia tropicale",
+            "preparation": "Pelare l'ananas ed estrarre il succo da entrambi i frutti. Dolcificare con il miele."
+        },
+        "green-apple": {
+            "title": "Mela verde",
+            "preparation": "Lavare accuratamente tutta la frutta e la verdura. Estrarre il succo da tutti gli ingredienti."
+        },
+        "carrot-orange-ginger": {
+            "title": "Carota, arancia e zenzero",
+            "preparation": "Lavare accuratamente tutta la frutta e la verdura. Estrarre il succo da tutti gli ingredienti."
+        },
+        "grape-celery": {
+            "title": "Uva e sedano",
+            "preparation": "Lavare accuratamente l'uva e il cetriolo. Estrarre il succo da tutti gli ingredienti e dolcificare con il miele."
+        },
+        "bloody-mary-soup": {
+            "title": "Zuppa Bloody Mary",
+            "preparation": "Lavare accuratamente tutta la frutta e la verdura. Estrarre il succo da tutti gli ingredienti. Servire con ghiaccio."
+        },
+        "carrot-soup": {
+            "title": "Zuppa di carote",
+            "preparation": "Lavare accuratamente tutta la frutta e la verdura ed estrarre il succo da tutti gli ingredienti. Aggiungere gli anacardi, trasferire il composto in una pentola e scaldare a fuoco medio."
+        },
+        "corn-soup": {
+            "title": "Zuppa di mais",
+            "preparation": "Scolare il mais e metterlo con il latte nel Juice Art. Aggiungere la cipolla, trasferire il composto in una pentola e scaldare a fuoco medio."
+        },
+        "breeze-soup": {
+            "title": "Zuppa brezza",
+            "preparation": "Lavare accuratamente tutta la frutta e la verdura. Estrarre il succo da tutti gli ingredienti insieme a origano, peperoncino rosso, sale e olio d'oliva."
+        },
+        "spring-soup": {
+            "title": "Zuppa primaverile",
+            "preparation": "Lavare accuratamente la verdura. Estrarre il succo da tutti gli ingredienti, poi condire con aglio, sale e pepe."
+        },
+        "grape-ice-watercress": {
+            "title": "Ghiaccio d'uva e crescione",
+            "preparation": "Lavare l'uva e inserirla nel Juice Art con il latte. Aggiungere il miele al succo e conservare in freezer per 6 ore."
+        },
+        "watermelon-ice-watercress": {
+            "title": "Ghiaccio d'anguria e crescione",
+            "preparation": "Rimuovere la buccia dall'anguria e inserirla nel Juice Art con il latte. Aggiungere il miele al succo e conservare in freezer per 6 ore."
+        },
+        "kiwi-ice-watercress": {
+            "title": "Ghiaccio di kiwi e crescione",
+            "preparation": "Rimuovere la buccia dai kiwi e aggiungere il latte nel Juice Art. Aggiungere il miele al succo e conservare in freezer per 6 ore."
+        },
+        "soft-cream": {
+            "title": "Crema morbida",
+            "preparation": "Lavare accuratamente tutta la frutta e inserirla nel Juice Art. Per un gusto più dolce, aggiungere un vasetto di yogurt bianco cremoso e servire."
+        },
+        "pineapple-green-juice": {
+            "title": "Succo verde all'ananas",
+            "preparation": "Lavare accuratamente tutta la frutta e la verdura. Pelare e privare l'ananas del torsolo, poi privare la mela del torsolo. Estrarre il succo da tutti gli ingredienti.",
+            "note": "Estrarre il succo da tutti gli ingredienti nell'estrattore; omettere l'acqua filtrata prevista per il metodo con frullatore."
+        },
+        "carrot-beach-party": {
+            "title": "Festa in Spiaggia alle Carote",
+            "preparation": "Basta frullare tutto insieme."
+        }
     }
-  }
 }

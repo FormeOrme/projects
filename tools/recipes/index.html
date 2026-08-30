@@ -1,64 +1,88 @@
 <!doctype html>
 <html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Juice Art Recipes</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:wght@600;700&display=swap"
+            rel="stylesheet"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+        />
+        <link rel="stylesheet" href="./styles.css?v=4" />
+        <script type="module" src="./app.js"></script>
+    </head>
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Juice Art Recipes</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:wght@600;700&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
-    <link rel="stylesheet" href="./styles.css?v=4">
-    <script type="module" src="./app.js"></script>
-</head>
-
-<body>
-    <header class="site-header">
-        <div class="container">
-            <div class="header-row">
-                <h1 data-i18n="pageTitle">Recipes</h1>
-            </div>
-        </div>
-    </header>
-    <main class="container">
-        <section id="shopping-list" class="shopping-list" hidden>
-            <div class="shopping-list-header">
-                <h2 data-i18n="shoppingList">Shopping list</h2>
-                <button id="clear-shopping-list" class="secondary outline" type="button"
-                    data-i18n="clearShoppingList">Clear list</button>
-            </div>
-            <div id="shopping-list-recipes"></div>
-        </section>
-        <section class="filters" aria-label="Recipe filters">
-            <details class="ingredient-filters" open>
-                <summary data-i18n="haveIngredients">I have:</summary>
-                <div id="owned-ingredients" class="ingredient-toggles" role="group" aria-label="Ingredients I have">
+    <body>
+        <header class="site-header">
+            <div class="container">
+                <div class="header-row">
+                    <h1 data-i18n="pageTitle">Recipes</h1>
                 </div>
-            </details>
-            <details class="ingredient-filters">
-                <summary data-i18n="missingIngredients">Ingredients to exclude</summary>
-                <div id="ingredient-filters" class="ingredient-toggles" role="group"
-                    aria-label="Ingredients I do not have"></div>
-            </details>
-            <div class="filter-actions">
-                <button id="favourites-only" class="secondary outline" type="button">
-                    <span aria-hidden="true">♡</span>
-                    <span data-i18n="showFavourites">Show only favourites</span>
-                </button>
-                <button id="clear" class="secondary outline" type="button" data-i18n="clearFilters">Clear
-                    filters</button>
             </div>
-        </section>
-        <p id="recap" class="recap" aria-live="polite" data-i18n="loading">Loading recipes...</p>
-        <div class="results-bar">
-            <strong id="result-count" data-i18n="loading">Loading recipes...</strong>
-            <span id="status" role="status"></span>
-        </div>
-        <section id="recipes" class="recipe-grid" aria-live="polite"></section>
-    </main>
-</body>
-
+        </header>
+        <main class="container">
+            <section id="shopping-list" class="shopping-list" hidden>
+                <div class="shopping-list-header">
+                    <h2 data-i18n="shoppingList">Shopping list</h2>
+                    <button
+                        id="clear-shopping-list"
+                        class="secondary outline"
+                        type="button"
+                        data-i18n="clearShoppingList"
+                    >
+                        Clear list
+                    </button>
+                </div>
+                <div id="shopping-list-recipes"></div>
+            </section>
+            <section class="filters" aria-label="Recipe filters">
+                <details class="ingredient-filters" open>
+                    <summary data-i18n="haveIngredients">I have:</summary>
+                    <div
+                        id="owned-ingredients"
+                        class="ingredient-toggles"
+                        role="group"
+                        aria-label="Ingredients I have"
+                    ></div>
+                </details>
+                <details class="ingredient-filters">
+                    <summary data-i18n="missingIngredients">Ingredients to exclude</summary>
+                    <div
+                        id="ingredient-filters"
+                        class="ingredient-toggles"
+                        role="group"
+                        aria-label="Ingredients I do not have"
+                    ></div>
+                </details>
+                <div class="filter-actions">
+                    <button id="favourites-only" class="secondary outline" type="button">
+                        <span aria-hidden="true">♡</span>
+                        <span data-i18n="showFavourites">Show only favourites</span>
+                    </button>
+                    <button
+                        id="clear"
+                        class="secondary outline"
+                        type="button"
+                        data-i18n="clearFilters"
+                    >
+                        Clear filters
+                    </button>
+                </div>
+            </section>
+            <p id="recap" class="recap" aria-live="polite" data-i18n="loading">
+                Loading recipes...
+            </p>
+            <div class="results-bar">
+                <strong id="result-count" data-i18n="loading">Loading recipes...</strong>
+                <span id="status" role="status"></span>
+            </div>
+            <section id="recipes" class="recipe-grid" aria-live="polite"></section>
+        </main>
+    </body>
 </html>
