@@ -47,20 +47,20 @@ TITLE_IT = {
     "Antiviral Cocktail": "Cocktail antivirale", "Awesome Green Smoothie": "Fantastico frullato verde", "Beautiful-Bone Solution": "Soluzione per ossa belle",
     "Beautiful-Skin Cocktail": "Cocktail per una pelle bella", "Beet-Cucumber Cleansing Cocktail": "Cocktail depurativo di barbabietola e cetriolo",
     "Bladder Tonic": "Tonico per la vescica", "Cabbage Patch Cocktail": "Cocktail di cavolo", "Calcium-Rich Cocktail": "Cocktail ricco di calcio",
-    "Cherie’s Green Smoothie": "Frullato verde di Cherie", "Cherie’s Quick Energy Soup": "Vellutata energetica veloce di Cherie", "Colon Cleanser": "Depurativo del colon",
+    "Cherie's Green Smoothie": "Frullato verde di Cherie", "Cherie's Quick Energy Soup": "Vellutata energetica veloce di Cherie", "Colon Cleanser": "Depurativo del colon",
     "Cranberry-Apple Cocktail": "Cocktail di mirtilli rossi e mela", "Gallbladder-Liver Cleansing Cocktail": "Cocktail depurativo per cistifellea e fegato",
-    "Gallbladder Rejuvenator": "Rinvigorente della cistifellea", "Garlic Surprise": "Sorpresa all’aglio", "The Ginger Hopper": "Il salto dello zenzero",
+    "Gallbladder Rejuvenator": "Rinvigorente della cistifellea", "Garlic Surprise": "Sorpresa all'aglio", "The Ginger Hopper": "Il salto dello zenzero",
     "Ginger Twist": "Tocco di zenzero", "Gout-Fighting Tonic": "Tonico contro la gotta", "Happy Morning": "Buongiorno felice", "Healthy Lungs": "Polmoni sani",
     "Healthy-Sinus Solution": "Soluzione per seni nasali sani", "Hot Ginger-Lemon Tea": "Tè caldo allo zenzero e limone", "Icy Spicy Tomato": "Pomodoro fresco e speziato",
     "Immune Builder": "Rinforzo immunitario", "Jack & the Bean": "Jack e il fagiolo", "Liver Life Tonic": "Tonico per il fegato",
     "Magnesium-Rich Cocktail": "Cocktail ricco di magnesio", "Memory Mender": "Rinvigorente della memoria", "Mint Refresher": "Rinfrescante alla menta",
-    "Mood Mender": "Rinvigorente dell’umore", "Morning Energizer": "Energizzante del mattino", "Natural Diuretic Cocktail": "Cocktail diuretico naturale",
+    "Mood Mender": "Rinvigorente dell'umore", "Morning Energizer": "Energizzante del mattino", "Natural Diuretic Cocktail": "Cocktail diuretico naturale",
     "Orient Express": "Orient Express", "Pancreas Helper": "Aiuto per il pancreas", "Peppy Parsley": "Prezzemolo vivace", "The Pink Onion": "La cipolla rosa",
     "Pure Green Sprout Drink": "Bevanda pura di germogli verdi", "Radish Care": "Cura del ravanello", "The Revitalizer": "Il rivitalizzante", "Salsa in a Glass": "Salsa nel bicchiere",
     "Sinus Solution": "Soluzione per i seni nasali", "Sleep Mender": "Rimedio per il sonno", "Spinach Power": "Potere degli spinaci", "Spring Tonic": "Tonico primaverile",
     "Sweet Dreams Nightcap": "Digestivo della buonanotte", "Super Green Sprout Drink": "Super bevanda di germogli verdi", "Sweet & Regular": "Dolce e semplice",
     "Thyroid Tonic": "Tonico per la tiroide", "Tomato Florentine": "Pomodoro alla fiorentina", "Triple C": "Tripla C", "Turnip Time": "È tempo di rape",
-    "Veggie Delight": "Delizia vegetale", "Waldorf Twist": "Tocco Waldorf", "Weight-Loss Buddy": "Alleato per perdere peso", "Wheatgrass Light": "Leggerezza all’erba di grano",
+    "Veggie Delight": "Delizia vegetale", "Waldorf Twist": "Tocco Waldorf", "Weight-Loss Buddy": "Alleato per perdere peso", "Wheatgrass Light": "Leggerezza all'erba di grano",
 }
 
 TAG_IT = {"morning": "mattino", "afternoon": "pomeriggio", "sinus": "seni nasali", "liver": "fegato", "gallbladder": "cistifellea", "bladder": "vescica", "colon": "colon", "pancreas": "pancreas", "thyroid": "tiroide", "sleep": "sonno", "mood": "umore", "memory": "memoria", "bones": "ossa", "skin": "pelle", "immune": "immunità", "lungs": "polmoni", "weight": "peso", "gout": "gotta", "allergy": "allergie", "ulcer": "ulcera", "cleansing": "depurazione", "energy": "energia", "diuretic": "diuretico", "smoothie": "frullato", "tea": "tè", "soup": "zuppa", "sprouts": "germogli", "tomato": "pomodoro", "ginger": "zenzero", "green": "verde"}
@@ -97,7 +97,7 @@ UI_IT = {
 
 
 def slug(value: str) -> str:
-    value = value.lower().replace("’", "").replace("&", "and")
+    value = value.lower().replace("'", "").replace("&", "and")
     return re.sub(r"[^a-z0-9]+", "-", value).strip("-")
 
 
@@ -124,7 +124,7 @@ def italian_text(text: str | None) -> str | None:
     if text is None:
         return None
     replacements = [
-        ("Cut the produce to fit your juicer’s feed tube.", "Taglia gli ingredienti per adattarli al tubo di alimentazione dell’estrattore."),
+        ("Cut the produce to fit your juicer's feed tube.", "Taglia gli ingredienti per adattarli al tubo di alimentazione dell'estrattore."),
         ("Juice the ingredients and stir.", "Estrarre il succo dagli ingredienti e mescolare."),
         ("Pour into a glass and drink as soon as possible.", "Versare in un bicchiere e bere al più presto."),
         ("Pour into a glass.", "Versare in un bicchiere."),
@@ -138,7 +138,7 @@ def italian_text(text: str | None) -> str | None:
         ("Place all ingredients in a saucepan and simmer for 10 minutes.", "Mettere tutti gli ingredienti in una pentola e cuocere a fuoco lento per 10 minuti."),
         ("Strain and drink immediately.", "Filtrare e bere subito."),
         ("Juice the carrots and pour the juice into a blender.", "Estrarre il succo delle carote e versarlo in un frullatore."),
-        ("Add the avocado and cumin and blend until smooth.", "Aggiungere l’avocado e il cumino e frullare fino a ottenere una consistenza cremosa."),
+        ("Add the avocado and cumin and blend until smooth.", "Aggiungere l'avocado e il cumino e frullare fino a ottenere una consistenza cremosa."),
         ("Serve chilled.", "Servire freddo."),
     ]
     for english, italian in replacements:
@@ -155,7 +155,7 @@ for raw_line in raw_lines:
     if line.startswith("## "):
         if current:
             recipes.append(current)
-        title = line[3:].replace("â€™", "’")
+        title = line[3:].replace("â€™", "'")
         current = {"id": slug(title), "title": title, "ingredients": [], "preparation": [], "note": None, "serves": None}
         mode = "ingredients"
     elif not current or not line or line.startswith("<!--"):

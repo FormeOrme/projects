@@ -2325,6 +2325,38 @@
                 }
             ],
             "source": "RGV Slow Juicer"
+        },
+        {
+            "id": "carrot-beach-party",
+            "category": "smoothie",
+            "serves": "1-2",
+            "ingredients": [
+                {
+                    "ingredient": "peach",
+                    "quantity": "2"
+                },
+                {
+                    "ingredient": "pear",
+                    "quantity": "2"
+                },
+                {
+                    "ingredient": "carrot",
+                    "quantity": "2"
+                },
+                {
+                    "ingredient": "cucumber",
+                    "quantity": "1/2"
+                },
+                {
+                    "ingredient": "pineapple",
+                    "quantity": "1 slice"
+                },
+                {
+                    "ingredient": "ginger",
+                    "quantity": "1 cm"
+                }
+            ],
+            "source": "Custom recipe"
         }
     ]
 }
