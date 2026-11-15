@@ -6,7 +6,7 @@ export function normalize(s) {
     return s?.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
 
-export function strip(s) {
+export function slugify(s) {
     return normalize(s)?.split("/")[0]?.trim().replace(/\W+/g, "_").toLowerCase();
 }
 

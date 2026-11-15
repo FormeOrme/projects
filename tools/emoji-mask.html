@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Emoji Mask Generator</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+    </head>
+    <body class="font-sans max-w-[1200px] mx-auto p-5">
+        <h1>Emoji Mask Generator</h1>
+
+        <div class="flex gap-5 items-start">
+            <div class="flex-[0_0_66%] max-w-[66%]">
+                <div class="border border-gray-300 p-4 rounded border-b border-r border-t border-l mb-5 bg-gray-50">
+            <h3 class="mt-0 mb-4 text-gray-800">Clip Emoji (Always Centered)</h3>
+            <div class="mb-5 flex items-center gap-5 flex-wrap">
+                <div class="flex items-center gap-1">
+                    <label for="clipEmojiInput" class="font-bold mr-1">Emoji:</label>
+                    <input type="text" id="clipEmojiInput" value="🩷" maxlength="4" class="p-2 border border-gray-300 rounded text-sm w-20 text-xl" />
+                </div>
+
+                <div class="flex items-center gap-1">
+                    <label for="clipFontSizeInput" class="font-bold mr-1">Font Size:</label>
+                    <input
+                        type="range"
+                        id="clipFontSizeInput"
+                        value="100"
+                        min="8"
+                        max="128"
+                        class="w-[150px]"
+                    />
+                    <input
+                        type="number"
+                        id="clipFontSizeNumber"
+                        value="100"
+                        min="8"
+                        max="128"
+                        readonly
+                        class="w-[60px] p-1 border border-gray-300 rounded text-sm"
+                    />
+                </div>
+
+                <div class="flex items-center gap-1">
+                    <label for="clipViewBoxZoomInput" class="font-bold mr-1">ViewBox Zoom:</label>
+                    <input
+                        type="range"
+                        id="clipViewBoxZoomInput"
+                        value="0.89"
+                        min="0.5"
+                        max="1"
+                        step="0.01"
+                        class="w-[150px]"
+                    />
+                    <input
+                        type="number"
+                        id="clipViewBoxZoomNumber"
+                        value="0.89"
+                        min="0.5"
+                        max="1"
+                        step="0.01"
+                        readonly
+                        class="w-[60px] p-1 border border-gray-300 rounded text-sm"
+                    />
+                </div>
+            </div>
+        </div>
+
+        <div class="border border-gray-300 p-4 rounded mb-5 bg-gray-50">
+            <h3 class="mt-0 mb-4 text-gray-800">Content Emoji (Movable)</h3>
+            <div class="mb-5 flex items-center gap-5 flex-wrap">
+                <div class="flex items-center gap-1">
+                    <label for="contentEmojiInput" class="font-bold mr-1">Emoji:</label>
+                    <input type="text" id="contentEmojiInput" value="🐸" maxlength="4" class="p-2 border border-gray-300 rounded text-sm w-20 text-xl" />
+                </div>
+
+                <div class="flex items-center gap-1">
+                    <label for="contentFontSizeInput" class="font-bold mr-1">Font Size:</label>
+                    <input
+                        type="range"
+                        id="contentFontSizeInput"
+                        value="100"
+                        min="8"
+                        max="128"
+                        class="w-[150px]"
+                    />
+                    <input
+                        type="number"
+                        id="contentFontSizeNumber"
+                        value="100"
+                        min="8"
+                        max="128"
+                        readonly
+                        class="w-[60px] p-1 border border-gray-300 rounded text-sm"
+                    />
+                </div>
+
+                <div class="flex items-center gap-1">
+                    <label for="contentXInput" class="font-bold mr-1">X Position:</label>
+                    <input
+                        type="range"
+                        id="contentXInput"
+                        value="50"
+                        min="0"
+                        max="100"
+                        class="w-[150px]"
+                    />
+                    <input
+                        type="number"
+                        id="contentXNumber"
+                        value="50"
+                        min="0"
+                        max="100"
+                        readonly
+                        class="w-[60px] p-1 border border-gray-300 rounded text-sm"
+                    />
+                </div>
+
+                <div class="flex items-center gap-1">
+                    <label for="contentYInput" class="font-bold mr-1">Y Position:</label>
+                    <input
+                        type="range"
+                        id="contentYInput"
+                        value="50"
+                        min="0"
+                        max="100"
+                        class="w-[150px]"
+                    />
+                    <input
+                        type="number"
+                        id="contentYNumber"
+                        value="50"
+                        min="0"
+                        max="100"
+                        readonly
+                        class="w-[60px] p-1 border border-gray-300 rounded text-sm"
+                    />
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-8">
+            <h3>Generated SVG:</h3>
+            <pre id="svgOutput" class="w-full bg-gray-100 p-4 border border-gray-300 rounded font-mono text-[12px] box-border overflow-x-auto whitespace-pre-wrap break-words"></pre>
+        </div>
+            </div>
+
+            <div class="flex-[0_0_33%] max-w-[33%] sticky top-5">
+                <h3 class="text-center mb-4">Generated Images</h3>
+                <button id="downloadAll" class="py-2.5 px-5 m-1 cursor-pointer bg-green-500 text-white border-none rounded text-sm w-full hover:bg-green-600 mb-5 bg-blue-500">Download All Icons</button>
+                <div class="flex flex-col gap-5 my-5 items-center" id="previewContainer"></div>
+            </div>
+        </div>
+
+        <script type="module">
+            /**
+             * Emoji Mask Generator Module
+             */
+
+            const sizes = [128, 64, 48, 16];
+
+            function initializePreview() {
+                const container = document.getElementById("previewContainer");
+                container.innerHTML = "";
+
+                sizes.forEach((size) => {
+                    const previewItem = document.createElement("div");
+                    previewItem.className = "text-center w-full";
+
+                    const label = document.createElement("div");
+                    label.textContent = `${size}×${size}`;
+                    label.className = "font-bold mb-1";
+
+                    const canvas = document.createElement("canvas");
+                    canvas.id = `canvas${size}`;
+                    canvas.width = size;
+                    canvas.height = size;
+                    canvas.className = "border border-gray-300 block my-2.5 mx-auto";
+
+                    const button = document.createElement("button");
+                    button.id = `download${size}`;
+                    button.textContent = `Download ${size}×${size}`;
+                    button.className = "py-2.5 px-5 m-1 cursor-pointer bg-green-500 hover:bg-green-600 text-white rounded text-sm w-full";
+                    button.addEventListener("click", () => downloadIcon(size));
+
+                    previewItem.appendChild(label);
+                    previewItem.appendChild(canvas);
+                    previewItem.appendChild(button);
+                    container.appendChild(previewItem);
+                });
+            }
+
+            function calculateTextYPosition(canvasSize, fontSize, k = 0.35) {
+                return canvasSize / 2 + k * fontSize;
+            }
+
+            function generateSvg(
+                clipEmoji,
+                clipFontSize,
+                clipViewBoxZoom,
+                contentEmoji,
+                contentFontSize,
+                contentX,
+                contentY,
+            ) {
+                // Calculate viewBox based on clip emoji only
+                const viewBoxSize = clipFontSize / clipViewBoxZoom;
+                const offset = (clipFontSize - viewBoxSize) / 2;
+
+                const decimalPlaces = 0;
+                const fixedBoxSize = viewBoxSize.toFixed(decimalPlaces);
+                const fixedOffset = offset.toFixed(decimalPlaces);
+
+                // Clip emoji is always centered
+                const clipX = clipFontSize / 2;
+                const clipY = calculateTextYPosition(clipFontSize, clipFontSize);
+
+                // Content emoji position is user-specified (percentage-based)
+                const contentXPixels = (contentX / 100) * clipFontSize;
+                const contentYPixels = calculateTextYPosition(
+                    clipFontSize,
+                    contentFontSize,
+                    (contentY / 100) * 0.7,
+                );
+
+                return `<svg xmlns='http://www.w3.org/2000/svg' viewBox='${fixedOffset} ${fixedOffset} ${fixedBoxSize} ${fixedBoxSize}'>
+  <defs>
+    <clipPath id='emojiClip'>
+      <text x='${clipX}' y='${clipY}' font-size='${clipFontSize}' text-anchor='middle'>${clipEmoji}</text>
+    </clipPath>
+  </defs>
+  <text x='${contentXPixels}' y='${contentYPixels}' font-size='${contentFontSize}' text-anchor='middle' clip-path='url(#emojiClip)'>${contentEmoji}</text>
+</svg>`;
+            }
+
+            function getSvgContent() {
+                const clipEmoji = document.getElementById("clipEmojiInput").value || "🩷";
+                const clipFontSize =
+                    parseInt(document.getElementById("clipFontSizeInput").value) || 32;
+                const clipViewBoxZoom =
+                    parseFloat(document.getElementById("clipViewBoxZoomInput").value) || 1;
+
+                const contentEmoji = document.getElementById("contentEmojiInput").value || "🐸";
+                const contentFontSize =
+                    parseInt(document.getElementById("contentFontSizeInput").value) || 32;
+                const contentX = parseFloat(document.getElementById("contentXInput").value) || 50;
+                const contentY = parseFloat(document.getElementById("contentYInput").value) || 50;
+
+                return generateSvg(
+                    clipEmoji,
+                    clipFontSize,
+                    clipViewBoxZoom,
+                    contentEmoji,
+                    contentFontSize,
+                    contentX,
+                    contentY,
+                );
+            }
+
+            function updateSvgOutput() {
+                document.getElementById("svgOutput").textContent = getSvgContent();
+            }
+
+            function drawIcon(size) {
+                const canvas = document.getElementById(`canvas${size}`);
+                const ctx = canvas.getContext("2d");
+
+                const img = new Image();
+                const svg = new Blob([getSvgContent()], { type: "image/svg+xml" });
+                const url = URL.createObjectURL(svg);
+
+                return new Promise((resolve) => {
+                    img.onload = function () {
+                        ctx.clearRect(0, 0, size, size);
+                        ctx.drawImage(img, 0, 0, size, size);
+                        URL.revokeObjectURL(url);
+                        resolve();
+                    };
+                    img.src = url;
+                });
+            }
+
+            function downloadIcon(size) {
+                const canvas = document.getElementById(`canvas${size}`);
+                canvas.toBlob((blob) => {
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement("a");
+                    a.href = url;
+                    a.download = `emoji-mask-${size}.png`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                });
+            }
+
+            async function downloadAll() {
+                for (const size of sizes) {
+                    await new Promise((resolve) => setTimeout(resolve, 300));
+                    downloadIcon(size);
+                }
+            }
+
+            async function regenerateIcons() {
+                for (const size of sizes) {
+                    await drawIcon(size);
+                }
+            }
+
+            // Auto-update icons when clip emoji inputs change
+            document.getElementById("clipEmojiInput").addEventListener("input", () => {
+                updateSvgOutput();
+                regenerateIcons();
+            });
+
+            document.getElementById("clipFontSizeInput").addEventListener("input", (e) => {
+                document.getElementById("clipFontSizeNumber").value = e.target.value;
+                updateSvgOutput();
+                regenerateIcons();
+            });
+
+            document.getElementById("clipViewBoxZoomInput").addEventListener("input", (e) => {
+                document.getElementById("clipViewBoxZoomNumber").value = e.target.value;
+                updateSvgOutput();
+                regenerateIcons();
+            });
+
+            // Auto-update icons when content emoji inputs change
+            document.getElementById("contentEmojiInput").addEventListener("input", () => {
+                updateSvgOutput();
+                regenerateIcons();
+            });
+
+            document.getElementById("contentFontSizeInput").addEventListener("input", (e) => {
+                document.getElementById("contentFontSizeNumber").value = e.target.value;
+                updateSvgOutput();
+                regenerateIcons();
+            });
+
+            document.getElementById("contentXInput").addEventListener("input", (e) => {
+                document.getElementById("contentXNumber").value = e.target.value;
+                updateSvgOutput();
+                regenerateIcons();
+            });
+
+            document.getElementById("contentYInput").addEventListener("input", (e) => {
+                document.getElementById("contentYNumber").value = e.target.value;
+                updateSvgOutput();
+                regenerateIcons();
+            });
+
+            // Draw all icons on page load
+            window.addEventListener("load", async () => {
+                initializePreview();
+                updateSvgOutput();
+                for (const size of sizes) {
+                    await drawIcon(size);
+                }
+            });
+
+            // Set up download all button
+            document.getElementById("downloadAll").addEventListener("click", downloadAll);
+        </script>
+    </body>
+</html>

@@ -160,7 +160,7 @@ export class PathBuilder {
      * and creates an SVG arc command with those parameters.
      *
      * @param {Object} args - The target coordinates for the arc.
-     * @returns {string} The SVG arc path command.
+     * @returns {PathBuilder} The SVG arc path command.
      */
     arcTo(args) {
         const { x, y, largeArcFlag = false, sweepFlag = true } = this.#getXY(args);

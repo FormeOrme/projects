@@ -45,13 +45,13 @@
                 func.node.classList.add("is-valid");
                 eval(_head + func.node.value + _tail)(input.node.value, (out) => {
                     title.innerText = TITLE + (!out ? '' : ` [${func.node.value?.trim().substr(0, 20)}]`);
-                    output.node.innerText = String(out);
+                    outputPre.node.innerText = String(out);
                 });
                 QueStMan.set("func", btoa(func.node.value).replaceAll("=", ""));
             } catch (e) {
                 func.node.classList.remove("is-valid");
                 func.node.classList.add("is-invalid");
-                output.node.innerText = e.message;
+                outputPre.node.innerText = e.message;
                 title.innerText = TITLE;
             }
         }, 200);
@@ -82,7 +82,7 @@
             class: "border-3 border-secondary-subtle lh-sm form-control mt-3 text-wrap text-break",
         });
 
-        const buttonclass = "btn btn-sm btn-light border-3 border-secondary-subtle";
+        const buttonClass = "btn btn-sm btn-light border-3 border-secondary-subtle";
         const output = Span({
             class: "position-relative",
             children: [
@@ -91,17 +91,17 @@
                     class: "m-2 position-absolute top-0 end-0 d-flex gap-1",
                     children: [
                         Button({
-                            class: buttonclass,
+                            class: buttonClass,
                             children: I({ class: "bi bi-clipboard" }),
                             attribute: {
                                 title: "copy"
                             },
                             event: {
-                                click: () => navigator.clipboard.writeText(output.node.innerText)
+                                click: () => navigator.clipboard.writeText(outputPre.node.innerText)
                             }
                         }),
                         Button({
-                            class: buttonclass,
+                            class: buttonClass,
                             children: I({ class: "bi bi-text-wrap" }),
                             attribute: {
                                 title: "toggle text-wrap"

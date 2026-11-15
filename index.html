@@ -12,10 +12,10 @@
 
     <body>
         <script type="module">
-            import { Octokit, App } from "https://esm.sh/octokit";
+            import { Octokit } from "https://esm.sh/octokit";
             import { A, UL, LI, Span, Section, IFrame, H1 } from "./module/Dom.js";
             import { alpha, multiSort } from "./module/Sort.js";
-            import { strip } from "./module/SUtils.js";
+            import { slugify } from "./module/SUtils.js";
 
             const octokit = new Octokit({});
 
@@ -34,10 +34,9 @@
             }
 
             class Content {
-                constructor({ name, path, html_url, type }) {
+                constructor({ name, path, type }) {
                     this.name = name;
                     this.path = path;
-                    this.html_url = html_url;
                     this.type = type;
                 }
 
@@ -47,10 +46,6 @@
 
                 get icon() {
                     return this.isFolder ? "📁" : "📄";
-                }
-
-                get url() {
-                    return new URL(this.html_url);
                 }
             }
 
@@ -74,7 +69,7 @@
                         get = "GET /repos/{owner}/{repo}/contents/{path}";
                     }
                     const owner = this.owner;
-                    const response = await octokit
+                    return await octokit
                         .request(get, {
                             owner,
                             repo,
@@ -85,12 +80,11 @@
                                 response.data.map((item) => new Content(item)),
                             ),
                         );
-                    return response;
                 }
 
                 async renderBranch(path) {
-                    const { children, value } = await this.getRepoContents(this.repo, path);
-                    const list = UL({
+                    const { children } = await this.getRepoContents(this.repo, path);
+                    return UL({
                         class: ["list-group", path ? "m-1" : ""],
                         children: await Promise.all(
                             children
@@ -103,7 +97,6 @@
                                 .map((leaf) => this.renderLeaf(leaf)),
                         ),
                     });
-                    return list;
                 }
 
                 async renderLeaf({ value }) {
@@ -181,8 +174,8 @@
                         class: "d-none",
                     });
 
-                    const liElement = LI({
-                        id: strip(value.name),
+                    return LI({
+                        id: slugify(value.name),
                         class: "list-group-item p-0 overflow-hidden",
                         children: [
                             Span({
@@ -221,16 +214,14 @@
                             },
                         },
                         function: {
-                            isActive: function () {
+                            isActive: function() {
                                 return this.classList.contains("open");
                             },
-                            toggleActive: function (active) {
+                            toggleActive: function(active) {
                                 this.classList.toggle("open", active);
                             },
                         },
                     });
-
-                    return liElement;
                 }
             }
 
