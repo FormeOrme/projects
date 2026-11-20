@@ -122,7 +122,7 @@ export default class TableBuilder {
         );
         const body = TBody(rows);
         return {
-            table: Table({ header, body }),
+            table: Table([header, body]),
             rows,
         };
     }
