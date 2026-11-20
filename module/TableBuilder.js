@@ -1,4 +1,4 @@
-import { Span } from "./Dom.js";
+import { Span, Table, TBody, TD, TH, THead, TR } from "./Dom.js";
 import { compact } from "./Utils.js";
 
 export default class TableBuilder {
@@ -15,7 +15,7 @@ export default class TableBuilder {
     /**
      * Set the classes for the table, header, header row, header cell, body, row, and cell.
      * `classes` is either a string or a function that returns a string.
-     * ```javascript
+     * ```JavaScript
      *  headerCell: "p-2 col text-truncate fw-bold",
      *  cell: (cell, x) => `p-2 col text-truncate test-${x}`,
      * ```
@@ -88,5 +88,42 @@ export default class TableBuilder {
                 }),
             ],
         });
+    }
+
+    buildAsTable() {
+        const header = THead(TR(
+            Object.entries(this.columns).map(([key, column], x) =>
+                TH({
+                    id: `header-${key}`,
+                    attribute: {
+                        dataKey: key,
+                    },
+                    children: Span(column.label),
+                }),
+            )));
+        const rows = this.data.map((row, y) =>
+            TR({
+                id: `row-${y}`,
+                class: this.#applyClass(this.classes?.row, row, y),
+                children: Object.entries(this.columns).map(([key, column], x) =>
+                    TD({
+                        id: `cell-${y}-${key}`,
+                        attribute: {
+                            dataKey: key,
+                        },
+                        class: [
+                            this.#applyClass(this.classes?.cell, column, x),
+                            ...compact(column.class),
+                        ],
+                        children: column.cellFn ? column.cellFn(row) : Span(row[key]),
+                    }),
+                ),
+            }),
+        );
+        const body = TBody(rows);
+        return {
+            table: Table({ header, body }),
+            rows,
+        };
     }
 }
